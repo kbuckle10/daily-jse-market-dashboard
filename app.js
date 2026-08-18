@@ -12,14 +12,15 @@ const allocationLegend = document.getElementById('allocationLegend');
 const fmt = (v, digits = 2) => v == null ? 'N/A' : Number(v).toFixed(digits);
 const pct = v => v == null ? '<span class="neutral">N/A</span>' : `<span class="${v > 0 ? 'positive' : v < 0 ? 'negative' : 'neutral'}">${v > 0 ? '+' : ''}${fmt(v,1)}%</span>`;
 const money = v => v == null ? 'N/A' : `J$${fmt(v,2)}`;
-const day = s => `<span class="${s.dayPct > 0 ? 'positive' : s.dayPct < 0 ? 'negative' : 'neutral'}">${s.dayJmd > 0 ? '+' : ''}${money(s.dayJmd)} / ${s.dayPct > 0 ? '+' : ''}${fmt(s.dayPct,2)}%</span>`;
+const day = s => s.dayPct == null ? '<span class="neutral">N/A</span>' : `<span class="${s.dayPct > 0 ? 'positive' : s.dayPct < 0 ? 'negative' : 'neutral'}">${s.dayJmd > 0 ? '+' : ''}${money(s.dayJmd)} / ${s.dayPct > 0 ? '+' : ''}${fmt(s.dayPct,2)}%</span>`;
+const isBigMover = s => Math.abs(s.dayPct || 0) >= 5 || Math.abs(s.m1 || 0) >= 5 || Math.abs(s.m3 || 0) >= 10 || Math.abs(s.m6 || 0) >= 10 || Math.abs(s.y1 || 0) >= 20;
 
 function filteredStocks() {
   let result = [...stocks];
   if (state.filter === 'buy') result = result.filter(s => s.ratingClass === 'buy');
   if (state.filter === 'zone') result = result.filter(s => s.zoneStatus === 'in');
   if (state.filter === 'income') result = result.filter(s => (s.trailingYield || 0) >= 3);
-  if (state.filter === 'movement') result = result.filter(s => Math.abs(s.m1 || 0) >= 5);
+  if (state.filter === 'movement') result = result.filter(isBigMover);
   if (state.filter === 'dividend') result = result.filter(s => !/No new declaration/i.test(s.dividendStatus));
 
   const sorts = {
@@ -33,8 +34,10 @@ function filteredStocks() {
 }
 
 function buyZoneText(s) {
+  if (s.buyLow == null || s.buyHigh == null) return '<span class="neutral">N/A</span>';
   const yields = s.buyYieldLow != null && s.buyYieldHigh != null ? `<br><small>${fmt(s.buyYieldLow,1)}–${fmt(s.buyYieldHigh,1)}% implied</small>` : '';
-  return `<strong>J$${fmt(s.buyLow,2)}–${fmt(s.buyHigh,2)}</strong>${yields}<br><span class="zone-status ${s.zoneStatus}">${s.zoneStatus === 'in' ? 'IN ZONE' : 'ABOVE ZONE'}</span>`;
+  const label = s.zoneStatus === 'in' ? 'IN ZONE' : s.zoneStatus === 'below' ? 'BELOW ZONE' : 'ABOVE ZONE';
+  return `<strong>J$${fmt(s.buyLow,2)}–${fmt(s.buyHigh,2)}</strong>${yields}<br><span class="zone-status ${s.zoneStatus}">${label}</span>`;
 }
 
 function stockRow(s) {
@@ -77,18 +80,22 @@ function renderSummary() {
   document.getElementById('buyCount').textContent = stocks.filter(s => s.ratingClass === 'buy').length;
   document.getElementById('zoneCount').textContent = stocks.filter(s => s.zoneStatus === 'in').length;
   document.getElementById('incomeCount').textContent = stocks.filter(s => (s.trailingYield || 0) >= 3).length;
-  document.getElementById('moveCount').textContent = stocks.filter(s => Math.abs(s.m1 || 0) >= 5).length;
+  document.getElementById('moveCount').textContent = stocks.filter(isBigMover).length;
   document.getElementById('dividendCount').textContent = stocks.filter(s => !/No new declaration/i.test(s.dividendStatus)).length;
 }
 
 function renderAnalysis() {
-  const movers = stocks.filter(s => Math.abs(s.m1 || 0) >= 5 || Math.abs(s.m3 || 0) >= 10 || Math.abs(s.m6 || 0) >= 10 || Math.abs(s.y1 || 0) >= 20);
-  movementList.innerHTML = movers.length ? movers.map(s => `<div class="movement-item"><strong>${s.ticker} ${pct(s.m1)} over 1M</strong><p>${s.reason} ${s.zoneStatus === 'above' ? `Current price is above the J$${fmt(s.buyLow)}–${fmt(s.buyHigh)} dividend buy zone.` : `Current price is inside the target buy zone.`}</p></div>`).join('') : '<p class="neutral">No tracked stock currently exceeds the movement thresholds with available data.</p>';
+  const movers = stocks.filter(isBigMover);
+  movementList.innerHTML = movers.length ? movers.map(s => {
+    const moveText = Math.abs(s.dayPct || 0) >= 5 ? `${pct(s.dayPct)} on the latest day` : `${pct(s.m1)} over 1M`;
+    return `<div class="movement-item"><strong>${s.ticker} ${moveText}</strong><p>${s.reason} ${s.zoneStatus === 'above' ? `Current price is above the J$${fmt(s.buyLow)}–${fmt(s.buyHigh)} dividend buy zone.` : s.zoneStatus === 'in' ? `Current price is inside the target buy zone.` : `Current price is below the target buy zone.`}</p></div>`;
+  }).join('') : '<p class="neutral">No tracked stock currently exceeds the movement thresholds with available data.</p>';
+
   rankingList.innerHTML = [...stocks].sort((a,b)=>a.rank-b.rank).map(s => `<div class="rank-row"><div class="rank-left"><span class="rank-number">${s.rank}</span><div><strong>${s.ticker}</strong><div class="rank-reason">${s.reason}</div></div></div><span class="rating ${s.ratingClass}">${s.rating}</span></div>`).join('');
 
   const colors = ['var(--viz1,#5b8cff)','var(--viz2,#48d7a0)','var(--viz3,#ffd166)','var(--viz4,#9f7aea)','var(--viz5,#38bdf8)','var(--viz6,#fb7185)'];
-  allocationBar.innerHTML = [...stocks].sort((a,b)=>b.allocation-a.allocation).map((s,i)=>`<div class="allocation-segment" title="${s.ticker} ${s.allocation}%" style="width:${s.allocation}%;background:${colors[i]}"></div>`).join('');
-  allocationLegend.innerHTML = [...stocks].sort((a,b)=>b.allocation-a.allocation).map((s,i)=>`<div class="legend-item"><span class="legend-dot" style="background:${colors[i]}"></span><strong>${s.ticker}</strong> ${s.allocation}%</div>`).join('');
+  allocationBar.innerHTML = [...stocks].sort((a,b)=>b.allocation-a.allocation).map((s,i)=>`<div class="allocation-segment" title="${s.ticker} ${s.allocation}%" style="width:${s.allocation}%;background:${colors[i % colors.length]}"></div>`).join('');
+  allocationLegend.innerHTML = [...stocks].sort((a,b)=>b.allocation-a.allocation).map((s,i)=>`<div class="legend-item"><span class="legend-dot" style="background:${colors[i % colors.length]}"></span><strong>${s.ticker}</strong> ${s.allocation}%</div>`).join('');
 }
 
 document.querySelectorAll('.filter-tile').forEach(btn => btn.addEventListener('click', () => { state.filter = btn.dataset.filter; render(); }));
