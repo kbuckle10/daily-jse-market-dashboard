@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Daily Jamaica Stock Exchange dividend investor dashboard for TJH, CAR, NCBFG, SVL, GK and JMMBGL." />
+  <meta name="theme-color" content="#0b1220" />
+  <title>Daily JSE Market Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">Jamaica Stock Exchange • Dividend Investor View</p>
+      <h1>Daily JSE Market Dashboard</h1>
+      <p class="subtitle">TJH • CAR • NCBFG • SVL • GK • JMMBGL</p>
+    </div>
+    <div class="header-actions">
+      <div class="updated-pill" id="updatedPill">Latest available data</div>
+      <button class="icon-button" id="themeToggle" type="button" aria-label="Toggle dark mode" title="Toggle theme">☀</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="notice" aria-label="data source notice">
+      <div><strong>Source policy:</strong> JSE is primary for official declarations and latest completed closes. StockAnalysis is used for delayed/historical market context when required.</div>
+      <div class="source-actions">
+        <a class="source-link jse" href="https://www.jamstockex.com/trading/markets/main-market/" target="_blank" rel="noreferrer">JSE Main Market ↗</a>
+        <a class="source-link sa" href="https://stockanalysis.com/list/jamaica-stock-exchange/" target="_blank" rel="noreferrer">StockAnalysis ↗</a>
+      </div>
+    </section>
+
+    <section class="filter-grid" aria-label="Dashboard filters">
+      <button class="filter-tile active" data-filter="all"><span>Tracked</span><strong id="trackedCount">6</strong><small>All stocks</small></button>
+      <button class="filter-tile" data-filter="buy"><span>Buy rated</span><strong id="buyCount">0</strong><small>Strong Buy + Buy</small></button>
+      <button class="filter-tile" data-filter="zone"><span>In buy zone</span><strong id="zoneCount">0</strong><small>Current opportunity</small></button>
+      <button class="filter-tile" data-filter="income"><span>Higher yield</span><strong id="incomeCount">0</strong><small>≥ 3% trailing</small></button>
+      <button class="filter-tile" data-filter="movement"><span>Big movers</span><strong id="moveCount">0</strong><small>≥ 5% over 1M</small></button>
+      <button class="filter-tile" data-filter="dividend"><span>Dividend update</span><strong id="dividendCount">0</strong><small>Current declaration</small></button>
+    </section>
+
+    <section class="toolbar">
+      <div class="segmented" role="group" aria-label="View mode">
+        <button class="segment active" id="tableViewBtn" type="button">Table</button>
+        <button class="segment" id="cardViewBtn" type="button">Cards</button>
+      </div>
+      <label class="sort-control">Sort
+        <select id="sortSelect">
+          <option value="rank">Investor rank</option>
+          <option value="yield-desc">Yield: high to low</option>
+          <option value="price-asc">Price: low to high</option>
+          <option value="month-desc">1M move: high to low</option>
+          <option value="ticker">Ticker A–Z</option>
+        </select>
+      </label>
+    </section>
+
+    <section id="tableView" class="table-shell">
+      <table>
+        <thead>
+          <tr>
+            <th>Stock</th><th>Price</th><th>Day</th><th>1W</th><th>1M</th><th>3M</th><th>6M</th><th>12M</th><th>TTM DPS</th><th>Yield</th><th>Latest Div.</th><th>Dates</th><th>Rating</th><th>Target Buy Zone</th>
+          </tr>
+        </thead>
+        <tbody id="stockTableBody"></tbody>
+      </table>
+    </section>
+
+    <section id="cardView" class="stock-card-grid hidden" aria-live="polite"></section>
+
+    <section class="analysis-grid">
+      <article class="panel">
+        <div class="panel-heading"><div><p class="eyebrow">Market watch</p><h2>Significant Price Movements</h2></div><span class="panel-badge">Threshold based</span></div>
+        <div id="movementList" class="movement-list"></div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-heading"><div><p class="eyebrow">Fresh capital</p><h2>Dividend Investor Ranking</h2></div></div>
+        <div id="rankingList" class="ranking-list"></div>
+      </article>
+    </section>
+
+    <section class="allocation-panel panel">
+      <div class="panel-heading"><div><p class="eyebrow">Model allocation</p><h2>Suggested New-Money Allocation</h2></div><strong>100%</strong></div>
+      <div id="allocationBar" class="allocation-bar" aria-label="Suggested allocation"></div>
+      <div id="allocationLegend" class="allocation-legend"></div>
+    </section>
+
+    <footer>
+      <p>For research and monitoring only — not personal financial advice. Verify official corporate actions with the Jamaica Stock Exchange before trading.</p>
+    </footer>
+  </main>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
