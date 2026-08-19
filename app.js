@@ -16,8 +16,8 @@ const day = s => s.dayPct == null ? '<span class="neutral">N/A</span>' : `<span 
 const isBigMover = s => Math.abs(s.dayPct || 0) >= 5 || Math.abs(s.m1 || 0) >= 5 || Math.abs(s.m3 || 0) >= 10 || Math.abs(s.m6 || 0) >= 10 || Math.abs(s.y1 || 0) >= 20;
 const latestDividendLink = s => {
   const value = money(s.latestDividend);
-  const href = s.dividendUrl || s.jse;
-  if (!href || s.latestDividend == null) return value;
+  const href = s.dividendUrl || `https://www.jamstockex.com/?tag=${encodeURIComponent(s.ticker)}`;
+  if (s.latestDividend == null) return value;
   return `<a class="dividend-link" href="${href}" target="_blank" rel="noreferrer" title="Open ${s.ticker} dividend declaration on JSE">${value} ↗</a>`;
 };
 
