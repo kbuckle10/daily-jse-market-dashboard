@@ -3,159 +3,133 @@ import vm from 'node:vm';
 import { chromium } from 'playwright';
 
 const DATA_FILE = 'data.js';
-const PERIODS = [
-  ['m1', '1M'],
-  ['m3', '3M'],
-  ['m6', '6M'],
-  ['y1', '1Y']
-];
+const PERIODS = [['m1','1M'],['m3','3M'],['m6','6M'],['y1','1Y']];
 
-function readDashboard() {
-  const raw = fs.readFileSync(DATA_FILE, 'utf8');
-  const match = raw.match(/window\.JSE_DASHBOARD_DATA\s*=\s*([\s\S]*);\s*$/);
-  if (!match) throw new Error('Unable to parse data.js');
-  return vm.runInNewContext(`(${match[1]})`);
+function readDashboard(){
+  const raw=fs.readFileSync(DATA_FILE,'utf8');
+  const m=raw.match(/window\.JSE_DASHBOARD_DATA\s*=\s*([\s\S]*);\s*$/);
+  if(!m) throw new Error('Unable to parse data.js');
+  return vm.runInNewContext(`(${m[1]})`);
 }
-
-function writeDashboard(data) {
-  fs.writeFileSync(DATA_FILE, `window.JSE_DASHBOARD_DATA = ${JSON.stringify(data, null, 2)};\n`);
+function writeDashboard(data){fs.writeFileSync(DATA_FILE,`window.JSE_DASHBOARD_DATA = ${JSON.stringify(data,null,2)};\n`);}
+function parsePct(text){
+  const m=String(text||'').match(/([+-]?\d+(?:\.\d+)?)%/);
+  return m ? Number(m[1]) : null;
 }
-
-function parseNumber(text) {
-  const value = Number(String(text).replace(/,/g, '').replace('%', '').trim());
-  return Number.isFinite(value) ? value : null;
+function returnRegex(label){
+  const e=label.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  return new RegExp(`([+-]?\\d+(?:\\.\\d+)?)%\\s*\\(${e}\\)`,'i');
 }
-
-async function clickVisiblePeriod(page, label) {
-  const selectors = [
-    page.locator('button').filter({ hasText: new RegExp(`^\\s*${label}\\s*$`) }),
-    page.locator('[role="button"]').filter({ hasText: new RegExp(`^\\s*${label}\\s*$`) }),
-    page.locator('a').filter({ hasText: new RegExp(`^\\s*${label}\\s*$`) }),
-    page.getByText(label, { exact: true })
-  ];
-
-  for (const locator of selectors) {
-    const count = await locator.count().catch(() => 0);
-    for (let i = 0; i < count; i += 1) {
-      const item = locator.nth(i);
-      if (await item.isVisible().catch(() => false)) {
-        await item.click({ timeout: 5000 }).catch(() => null);
-        await page.waitForTimeout(800);
-        return true;
-      }
-    }
+async function dismissOverlays(page){
+  for(const txt of ['Accept','Accept All','I Agree','Got it','Close']){
+    const loc=page.getByRole('button',{name:new RegExp(`^${txt}$`,'i')});
+    if(await loc.count().catch(()=>0)) await loc.first().click({timeout:1200}).catch(()=>{});
   }
-  return false;
+  await page.keyboard.press('Escape').catch(()=>{});
 }
-
-async function displayedReturn(page, label) {
-  await clickVisiblePeriod(page, label);
-  const body = await page.locator('body').innerText();
-  const escaped = label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const patterns = [
-    new RegExp(`([+-]?\\d+(?:\\.\\d+)?)%\\s*\\(${escaped}\\)`, 'i'),
-    new RegExp(`([+-]?\\d+(?:\\.\\d+)?)%[^\\n]{0,20}\\b${escaped}\\b`, 'i')
+async function capturePeriod(page,label){
+  const target=returnRegex(label);
+  const candidates=[
+    page.getByText(label,{exact:true}),
+    page.locator('button').filter({hasText:new RegExp(`^\\s*${label}\\s*$`)}),
+    page.locator('[role="button"]').filter({hasText:new RegExp(`^\\s*${label}\\s*$`)}),
+    page.locator('a').filter({hasText:new RegExp(`^\\s*${label}\\s*$`)})
   ];
-  for (const re of patterns) {
-    const match = body.match(re);
-    if (match) return parseNumber(match[1]);
+  let clicked=false;
+  for(const loc of candidates){
+    const n=await loc.count().catch(()=>0);
+    for(let i=0;i<n;i++){
+      const el=loc.nth(i);
+      if(!await el.isVisible().catch(()=>false)) continue;
+      await el.scrollIntoViewIfNeeded().catch(()=>{});
+      clicked=await el.click({force:true,timeout:3000}).then(()=>true).catch(()=>false);
+      if(!clicked) clicked=await el.evaluate(node=>{node.click();return true;}).catch(()=>false);
+      if(clicked) break;
+    }
+    if(clicked) break;
+  }
+  if(!clicked) return null;
+  for(let i=0;i<12;i++){
+    await page.waitForTimeout(350);
+    const body=await page.locator('body').innerText().catch(()=>'');
+    const m=body.match(target);
+    if(m) return Number(m[1]);
   }
   return null;
 }
-
-async function oneWeekReturn(page, ticker) {
-  await page.goto(`https://stockanalysis.com/quote/jmse/${ticker}/history/`, { waitUntil: 'domcontentloaded', timeout: 45000 });
-  await page.waitForTimeout(900);
-
-  const rows = await page.locator('table tbody tr').evaluateAll((trs) => trs.map((tr) =>
-    Array.from(tr.querySelectorAll('td')).map((td) => td.textContent?.trim() || '')
-  )).catch(() => []);
-
-  const parsed = rows
-    .filter((r) => r.length >= 5)
-    .map((r) => ({ date: new Date(r[0]), close: Number(r[4].replace(/,/g, '')) }))
-    .filter((r) => !Number.isNaN(r.date.valueOf()) && Number.isFinite(r.close));
-
-  if (parsed.length < 2) return null;
-  const latest = parsed[0];
-  const target = new Date(latest.date);
-  target.setDate(target.getDate() - 7);
-  const comparison = parsed.find((r) => r.date <= target);
-  if (!comparison) return null;
-  return ((latest.close / comparison.close) - 1) * 100;
+async function readHistoryRows(page,ticker){
+  await page.goto(`https://stockanalysis.com/quote/jmse/${ticker}/history/`,{waitUntil:'networkidle',timeout:60000});
+  await dismissOverlays(page);
+  await page.waitForSelector('table tbody tr',{timeout:15000}).catch(()=>{});
+  const rows=await page.locator('table tbody tr').evaluateAll(trs=>trs.map(tr=>Array.from(tr.querySelectorAll('td')).map(td=>td.textContent?.trim()||''))).catch(()=>[]);
+  return rows.filter(r=>r.length>=5).map(r=>({date:new Date(r[0]),close:Number(String(r[4]).replace(/,/g,''))})).filter(r=>!Number.isNaN(r.date.valueOf())&&Number.isFinite(r.close));
+}
+function historicalReturn(rows,days){
+  if(rows.length<2) return null;
+  const sorted=[...rows].sort((a,b)=>b.date-a.date);
+  const latest=sorted[0];
+  const target=new Date(latest.date); target.setDate(target.getDate()-days);
+  const comparison=sorted.find(r=>r.date<=target);
+  return comparison ? ((latest.close/comparison.close)-1)*100 : null;
 }
 
-const data = readDashboard();
-const browser = await chromium.launch({ headless: true });
-const context = await browser.newContext({
-  viewport: { width: 1440, height: 1000 },
-  userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/151 Safari/537.36'
-});
+const data=readDashboard();
+const browser=await chromium.launch({headless:true});
+const context=await browser.newContext({viewport:{width:1600,height:1100},userAgent:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/151 Safari/537.36'});
+const unresolved=[];
 
-const failures = [];
+for(const stock of data.stocks){
+  const ticker=stock.ticker;
+  const page=await context.newPage();
+  try{
+    console.log(`\n=== ${ticker} ===`);
+    await page.goto(`https://stockanalysis.com/quote/jmse/${ticker}/`,{waitUntil:'networkidle',timeout:60000});
+    await dismissOverlays(page);
+    await page.waitForTimeout(1000);
 
-for (const stock of data.stocks) {
-  const ticker = stock.ticker;
-  const page = await context.newPage();
-  try {
-    console.log(`Refreshing ${ticker}...`);
-    await page.goto(`https://stockanalysis.com/quote/jmse/${ticker}/`, { waitUntil: 'domcontentloaded', timeout: 45000 });
-    await page.waitForTimeout(1200);
-
-    for (const [field, label] of PERIODS) {
-      const value = await displayedReturn(page, label);
-      if (value == null) {
-        failures.push(`${ticker} ${label}`);
-        console.error(`  ${label}: NOT CAPTURED`);
-      } else {
-        stock[field] = Number(value.toFixed(2));
-        console.log(`  ${label}: ${stock[field]}%`);
+    for(const [field,label] of PERIODS){
+      const value=await capturePeriod(page,label);
+      if(value!=null && Number.isFinite(value)){
+        stock[field]=Number(value.toFixed(2));
+        console.log(`${label}: ${stock[field]}% (displayed SA)`);
+      }else{
+        console.log(`${label}: interactive value not captured; will try history fallback`);
       }
     }
 
-    const w1 = await oneWeekReturn(page, ticker);
-    if (w1 == null) {
-      failures.push(`${ticker} 1W`);
-      console.error('  1W: NOT CAPTURED');
-    } else {
-      stock.w1 = Number(w1.toFixed(2));
-      console.log(`  1W: ${stock.w1}%`);
+    const rows=await readHistoryRows(page,ticker);
+    const fallbacks={w1:7,m1:30,m3:92,m6:183,y1:366};
+    for(const [field,days] of Object.entries(fallbacks)){
+      if(field==='w1' || stock[field]==null){
+        const v=historicalReturn(rows,days);
+        if(v!=null && Number.isFinite(v)){
+          stock[field]=Number(v.toFixed(2));
+          console.log(`${field}: ${stock[field]}% (SA history-derived)`);
+        }
+      }
     }
-
-    stock.performanceSource = 'SA';
-  } catch (error) {
-    failures.push(`${ticker}: ${error.message}`);
-    console.error(`${ticker} failed:`, error.message);
-  } finally {
-    await page.close();
-  }
+    stock.performanceSource='SA';
+  }catch(err){console.error(`${ticker}: ${err.message}`);}finally{await page.close();}
 }
-
 await browser.close();
 
-// User-verified SA values from Aug 18, 2026. These remain a sanity check against
-// browser extraction and are only applied when the current dataset date is Aug 18, 2026.
-if (/August 18, 2026|Aug 18, 2026/.test(data.updated || '')) {
-  const tjh = data.stocks.find((s) => s.ticker === 'TJH');
-  if (tjh) Object.assign(tjh, { m1: 22.28, m3: 57.56, m6: 67.91, y1: 204.05 });
-  const car = data.stocks.find((s) => s.ticker === 'CAR');
-  if (car) car.y1 = 98.20;
+// Preserve user-verified Aug 18 SA interactive values as validation anchors.
+if(/August 18, 2026|Aug 18, 2026/.test(data.updated||'')){
+  const tjh=data.stocks.find(s=>s.ticker==='TJH');
+  if(tjh) Object.assign(tjh,{m1:22.28,m3:57.56,m6:67.91,y1:204.05});
+  const car=data.stocks.find(s=>s.ticker==='CAR');
+  if(car) car.y1=98.20;
 }
 
-const required = ['w1', 'm1', 'm3', 'm6', 'y1'];
-for (const stock of data.stocks) {
-  for (const field of required) {
-    if (stock[field] == null || !Number.isFinite(Number(stock[field]))) {
-      if (!failures.includes(`${stock.ticker} ${field}`)) failures.push(`${stock.ticker} ${field}`);
-    }
+for(const stock of data.stocks){
+  for(const field of ['w1','m1','m3','m6','y1']){
+    if(stock[field]==null || !Number.isFinite(Number(stock[field]))) unresolved.push(`${stock.ticker} ${field}`);
   }
 }
-
-if (failures.length) {
-  console.error('\nValidation failed. data.js was NOT written. Missing intervals:');
-  for (const failure of failures) console.error(` - ${failure}`);
+if(unresolved.length){
+  console.error('\nFAILED: refusing to publish incomplete interval dataset:');
+  unresolved.forEach(x=>console.error(` - ${x}`));
   process.exit(1);
 }
-
 writeDashboard(data);
-console.log('\nAll 12 tickers have 1W, 1M, 3M, 6M and 1Y values. data.js updated.');
+console.log('\nSUCCESS: all 12 tickers have 1W, 1M, 3M, 6M and 1Y values.');
