@@ -3,7 +3,7 @@ import vm from 'node:vm';
 import { chromium } from 'playwright';
 
 const DATA_FILE = 'data.js';
-const PERIODS = [['m1','1M'],['m3','3M'],['m6','6M'],['y1','1Y']];
+const PERIODS = [['m1','1M'],['ytd','YTD'],['m3','3M'],['m6','6M'],['y1','1Y']];
 
 function readDashboard(){
   const raw=fs.readFileSync(DATA_FILE,'utf8');
@@ -12,10 +12,6 @@ function readDashboard(){
   return vm.runInNewContext(`(${m[1]})`);
 }
 function writeDashboard(data){fs.writeFileSync(DATA_FILE,`window.JSE_DASHBOARD_DATA = ${JSON.stringify(data,null,2)};\n`);}
-function parsePct(text){
-  const m=String(text||'').match(/([+-]?\d+(?:\.\d+)?)%/);
-  return m ? Number(m[1]) : null;
-}
 function returnRegex(label){
   const e=label.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
   return new RegExp(`([+-]?\\d+(?:\\.\\d+)?)%\\s*\\(${e}\\)`,'i');
@@ -72,6 +68,14 @@ function historicalReturn(rows,days){
   const comparison=sorted.find(r=>r.date<=target);
   return comparison ? ((latest.close/comparison.close)-1)*100 : null;
 }
+function ytdReturn(rows){
+  if(rows.length<2) return null;
+  const sorted=[...rows].sort((a,b)=>b.date-a.date);
+  const latest=sorted[0];
+  const priorYearEnd=new Date(latest.date.getFullYear()-1,11,31,23,59,59);
+  const comparison=sorted.find(r=>r.date<=priorYearEnd);
+  return comparison ? ((latest.close/comparison.close)-1)*100 : null;
+}
 
 const data=readDashboard();
 const browser=await chromium.launch({headless:true});
@@ -108,6 +112,13 @@ for(const stock of data.stocks){
         }
       }
     }
+    if(stock.ytd==null){
+      const v=ytdReturn(rows);
+      if(v!=null && Number.isFinite(v)){
+        stock.ytd=Number(v.toFixed(2));
+        console.log(`YTD: ${stock.ytd}% (SA history-derived)`);
+      }
+    }
     stock.performanceSource='SA';
   }catch(err){console.error(`${ticker}: ${err.message}`);}finally{await page.close();}
 }
@@ -122,7 +133,7 @@ if(/August 18, 2026|Aug 18, 2026/.test(data.updated||'')){
 }
 
 for(const stock of data.stocks){
-  for(const field of ['w1','m1','m3','m6','y1']){
+  for(const field of ['w1','m1','ytd','m3','m6','y1']){
     if(stock[field]==null || !Number.isFinite(Number(stock[field]))) unresolved.push(`${stock.ticker} ${field}`);
   }
 }
@@ -132,4 +143,4 @@ if(unresolved.length){
   process.exit(1);
 }
 writeDashboard(data);
-console.log('\nSUCCESS: all 12 tickers have 1W, 1M, 3M, 6M and 1Y values.');
+console.log('\nSUCCESS: all 12 tickers have 1W, 1M, YTD, 3M, 6M and 1Y values.');
