@@ -55,12 +55,46 @@ async function captureQuote(page){
   if(!m) return null;
   return {price:Number(m[1]),dayJmd:Number(m[2]),dayPct:Number(m[3]),date:m[4].trim()};
 }
+async function extractHistoryRows(page){
+  const rows=await page.locator('table tbody tr').evaluateAll(trs=>trs.map(tr=>Array.from(tr.querySelectorAll('td')).map(td=>td.textContent?.trim()||''))).catch(()=>[]);
+  return rows.filter(r=>r.length>=5).map(r=>({date:new Date(r[0]),close:Number(String(r[4]).replace(/,/g,''))})).filter(r=>!Number.isNaN(r.date.valueOf())&&Number.isFinite(r.close));
+}
 async function readHistoryRows(page,ticker){
   await page.goto(`https://stockanalysis.com/quote/jmse/${ticker}/history/`,{waitUntil:'networkidle',timeout:60000});
   await dismissOverlays(page);
   await page.waitForSelector('table tbody tr',{timeout:15000}).catch(()=>{});
-  const rows=await page.locator('table tbody tr').evaluateAll(trs=>trs.map(tr=>Array.from(tr.querySelectorAll('td')).map(td=>td.textContent?.trim()||''))).catch(()=>[]);
-  return rows.filter(r=>r.length>=5).map(r=>({date:new Date(r[0]),close:Number(String(r[4]).replace(/,/g,''))})).filter(r=>!Number.isNaN(r.date.valueOf())&&Number.isFinite(r.close));
+  const collected=[];
+  const seen=new Set();
+  for(let pageNo=0; pageNo<8; pageNo++){
+    const rows=await extractHistoryRows(page);
+    for(const r of rows){
+      const key=`${r.date.toISOString().slice(0,10)}|${r.close}`;
+      if(!seen.has(key)){seen.add(key);collected.push(r);}
+    }
+    const hasPriorYear=collected.some(r=>r.date.getFullYear() < new Date().getFullYear());
+    if(hasPriorYear) break;
+    const next=page.locator('button').filter({has:page.locator('svg')}).filter({hasText:/^\s*$/});
+    let clicked=false;
+    const buttons=page.locator('button');
+    const n=await buttons.count().catch(()=>0);
+    for(let i=0;i<n;i++){
+      const b=buttons.nth(i);
+      if(!await b.isVisible().catch(()=>false) || await b.isDisabled().catch(()=>true)) continue;
+      const txt=(await b.innerText().catch(()=>'' )).trim();
+      const aria=(await b.getAttribute('aria-label').catch(()=>''))||'';
+      const title=(await b.getAttribute('title').catch(()=>''))||'';
+      if(/^(next|>|›|→)$/i.test(txt) || /next/i.test(aria) || /next/i.test(title)){
+        const before=rows[0]?.date?.valueOf();
+        if(await b.click({force:true,timeout:2500}).then(()=>true).catch(()=>false)){
+          await page.waitForTimeout(700);
+          const after=(await extractHistoryRows(page))[0]?.date?.valueOf();
+          if(after!==before){clicked=true;break;}
+        }
+      }
+    }
+    if(!clicked) break;
+  }
+  return collected;
 }
 function historicalReturn(rows,days){
   if(rows.length<2) return null;
