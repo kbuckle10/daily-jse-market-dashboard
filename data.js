@@ -84,9 +84,9 @@ window.JSE_DASHBOARD_DATA = {
     },
     {
       rank: 11, ticker: "TJH", company: "TransJamaican Highway Limited", price: 11.25, priceDate: "Aug 18, 2026 • SA delayed", dayJmd: -0.24, dayPct: -2.09,
-      w1: 6.3, m1: 21.0, m3: null, m6: null, y1: 204.05, performanceSource: "SA", ttmDps: 0.294, trailingYield: 2.61, forwardYield: null,
+      w1: 6.3, m1: 22.28, m3: 57.56, m6: 67.91, y1: 204.05, performanceSource: "SA", ttmDps: 0.294, trailingYield: 2.61, forwardYield: null,
       latestDividend: 0.16503, exDate: "Apr 7, 2026", recordDate: "Apr 7, 2026", payDate: "Apr 28, 2026", dividendStatus: "No new declaration",
-      rating: "Hold / Wait", ratingClass: "hold", reason: "Excellent operating and capital-appreciation momentum, but the roughly 21% one-month and 204% one-year rise has compressed the dividend yield for new buyers.",
+      rating: "Hold / Wait", ratingClass: "hold", reason: "Excellent operating and capital-appreciation momentum, but the 22.28% one-month and 204.05% one-year rise has compressed the dividend yield for new buyers.",
       buyLow: 8.50, buyHigh: 9.75, buyYieldLow: 3.02, buyYieldHigh: 3.46, zoneStatus: "above", allocation: 2,
       jse: "https://www.jamstockex.com/?tag=TJH", dividendUrl: "https://www.jamstockex.com/?tag=TJH", sa: "https://stockanalysis.com/quote/jmse/TJH/", source: "SA"
     },
