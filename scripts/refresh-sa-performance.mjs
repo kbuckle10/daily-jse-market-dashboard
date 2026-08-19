@@ -23,23 +23,24 @@ async function dismissOverlays(page){
   }
   await page.keyboard.press('Escape').catch(()=>{});
 }
-async function capturePeriod(page,label){
-  const target=returnRegex(label);
+async function clickExactLabel(page,label){
   const candidates=[page.getByText(label,{exact:true}),page.locator('button').filter({hasText:new RegExp(`^\\s*${label}\\s*$`)}),page.locator('[role="button"]').filter({hasText:new RegExp(`^\\s*${label}\\s*$`)}),page.locator('a').filter({hasText:new RegExp(`^\\s*${label}\\s*$`)})];
-  let clicked=false;
   for(const loc of candidates){
     const n=await loc.count().catch(()=>0);
     for(let i=0;i<n;i++){
       const el=loc.nth(i);
       if(!await el.isVisible().catch(()=>false)) continue;
       await el.scrollIntoViewIfNeeded().catch(()=>{});
-      clicked=await el.click({force:true,timeout:3000}).then(()=>true).catch(()=>false);
+      let clicked=await el.click({force:true,timeout:3000}).then(()=>true).catch(()=>false);
       if(!clicked) clicked=await el.evaluate(node=>{node.click();return true;}).catch(()=>false);
-      if(clicked) break;
+      if(clicked) return true;
     }
-    if(clicked) break;
   }
-  if(!clicked) return null;
+  return false;
+}
+async function capturePeriod(page,label){
+  const target=returnRegex(label);
+  if(!await clickExactLabel(page,label)) return null;
   for(let i=0;i<12;i++){
     await page.waitForTimeout(350);
     const body=await page.locator('body').innerText().catch(()=>'');
@@ -63,17 +64,25 @@ async function readHistoryRows(page,ticker){
   await page.goto(`https://stockanalysis.com/quote/jmse/${ticker}/history/`,{waitUntil:'networkidle',timeout:60000});
   await dismissOverlays(page);
   await page.waitForSelector('table tbody tr',{timeout:15000}).catch(()=>{});
+
+  // History defaults to 6M. Switch to 1Y so the Dec-2025 close is available for YTD fallback.
+  if(await clickExactLabel(page,'1Y')){
+    await page.waitForTimeout(900);
+    await page.waitForSelector('table tbody tr',{timeout:10000}).catch(()=>{});
+  }
+
   const collected=[];
   const seen=new Set();
-  for(let pageNo=0; pageNo<8; pageNo++){
+  for(let pageNo=0; pageNo<12; pageNo++){
     const rows=await extractHistoryRows(page);
     for(const r of rows){
       const key=`${r.date.toISOString().slice(0,10)}|${r.close}`;
       if(!seen.has(key)){seen.add(key);collected.push(r);}
     }
-    const hasPriorYear=collected.some(r=>r.date.getFullYear() < new Date().getFullYear());
+    const latestYear=collected.length ? Math.max(...collected.map(r=>r.date.getFullYear())) : new Date().getFullYear();
+    const hasPriorYear=collected.some(r=>r.date.getFullYear() < latestYear);
     if(hasPriorYear) break;
-    const next=page.locator('button').filter({has:page.locator('svg')}).filter({hasText:/^\s*$/});
+
     let clicked=false;
     const buttons=page.locator('button');
     const n=await buttons.count().catch(()=>0);
