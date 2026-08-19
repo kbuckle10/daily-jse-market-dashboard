@@ -13,7 +13,7 @@ const fmt = (v, digits = 2) => v == null ? 'N/A' : Number(v).toFixed(digits);
 const pct = v => v == null ? '<span class="neutral">N/A</span>' : `<span class="${v > 0 ? 'positive' : v < 0 ? 'negative' : 'neutral'}">${v > 0 ? '+' : ''}${fmt(v,1)}%</span>`;
 const money = v => v == null ? 'N/A' : `J$${fmt(v,2)}`;
 const day = s => s.dayPct == null ? '<span class="neutral">N/A</span>' : `<span class="${s.dayPct > 0 ? 'positive' : s.dayPct < 0 ? 'negative' : 'neutral'}">${s.dayJmd > 0 ? '+' : ''}${money(s.dayJmd)} / ${s.dayPct > 0 ? '+' : ''}${fmt(s.dayPct,2)}%</span>`;
-const isBigMover = s => Math.abs(s.dayPct || 0) >= 5 || Math.abs(s.m1 || 0) >= 5 || Math.abs(s.m3 || 0) >= 10 || Math.abs(s.m6 || 0) >= 10 || Math.abs(s.y1 || 0) >= 20;
+const isBigMover = s => Math.abs(s.dayPct || 0) >= 5 || Math.abs(s.m1 || 0) >= 5 || Math.abs(s.ytd || 0) >= 10 || Math.abs(s.m3 || 0) >= 10 || Math.abs(s.m6 || 0) >= 10 || Math.abs(s.y1 || 0) >= 20;
 const latestDividendLink = s => {
   const value = money(s.latestDividend);
   const href = s.dividendUrl || `https://www.jamstockex.com/?tag=${encodeURIComponent(s.ticker)}`;
@@ -34,6 +34,7 @@ function filteredStocks() {
     'yield-desc': (a,b) => (b.trailingYield || -1) - (a.trailingYield || -1),
     'price-asc': (a,b) => a.price - b.price,
     'month-desc': (a,b) => (b.m1 || -999) - (a.m1 || -999),
+    'ytd-desc': (a,b) => (b.ytd || -999) - (a.ytd || -999),
     ticker: (a,b) => a.ticker.localeCompare(b.ticker)
   };
   return result.sort(sorts[state.sort]);
@@ -50,7 +51,7 @@ function stockRow(s) {
   return `<tr>
     <td><div class="ticker-wrap"><a class="source-dot" href="${s.sa}" target="_blank" rel="noreferrer">SA</a><div><div class="ticker">${s.ticker}</div><div class="company" title="${s.company}">${s.company}</div></div></div></td>
     <td><strong class="num">J$${fmt(s.price,2)}</strong><br><small>${s.priceDate}</small></td>
-    <td>${day(s)}</td><td>${pct(s.w1)}</td><td>${pct(s.m1)}</td><td>${pct(s.m3)}</td><td>${pct(s.m6)}</td><td>${pct(s.y1)}</td>
+    <td>${day(s)}</td><td>${pct(s.w1)}</td><td>${pct(s.m1)}</td><td>${pct(s.ytd)}</td><td>${pct(s.m3)}</td><td>${pct(s.m6)}</td><td>${pct(s.y1)}</td>
     <td class="num">${money(s.ttmDps)}</td><td>${pct(s.trailingYield)}</td><td><strong>${latestDividendLink(s)}</strong><br><small>${s.dividendStatus}</small></td>
     <td><small>Ex: ${s.exDate}<br>Rec: ${s.recordDate}<br>Pay: ${s.payDate}</small></td>
     <td><span class="rating ${s.ratingClass}">${s.rating}</span><br><small title="${s.reason}">${s.reason}</small></td>
@@ -64,6 +65,10 @@ function stockCard(s) {
     <div class="price">J$${fmt(s.price,2)}</div><div>${day(s)} <span class="neutral">• ${s.priceDate}</span></div>
     <div class="metric-row"><span>1 Week</span><strong>${pct(s.w1)}</strong></div>
     <div class="metric-row"><span>1 Month</span><strong>${pct(s.m1)}</strong></div>
+    <div class="metric-row"><span>YTD</span><strong>${pct(s.ytd)}</strong></div>
+    <div class="metric-row"><span>3 Months</span><strong>${pct(s.m3)}</strong></div>
+    <div class="metric-row"><span>6 Months</span><strong>${pct(s.m6)}</strong></div>
+    <div class="metric-row"><span>12 Months</span><strong>${pct(s.y1)}</strong></div>
     <div class="metric-row"><span>Trailing yield</span><strong>${fmt(s.trailingYield,2)}%</strong></div>
     <div class="metric-row"><span>Latest dividend</span><strong>${latestDividendLink(s)}</strong></div>
     <div class="metric-row"><span>Target buy zone</span><div>${buyZoneText(s)}</div></div>
@@ -93,7 +98,7 @@ function renderSummary() {
 function renderAnalysis() {
   const movers = stocks.filter(isBigMover);
   movementList.innerHTML = movers.length ? movers.map(s => {
-    const moveText = Math.abs(s.dayPct || 0) >= 5 ? `${pct(s.dayPct)} on the latest day` : `${pct(s.m1)} over 1M`;
+    const moveText = Math.abs(s.dayPct || 0) >= 5 ? `${pct(s.dayPct)} on the latest day` : Math.abs(s.m1 || 0) >= 5 ? `${pct(s.m1)} over 1M` : `${pct(s.ytd)} YTD`;
     return `<div class="movement-item"><strong>${s.ticker} ${moveText}</strong><p>${s.reason} ${s.zoneStatus === 'above' ? `Current price is above the J$${fmt(s.buyLow)}–${fmt(s.buyHigh)} dividend buy zone.` : s.zoneStatus === 'in' ? `Current price is inside the target buy zone.` : `Current price is below the target buy zone.`}</p></div>`;
   }).join('') : '<p class="neutral">No tracked stock currently exceeds the movement thresholds with available data.</p>';
 
