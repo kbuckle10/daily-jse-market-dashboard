@@ -31,9 +31,22 @@ async function clickExactLabel(page,label){
       const el=loc.nth(i);
       if(!await el.isVisible().catch(()=>false)) continue;
       await el.scrollIntoViewIfNeeded().catch(()=>{});
-      let clicked=await el.click({force:true,timeout:3000}).then(()=>true).catch(()=>false);
+      let clicked=await el.click({force:true,timeout:2500}).then(()=>true).catch(()=>false);
       if(!clicked) clicked=await el.evaluate(node=>{node.click();return true;}).catch(()=>false);
       if(clicked) return true;
+    }
+  }
+  return false;
+}
+async function safeGoto(page,url){
+  for(let attempt=1;attempt<=3;attempt++){
+    try{
+      await page.goto(url,{waitUntil:'domcontentloaded',timeout:30000});
+      await page.waitForLoadState('load',{timeout:8000}).catch(()=>{});
+      return true;
+    }catch(err){
+      console.warn(`goto attempt ${attempt} failed for ${url}: ${err.message}`);
+      if(attempt<3) await page.waitForTimeout(1200*attempt);
     }
   }
   return false;
@@ -41,8 +54,8 @@ async function clickExactLabel(page,label){
 async function capturePeriod(page,label){
   const target=returnRegex(label);
   if(!await clickExactLabel(page,label)) return null;
-  for(let i=0;i<12;i++){
-    await page.waitForTimeout(350);
+  for(let i=0;i<16;i++){
+    await page.waitForTimeout(300);
     const body=await page.locator('body').innerText().catch(()=>'');
     const m=body.match(target);
     if(m) return Number(m[1]);
@@ -60,50 +73,48 @@ async function extractHistoryRows(page){
   const rows=await page.locator('table tbody tr').evaluateAll(trs=>trs.map(tr=>Array.from(tr.querySelectorAll('td')).map(td=>td.textContent?.trim()||''))).catch(()=>[]);
   return rows.filter(r=>r.length>=5).map(r=>({date:new Date(r[0]),close:Number(String(r[4]).replace(/,/g,''))})).filter(r=>!Number.isNaN(r.date.valueOf())&&Number.isFinite(r.close));
 }
-async function readHistoryRows(page,ticker){
-  await page.goto(`https://stockanalysis.com/quote/jmse/${ticker}/history/`,{waitUntil:'networkidle',timeout:60000});
-  await dismissOverlays(page);
-  await page.waitForSelector('table tbody tr',{timeout:15000}).catch(()=>{});
-
-  // History defaults to 6M. Switch to 1Y so the Dec-2025 close is available for YTD fallback.
-  if(await clickExactLabel(page,'1Y')){
-    await page.waitForTimeout(900);
-    await page.waitForSelector('table tbody tr',{timeout:10000}).catch(()=>{});
-  }
-
-  const collected=[];
-  const seen=new Set();
-  for(let pageNo=0; pageNo<12; pageNo++){
-    const rows=await extractHistoryRows(page);
-    for(const r of rows){
-      const key=`${r.date.toISOString().slice(0,10)}|${r.close}`;
-      if(!seen.has(key)){seen.add(key);collected.push(r);}
+async function readHistoryRows(context,ticker){
+  const page=await context.newPage();
+  try{
+    if(!await safeGoto(page,`https://stockanalysis.com/quote/jmse/${ticker}/history/`)) return [];
+    await dismissOverlays(page);
+    await page.waitForSelector('table tbody tr',{timeout:12000}).catch(()=>{});
+    if(await clickExactLabel(page,'1Y')){
+      await page.waitForTimeout(800);
+      await page.waitForSelector('table tbody tr',{timeout:8000}).catch(()=>{});
     }
-    const latestYear=collected.length ? Math.max(...collected.map(r=>r.date.getFullYear())) : new Date().getFullYear();
-    const hasPriorYear=collected.some(r=>r.date.getFullYear() < latestYear);
-    if(hasPriorYear) break;
-
-    let clicked=false;
-    const buttons=page.locator('button');
-    const n=await buttons.count().catch(()=>0);
-    for(let i=0;i<n;i++){
-      const b=buttons.nth(i);
-      if(!await b.isVisible().catch(()=>false) || await b.isDisabled().catch(()=>true)) continue;
-      const txt=(await b.innerText().catch(()=>'' )).trim();
-      const aria=(await b.getAttribute('aria-label').catch(()=>''))||'';
-      const title=(await b.getAttribute('title').catch(()=>''))||'';
-      if(/^(next|>|›|→)$/i.test(txt) || /next/i.test(aria) || /next/i.test(title)){
-        const before=rows[0]?.date?.valueOf();
-        if(await b.click({force:true,timeout:2500}).then(()=>true).catch(()=>false)){
-          await page.waitForTimeout(700);
-          const after=(await extractHistoryRows(page))[0]?.date?.valueOf();
-          if(after!==before){clicked=true;break;}
+    const collected=[];
+    const seen=new Set();
+    for(let pageNo=0; pageNo<12; pageNo++){
+      const rows=await extractHistoryRows(page);
+      for(const r of rows){
+        const key=`${r.date.toISOString().slice(0,10)}|${r.close}`;
+        if(!seen.has(key)){seen.add(key);collected.push(r);}
+      }
+      const years=new Set(collected.map(r=>r.date.getFullYear()));
+      if(years.size>=2) break;
+      let clicked=false;
+      const buttons=page.locator('button');
+      const n=await buttons.count().catch(()=>0);
+      for(let i=0;i<n;i++){
+        const b=buttons.nth(i);
+        if(!await b.isVisible().catch(()=>false) || await b.isDisabled().catch(()=>true)) continue;
+        const txt=(await b.innerText().catch(()=>'' )).trim();
+        const aria=(await b.getAttribute('aria-label').catch(()=>''))||'';
+        const title=(await b.getAttribute('title').catch(()=>''))||'';
+        if(/^(next|>|›|→)$/i.test(txt) || /next/i.test(aria) || /next/i.test(title)){
+          const before=rows[0]?.date?.valueOf();
+          if(await b.click({force:true,timeout:2000}).then(()=>true).catch(()=>false)){
+            await page.waitForTimeout(600);
+            const after=(await extractHistoryRows(page))[0]?.date?.valueOf();
+            if(after!==before){clicked=true;break;}
+          }
         }
       }
+      if(!clicked) break;
     }
-    if(!clicked) break;
-  }
-  return collected;
+    return collected;
+  }finally{await page.close();}
 }
 function historicalReturn(rows,days){
   if(rows.length<2) return null;
@@ -125,42 +136,40 @@ const context=await browser.newContext({viewport:{width:1600,height:1100},userAg
 const unresolved=[];
 
 for(const stock of data.stocks){
-  const ticker=stock.ticker, page=await context.newPage();
+  const ticker=stock.ticker;
+  console.log(`\n=== ${ticker} ===`);
+  const page=await context.newPage();
   try{
-    console.log(`\n=== ${ticker} ===`);
-    await page.goto(`https://stockanalysis.com/quote/jmse/${ticker}/`,{waitUntil:'networkidle',timeout:60000});
-    await dismissOverlays(page); await page.waitForTimeout(1000);
-
-    const quote=await captureQuote(page);
-    if(quote){
-      stock.price=quote.price; stock.dayJmd=quote.dayJmd; stock.dayPct=quote.dayPct;
-      stock.priceDate=`${quote.date} • SA delayed`; stock.source='SA';
-      if(stock.ttmDps!=null && quote.price>0) stock.trailingYield=Number((stock.ttmDps/quote.price*100).toFixed(2));
-      if(stock.buyLow!=null && stock.buyHigh!=null) stock.zoneStatus=quote.price<stock.buyLow?'below':quote.price>stock.buyHigh?'above':'in';
-      console.log(`quote: J$${quote.price} ${quote.dayPct}% ${quote.date}`);
-    } else console.log('quote: not captured; preserving prior dashboard quote');
-
-    for(const [field,label] of PERIODS){
-      const value=await capturePeriod(page,label);
-      if(value!=null && Number.isFinite(value)){stock[field]=Number(value.toFixed(2));console.log(`${label}: ${stock[field]}% (displayed SA)`);}
-      else console.log(`${label}: interactive value not captured; will try history fallback`);
+    if(await safeGoto(page,`https://stockanalysis.com/quote/jmse/${ticker}/`)){
+      await dismissOverlays(page); await page.waitForTimeout(700);
+      const quote=await captureQuote(page);
+      if(quote){
+        stock.price=quote.price; stock.dayJmd=quote.dayJmd; stock.dayPct=quote.dayPct;
+        stock.priceDate=`${quote.date} • SA delayed`; stock.source='SA';
+        if(stock.ttmDps!=null && quote.price>0) stock.trailingYield=Number((stock.ttmDps/quote.price*100).toFixed(2));
+        if(stock.buyLow!=null && stock.buyHigh!=null) stock.zoneStatus=quote.price<stock.buyLow?'below':quote.price>stock.buyHigh?'above':'in';
+        console.log(`quote: J$${quote.price} ${quote.dayPct}% ${quote.date}`);
+      } else console.log('quote: not captured; preserving prior dashboard quote');
+      for(const [field,label] of PERIODS){
+        const value=await capturePeriod(page,label);
+        if(value!=null && Number.isFinite(value)){stock[field]=Number(value.toFixed(2));console.log(`${label}: ${stock[field]}% (displayed SA)`);}
+        else console.log(`${label}: interactive value not captured; will try history fallback`);
+      }
     }
+  }catch(err){console.error(`${ticker} overview: ${err.message}`);}finally{await page.close();}
 
-    const rows=await readHistoryRows(page,ticker);
+  try{
+    const rows=await readHistoryRows(context,ticker);
     const fallbacks={w1:7,m1:30,m3:92,m6:183,y1:366};
     for(const [field,days] of Object.entries(fallbacks)){
       if(field==='w1' || stock[field]==null){const v=historicalReturn(rows,days);if(v!=null&&Number.isFinite(v)){stock[field]=Number(v.toFixed(2));console.log(`${field}: ${stock[field]}% (SA history-derived)`);}}
     }
     if(stock.ytd==null){const v=ytdReturn(rows);if(v!=null&&Number.isFinite(v)){stock.ytd=Number(v.toFixed(2));console.log(`ytd: ${stock.ytd}% (SA history-derived)`);}}
     stock.performanceSource='SA';
-  }catch(err){console.error(`${ticker}: ${err.message}`);}finally{await page.close();}
+  }catch(err){console.error(`${ticker} history: ${err.message}`);}
 }
 await browser.close();
 
-if(/August 18, 2026|Aug 18, 2026/.test(data.updated||'')){
-  const tjh=data.stocks.find(s=>s.ticker==='TJH'); if(tjh) Object.assign(tjh,{m1:22.28,m3:57.56,m6:67.91,y1:204.05});
-  const car=data.stocks.find(s=>s.ticker==='CAR'); if(car) car.y1=98.20;
-}
 for(const stock of data.stocks){for(const field of ['w1','m1','ytd','m3','m6','y1']){if(stock[field]==null||!Number.isFinite(Number(stock[field]))) unresolved.push(`${stock.ticker} ${field}`);}}
 if(unresolved.length){console.error('\nFAILED: refusing to publish incomplete interval dataset:');unresolved.forEach(x=>console.error(` - ${x}`));process.exit(1);}
 writeDashboard(data);
