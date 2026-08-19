@@ -1,0 +1,11 @@
+{
+  "name": "daily-jse-market-dashboard",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "refresh:sa": "node scripts/refresh-sa-performance.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.55.0"
+  }
+}
