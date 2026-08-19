@@ -5,16 +5,14 @@ on:
   schedule:
     - cron: '20 23 * * 1-5'
   push:
-    paths:
-      - '.github/workflows/refresh-sa-performance.yml'
-      - 'scripts/refresh-sa-performance.mjs'
-      - 'package.json'
+    branches: [main]
 
 permissions:
   contents: write
 
 jobs:
   refresh:
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -35,6 +33,26 @@ jobs:
       - name: Capture SA interval returns
         run: npm run refresh:sa
 
+      - name: Validate YTD and interval fields
+        run: |
+          node - <<'NODE'
+          const fs = require('fs');
+          const vm = require('vm');
+          const raw = fs.readFileSync('data.js','utf8');
+          const m = raw.match(/window\.JSE_DASHBOARD_DATA\s*=\s*([\s\S]*);\s*$/);
+          if (!m) throw new Error('Unable to parse data.js');
+          const data = vm.runInNewContext(`(${m[1]})`);
+          const fields = ['w1','m1','ytd','m3','m6','y1'];
+          const missing = [];
+          for (const s of data.stocks) for (const f of fields) if (s[f] == null || !Number.isFinite(Number(s[f]))) missing.push(`${s.ticker} ${f}`);
+          if (missing.length) {
+            console.error('Missing required performance fields:');
+            missing.forEach(x => console.error(` - ${x}`));
+            process.exit(1);
+          }
+          console.log('Validated all 12 stocks: 1W, 1M, YTD, 3M, 6M, 1Y populated.');
+          NODE
+
       - name: Commit refreshed performance
         run: |
           if git diff --quiet -- data.js; then
@@ -46,5 +64,3 @@ jobs:
           git add data.js
           git commit -m 'refresh StockAnalysis performance intervals'
           git push
-
-# Manual YTD refresh trigger: 2026-08-19
