@@ -12,6 +12,10 @@ function readDashboard(){
   return vm.runInNewContext(`(${m[1]})`);
 }
 function writeDashboard(data){fs.writeFileSync(DATA_FILE,`window.JSE_DASHBOARD_DATA = ${JSON.stringify(data,null,2)};\n`);}
+function parsePct(text){
+  const m=String(text||'').match(/([+-]?\d+(?:\.\d+)?)%/);
+  return m ? Number(m[1]) : null;
+}
 function returnRegex(label){
   const e=label.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
   return new RegExp(`([+-]?\\d+(?:\\.\\d+)?)%\\s*\\(${e}\\)`,'i');
@@ -72,9 +76,9 @@ function ytdReturn(rows){
   if(rows.length<2) return null;
   const sorted=[...rows].sort((a,b)=>b.date-a.date);
   const latest=sorted[0];
-  const priorYearEnd=new Date(latest.date.getFullYear()-1,11,31,23,59,59);
-  const comparison=sorted.find(r=>r.date<=priorYearEnd);
-  return comparison ? ((latest.close/comparison.close)-1)*100 : null;
+  const priorYear=latest.date.getFullYear()-1;
+  const priorClose=[...sorted].filter(r=>r.date.getFullYear()===priorYear).sort((a,b)=>b.date-a.date)[0];
+  return priorClose ? ((latest.close/priorClose.close)-1)*100 : null;
 }
 
 const data=readDashboard();
@@ -116,7 +120,7 @@ for(const stock of data.stocks){
       const v=ytdReturn(rows);
       if(v!=null && Number.isFinite(v)){
         stock.ytd=Number(v.toFixed(2));
-        console.log(`YTD: ${stock.ytd}% (SA history-derived)`);
+        console.log(`ytd: ${stock.ytd}% (SA history-derived)`);
       }
     }
     stock.performanceSource='SA';
@@ -124,7 +128,6 @@ for(const stock of data.stocks){
 }
 await browser.close();
 
-// Preserve user-verified Aug 18 SA interactive values as validation anchors.
 if(/August 18, 2026|Aug 18, 2026/.test(data.updated||'')){
   const tjh=data.stocks.find(s=>s.ticker==='TJH');
   if(tjh) Object.assign(tjh,{m1:22.28,m3:57.56,m6:67.91,y1:204.05});
@@ -144,3 +147,5 @@ if(unresolved.length){
 }
 writeDashboard(data);
 console.log('\nSUCCESS: all 12 tickers have 1W, 1M, YTD, 3M, 6M and 1Y values.');
+
+// Manual production refresh trigger: 2026-08-19
