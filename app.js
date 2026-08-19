@@ -14,6 +14,12 @@ const pct = v => v == null ? '<span class="neutral">N/A</span>' : `<span class="
 const money = v => v == null ? 'N/A' : `J$${fmt(v,2)}`;
 const day = s => s.dayPct == null ? '<span class="neutral">N/A</span>' : `<span class="${s.dayPct > 0 ? 'positive' : s.dayPct < 0 ? 'negative' : 'neutral'}">${s.dayJmd > 0 ? '+' : ''}${money(s.dayJmd)} / ${s.dayPct > 0 ? '+' : ''}${fmt(s.dayPct,2)}%</span>`;
 const isBigMover = s => Math.abs(s.dayPct || 0) >= 5 || Math.abs(s.m1 || 0) >= 5 || Math.abs(s.m3 || 0) >= 10 || Math.abs(s.m6 || 0) >= 10 || Math.abs(s.y1 || 0) >= 20;
+const latestDividendLink = s => {
+  const value = money(s.latestDividend);
+  const href = s.dividendUrl || s.jse;
+  if (!href || s.latestDividend == null) return value;
+  return `<a class="dividend-link" href="${href}" target="_blank" rel="noreferrer" title="Open ${s.ticker} dividend declaration on JSE">${value} ↗</a>`;
+};
 
 function filteredStocks() {
   let result = [...stocks];
@@ -45,7 +51,7 @@ function stockRow(s) {
     <td><div class="ticker-wrap"><a class="source-dot" href="${s.sa}" target="_blank" rel="noreferrer">SA</a><div><div class="ticker">${s.ticker}</div><div class="company" title="${s.company}">${s.company}</div></div></div></td>
     <td><strong class="num">J$${fmt(s.price,2)}</strong><br><small>${s.priceDate}</small></td>
     <td>${day(s)}</td><td>${pct(s.w1)}</td><td>${pct(s.m1)}</td><td>${pct(s.m3)}</td><td>${pct(s.m6)}</td><td>${pct(s.y1)}</td>
-    <td class="num">${money(s.ttmDps)}</td><td>${pct(s.trailingYield)}</td><td><strong>${money(s.latestDividend)}</strong><br><small>${s.dividendStatus}</small></td>
+    <td class="num">${money(s.ttmDps)}</td><td>${pct(s.trailingYield)}</td><td><strong>${latestDividendLink(s)}</strong><br><small>${s.dividendStatus}</small></td>
     <td><small>Ex: ${s.exDate}<br>Rec: ${s.recordDate}<br>Pay: ${s.payDate}</small></td>
     <td><span class="rating ${s.ratingClass}">${s.rating}</span><br><small title="${s.reason}">${s.reason}</small></td>
     <td>${buyZoneText(s)}</td>
@@ -59,7 +65,7 @@ function stockCard(s) {
     <div class="metric-row"><span>1 Week</span><strong>${pct(s.w1)}</strong></div>
     <div class="metric-row"><span>1 Month</span><strong>${pct(s.m1)}</strong></div>
     <div class="metric-row"><span>Trailing yield</span><strong>${fmt(s.trailingYield,2)}%</strong></div>
-    <div class="metric-row"><span>Latest dividend</span><strong>${money(s.latestDividend)}</strong></div>
+    <div class="metric-row"><span>Latest dividend</span><strong>${latestDividendLink(s)}</strong></div>
     <div class="metric-row"><span>Target buy zone</span><div>${buyZoneText(s)}</div></div>
     <div class="metric-row"><span>Dividend dates</span><small>Ex ${s.exDate} • Pay ${s.payDate}</small></div>
     <p class="rank-reason">${s.reason}</p>
