@@ -64,3 +64,5 @@ jobs:
           git add data.js
           git commit -m 'refresh StockAnalysis performance intervals'
           git push
+
+# Force immediate YTD refresh: 2026-08-18 22:00 Jamaica
