@@ -36,7 +36,8 @@ window.JSE_DASHBOARD_DATA = {
       "jse": "https://www.jamstockex.com/?tag=GK",
       "dividendUrl": "https://www.jamstockex.com/?tag=GK",
       "sa": "https://stockanalysis.com/quote/jmse/GK/",
-      "source": "SA"
+      "source": "SA",
+      "ytd": 2.32
     },
     {
       "rank": 2,
@@ -72,7 +73,8 @@ window.JSE_DASHBOARD_DATA = {
       "jse": "https://www.jamstockex.com/?tag=SJ",
       "dividendUrl": "https://www.jamstockex.com/?tag=SJ",
       "sa": "https://stockanalysis.com/quote/jmse/SJ/",
-      "source": "SA"
+      "source": "SA",
+      "ytd": -1.16
     },
     {
       "rank": 3,
@@ -108,7 +110,8 @@ window.JSE_DASHBOARD_DATA = {
       "jse": "https://www.jamstockex.com/?tag=SEP",
       "dividendUrl": "https://www.jamstockex.com/?tag=SEP",
       "sa": "https://stockanalysis.com/quote/jmse/SEP/",
-      "source": "SA"
+      "source": "SA",
+      "ytd": -10.45
     },
     {
       "rank": 4,
@@ -144,7 +147,8 @@ window.JSE_DASHBOARD_DATA = {
       "jse": "https://www.jamstockex.com/?tag=NCBFG",
       "dividendUrl": "https://www.jamstockex.com/?tag=NCBFG",
       "sa": "https://stockanalysis.com/quote/jmse/NCBFG/",
-      "source": "SA"
+      "source": "SA",
+      "ytd": 93.47
     },
     {
       "rank": 5,
@@ -180,7 +184,8 @@ window.JSE_DASHBOARD_DATA = {
       "jse": "https://www.jamstockex.com/?tag=CAR",
       "dividendUrl": "https://www.jamstockex.com/?tag=CAR",
       "sa": "https://stockanalysis.com/quote/jmse/CAR/",
-      "source": "SA"
+      "source": "SA",
+      "ytd": 89.39
     },
     {
       "rank": 6,
@@ -216,7 +221,8 @@ window.JSE_DASHBOARD_DATA = {
       "jse": "https://www.jamstockex.com/?tag=LASM",
       "dividendUrl": "https://www.jamstockex.com/?tag=LASM",
       "sa": "https://stockanalysis.com/quote/jmse/LASM/",
-      "source": "SA"
+      "source": "SA",
+      "ytd": 41.87
     },
     {
       "rank": 7,
@@ -252,7 +258,8 @@ window.JSE_DASHBOARD_DATA = {
       "jse": "https://www.jamstockex.com/?tag=KW",
       "dividendUrl": "https://www.jamstockex.com/?tag=KW",
       "sa": "https://stockanalysis.com/quote/jmse/KW/",
-      "source": "SA"
+      "source": "SA",
+      "ytd": 3.09
     },
     {
       "rank": 8,
@@ -288,7 +295,8 @@ window.JSE_DASHBOARD_DATA = {
       "jse": "https://www.jamstockex.com/?tag=LASD",
       "dividendUrl": "https://www.jamstockex.com/?tag=LASD",
       "sa": "https://stockanalysis.com/quote/jmse/LASD/",
-      "source": "SA"
+      "source": "SA",
+      "ytd": -8.82
     },
     {
       "rank": 9,
@@ -324,7 +332,8 @@ window.JSE_DASHBOARD_DATA = {
       "jse": "https://www.jamstockex.com/?tag=BIL",
       "dividendUrl": "https://www.jamstockex.com/?tag=BIL",
       "sa": "https://stockanalysis.com/quote/jmse/BIL/",
-      "source": "SA"
+      "source": "SA",
+      "ytd": -14.46
     },
     {
       "rank": 10,
@@ -360,7 +369,8 @@ window.JSE_DASHBOARD_DATA = {
       "jse": "https://www.jamstockex.com/?tag=JMMBGL",
       "dividendUrl": "https://www.jamstockex.com/?tag=JMMBGL",
       "sa": "https://stockanalysis.com/quote/jmse/JMMBGL/",
-      "source": "SA"
+      "source": "SA",
+      "ytd": -24.31
     },
     {
       "rank": 11,
@@ -396,7 +406,8 @@ window.JSE_DASHBOARD_DATA = {
       "jse": "https://www.jamstockex.com/?tag=TJH",
       "dividendUrl": "https://www.jamstockex.com/?tag=TJH",
       "sa": "https://stockanalysis.com/quote/jmse/TJH/",
-      "source": "SA"
+      "source": "SA",
+      "ytd": 130.06
     },
     {
       "rank": 12,
@@ -432,7 +443,8 @@ window.JSE_DASHBOARD_DATA = {
       "jse": "https://www.jamstockex.com/?tag=SVL",
       "dividendUrl": "https://www.jamstockex.com/?tag=SVL",
       "sa": "https://stockanalysis.com/quote/jmse/SVL/",
-      "source": "SA"
+      "source": "SA",
+      "ytd": -10.53
     }
   ]
 };
