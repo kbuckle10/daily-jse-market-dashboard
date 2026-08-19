@@ -3,7 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "refresh:sa": "node scripts/refresh-sa-performance.mjs"
+    "refresh:sa": "node scripts/refresh-sa-performance.mjs",
+    "refresh:jse": "node scripts/refresh-jse-market.mjs"
   },
   "devDependencies": {
     "playwright": "1.55.0"
