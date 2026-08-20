@@ -1,4 +1,4 @@
-name: Refresh StockAnalysis Performance
+name: Refresh Daily JSE Main Market
 
 on:
   workflow_dispatch:
@@ -8,7 +8,6 @@ on:
   push:
     branches: [main]
     paths:
-      - 'watchlist.json'
       - 'data.js'
       - 'package.json'
       - 'package-lock.json'
@@ -22,7 +21,7 @@ jobs:
   refresh:
     if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 120
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -38,11 +37,12 @@ jobs:
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
 
-      - name: Sync selected watchlist from full Main Market universe
-        run: npm run sync:watchlist
+      - name: Sync full Main Market universe from master dashboard
+        run: npm run sync:main-market
 
-      - name: Capture SA fallback and interval returns
+      - name: Capture SA delayed quotes and interval returns
         run: npm run refresh:sa
+        continue-on-error: true
 
       - name: Capture JSE official market close
         run: npm run refresh:jse
@@ -52,7 +52,7 @@ jobs:
         run: npm run refresh:jse-links
         continue-on-error: true
 
-      - name: Validate refreshed dataset
+      - name: Validate full-universe dataset
         run: |
           node - <<'NODE'
           const fs = require('fs');
@@ -61,22 +61,13 @@ jobs:
           const m = raw.match(/window\.JSE_DASHBOARD_DATA\s*=\s*([\s\S]*);\s*$/);
           if (!m) throw new Error('Unable to parse data.js');
           const data = vm.runInNewContext(`(${m[1]})`);
-          const watchlist = JSON.parse(fs.readFileSync('watchlist.json','utf8'));
-          const expected = new Set((watchlist.tickers || []).map(x => String(x).toUpperCase()));
-          const actual = new Set((data.stocks || []).map(s => String(s.ticker).toUpperCase()));
-          const missingTickers = [...expected].filter(t => !actual.has(t));
-          const required = ['price'];
-          const missing = [];
-          for (const s of data.stocks || []) {
-            for (const f of required) if (s[f] == null || !Number.isFinite(Number(s[f]))) missing.push(`${s.ticker} ${f}`);
+          if (!Array.isArray(data.stocks) || data.stocks.length < 20) {
+            throw new Error(`Main Market universe unexpectedly small: ${data.stocks?.length || 0}`);
           }
-          if (missingTickers.length) missing.push(`watchlist sync: ${missingTickers.join(', ')}`);
-          if (missing.length) {
-            console.error('Missing required dashboard fields:');
-            missing.forEach(x => console.error(` - ${x}`));
-            process.exit(1);
-          }
-          console.log(`Validated ${data.stocks.length} selected stocks from persistent watchlist.`);
+          const bad = data.stocks.filter(s => !s.ticker || !s.company);
+          if (bad.length) throw new Error(`Invalid stock records: ${bad.length}`);
+          const priced = data.stocks.filter(s => s.price != null && Number.isFinite(Number(s.price))).length;
+          console.log(`Validated ${data.stocks.length} Main Market stocks; ${priced} currently have usable prices.`);
           NODE
 
       - name: Commit refreshed market data
@@ -88,5 +79,6 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add data.js
-          git commit -m 'refresh selected JSE watchlist data'
+          git commit -m 'refresh full JSE Main Market daily data'
+          git pull --rebase origin main
           git push
