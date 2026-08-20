@@ -37,6 +37,9 @@ jobs:
       - name: Capture JSE official market close
         run: npm run refresh:jse
 
+      - name: Capture direct JSE listed-company links
+        run: npm run refresh:jse-links
+
       - name: Validate refreshed dataset
         run: |
           node - <<'NODE'
@@ -58,8 +61,8 @@ jobs:
             process.exit(1);
           }
           const jse = data.stocks.filter(s => s.source === 'JSE').length;
-          const sa = data.stocks.length - jse;
-          console.log(`Validated ${data.stocks.length} stocks. Current quote sources: JSE=${jse}, fallback=${sa}.`);
+          const directLinks = data.stocks.filter(s => /\/trading\/instruments\/\?instrument=\d+/.test(s.jse || '')).length;
+          console.log(`Validated ${data.stocks.length} stocks. Current quote sources: JSE=${jse}. Direct JSE links=${directLinks}.`);
           NODE
 
       - name: Commit refreshed market data
@@ -71,5 +74,5 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add data.js
-          git commit -m 'refresh JSE market data and SA intervals'
+          git commit -m 'refresh JSE market data, links and SA intervals'
           git push
