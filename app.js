@@ -49,7 +49,7 @@ function buyZoneText(s) {
 
 function stockRow(s) {
   return `<tr>
-    <td><div class="ticker-wrap"><a class="source-dot" href="${s.sa}" target="_blank" rel="noreferrer">SA</a><div><div class="ticker">${s.ticker}</div><div class="company" title="${s.company}">${s.company}</div></div></div></td>
+    <td><div class="ticker-wrap"><div style="display:flex;gap:4px"><a class="source-dot" href="${s.jse}" target="_blank" rel="noreferrer" title="Open ${s.ticker} on JSE">JSE</a><a class="source-dot" href="${s.sa}" target="_blank" rel="noreferrer" title="Open ${s.ticker} on StockAnalysis">SA</a></div><div><div class="ticker">${s.ticker}</div><div class="company" title="${s.company}">${s.company}</div></div></div></td>
     <td><strong class="num">J$${fmt(s.price,2)}</strong><br><small>${s.priceDate}</small></td>
     <td>${day(s)}</td><td>${pct(s.w1)}</td><td>${pct(s.m1)}</td><td>${pct(s.ytd)}</td><td>${pct(s.m3)}</td><td>${pct(s.m6)}</td><td>${pct(s.y1)}</td>
     <td class="num">${money(s.ttmDps)}</td><td>${pct(s.trailingYield)}</td><td><strong>${latestDividendLink(s)}</strong><br><small>${s.dividendStatus}</small></td>
