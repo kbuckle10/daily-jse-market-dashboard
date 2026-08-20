@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260820-1530" />
+  <link rel="stylesheet" href="styles.css?v=20260820-1645" />
 </head>
 <body>
   <header class="site-header">
@@ -80,11 +80,7 @@
 
     <section id="tableView" class="table-shell">
       <table>
-        <thead>
-          <tr>
-            <th>Stock</th><th>Price</th><th>Day</th><th>1W</th><th>1M</th><th>YTD</th><th>3M</th><th>6M</th><th>12M</th><th>TTM DPS</th><th>Yield</th><th>Latest Div.</th><th>Dates</th><th>Rating</th><th>Target Buy Zone</th>
-          </tr>
-        </thead>
+        <thead><tr><th>Stock</th><th>Price</th><th>Day</th><th>1W</th><th>1M</th><th>YTD</th><th>3M</th><th>6M</th><th>12M</th><th>TTM DPS</th><th>Yield</th><th>Latest Div.</th><th>Dates</th><th>Rating</th><th>Target Buy Zone</th></tr></thead>
         <tbody id="stockTableBody"></tbody>
       </table>
     </section>
@@ -92,15 +88,8 @@
     <section id="cardView" class="stock-card-grid hidden" aria-live="polite"></section>
 
     <section class="analysis-grid">
-      <article class="panel">
-        <div class="panel-heading"><div><p class="eyebrow">Market watch</p><h2>Significant Price Movements</h2></div><span class="panel-badge">Tracked only</span></div>
-        <div id="movementList" class="movement-list"></div>
-      </article>
-
-      <article class="panel">
-        <div class="panel-heading"><div><p class="eyebrow">Fresh capital</p><h2>Dividend Investor Ranking</h2></div><span class="panel-badge">Tracked only</span></div>
-        <div id="rankingList" class="ranking-list"></div>
-      </article>
+      <article class="panel"><div class="panel-heading"><div><p class="eyebrow">Market watch</p><h2>Significant Price Movements</h2></div><span class="panel-badge">Tracked only</span></div><div id="movementList" class="movement-list"></div></article>
+      <article class="panel"><div class="panel-heading"><div><p class="eyebrow">Fresh capital</p><h2>Dividend Investor Ranking</h2></div><span class="panel-badge">Tracked only</span></div><div id="rankingList" class="ranking-list"></div></article>
     </section>
 
     <section class="allocation-panel panel">
@@ -110,12 +99,10 @@
       <div id="allocationLegend" class="allocation-legend"></div>
     </section>
 
-    <footer>
-      <p>For research and monitoring only — not personal financial advice. Verify official corporate actions with the Jamaica Stock Exchange before trading.</p>
-    </footer>
+    <footer><p>For research and monitoring only — not personal financial advice. Verify official corporate actions with the Jamaica Stock Exchange before trading.</p></footer>
   </main>
 
-  <script src="data.js?v=20260820-1530"></script>
-  <script src="app.js?v=20260820-1530"></script>
+  <script src="data.js?v=20260820-1645"></script>
+  <script src="app.js?v=20260820-1645"></script>
 </body>
 </html>
