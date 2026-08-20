@@ -5,9 +5,10 @@
   "scripts": {
     "sync:main-market": "node scripts/sync-main-market.mjs",
     "refresh:sa": "node scripts/refresh-sa-performance.mjs",
+    "refresh:sa-research": "node scripts/refresh-sa-research.mjs",
     "refresh:jse": "node scripts/refresh-jse-market.mjs",
     "refresh:jse-links": "node scripts/refresh-jse-links.mjs",
-    "refresh:daily": "npm run sync:main-market && npm run refresh:sa && npm run refresh:jse && npm run refresh:jse-links"
+    "refresh:daily": "npm run sync:main-market && npm run refresh:sa && npm run refresh:sa-research && npm run refresh:jse && npm run refresh:jse-links"
   },
   "devDependencies": {
     "playwright": "1.55.0"
