@@ -3,9 +3,11 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "sync:watchlist": "node scripts/sync-watchlist.mjs",
     "refresh:sa": "node scripts/refresh-sa-performance.mjs",
     "refresh:jse": "node scripts/refresh-jse-market.mjs",
-    "refresh:jse-links": "node scripts/refresh-jse-links.mjs"
+    "refresh:jse-links": "node scripts/refresh-jse-links.mjs",
+    "refresh:daily": "npm run sync:watchlist && npm run refresh:sa && npm run refresh:jse && npm run refresh:jse-links"
   },
   "devDependencies": {
     "playwright": "1.55.0"
