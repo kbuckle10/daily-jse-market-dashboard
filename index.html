@@ -3,20 +3,20 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Daily Jamaica Stock Exchange dividend investor dashboard for TJH, CAR, NCBFG, SVL, GK, JMMBGL, SEP, KW, LASD, LASM, BIL and SJ." />
+  <meta name="description" content="Daily Jamaica Stock Exchange dividend investor dashboard with a configurable ticker tracker." />
   <meta name="theme-color" content="#0b1220" />
   <title>Daily JSE Market Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260819-0401" />
+  <link rel="stylesheet" href="styles.css?v=20260820-1530" />
 </head>
 <body>
   <header class="site-header">
     <div>
       <p class="eyebrow">Jamaica Stock Exchange • Dividend Investor View</p>
       <h1>Daily JSE Market Dashboard</h1>
-      <p class="subtitle">TJH • CAR • NCBFG • SVL • GK • JMMBGL • SEP • KW • LASD • LASM • BIL • SJ</p>
+      <p class="subtitle" id="subtitleTickers">Tracked tickers loading…</p>
     </div>
     <div class="header-actions">
       <div class="updated-pill" id="updatedPill">Latest available data</div>
@@ -33,8 +33,27 @@
       </div>
     </section>
 
+    <section class="ticker-manager panel" aria-label="Ticker manager">
+      <div class="ticker-manager-head">
+        <div>
+          <p class="eyebrow">Watchlist</p>
+          <h2>Search & manage tickers</h2>
+          <p class="ticker-manager-copy">Add or remove any ticker already loaded in the dashboard dataset. Market Watch, Fresh Capital ranking and Model Allocation recalculate automatically.</p>
+        </div>
+        <div class="ticker-manager-actions">
+          <span class="panel-badge"><strong id="managerTrackedCount">0</strong> tracked</span>
+          <button class="secondary-button" id="resetTrackedBtn" type="button">Reset all</button>
+        </div>
+      </div>
+      <div class="ticker-search-wrap">
+        <input id="tickerSearch" class="ticker-search" type="search" autocomplete="off" placeholder="Search ticker or company — e.g. BIL, Barita, GK…" aria-label="Search ticker or company" />
+        <button class="secondary-button" id="showAllTickersBtn" type="button">Show all</button>
+      </div>
+      <div id="tickerSearchResults" class="ticker-search-results" aria-live="polite"></div>
+    </section>
+
     <section class="filter-grid" aria-label="Dashboard filters">
-      <button class="filter-tile active" data-filter="all"><span>Tracked</span><strong id="trackedCount">12</strong><small>All stocks</small></button>
+      <button class="filter-tile active" data-filter="all"><span>Tracked</span><strong id="trackedCount">0</strong><small>Current watchlist</small></button>
       <button class="filter-tile" data-filter="buy"><span>Buy rated</span><strong id="buyCount">0</strong><small>Strong Buy + Buy</small></button>
       <button class="filter-tile" data-filter="zone"><span>In buy zone</span><strong id="zoneCount">0</strong><small>Current opportunity</small></button>
       <button class="filter-tile" data-filter="income"><span>Higher yield</span><strong id="incomeCount">0</strong><small>≥ 3% trailing</small></button>
@@ -74,18 +93,19 @@
 
     <section class="analysis-grid">
       <article class="panel">
-        <div class="panel-heading"><div><p class="eyebrow">Market watch</p><h2>Significant Price Movements</h2></div><span class="panel-badge">Threshold based</span></div>
+        <div class="panel-heading"><div><p class="eyebrow">Market watch</p><h2>Significant Price Movements</h2></div><span class="panel-badge">Tracked only</span></div>
         <div id="movementList" class="movement-list"></div>
       </article>
 
       <article class="panel">
-        <div class="panel-heading"><div><p class="eyebrow">Fresh capital</p><h2>Dividend Investor Ranking</h2></div></div>
+        <div class="panel-heading"><div><p class="eyebrow">Fresh capital</p><h2>Dividend Investor Ranking</h2></div><span class="panel-badge">Tracked only</span></div>
         <div id="rankingList" class="ranking-list"></div>
       </article>
     </section>
 
     <section class="allocation-panel panel">
       <div class="panel-heading"><div><p class="eyebrow">Model allocation</p><h2>Suggested New-Money Allocation</h2></div><strong>100%</strong></div>
+      <p class="allocation-note">Automatically rebalanced to 100% across your currently tracked tickers using the analyst allocation weights in the dataset.</p>
       <div id="allocationBar" class="allocation-bar" aria-label="Suggested allocation"></div>
       <div id="allocationLegend" class="allocation-legend"></div>
     </section>
@@ -95,7 +115,7 @@
     </footer>
   </main>
 
-  <script src="data.js?v=20260819-0401"></script>
-  <script src="app.js?v=20260819-0401"></script>
+  <script src="data.js?v=20260820-1530"></script>
+  <script src="app.js?v=20260820-1530"></script>
 </body>
 </html>
