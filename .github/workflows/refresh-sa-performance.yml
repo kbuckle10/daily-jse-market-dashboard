@@ -7,6 +7,12 @@ on:
     - cron: '0 23 * * *'
   push:
     branches: [main]
+    paths:
+      - 'data.js'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'scripts/**'
+      - '.github/workflows/refresh-sa-performance.yml'
 
 permissions:
   contents: write
