@@ -54,6 +54,7 @@ jobs:
           for (const s of data.stocks) {
             for (const f of fields) if (s[f] == null || !Number.isFinite(Number(s[f]))) missing.push(`${s.ticker} ${f}`);
             if (s.price == null || !Number.isFinite(Number(s.price))) missing.push(`${s.ticker} price`);
+            if (!/\/trading\/instruments\/\?instrument=\d+/.test(s.jse || '')) missing.push(`${s.ticker} direct JSE link`);
           }
           if (missing.length) {
             console.error('Missing required dashboard fields:');
