@@ -1,6 +1,24 @@
 const { stocks, updated, priceLabel } = window.JSE_DASHBOARD_DATA;
 
-const state = { filter: 'all', sort: 'rank', view: 'table' };
+const STORAGE_KEY = 'dailyJseTrackedTickersV1';
+const defaultTickers = stocks.map(s => s.ticker);
+const savedTickers = (() => {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+    return Array.isArray(parsed) && parsed.length ? parsed : defaultTickers;
+  } catch {
+    return defaultTickers;
+  }
+})();
+
+const state = {
+  filter: 'all',
+  sort: 'rank',
+  view: 'table',
+  tracked: new Set(savedTickers.filter(t => stocks.some(s => s.ticker === t)))
+};
+if (!state.tracked.size) defaultTickers.forEach(t => state.tracked.add(t));
+
 const tableBody = document.getElementById('stockTableBody');
 const cardView = document.getElementById('cardView');
 const tableView = document.getElementById('tableView');
@@ -8,6 +26,8 @@ const movementList = document.getElementById('movementList');
 const rankingList = document.getElementById('rankingList');
 const allocationBar = document.getElementById('allocationBar');
 const allocationLegend = document.getElementById('allocationLegend');
+const tickerSearch = document.getElementById('tickerSearch');
+const tickerSearchResults = document.getElementById('tickerSearchResults');
 
 const fmt = (v, digits = 2) => v == null ? 'N/A' : Number(v).toFixed(digits);
 const pct = v => v == null ? '<span class="neutral">N/A</span>' : `<span class="${v > 0 ? 'positive' : v < 0 ? 'negative' : 'neutral'}">${v > 0 ? '+' : ''}${fmt(v,1)}%</span>`;
@@ -21,8 +41,16 @@ const latestDividendLink = s => {
   return `<a class="dividend-link" href="${href}" target="_blank" rel="noreferrer" title="Open ${s.ticker} dividend declaration on JSE">${value} ↗</a>`;
 };
 
+function trackedStocks() {
+  return stocks.filter(s => state.tracked.has(s.ticker));
+}
+
+function persistTracked() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify([...state.tracked]));
+}
+
 function filteredStocks() {
-  let result = [...stocks];
+  let result = trackedStocks();
   if (state.filter === 'buy') result = result.filter(s => s.ratingClass === 'buy');
   if (state.filter === 'zone') result = result.filter(s => s.zoneStatus === 'in');
   if (state.filter === 'income') result = result.filter(s => (s.trailingYield || 0) >= 3);
@@ -80,39 +108,114 @@ function stockCard(s) {
 
 function render() {
   const data = filteredStocks();
-  tableBody.innerHTML = data.map(stockRow).join('');
-  cardView.innerHTML = data.map(stockCard).join('') || '<div class="panel">No stocks match this filter.</div>';
+  tableBody.innerHTML = data.map(stockRow).join('') || '<tr><td colspan="15" class="neutral">No tracked stocks match this filter.</td></tr>';
+  cardView.innerHTML = data.map(stockCard).join('') || '<div class="panel">No tracked stocks match this filter.</div>';
   document.querySelectorAll('.filter-tile').forEach(b => b.classList.toggle('active', b.dataset.filter === state.filter));
 }
 
 function renderSummary() {
+  const tracked = trackedStocks();
   document.getElementById('updatedPill').textContent = `${priceLabel} • ${updated}`;
-  document.getElementById('trackedCount').textContent = stocks.length;
-  document.getElementById('buyCount').textContent = stocks.filter(s => s.ratingClass === 'buy').length;
-  document.getElementById('zoneCount').textContent = stocks.filter(s => s.zoneStatus === 'in').length;
-  document.getElementById('incomeCount').textContent = stocks.filter(s => (s.trailingYield || 0) >= 3).length;
-  document.getElementById('moveCount').textContent = stocks.filter(isBigMover).length;
-  document.getElementById('dividendCount').textContent = stocks.filter(s => !/No new declaration/i.test(s.dividendStatus)).length;
+  document.getElementById('trackedCount').textContent = tracked.length;
+  document.getElementById('managerTrackedCount').textContent = tracked.length;
+  document.getElementById('buyCount').textContent = tracked.filter(s => s.ratingClass === 'buy').length;
+  document.getElementById('zoneCount').textContent = tracked.filter(s => s.zoneStatus === 'in').length;
+  document.getElementById('incomeCount').textContent = tracked.filter(s => (s.trailingYield || 0) >= 3).length;
+  document.getElementById('moveCount').textContent = tracked.filter(isBigMover).length;
+  document.getElementById('dividendCount').textContent = tracked.filter(s => !/No new declaration/i.test(s.dividendStatus)).length;
+  document.getElementById('subtitleTickers').textContent = tracked.length ? tracked.map(s => s.ticker).join(' • ') : 'No tickers tracked';
+}
+
+function normalizedAllocations(data) {
+  const total = data.reduce((sum, s) => sum + Math.max(Number(s.allocation) || 0, 0), 0);
+  if (!total) return data.map(s => ({ ...s, normalizedAllocation: 100 / Math.max(data.length, 1) }));
+  return data.map(s => ({ ...s, normalizedAllocation: ((Number(s.allocation) || 0) / total) * 100 }));
 }
 
 function renderAnalysis() {
-  const movers = stocks.filter(isBigMover);
+  const tracked = trackedStocks();
+  const movers = tracked.filter(isBigMover);
   movementList.innerHTML = movers.length ? movers.map(s => {
-    const moveText = Math.abs(s.dayPct || 0) >= 5 ? `${pct(s.dayPct)} on the latest day` : Math.abs(s.m1 || 0) >= 5 ? `${pct(s.m1)} over 1M` : `${pct(s.ytd)} YTD`;
+    const moveText = Math.abs(s.dayPct || 0) >= 5 ? `${pct(s.dayPct)} on the latest day` : Math.abs(s.m1 || 0) >= 5 ? `${pct(s.m1)} over 1M` : Math.abs(s.m3 || 0) >= 10 ? `${pct(s.m3)} over 3M` : Math.abs(s.m6 || 0) >= 10 ? `${pct(s.m6)} over 6M` : Math.abs(s.y1 || 0) >= 20 ? `${pct(s.y1)} over 12M` : `${pct(s.ytd)} YTD`;
     return `<div class="movement-item"><strong>${s.ticker} ${moveText}</strong><p>${s.reason} ${s.zoneStatus === 'above' ? `Current price is above the J$${fmt(s.buyLow)}–${fmt(s.buyHigh)} dividend buy zone.` : s.zoneStatus === 'in' ? `Current price is inside the target buy zone.` : `Current price is below the target buy zone.`}</p></div>`;
   }).join('') : '<p class="neutral">No tracked stock currently exceeds the movement thresholds with available data.</p>';
 
-  rankingList.innerHTML = [...stocks].sort((a,b)=>a.rank-b.rank).map(s => `<div class="rank-row"><div class="rank-left"><span class="rank-number">${s.rank}</span><div><strong>${s.ticker}</strong><div class="rank-reason">${s.reason}</div></div></div><span class="rating ${s.ratingClass}">${s.rating}</span></div>`).join('');
+  rankingList.innerHTML = [...tracked].sort((a,b)=>a.rank-b.rank).map((s,i) => `<div class="rank-row"><div class="rank-left"><span class="rank-number">${i + 1}</span><div><strong>${s.ticker}</strong><div class="rank-reason">${s.reason}</div></div></div><span class="rating ${s.ratingClass}">${s.rating}</span></div>`).join('') || '<p class="neutral">Add at least one ticker to build a fresh-capital ranking.</p>';
 
+  const allocData = normalizedAllocations([...tracked].sort((a,b)=>(b.allocation || 0)-(a.allocation || 0)));
   const colors = ['var(--viz1,#5b8cff)','var(--viz2,#48d7a0)','var(--viz3,#ffd166)','var(--viz4,#9f7aea)','var(--viz5,#38bdf8)','var(--viz6,#fb7185)'];
-  allocationBar.innerHTML = [...stocks].sort((a,b)=>b.allocation-a.allocation).map((s,i)=>`<div class="allocation-segment" title="${s.ticker} ${s.allocation}%" style="width:${s.allocation}%;background:${colors[i % colors.length]}"></div>`).join('');
-  allocationLegend.innerHTML = [...stocks].sort((a,b)=>b.allocation-a.allocation).map((s,i)=>`<div class="legend-item"><span class="legend-dot" style="background:${colors[i % colors.length]}"></span><strong>${s.ticker}</strong> ${s.allocation}%</div>`).join('');
+  allocationBar.innerHTML = allocData.map((s,i)=>`<div class="allocation-segment" title="${s.ticker} ${fmt(s.normalizedAllocation,1)}%" style="width:${s.normalizedAllocation}%;background:${colors[i % colors.length]}"></div>`).join('');
+  allocationLegend.innerHTML = allocData.map((s,i)=>`<div class="legend-item"><span class="legend-dot" style="background:${colors[i % colors.length]}"></span><strong>${s.ticker}</strong> ${fmt(s.normalizedAllocation,1)}%</div>`).join('') || '<span class="neutral">No tracked tickers.</span>';
+}
+
+function renderTickerSearch(forceAll = false) {
+  const q = tickerSearch.value.trim().toLowerCase();
+  const matches = stocks
+    .filter(s => forceAll || q.length > 0)
+    .filter(s => forceAll || s.ticker.toLowerCase().includes(q) || s.company.toLowerCase().includes(q))
+    .sort((a,b) => a.ticker.localeCompare(b.ticker));
+
+  if (!q && !forceAll) {
+    tickerSearchResults.innerHTML = '<p class="ticker-search-hint">Type a ticker or company name to search the current dashboard universe.</p>';
+    return;
+  }
+
+  if (!matches.length) {
+    tickerSearchResults.innerHTML = `<div class="ticker-result empty"><div><strong>No match in current dashboard data.</strong><small>The ticker must first exist in data.js before it can be tracked with full analysis.</small></div></div>`;
+    return;
+  }
+
+  tickerSearchResults.innerHTML = matches.map(s => {
+    const active = state.tracked.has(s.ticker);
+    return `<div class="ticker-result">
+      <div class="ticker-result-main">
+        <strong>${s.ticker}</strong>
+        <span>${s.company}</span>
+        <small>${money(s.price)} • ${s.rating} • ${fmt(s.trailingYield,2)}% yield</small>
+      </div>
+      <div class="ticker-result-actions">
+        <a href="${s.sa}" target="_blank" rel="noreferrer">Analyze ↗</a>
+        <button type="button" class="track-toggle ${active ? 'remove' : 'add'}" data-ticker="${s.ticker}">${active ? 'Remove' : '+ Add'}</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function refreshAll() {
+  renderSummary();
+  renderAnalysis();
+  render();
+  renderTickerSearch();
+}
+
+function toggleTracked(ticker) {
+  if (state.tracked.has(ticker)) {
+    if (state.tracked.size === 1) return;
+    state.tracked.delete(ticker);
+  } else {
+    state.tracked.add(ticker);
+  }
+  persistTracked();
+  refreshAll();
 }
 
 document.querySelectorAll('.filter-tile').forEach(btn => btn.addEventListener('click', () => { state.filter = btn.dataset.filter; render(); }));
 document.getElementById('sortSelect').addEventListener('change', e => { state.sort = e.target.value; render(); });
 document.getElementById('tableViewBtn').addEventListener('click', () => { tableView.classList.remove('hidden'); cardView.classList.add('hidden'); document.getElementById('tableViewBtn').classList.add('active'); document.getElementById('cardViewBtn').classList.remove('active'); });
 document.getElementById('cardViewBtn').addEventListener('click', () => { tableView.classList.add('hidden'); cardView.classList.remove('hidden'); document.getElementById('cardViewBtn').classList.add('active'); document.getElementById('tableViewBtn').classList.remove('active'); });
+
+tickerSearch.addEventListener('input', () => renderTickerSearch());
+document.getElementById('showAllTickersBtn').addEventListener('click', () => renderTickerSearch(true));
+tickerSearchResults.addEventListener('click', e => {
+  const button = e.target.closest('[data-ticker]');
+  if (button) toggleTracked(button.dataset.ticker);
+});
+document.getElementById('resetTrackedBtn').addEventListener('click', () => {
+  state.tracked = new Set(defaultTickers);
+  persistTracked();
+  tickerSearch.value = '';
+  refreshAll();
+});
 
 document.getElementById('themeToggle').addEventListener('click', () => {
   const root = document.documentElement;
@@ -121,4 +224,4 @@ document.getElementById('themeToggle').addEventListener('click', () => {
   document.getElementById('themeToggle').textContent = next === 'dark' ? '☀' : '☾';
 });
 
-renderSummary(); renderAnalysis(); render();
+refreshAll();
