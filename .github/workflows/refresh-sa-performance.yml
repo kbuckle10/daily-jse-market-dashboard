@@ -17,14 +17,21 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: daily-jse-main-market-refresh
+  cancel-in-progress: true
+
 jobs:
   refresh:
     if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     timeout-minutes: 120
     steps:
-      - name: Checkout
+      - name: Checkout latest main
         uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -84,7 +91,18 @@ jobs:
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+          # Re-check main immediately before committing. If another commit landed while
+          # the long scrape was running, regenerate on the new HEAD rather than rebasing
+          # a generated data.js file and creating a merge conflict.
+          git fetch origin main
+          LOCAL_HEAD=$(git rev-parse HEAD)
+          REMOTE_HEAD=$(git rev-parse origin/main)
+          if [ "$LOCAL_HEAD" != "$REMOTE_HEAD" ]; then
+            echo "main changed during refresh; restarting from latest main to avoid data.js conflict"
+            exit 78
+          fi
+
           git add data.js
           git commit -m 'refresh full JSE Main Market daily data and SA research'
-          git pull --rebase origin main
-          git push
+          git push origin HEAD:main
