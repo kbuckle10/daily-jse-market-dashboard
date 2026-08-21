@@ -1,47 +1,12 @@
 (() => {
-  const STORAGE_KEY='dailyJseTrackedTickersV2';
-  const $=id=>document.getElementById(id);
-  const money=v=>v==null||!Number.isFinite(Number(v))?'N/A':`J$${Number(v).toFixed(2)}`;
-  const num=(v,d=2)=>v==null||!Number.isFinite(Number(v))?'N/A':Number(v).toFixed(d);
-  function tracked(){
-    let saved=[];
-    try{saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');}catch{}
-    const set=new Set((Array.isArray(saved)?saved:[]).map(x=>String(x).toUpperCase()));
-    return (window.JSE_DASHBOARD_DATA?.stocks||[]).filter(s=>set.has(s.ticker));
-  }
-  function tone(s){
-    const t=s.bookValueTone||'';
-    if(/deep-discount|discount/.test(t)) return 'positive';
-    if(/high-premium|premium/.test(t)) return 'negative';
-    return 'neutral';
-  }
-  function render(){
-    const body=$('bookValueBody');
-    const note=$('bookValueNote');
-    if(!body||!note) return;
-    const rows=tracked().sort((a,b)=>{
-      const av=a.bookDiscountPct==null?-999:a.bookDiscountPct;
-      const bv=b.bookDiscountPct==null?-999:b.bookDiscountPct;
-      return bv-av;
-    });
-    body.innerHTML=rows.length?rows.map(s=>`<tr>
-      <td><strong>${s.ticker}</strong><br><small>${s.company||''}</small></td>
-      <td>${money(s.price)}</td>
-      <td>${money(s.bookValuePerShare)}</td>
-      <td>${s.pb==null?'N/A':num(s.pb,2)+'×'}</td>
-      <td class="${tone(s)}">${s.bookDiscountPct==null?'N/A':s.bookDiscountPct>0?`${num(s.bookDiscountPct,1)}% below`:s.bookDiscountPct<0?`${num(Math.abs(s.bookDiscountPct),1)}% above`:'At book'}</td>
-      <td><strong class="${tone(s)}">${s.bookValueStatus||'N/A'}</strong><br><small>${s.bookValueSectorClass==='book-sensitive'?'High sector relevance':s.bookValueSectorClass==='asset-heavy'?'Moderate sector relevance':'Low sector weighting'}</small></td>
-      <td>${s.bookAdjustedScore==null?'N/A':num(s.bookAdjustedScore,0)}<br><small>${s.bookValueScoreAdjustment>0?'+':''}${s.bookValueScoreAdjustment||0} book adj.</small></td>
-      <td><strong>${s.bookAdjustedRating||s.rating||'N/A'}</strong></td>
-    </tr>`).join(''):'<tr><td colspan="8" class="neutral">Add tickers to see the book-value valuation comparison.</td></tr>';
-    note.textContent='P/B is weighted most heavily for banks, insurers, investment/real-estate companies; moderately for asset-heavy businesses; lightly for capital-light companies.';
-  }
-  const obs=new MutationObserver(()=>render());
-  window.addEventListener('load',()=>{
-    render();
-    const target=$('subtitleTickers');
-    if(target) obs.observe(target,{childList:true,subtree:true,characterData:true});
-    window.addEventListener('storage',render);
-    document.body.addEventListener('click',e=>{if(e.target.closest('[data-ticker],#resetTrackedBtn')) setTimeout(render,0);});
-  });
+  const STORAGE_KEY='dailyJseTrackedTickersV2'; const $=id=>document.getElementById(id);
+  const money=v=>v==null||!Number.isFinite(Number(v))?'N/A':`J$${Number(v).toFixed(2)}`; const num=(v,d=2)=>v==null||!Number.isFinite(Number(v))?'N/A':Number(v).toFixed(d);
+  function tracked(){let saved=[];try{saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');}catch{}const set=new Set((Array.isArray(saved)?saved:[]).map(x=>String(x).toUpperCase()));return (window.JSE_DASHBOARD_DATA?.stocks||[]).filter(s=>set.has(s.ticker));}
+  function tone(s){const t=s.bookValueTone||'';if(/deep-discount|discount/.test(t))return'positive';if(/high-premium|premium/.test(t))return'negative';return'neutral';}
+  function comparison(s){return s.bookDiscountPct==null?'N/A':s.bookDiscountPct>0?`${num(s.bookDiscountPct,1)}% below book`:s.bookDiscountPct<0?`${num(Math.abs(s.bookDiscountPct),1)}% above book`:'At book';}
+  function relevance(s){return s.bookValueSectorClass==='book-sensitive'?'High sector relevance':s.bookValueSectorClass==='asset-heavy'?'Moderate sector relevance':'Low sector weighting';}
+  function render(){const body=$('bookValueBody'),note=$('bookValueNote'),cards=$('bookValueCards');if(!body||!note)return;const rows=tracked().sort((a,b)=>(b.bookDiscountPct??-999)-(a.bookDiscountPct??-999));body.innerHTML=rows.length?rows.map(s=>`<tr><td><strong>${s.ticker}</strong><br><small>${s.company||''}</small></td><td>${money(s.price)}</td><td>${money(s.bookValuePerShare)}</td><td>${s.pb==null?'N/A':num(s.pb,2)+'×'}</td><td class="${tone(s)}">${comparison(s)}</td><td><strong class="${tone(s)}">${s.bookValueStatus||'N/A'}</strong><br><small>${relevance(s)}</small></td><td>${s.bookAdjustedScore==null?'N/A':num(s.bookAdjustedScore,0)}<br><small>${s.bookValueScoreAdjustment>0?'+':''}${s.bookValueScoreAdjustment||0} book adj.</small></td><td><strong>${s.bookAdjustedRating||s.rating||'N/A'}</strong></td></tr>`).join(''):'<tr><td colspan="8" class="neutral">Add tickers to see the book-value valuation comparison.</td></tr>';
+    if(cards)cards.innerHTML=rows.length?rows.map(s=>`<article class="book-mobile-card"><div class="book-mobile-head"><div><strong>${s.ticker}</strong><small>${s.company||''}</small></div><strong class="${tone(s)}">${s.bookValueStatus||'N/A'}</strong></div><div class="book-mobile-grid"><div><span>Price</span><strong>${money(s.price)}</strong></div><div><span>Book value/share</span><strong>${money(s.bookValuePerShare)}</strong></div><div><span>P/B</span><strong>${s.pb==null?'N/A':num(s.pb,2)+'×'}</strong></div><div><span>Price vs book</span><strong class="${tone(s)}">${comparison(s)}</strong></div><div><span>Book-adjusted score</span><strong>${s.bookAdjustedScore==null?'N/A':num(s.bookAdjustedScore,0)}</strong></div><div><span>Adjusted rating</span><strong>${s.bookAdjustedRating||s.rating||'N/A'}</strong></div></div><small class="book-relevance">${relevance(s)}</small></article>`).join(''):'<p class="neutral">Add tickers to see the book-value valuation comparison.</p>';
+    note.textContent='P/B is weighted most heavily for banks, insurers, investment/real-estate companies; moderately for asset-heavy businesses; lightly for capital-light companies.';}
+  const obs=new MutationObserver(()=>render());window.addEventListener('load',()=>{render();const target=$('subtitleTickers');if(target)obs.observe(target,{childList:true,subtree:true,characterData:true});window.addEventListener('storage',render);document.body.addEventListener('click',e=>{if(e.target.closest('[data-ticker],#resetTrackedBtn'))setTimeout(render,0);});});
 })();
