@@ -61,6 +61,7 @@ jobs:
             npm run refresh:sa || true
             npm run refresh:sa-research || true
             node scripts/refresh-sa-latest-dividend.mjs || true
+            npm run refresh:crosslisted || true
             npm run refresh:jse || true
             npm run refresh:jse-links || true
 
