@@ -59,17 +59,17 @@ function parseStats(text) {
   };
 }
 
-// IMPORTANT: dividend values are parsed ONLY from StockAnalysis /dividend/.
-// Do not use a generic "Yield" pattern; that can capture earnings yield or another metric.
 function parseDividendSummary(text) {
+  const overviewPair = text.match(/Dividend\s*(?:J\$|TT\$|US\$|\$)?\s*([0-9.]+)\s*\(([0-9.]+)%\)/i);
   return {
     annualDps: num(grab(text, [
       /Annual Dividend\s*(?:J\$|TT\$|US\$|\$)?\s*([0-9.]+)/i,
       /Dividend \(ttm\)\s*(?:J\$|TT\$|US\$|\$)?\s*([0-9.]+)/i
-    ])),
-    yield: pctNum(grab(text, [/Dividend Yield\s*([0-9.]+)%/i])),
+    ])) ?? (overviewPair ? num(overviewPair[1]) : null),
+    yield: pctNum(grab(text, [/Dividend Yield\s*([0-9.]+)%/i])) ?? (overviewPair ? num(overviewPair[2]) : null),
     payout: pctNum(grab(text, [/Payout Ratio\s*([0-9.]+)%/i])),
-    dividendGrowth: pctNum(grab(text, [/Dividend Growth\s*([+-]?[0-9.]+)%/i]))
+    dividendGrowth: pctNum(grab(text, [/Dividend Growth\s*([+-]?[0-9.]+)%/i])),
+    exDate: grab(text, [/Ex-Dividend Date\s*([A-Za-z]{3}\s+\d{1,2},\s+\d{4})/i])
   };
 }
 
@@ -83,7 +83,7 @@ async function firstDividendRow(page) {
       const rows = await table.locator('tbody tr').count().catch(() => 0);
       if (!rows) continue;
       const h = headers.map(x => x.trim().toLowerCase());
-      if (!h.some(x => /ex-dividend|ex date|dividend/.test(x))) continue;
+      if (!h.some(x => /ex-dividend|ex date|dividend|amount/.test(x))) continue;
       const cells = await table.locator('tbody tr').first().locator('td').allTextContents();
       const out = {};
       for (let j = 0; j < cells.length; j++) out[h[j] || `c${j}`] = cells[j].trim();
@@ -102,31 +102,34 @@ async function firstDividendRow(page) {
 function validateDividend(price, dv) {
   const dps = num(dv.annualDps);
   const reportedYield = num(dv.yield);
-  if (dps == null && reportedYield == null) return { dps: null, yield: null, status: 'missing' };
+  if (dps == null && reportedYield == null) return { dps: null, yield: null, status: 'not-found' };
   if (price == null || price <= 0) return { dps, yield: reportedYield, status: 'price-missing' };
 
   let effectiveDps = dps;
-  if (effectiveDps == null && reportedYield != null && reportedYield >= 0 && reportedYield <= 25) {
+  if (effectiveDps == null && reportedYield != null && reportedYield >= 0) {
     effectiveDps = Number((price * reportedYield / 100).toFixed(4));
   }
-  if (effectiveDps == null) return { dps: null, yield: null, status: 'missing' };
+  if (effectiveDps == null) return { dps: null, yield: reportedYield, status: 'partial' };
 
   const impliedYield = effectiveDps / price * 100;
-  if (!Number.isFinite(impliedYield) || impliedYield < 0 || impliedYield > 25) {
-    return { dps: null, yield: null, status: 'validation-error' };
+  if (!Number.isFinite(impliedYield) || impliedYield < 0) {
+    return { dps, yield: reportedYield, status: 'validation-error' };
   }
   if (effectiveDps === 0 && reportedYield != null && reportedYield > 0.05) {
-    return { dps: null, yield: null, status: 'validation-error' };
+    return { dps, yield: reportedYield, status: 'validation-warning' };
   }
   if (reportedYield != null) {
-    const tolerance = Math.max(0.75, reportedYield * 0.25);
+    const tolerance = Math.max(0.75, Math.abs(reportedYield) * 0.25);
     if (Math.abs(impliedYield - reportedYield) > tolerance) {
-      return { dps: null, yield: null, status: 'currency-or-parser-mismatch' };
+      return { dps: effectiveDps, yield: reportedYield, status: 'validation-warning' };
     }
+  }
+  if (impliedYield > 25) {
+    return { dps: effectiveDps, yield: reportedYield ?? Number(impliedYield.toFixed(2)), status: 'validation-warning' };
   }
   return {
     dps: Number(effectiveDps.toFixed(4)),
-    yield: Number(impliedYield.toFixed(2)),
+    yield: Number((reportedYield ?? impliedYield).toFixed(2)),
     status: dps == null ? 'derived-from-dividend-yield' : 'validated'
   };
 }
@@ -148,8 +151,9 @@ function targetYield(sector = '') {
 function autoAnalyze(s) {
   const price = num(s.price), eps = num(s.epsTtm), dps = num(s.ttmDps), pe = num(s.pe), roe = num(s.roe), growth = num(s.epsGrowth), payout = num(s.payoutRatio);
   let fair = null;
+  const dividendUsable = s.dividendDataStatus === 'validated' || s.dividendDataStatus === 'derived-from-dividend-yield';
   const peFair = eps && eps > 0 ? eps * sectorTargetPE(s.sector) : null;
-  const yieldFair = dps && dps > 0 ? dps / (targetYield(s.sector) / 100) : null;
+  const yieldFair = dividendUsable && dps && dps > 0 ? dps / (targetYield(s.sector) / 100) : null;
   if (peFair && yieldFair) fair = peFair * 0.65 + yieldFair * 0.35;
   else fair = peFair || yieldFair;
 
@@ -158,9 +162,12 @@ function autoAnalyze(s) {
     if (s.buyLow == null || s.analysisSource === 'AUTO-SA') s.buyLow = Number(low.toFixed(2));
     if (s.buyHigh == null || s.analysisSource === 'AUTO-SA') s.buyHigh = Number(high.toFixed(2));
     s.fairValue = Number(fair.toFixed(2));
-    if (dps) {
+    if (dividendUsable && dps) {
       s.buyYieldLow = Number((dps / s.buyHigh * 100).toFixed(2));
       s.buyYieldHigh = Number((dps / s.buyLow * 100).toFixed(2));
+    } else {
+      s.buyYieldLow = null;
+      s.buyYieldHigh = null;
     }
     if (price) s.zoneStatus = price < s.buyLow ? 'below' : price > s.buyHigh ? 'above' : 'in';
   }
@@ -170,16 +177,15 @@ function autoAnalyze(s) {
   if (roe != null) { if (roe >= 18) score += 12; else if (roe >= 12) score += 7; else if (roe < 7) score -= 8; }
   if (growth != null) { if (growth >= 15) score += 12; else if (growth >= 5) score += 6; else if (growth < 0) score -= 10; }
   if (payout != null) { if (payout <= 65) score += 7; else if (payout > 100) score -= 12; }
-  if (s.dividendDataStatus === 'validated' || s.dividendDataStatus === 'derived-from-dividend-yield') {
-    if (s.trailingYield >= 4) score += 7; else if (s.trailingYield >= 3) score += 4;
-  }
+  if (dividendUsable) { if (s.trailingYield >= 4) score += 7; else if (s.trailingYield >= 3) score += 4; }
   if (price && fair) { const upside = fair / price - 1; if (upside >= .25) score += 10; else if (upside >= .1) score += 5; else if (upside < -.1) score -= 10; }
   score = Math.max(0, Math.min(100, score));
   const rating = score >= 78 ? 'Strong Buy' : score >= 65 ? 'Buy/Accumulate' : score >= 52 ? 'Hold' : score >= 40 ? 'Watch/Wait' : 'Avoid';
   if (!s.rating || /pending|n\/a/i.test(s.rating) || s.analysisSource === 'AUTO-SA') {
     s.rating = rating;
     s.ratingClass = /Buy/i.test(rating) ? 'buy' : rating === 'Avoid' ? 'avoid' : 'hold';
-    s.reason = `Auto-SA fundamentals: P/E ${pe ?? 'N/A'}, ROE ${roe != null ? roe + '%' : 'N/A'}, EPS growth ${growth != null ? growth + '%' : 'N/A'}, dividend yield ${s.trailingYield != null ? s.trailingYield + '%' : 'N/A'}; score ${score}/100.`;
+    const divLabel = s.dividendDataStatus === 'scraper-error' ? 'ERROR' : s.dividendDataStatus === 'not-found' ? 'N/A' : s.trailingYield != null ? s.trailingYield + '%' : 'N/A';
+    s.reason = `Auto-SA fundamentals: P/E ${pe ?? 'N/A'}, ROE ${roe != null ? roe + '%' : 'N/A'}, EPS growth ${growth != null ? growth + '%' : 'N/A'}, dividend yield ${divLabel}; score ${score}/100.`;
     s.allocation = Math.max(score, 1);
     s.score = score;
     s.analysisSource = 'AUTO-SA';
@@ -236,42 +242,38 @@ for (const s of data.stocks) {
   s.payoutRatio = dv.payout ?? st.payout ?? s.payoutRatio ?? null;
   s.dividendGrowth = dv.dividendGrowth ?? s.dividendGrowth ?? null;
 
-  const validated = validateDividend(num(s.price), dv);
-  s.dividendDataStatus = validated.status;
-  if (validated.status === 'validated' || validated.status === 'derived-from-dividend-yield') {
-    s.ttmDps = validated.dps;
-    s.trailingYield = validated.yield;
-  } else if (validated.status === 'missing') {
-    // True N/A: the dividend page contains no annual DPS or dividend yield.
-    s.ttmDps = null;
-    s.trailingYield = null;
-  } else if (!dividendFetchOk) {
-    // True N/A: scraper could not retrieve the dividend page.
+  if (!dividendFetchOk) {
     s.ttmDps = null;
     s.trailingYield = null;
     s.dividendDataStatus = 'scraper-error';
   } else {
-    // True N/A: values were present but failed consistency/currency validation.
-    s.ttmDps = null;
-    s.trailingYield = null;
+    const validated = validateDividend(num(s.price), dv);
+    s.dividendDataStatus = validated.status;
+    s.ttmDps = validated.dps;
+    s.trailingYield = validated.yield;
   }
 
-  // Never overwrite known official/JSE declaration fields with StockAnalysis.
-  if (divRow) {
-    const status = String(s.dividendStatus || '');
-    const mayFill = !status || /pending|unknown|n\/a/i.test(status);
-    if (mayFill && s.latestDividend == null) s.latestDividend = divRow.amount ?? s.latestDividend;
+  const status = String(s.dividendStatus || '');
+  const mayFill = !status || /pending|unknown|n\/a/i.test(status);
+  if (divRow?.amount != null) {
+    s.latestDividendDataStatus = 'found';
+    if (mayFill && s.latestDividend == null) s.latestDividend = divRow.amount;
     if (mayFill && (!s.exDate || s.exDate === 'N/A')) s.exDate = divRow.exDate || s.exDate;
     if (mayFill && (!s.recordDate || s.recordDate === 'N/A')) s.recordDate = divRow.recordDate || s.recordDate;
     if (mayFill && (!s.payDate || s.payDate === 'N/A')) s.payDate = divRow.payDate || s.payDate;
     if (/pending/i.test(status)) s.dividendStatus = 'SA dividend history captured — verify JSE official announcement';
+  } else if (!dividendFetchOk) {
+    s.latestDividendDataStatus = 'scraper-error';
+  } else {
+    s.latestDividendDataStatus = s.latestDividend != null ? 'existing-official' : 'not-found';
+    if (mayFill && (!s.exDate || s.exDate === 'N/A') && dv.exDate) s.exDate = dv.exDate;
   }
 
   s.researchSource = 'StockAnalysis';
   s.researchUpdated = new Date().toISOString();
   s.researchFetchStatus = researchFetchOk ? 'ok' : 'scraper-error';
   autoAnalyze(s);
-  console.log(`PE=${s.pe} PB=${s.pb} ROE=${s.roe} EPS=${s.epsTtm} DPS=${s.ttmDps} yield=${s.trailingYield} divStatus=${s.dividendDataStatus} rating=${s.rating}`);
+  console.log(`PE=${s.pe} PB=${s.pb} ROE=${s.roe} EPS=${s.epsTtm} DPS=${s.ttmDps} yield=${s.trailingYield} divStatus=${s.dividendDataStatus} latestDivStatus=${s.latestDividendDataStatus} rating=${s.rating}`);
 }
 
 await browser.close();
