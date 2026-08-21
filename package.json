@@ -10,7 +10,8 @@
     "refresh:book-value": "node scripts/refresh-book-value.mjs",
     "refresh:jse": "node scripts/refresh-jse-market.mjs",
     "refresh:jse-links": "node scripts/refresh-jse-links.mjs",
-    "refresh:daily": "npm run sync:main-market && npm run refresh:sa && npm run refresh:sa-research && npm run refresh:crosslisted && npm run refresh:jse && npm run refresh:jse-links && npm run refresh:book-value"
+    "refresh:jse-actions": "node scripts/refresh-jse-corporate-actions.mjs",
+    "refresh:daily": "npm run sync:main-market && npm run refresh:sa && npm run refresh:sa-research && npm run refresh:crosslisted && npm run refresh:jse && npm run refresh:jse-links && npm run refresh:jse-actions && npm run refresh:book-value"
   },
   "devDependencies": {
     "playwright": "1.55.0"
