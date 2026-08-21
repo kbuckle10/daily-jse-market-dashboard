@@ -55,8 +55,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 35.87,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:29:14.010Z",
-      "fairValue": 72.28
+      "researchUpdated": "2026-08-21T01:34:15.035Z",
+      "fairValue": 72.28,
+      "dividendDataStatus": "validated",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 2,
@@ -103,7 +105,7 @@ window.JSE_DASHBOARD_DATA = {
       "roe": 5.68,
       "roa": 2.96,
       "epsTtm": 2,
-      "epsGrowth": -6,
+      "epsGrowth": -4.5,
       "revenueGrowth": 12.17,
       "netIncomeGrowth": null,
       "debtEquity": null,
@@ -111,8 +113,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 34.71,
       "dividendGrowth": 2.94,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:29:24.802Z",
-      "fairValue": 25.2
+      "researchUpdated": "2026-08-21T01:34:29.002Z",
+      "fairValue": 25.2,
+      "dividendDataStatus": "validated",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 3,
@@ -167,8 +171,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 28.83,
       "dividendGrowth": 33.33,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:29:35.241Z",
-      "fairValue": 66.96
+      "researchUpdated": "2026-08-21T01:34:42.929Z",
+      "fairValue": 66.96,
+      "dividendDataStatus": "validated",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 4,
@@ -223,8 +229,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 56.25,
       "dividendGrowth": 50.85,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:29:46.129Z",
-      "fairValue": 31.84
+      "researchUpdated": "2026-08-21T01:35:01.839Z",
+      "fairValue": 31.84,
+      "dividendDataStatus": "validated",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 5,
@@ -278,8 +286,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 26.96,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:29:56.208Z",
-      "fairValue": 61.76
+      "researchUpdated": "2026-08-21T01:35:15.869Z",
+      "fairValue": 61.76,
+      "dividendDataStatus": "validated",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 6,
@@ -334,8 +344,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 52.57,
       "dividendGrowth": 33.12,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:30:06.606Z",
-      "fairValue": 7.91
+      "researchUpdated": "2026-08-21T01:35:28.597Z",
+      "fairValue": 7.91,
+      "dividendDataStatus": "validated",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 7,
@@ -352,8 +364,8 @@ window.JSE_DASHBOARD_DATA = {
       "m3": -4.55,
       "m6": null,
       "y1": null,
-      "ttmDps": 0,
-      "trailingYield": 0,
+      "ttmDps": null,
+      "trailingYield": null,
       "latestDividend": null,
       "exDate": "N/A",
       "recordDate": "N/A",
@@ -389,8 +401,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:30:16.297Z",
-      "fairValue": 12.15
+      "researchUpdated": "2026-08-21T01:35:40.898Z",
+      "fairValue": 12.15,
+      "dividendDataStatus": "missing",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 8,
@@ -445,8 +459,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 32.13,
       "dividendGrowth": 1.27,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:30:26.117Z",
-      "fairValue": 83.86
+      "researchUpdated": "2026-08-21T01:35:54.137Z",
+      "fairValue": 83.86,
+      "dividendDataStatus": "validated",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 9,
@@ -499,8 +515,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 15.04,
       "dividendGrowth": -64.44,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:30:36.282Z",
-      "fairValue": 4.33
+      "researchUpdated": "2026-08-21T01:36:12.336Z",
+      "fairValue": 4.33,
+      "dividendDataStatus": "validated",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 10,
@@ -555,8 +573,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 94.59,
       "dividendGrowth": 8,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:30:46.647Z",
-      "fairValue": 27.11
+      "researchUpdated": "2026-08-21T01:36:25.566Z",
+      "fairValue": 27.11,
+      "dividendDataStatus": "validated",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 11,
@@ -610,8 +630,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 81.42,
       "dividendGrowth": 0.79,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:30:59.833Z",
-      "fairValue": 3.12
+      "researchUpdated": "2026-08-21T01:36:38.866Z",
+      "fairValue": 3.12,
+      "dividendDataStatus": "validated",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 12,
@@ -628,8 +650,8 @@ window.JSE_DASHBOARD_DATA = {
       "m3": 0,
       "m6": null,
       "y1": null,
-      "ttmDps": 78.56,
-      "trailingYield": 108.36,
+      "ttmDps": null,
+      "trailingYield": null,
       "latestDividend": null,
       "exDate": "Aug 28, 2026",
       "recordDate": "Aug 28, 2026",
@@ -651,7 +673,7 @@ window.JSE_DASHBOARD_DATA = {
       "performanceSource": "SA",
       "score": 68,
       "volume": 38,
-      "pe": 12.55,
+      "pe": 12.57,
       "forwardPe": null,
       "pb": null,
       "roe": null,
@@ -662,11 +684,13 @@ window.JSE_DASHBOARD_DATA = {
       "netIncomeGrowth": null,
       "debtEquity": null,
       "currentRatio": null,
-      "payoutRatio": null,
+      "payoutRatio": 64.4,
       "dividendGrowth": -40.25,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:31:09.900Z",
-      "fairValue": 741.31
+      "researchUpdated": "2026-08-21T01:36:50.951Z",
+      "fairValue": 82.94,
+      "dividendDataStatus": "validation-error",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 13,
@@ -721,8 +745,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": -33.41,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:31:22.182Z",
-      "fairValue": 39.33
+      "researchUpdated": "2026-08-21T01:37:04.369Z",
+      "fairValue": 39.33,
+      "dividendDataStatus": "validated",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 14,
@@ -774,11 +800,13 @@ window.JSE_DASHBOARD_DATA = {
       "netIncomeGrowth": null,
       "debtEquity": null,
       "currentRatio": 14.92,
-      "payoutRatio": 47.77,
+      "payoutRatio": 18.15,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:31:40.658Z",
-      "fairValue": 17.29
+      "researchUpdated": "2026-08-21T01:37:17.246Z",
+      "fairValue": 17.29,
+      "dividendDataStatus": "validated",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 15,
@@ -832,8 +860,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": -36.9,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:31:52.168Z",
-      "fairValue": 9.67
+      "researchUpdated": "2026-08-21T01:37:35.989Z",
+      "fairValue": 9.67,
+      "dividendDataStatus": "validated",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 16,
@@ -850,8 +880,8 @@ window.JSE_DASHBOARD_DATA = {
       "m3": -17.1,
       "m6": null,
       "y1": null,
-      "ttmDps": 0,
-      "trailingYield": 0,
+      "ttmDps": null,
+      "trailingYield": null,
       "latestDividend": null,
       "exDate": "Nov 7, 2024",
       "recordDate": "Nov 7, 2024",
@@ -878,7 +908,7 @@ window.JSE_DASHBOARD_DATA = {
       "pb": 0.43,
       "roe": -15.33,
       "roa": -0.12,
-      "epsTtm": null,
+      "epsTtm": -4.69,
       "epsGrowth": null,
       "revenueGrowth": 3.82,
       "netIncomeGrowth": null,
@@ -887,7 +917,9 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:32:04.615Z"
+      "researchUpdated": "2026-08-21T01:37:48.976Z",
+      "dividendDataStatus": "missing",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 17,
@@ -941,8 +973,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 24.04,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:32:17.885Z",
-      "fairValue": 0.11
+      "researchUpdated": "2026-08-21T01:38:02.140Z",
+      "fairValue": 0.11,
+      "dividendDataStatus": "validated",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 18,
@@ -959,8 +993,8 @@ window.JSE_DASHBOARD_DATA = {
       "m3": -11.91,
       "m6": null,
       "y1": null,
-      "ttmDps": 0,
-      "trailingYield": 0,
+      "ttmDps": null,
+      "trailingYield": null,
       "latestDividend": null,
       "exDate": "N/A",
       "recordDate": "N/A",
@@ -996,8 +1030,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:32:29.537Z",
-      "fairValue": 7.93
+      "researchUpdated": "2026-08-21T01:38:14.171Z",
+      "fairValue": 7.93,
+      "dividendDataStatus": "missing",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 19,
@@ -1051,8 +1087,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 103.58,
       "dividendGrowth": 0.2,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:32:41.355Z",
-      "fairValue": 10.89
+      "researchUpdated": "2026-08-21T01:38:27.195Z",
+      "fairValue": 10.89,
+      "dividendDataStatus": "validated",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 20,
@@ -1106,8 +1144,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 61.1,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:32:53.672Z",
-      "fairValue": 3.09
+      "researchUpdated": "2026-08-21T01:38:40.454Z",
+      "fairValue": 3.09,
+      "dividendDataStatus": "validated",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 21,
@@ -1161,8 +1201,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 19.02,
       "dividendGrowth": -0.6,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:33:06.305Z",
-      "fairValue": 108.96
+      "researchUpdated": "2026-08-21T01:38:53.720Z",
+      "fairValue": 108.96,
+      "dividendDataStatus": "validated",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 22,
@@ -1216,8 +1258,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": -50.77,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:33:16.153Z",
-      "fairValue": 39.5
+      "researchUpdated": "2026-08-21T01:39:04.540Z",
+      "fairValue": 39.5,
+      "dividendDataStatus": "validated",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 23,
@@ -1271,8 +1315,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 14.51,
       "dividendGrowth": -74.66,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:33:27.743Z",
-      "fairValue": 39.13
+      "researchUpdated": "2026-08-21T01:39:16.913Z",
+      "fairValue": 39.13,
+      "dividendDataStatus": "validated",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 24,
@@ -1317,7 +1363,7 @@ window.JSE_DASHBOARD_DATA = {
       "pb": 0.49,
       "roe": -0.93,
       "roa": -1.82,
-      "epsTtm": null,
+      "epsTtm": -0.12,
       "epsGrowth": null,
       "revenueGrowth": null,
       "netIncomeGrowth": null,
@@ -1326,7 +1372,9 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:33:38.950Z"
+      "researchUpdated": "2026-08-21T01:39:28.866Z",
+      "dividendDataStatus": "missing",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 25,
@@ -1343,8 +1391,8 @@ window.JSE_DASHBOARD_DATA = {
       "m3": 5.19,
       "m6": null,
       "y1": null,
-      "ttmDps": 599.78,
-      "trailingYield": 164.32,
+      "ttmDps": null,
+      "trailingYield": null,
       "latestDividend": null,
       "exDate": "Aug 18, 2026",
       "recordDate": "Aug 18, 2026",
@@ -1380,8 +1428,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 39.75,
       "dividendGrowth": 9.76,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:33:48.913Z",
-      "fairValue": 5870.12
+      "researchUpdated": "2026-08-21T01:39:40.157Z",
+      "fairValue": 957,
+      "dividendDataStatus": "validation-error",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 26,
@@ -1399,7 +1449,7 @@ window.JSE_DASHBOARD_DATA = {
       "m6": null,
       "y1": null,
       "ttmDps": null,
-      "trailingYield": 2.51,
+      "trailingYield": null,
       "latestDividend": null,
       "exDate": "N/A",
       "recordDate": "N/A",
@@ -1435,8 +1485,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:34:06.729Z",
-      "fairValue": 0.39
+      "researchUpdated": "2026-08-21T01:39:51.732Z",
+      "fairValue": 0.39,
+      "dividendDataStatus": "missing",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 27,
@@ -1490,8 +1542,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 20.92,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:34:24.412Z",
-      "fairValue": 13.95
+      "researchUpdated": "2026-08-21T01:40:04.517Z",
+      "fairValue": 13.95,
+      "dividendDataStatus": "validated",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 28,
@@ -1545,8 +1599,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 25.05,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:34:36.310Z",
-      "fairValue": 7.57
+      "researchUpdated": "2026-08-21T01:40:17.185Z",
+      "fairValue": 7.57,
+      "dividendDataStatus": "validated",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 29,
@@ -1601,8 +1657,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 35.21,
       "dividendGrowth": -25,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:34:48.363Z",
-      "fairValue": 4.3
+      "researchUpdated": "2026-08-21T01:40:30.326Z",
+      "fairValue": 4.3,
+      "dividendDataStatus": "validated",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 30,
@@ -1657,8 +1715,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 27.91,
       "dividendGrowth": 5.26,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:34:59.545Z",
-      "fairValue": 8.29
+      "researchUpdated": "2026-08-21T01:40:43.173Z",
+      "fairValue": 8.29,
+      "dividendDataStatus": "validated",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 31,
@@ -1675,8 +1735,8 @@ window.JSE_DASHBOARD_DATA = {
       "m3": -29.42,
       "m6": null,
       "y1": null,
-      "ttmDps": null,
-      "trailingYield": 49.34,
+      "ttmDps": 0.005,
+      "trailingYield": 9.98,
       "latestDividend": null,
       "exDate": "Feb 6, 2020",
       "recordDate": "Feb 7, 2020",
@@ -1687,8 +1747,8 @@ window.JSE_DASHBOARD_DATA = {
       "reason": "Deep Value / Currency & Liquidity Risk • score 60. Weekly master-universe research baseline; daily price/history refresh follows.",
       "buyLow": 39.44,
       "buyHigh": 45.51,
-      "buyYieldLow": null,
-      "buyYieldHigh": null,
+      "buyYieldLow": 0.01,
+      "buyYieldHigh": 0.01,
       "zoneStatus": "below",
       "allocation": 60,
       "jse": "https://www.jamstockex.com/trading/instruments/?instrument=1600081",
@@ -1711,8 +1771,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:35:10.920Z",
-      "fairValue": 50.57
+      "researchUpdated": "2026-08-21T01:40:56.070Z",
+      "fairValue": 32.91,
+      "dividendDataStatus": "validated",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 32,
@@ -1757,7 +1819,7 @@ window.JSE_DASHBOARD_DATA = {
       "pb": 0.44,
       "roe": -19.42,
       "roa": -5.98,
-      "epsTtm": null,
+      "epsTtm": -2,
       "epsGrowth": null,
       "revenueGrowth": null,
       "netIncomeGrowth": null,
@@ -1766,8 +1828,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:35:23.039Z",
-      "fairValue": 11.11
+      "researchUpdated": "2026-08-21T01:41:09.531Z",
+      "fairValue": 11.11,
+      "dividendDataStatus": "validated",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 33,
@@ -1785,7 +1849,7 @@ window.JSE_DASHBOARD_DATA = {
       "m6": null,
       "y1": null,
       "ttmDps": null,
-      "trailingYield": 0.56,
+      "trailingYield": null,
       "latestDividend": null,
       "exDate": "Jul 11, 2023",
       "recordDate": "Jul 12, 2023",
@@ -1812,7 +1876,7 @@ window.JSE_DASHBOARD_DATA = {
       "pb": 0.77,
       "roe": -21.18,
       "roa": -6.21,
-      "epsTtm": null,
+      "epsTtm": -2.15,
       "epsGrowth": null,
       "revenueGrowth": null,
       "netIncomeGrowth": null,
@@ -1821,7 +1885,9 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:35:34.640Z"
+      "researchUpdated": "2026-08-21T01:41:22.648Z",
+      "dividendDataStatus": "missing",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 34,
@@ -1865,7 +1931,7 @@ window.JSE_DASHBOARD_DATA = {
       "pb": 0.31,
       "roe": -13.89,
       "roa": -5.73,
-      "epsTtm": null,
+      "epsTtm": -16.26,
       "epsGrowth": null,
       "revenueGrowth": null,
       "netIncomeGrowth": null,
@@ -1874,7 +1940,9 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:35:47.554Z"
+      "researchUpdated": "2026-08-21T01:41:34.866Z",
+      "dividendDataStatus": "missing",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 35,
@@ -1919,7 +1987,7 @@ window.JSE_DASHBOARD_DATA = {
       "pb": 0.49,
       "roe": -14.63,
       "roa": -4.04,
-      "epsTtm": null,
+      "epsTtm": -0.16,
       "epsGrowth": null,
       "revenueGrowth": 1.71,
       "netIncomeGrowth": null,
@@ -1928,7 +1996,9 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:35:57.911Z"
+      "researchUpdated": "2026-08-21T01:41:46.960Z",
+      "dividendDataStatus": "missing",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 36,
@@ -1982,8 +2052,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 25.56,
       "dividendGrowth": 21.21,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:36:15.915Z",
-      "fairValue": 33.27
+      "researchUpdated": "2026-08-21T01:41:59.598Z",
+      "fairValue": 33.27,
+      "dividendDataStatus": "validated",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 37,
@@ -2027,7 +2099,7 @@ window.JSE_DASHBOARD_DATA = {
       "pb": 0.8,
       "roe": -36.55,
       "roa": -17.75,
-      "epsTtm": null,
+      "epsTtm": -3.71,
       "epsGrowth": null,
       "revenueGrowth": null,
       "netIncomeGrowth": null,
@@ -2036,7 +2108,9 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:36:27.265Z"
+      "researchUpdated": "2026-08-21T01:42:11.890Z",
+      "dividendDataStatus": "missing",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 38,
@@ -2054,7 +2128,7 @@ window.JSE_DASHBOARD_DATA = {
       "m6": null,
       "y1": null,
       "ttmDps": null,
-      "trailingYield": 3.36,
+      "trailingYield": null,
       "latestDividend": null,
       "exDate": "Aug 28, 2026",
       "recordDate": "Aug 28, 2026",
@@ -2090,8 +2164,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 118.54,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:36:36.990Z",
-      "fairValue": 3.41
+      "researchUpdated": "2026-08-21T01:42:22.752Z",
+      "fairValue": 3.41,
+      "dividendDataStatus": "currency-or-parser-mismatch",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 39,
@@ -2109,7 +2185,7 @@ window.JSE_DASHBOARD_DATA = {
       "m6": null,
       "y1": null,
       "ttmDps": null,
-      "trailingYield": 0.18,
+      "trailingYield": null,
       "latestDividend": null,
       "exDate": "Jan 4, 2024",
       "recordDate": "Jan 5, 2024",
@@ -2145,8 +2221,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:36:49.205Z",
-      "fairValue": 0.44
+      "researchUpdated": "2026-08-21T01:42:35.635Z",
+      "fairValue": 0.44,
+      "dividendDataStatus": "missing",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 40,
@@ -2164,7 +2242,7 @@ window.JSE_DASHBOARD_DATA = {
       "m6": null,
       "y1": null,
       "ttmDps": null,
-      "trailingYield": 3.69,
+      "trailingYield": null,
       "latestDividend": null,
       "exDate": "Nov 14, 2024",
       "recordDate": "Nov 14, 2024",
@@ -2200,8 +2278,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:37:00.314Z",
-      "fairValue": 1.1
+      "researchUpdated": "2026-08-21T01:42:48.848Z",
+      "fairValue": 1.1,
+      "dividendDataStatus": "missing",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 41,
@@ -2219,7 +2299,7 @@ window.JSE_DASHBOARD_DATA = {
       "m6": null,
       "y1": null,
       "ttmDps": null,
-      "trailingYield": 1.61,
+      "trailingYield": null,
       "latestDividend": null,
       "exDate": "Aug 17, 2023",
       "recordDate": "Aug 18, 2023",
@@ -2246,7 +2326,7 @@ window.JSE_DASHBOARD_DATA = {
       "pb": 1.25,
       "roe": -25.09,
       "roa": -7.12,
-      "epsTtm": null,
+      "epsTtm": -0.28,
       "epsGrowth": null,
       "revenueGrowth": -10.79,
       "netIncomeGrowth": null,
@@ -2255,7 +2335,9 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:37:12.043Z"
+      "researchUpdated": "2026-08-21T01:43:02.396Z",
+      "dividendDataStatus": "missing",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 42,
@@ -2309,8 +2391,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:37:21.547Z",
-      "fairValue": 2.5
+      "researchUpdated": "2026-08-21T01:43:13.089Z",
+      "fairValue": 2.5,
+      "dividendDataStatus": "validated",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 43,
@@ -2328,7 +2412,7 @@ window.JSE_DASHBOARD_DATA = {
       "m6": null,
       "y1": null,
       "ttmDps": null,
-      "trailingYield": 2.56,
+      "trailingYield": null,
       "latestDividend": null,
       "exDate": "Nov 24, 2023",
       "recordDate": "Nov 27, 2023",
@@ -2364,8 +2448,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:37:33.328Z",
-      "fairValue": 0.44
+      "researchUpdated": "2026-08-21T01:43:26.479Z",
+      "fairValue": 0.44,
+      "dividendDataStatus": "missing",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 44,
@@ -2419,8 +2505,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:37:43.229Z",
-      "fairValue": 0.44
+      "researchUpdated": "2026-08-21T01:43:37.388Z",
+      "fairValue": 0.44,
+      "dividendDataStatus": "missing",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 45,
@@ -2438,7 +2526,7 @@ window.JSE_DASHBOARD_DATA = {
       "m6": null,
       "y1": null,
       "ttmDps": null,
-      "trailingYield": 1.61,
+      "trailingYield": null,
       "latestDividend": null,
       "exDate": "Jan 16, 2023",
       "recordDate": "Jan 17, 2023",
@@ -2474,8 +2562,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:37:55.386Z",
-      "fairValue": 0.75
+      "researchUpdated": "2026-08-21T01:43:55.704Z",
+      "fairValue": 0.75,
+      "dividendDataStatus": "missing",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 46,
@@ -2529,8 +2619,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 97.03,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:38:07.128Z",
-      "fairValue": 1.81
+      "researchUpdated": "2026-08-21T01:44:08.439Z",
+      "fairValue": 1.81,
+      "dividendDataStatus": "validated",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 47,
@@ -2548,7 +2640,7 @@ window.JSE_DASHBOARD_DATA = {
       "m6": null,
       "y1": null,
       "ttmDps": null,
-      "trailingYield": 0.48,
+      "trailingYield": null,
       "latestDividend": null,
       "exDate": "N/A",
       "recordDate": "N/A",
@@ -2584,8 +2676,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:38:18.351Z",
-      "fairValue": 0.56
+      "researchUpdated": "2026-08-21T01:44:20.497Z",
+      "fairValue": 0.56,
+      "dividendDataStatus": "missing",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 48,
@@ -2636,11 +2730,13 @@ window.JSE_DASHBOARD_DATA = {
       "netIncomeGrowth": null,
       "debtEquity": null,
       "currentRatio": 2.57,
-      "payoutRatio": 38.08,
+      "payoutRatio": 37.95,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:38:31.569Z",
-      "fairValue": 15.59
+      "researchUpdated": "2026-08-21T01:44:34.264Z",
+      "fairValue": 15.59,
+      "dividendDataStatus": "validated",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 49,
@@ -2694,8 +2790,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 47.98,
       "dividendGrowth": -23.04,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:38:42.996Z",
-      "fairValue": 8.25
+      "researchUpdated": "2026-08-21T01:44:46.705Z",
+      "fairValue": 8.25,
+      "dividendDataStatus": "validated",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 50,
@@ -2748,8 +2846,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 4.82,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:38:54.844Z",
-      "fairValue": 25.43
+      "researchUpdated": "2026-08-21T01:44:59.938Z",
+      "fairValue": 25.43,
+      "dividendDataStatus": "validated",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 51,
@@ -2803,8 +2903,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 38.43,
       "dividendGrowth": -66.16,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:39:08.122Z",
-      "fairValue": 3.6
+      "researchUpdated": "2026-08-21T01:45:13.433Z",
+      "fairValue": 3.6,
+      "dividendDataStatus": "validated",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 52,
@@ -2859,8 +2961,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 93.33,
       "dividendGrowth": 27.37,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:39:20.078Z",
-      "fairValue": 12.12
+      "researchUpdated": "2026-08-21T01:45:26.455Z",
+      "fairValue": 12.12,
+      "dividendDataStatus": "validated",
+      "researchFetchStatus": "ok"
     },
     {
       "rank": 53,
@@ -2913,8 +3017,10 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-08-20T23:39:31.653Z",
-      "fairValue": 23.13
+      "researchUpdated": "2026-08-21T01:45:44.571Z",
+      "fairValue": 23.13,
+      "dividendDataStatus": "validated",
+      "researchFetchStatus": "ok"
     }
   ]
 };
