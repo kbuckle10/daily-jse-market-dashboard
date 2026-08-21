@@ -3,8 +3,8 @@ name: Refresh Daily JSE Main Market
 on:
   workflow_dispatch:
   schedule:
-    # 23:00 UTC = 18:00 Jamaica (UTC-5 year-round)
-    - cron: '0 23 * * *'
+    # 22:00 UTC = 17:00 Jamaica (UTC-5 year-round)
+    - cron: '0 22 * * *'
   push:
     branches: [main]
     paths:
