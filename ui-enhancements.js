@@ -16,6 +16,16 @@
     if(!tags.length)tags.push('Core');
     return tags.slice(0,3);
   }
+  function valuationSignal(s){
+    const status=String(s.bookValueStatus||'').toUpperCase();
+    if(!status)return 'N/A';
+    if(status.includes('DEEP'))return 'Deep Value';
+    if(status.includes('SIGNIFICANT DISCOUNT')||status.includes('BELOW BOOK')||status.includes('DISCOUNT'))return 'Undervalued';
+    if(status.includes('NEAR BOOK')||status.includes('AT BOOK')||status.includes('FAIR'))return 'Fair Value';
+    if(status.includes('HIGH PREMIUM')||status.includes('EXTREME PREMIUM'))return 'Expensive';
+    if(status.includes('PREMIUM'))return 'Premium';
+    return s.bookValueStatus.replace(/\b\w/g,c=>c.toUpperCase()).replace(/\B\w/g,c=>c.toLowerCase());
+  }
   const styleHtml=s=>`<div class="investor-badges"><span class="sector-badge">${s.sector||'Other'}</span>${styleTags(s).map(x=>`<span class="style-badge ${x.toLowerCase()}">${x}</span>`).join('')}</div>`;
   function decorateCards(){
     document.querySelectorAll('.stock-card').forEach(card=>{
@@ -37,7 +47,7 @@
     el.innerHTML=rows.map((s,i)=>{
       const discount=s.bookDiscountPct==null?'Book N/A':s.bookDiscountPct>=0?`${fmt(s.bookDiscountPct,0)}% below book`:`${fmt(Math.abs(s.bookDiscountPct),0)}% above book`;
       const zone=s.zoneStatus==='in'?'IN ZONE':s.zoneStatus==='below'?'BELOW ZONE':'ABOVE ZONE';
-      return `<article class="fresh-card"><div class="fresh-rank">#${i+1}</div><div class="fresh-main"><div class="fresh-title"><div><strong>${s.ticker}</strong><span>${s.company||''}</span></div><span class="rating ${s.ratingClass||'hold'}">${s.rating||'N/A'}</span></div>${styleHtml(s)}<div class="fresh-metrics"><span><small>Price</small><strong>J$${fmt(s.price,2)}</strong></span><span><small>Yield</small><strong>${fmt(s.trailingYield,2)}%</strong></span><span><small>P/B</small><strong>${s.pb==null?'N/A':fmt(s.pb,2)+'×'}</strong></span><span><small>Book</small><strong>${discount}</strong></span></div><div class="fresh-footer"><p>${s.reason||''}</p><span class="zone-status ${s.zoneStatus||'above'}">${zone}</span></div><div class="fresh-secondary">Valuation lens: <strong>${s.bookAdjustedRating||'N/A'}</strong>${s.bookAdjustedRating&&s.rating&&s.bookAdjustedRating!==s.rating?' • complements primary rating':''}</div></div></article>`;
+      return `<article class="fresh-card"><div class="fresh-rank">#${i+1}</div><div class="fresh-main"><div class="fresh-title"><div><strong>${s.ticker}</strong><span>${s.company||''}</span></div><span class="rating ${s.ratingClass||'hold'}">${s.rating||'N/A'}</span></div>${styleHtml(s)}<div class="fresh-metrics"><span><small>Price</small><strong>J$${fmt(s.price,2)}</strong></span><span><small>Yield</small><strong>${fmt(s.trailingYield,2)}%</strong></span><span><small>P/B</small><strong>${s.pb==null?'N/A':fmt(s.pb,2)+'×'}</strong></span><span><small>Book</small><strong>${discount}</strong></span></div><div class="fresh-footer"><p>${s.reason||''}</p><span class="zone-status ${s.zoneStatus||'above'}">${zone}</span></div><div class="fresh-secondary">Valuation signal: <strong>${valuationSignal(s)}</strong> <span>• sector-aware</span></div></div></article>`;
     }).join('');
   }
   let scheduled=false;
