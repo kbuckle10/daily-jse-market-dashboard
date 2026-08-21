@@ -137,10 +137,13 @@ const unresolved=[];
 
 for(const stock of data.stocks){
   const ticker=stock.ticker;
+  stock.performanceFieldStatus = stock.performanceFieldStatus || {};
   console.log(`\n=== ${ticker} ===`);
+  let overviewOk=false;
   const page=await context.newPage();
   try{
     if(await safeGoto(page,`https://stockanalysis.com/quote/jmse/${ticker}/`)){
+      overviewOk=true;
       await dismissOverlays(page); await page.waitForTimeout(700);
       const quote=await captureQuote(page);
       if(quote){
@@ -152,8 +155,11 @@ for(const stock of data.stocks){
       } else console.log('quote: not captured; preserving prior dashboard quote');
       for(const [field,label] of PERIODS){
         const value=await capturePeriod(page,label);
-        if(value!=null && Number.isFinite(value)){stock[field]=Number(value.toFixed(2));console.log(`${label}: ${stock[field]}% (displayed SA)`);}
-        else console.log(`${label}: interactive value not captured; will try history fallback`);
+        if(value!=null && Number.isFinite(value)){
+          stock[field]=Number(value.toFixed(2));
+          stock.performanceFieldStatus[field]='captured';
+          console.log(`${label}: ${stock[field]}% (displayed SA)`);
+        } else console.log(`${label}: interactive value not captured; will try history fallback`);
       }
     }
   }catch(err){console.error(`${ticker} overview: ${err.message}`);}finally{await page.close();}
@@ -162,15 +168,45 @@ for(const stock of data.stocks){
     const rows=await readHistoryRows(context,ticker);
     const fallbacks={w1:7,m1:30,m3:92,m6:183,y1:366};
     for(const [field,days] of Object.entries(fallbacks)){
-      if(field==='w1' || stock[field]==null){const v=historicalReturn(rows,days);if(v!=null&&Number.isFinite(v)){stock[field]=Number(v.toFixed(2));console.log(`${field}: ${stock[field]}% (SA history-derived)`);}}
+      if(field==='w1' || stock[field]==null){
+        const v=historicalReturn(rows,days);
+        if(v!=null&&Number.isFinite(v)){
+          stock[field]=Number(v.toFixed(2));
+          stock.performanceFieldStatus[field]='history-derived';
+          console.log(`${field}: ${stock[field]}% (SA history-derived)`);
+        }
+      }
     }
-    if(stock.ytd==null){const v=ytdReturn(rows);if(v!=null&&Number.isFinite(v)){stock.ytd=Number(v.toFixed(2));console.log(`ytd: ${stock.ytd}% (SA history-derived)`);}}
+    if(stock.ytd==null){
+      const v=ytdReturn(rows);
+      if(v!=null&&Number.isFinite(v)){
+        stock.ytd=Number(v.toFixed(2));
+        stock.performanceFieldStatus.ytd='history-derived';
+        console.log(`ytd: ${stock.ytd}% (SA history-derived)`);
+      }
+    }
+    for(const field of ['w1','m1','ytd','m3','m6','y1']){
+      if(stock[field]==null||!Number.isFinite(Number(stock[field]))){
+        stock.performanceFieldStatus[field]=rows.length ? 'not-found' : (overviewOk ? 'not-found' : 'scraper-error');
+        unresolved.push(`${stock.ticker} ${field}`);
+      }
+    }
     stock.performanceSource='SA';
-  }catch(err){console.error(`${ticker} history: ${err.message}`);}
+  }catch(err){
+    console.error(`${ticker} history: ${err.message}`);
+    for(const field of ['w1','m1','ytd','m3','m6','y1']){
+      if(stock[field]==null||!Number.isFinite(Number(stock[field]))) stock.performanceFieldStatus[field]='scraper-error';
+    }
+  }
 }
 await browser.close();
 
-for(const stock of data.stocks){for(const field of ['w1','m1','ytd','m3','m6','y1']){if(stock[field]==null||!Number.isFinite(Number(stock[field]))) unresolved.push(`${stock.ticker} ${field}`);}}
-if(unresolved.length){console.error('\nFAILED: refusing to publish incomplete interval dataset:');unresolved.forEach(x=>console.error(` - ${x}`));process.exit(1);}
+// Always publish the values that were successfully captured. A few unavailable
+// intervals must not discard valid trend data for every other ticker.
 writeDashboard(data);
-console.log('\nSUCCESS: all 12 tickers have refreshed SA quotes and 1W, 1M, YTD, 3M, 6M and 1Y values.');
+if(unresolved.length){
+  console.warn(`\nPARTIAL: ${unresolved.length} interval field(s) unresolved; preserved all successful SA captures.`);
+  unresolved.forEach(x=>console.warn(` - ${x}`));
+} else {
+  console.log('\nSUCCESS: all Main Market tickers have refreshed SA 1W, 1M, YTD, 3M, 6M and 1Y values.');
+}
