@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260820-1652" />
+  <link rel="stylesheet" href="styles.css?v=20260820-2238" />
 </head>
 <body>
   <header class="site-header">
@@ -102,7 +102,13 @@
     <footer><p>For research and monitoring only — not personal financial advice. Verify official corporate actions with the Jamaica Stock Exchange before trading.</p></footer>
   </main>
 
-  <script src="data.js?v=20260820-1652"></script>
-  <script src="app.js?v=20260820-1652"></script>
+  <script>
+    // GitHub Pages can aggressively cache static assets. Give data.js and app.js a
+    // unique query string on every page load so the dashboard always reflects the
+    // latest completed refresh instead of a stale browser/CDN copy.
+    const dashboardAssetVersion = Date.now();
+    document.write('<script src="data.js?v=' + dashboardAssetVersion + '"><\/script>');
+    document.write('<script src="app.js?v=' + dashboardAssetVersion + '"><\/script>');
+  </script>
 </body>
 </html>
