@@ -28,13 +28,13 @@ jobs:
     timeout-minutes: 120
     steps:
       - name: Checkout latest main
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: main
           fetch-depth: 0
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: '22'
 
@@ -63,23 +63,7 @@ jobs:
             npm run refresh:jse || true
             npm run refresh:jse-links || true
 
-            node - <<'NODE'
-            const fs = require('fs');
-            const vm = require('vm');
-            const raw = fs.readFileSync('data.js','utf8');
-            const m = raw.match(/window\.JSE_DASHBOARD_DATA\s*=\s*([\s\S]*);\s*$/);
-            if (!m) throw new Error('Unable to parse data.js');
-            const data = vm.runInNewContext(`(${m[1]})`);
-            if (!Array.isArray(data.stocks) || data.stocks.length < 20) {
-              throw new Error(`Main Market universe unexpectedly small: ${data.stocks?.length || 0}`);
-            }
-            const bad = data.stocks.filter(s => !s.ticker || !s.company);
-            if (bad.length) throw new Error(`Invalid stock records: ${bad.length}`);
-            const priced = data.stocks.filter(s => s.price != null && Number.isFinite(Number(s.price))).length;
-            const researched = data.stocks.filter(s => s.pe != null || s.roe != null || s.ttmDps != null).length;
-            const valued = data.stocks.filter(s => s.buyLow != null && s.buyHigh != null && s.rating).length;
-            console.log(`Validated ${data.stocks.length} Main Market stocks; ${priced} priced, ${researched} with SA research fields, ${valued} with rating/buy-zone data.`);
-            NODE
+            node -e 'const fs=require("fs"),vm=require("vm"); const raw=fs.readFileSync("data.js","utf8"); const m=raw.match(/window\.JSE_DASHBOARD_DATA\s*=\s*([\s\S]*);\s*$/); if(!m) throw new Error("Unable to parse data.js"); const data=vm.runInNewContext(`(${m[1]})`); if(!Array.isArray(data.stocks)||data.stocks.length<20) throw new Error(`Main Market universe unexpectedly small: ${data.stocks?.length||0}`); const bad=data.stocks.filter(s=>!s.ticker||!s.company); if(bad.length) throw new Error(`Invalid stock records: ${bad.length}`); const priced=data.stocks.filter(s=>s.price!=null&&Number.isFinite(Number(s.price))).length; const researched=data.stocks.filter(s=>s.pe!=null||s.roe!=null||s.ttmDps!=null).length; const valued=data.stocks.filter(s=>s.buyLow!=null&&s.buyHigh!=null&&s.rating).length; console.log(`Validated ${data.stocks.length} Main Market stocks; ${priced} priced, ${researched} with SA research fields, ${valued} with rating/buy-zone data.`);'
 
             if git diff --quiet -- data.js; then
               echo 'No data changes.'
