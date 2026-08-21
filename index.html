@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260820-2238" />
+  <link rel="stylesheet" href="styles.css?v=20260821-book" />
 </head>
 <body>
   <header class="site-header">
@@ -26,7 +26,7 @@
 
   <main class="container">
     <section class="notice" aria-label="data source notice">
-      <div><strong>Source policy:</strong> JSE is primary for official declarations and latest completed closes. StockAnalysis is used for delayed/historical market context when required.</div>
+      <div><strong>Source policy:</strong> JSE is primary for official declarations and latest completed closes. StockAnalysis is used for delayed/historical market context when required. For cross-listed companies, primary-market StockAnalysis data is used for fundamentals/dividends.</div>
       <div class="source-actions">
         <a class="source-link jse" href="https://www.jamstockex.com/trading/markets/main-market/" target="_blank" rel="noreferrer">JSE Main Market ↗</a>
         <a class="source-link sa" href="https://stockanalysis.com/list/jamaica-stock-exchange/" target="_blank" rel="noreferrer">StockAnalysis ↗</a>
@@ -87,6 +87,20 @@
 
     <section id="cardView" class="stock-card-grid hidden" aria-live="polite"></section>
 
+    <section class="panel" aria-label="Book value valuation">
+      <div class="panel-heading">
+        <div><p class="eyebrow">Valuation lens</p><h2>Price vs Book Value</h2></div>
+        <span class="panel-badge">Sector-aware</span>
+      </div>
+      <p id="bookValueNote" class="allocation-note"></p>
+      <div class="table-shell">
+        <table>
+          <thead><tr><th>Stock</th><th>Price</th><th>Book Value / Share</th><th>P/B</th><th>Price vs Book</th><th>Valuation Signal</th><th>Book-Adjusted Score</th><th>Book-Adjusted Rating</th></tr></thead>
+          <tbody id="bookValueBody"></tbody>
+        </table>
+      </div>
+    </section>
+
     <section class="analysis-grid">
       <article class="panel"><div class="panel-heading"><div><p class="eyebrow">Market watch</p><h2>Significant Price Movements</h2></div><span class="panel-badge">Tracked only</span></div><div id="movementList" class="movement-list"></div></article>
       <article class="panel"><div class="panel-heading"><div><p class="eyebrow">Fresh capital</p><h2>Dividend Investor Ranking</h2></div><span class="panel-badge">Tracked only</span></div><div id="rankingList" class="ranking-list"></div></article>
@@ -103,12 +117,10 @@
   </main>
 
   <script>
-    // GitHub Pages can aggressively cache static assets. Give data.js and app.js a
-    // unique query string on every page load so the dashboard always reflects the
-    // latest completed refresh instead of a stale browser/CDN copy.
     const dashboardAssetVersion = Date.now();
     document.write('<script src="data.js?v=' + dashboardAssetVersion + '"><\/script>');
     document.write('<script src="app.js?v=' + dashboardAssetVersion + '"><\/script>');
+    document.write('<script src="book-value-ui.js?v=' + dashboardAssetVersion + '"><\/script>');
   </script>
 </body>
 </html>
