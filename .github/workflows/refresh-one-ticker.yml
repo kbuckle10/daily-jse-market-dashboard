@@ -1,0 +1,52 @@
+name: Refresh One Ticker
+
+on:
+  workflow_dispatch:
+    inputs:
+      ticker:
+        description: 'Ticker to refresh (for example GHL)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-one-${{ github.event.inputs.ticker }}
+  cancel-in-progress: true
+
+jobs:
+  refresh-one:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout latest main
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        run: npm install
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Refresh selected ticker corporate actions
+        env:
+          TICKER: ${{ github.event.inputs.ticker }}
+        run: npm run refresh:jse-actions
+      - name: Validate selected ticker
+        env:
+          TICKER: ${{ github.event.inputs.ticker }}
+        run: |
+          node -e 'const fs=require("fs"),vm=require("vm"); const raw=fs.readFileSync("data.js","utf8"); const m=raw.match(/window\.JSE_DASHBOARD_DATA\s*=\s*([\s\S]*);\s*$/); const d=vm.runInNewContext(`(${m[1]})`); const t=process.env.TICKER.toUpperCase(); const s=d.stocks.find(x=>x.ticker===t); if(!s) throw new Error(`Ticker ${t} not found`); if(s.jseCorporateActionStatus!=="ok") throw new Error(`${t} corporate actions not captured: ${s.jseCorporateActionStatus}`); console.log(`${t}: latest ${s.latestDividendCurrency} ${s.latestDividend}; TTM ${s.ttmDpsCurrency||"JMD"} ${s.ttmDps}`);'
+      - name: Commit selected ticker refresh
+        run: |
+          if git diff --quiet -- data.js; then echo 'No changes.'; exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data.js
+          git commit -m "refresh ${{ github.event.inputs.ticker }} corporate actions and TTM DPS"
+          git push origin HEAD:main
