@@ -44,65 +44,62 @@ jobs:
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
 
-      - name: Sync full Main Market universe from master dashboard
-        run: npm run sync:main-market
-
-      - name: Capture SA delayed quotes and interval returns
-        run: npm run refresh:sa
-        continue-on-error: true
-
-      - name: Capture SA fundamentals statistics dividends and valuation inputs
-        run: npm run refresh:sa-research
-        continue-on-error: true
-
-      - name: Capture JSE official market close
-        run: npm run refresh:jse
-        continue-on-error: true
-
-      - name: Capture direct JSE listed-company links
-        run: npm run refresh:jse-links
-        continue-on-error: true
-
-      - name: Validate full-universe dataset
+      - name: Refresh full dataset from a stable main HEAD
+        shell: bash
         run: |
-          node - <<'NODE'
-          const fs = require('fs');
-          const vm = require('vm');
-          const raw = fs.readFileSync('data.js','utf8');
-          const m = raw.match(/window\.JSE_DASHBOARD_DATA\s*=\s*([\s\S]*);\s*$/);
-          if (!m) throw new Error('Unable to parse data.js');
-          const data = vm.runInNewContext(`(${m[1]})`);
-          if (!Array.isArray(data.stocks) || data.stocks.length < 20) {
-            throw new Error(`Main Market universe unexpectedly small: ${data.stocks?.length || 0}`);
-          }
-          const bad = data.stocks.filter(s => !s.ticker || !s.company);
-          if (bad.length) throw new Error(`Invalid stock records: ${bad.length}`);
-          const priced = data.stocks.filter(s => s.price != null && Number.isFinite(Number(s.price))).length;
-          const researched = data.stocks.filter(s => s.pe != null || s.roe != null || s.ttmDps != null).length;
-          const valued = data.stocks.filter(s => s.buyLow != null && s.buyHigh != null && s.rating).length;
-          console.log(`Validated ${data.stocks.length} Main Market stocks; ${priced} priced, ${researched} with SA research fields, ${valued} with rating/buy-zone data.`);
-          NODE
+          set -e
+          MAX_ATTEMPTS=2
+          ATTEMPT=1
 
-      - name: Commit refreshed market data
-        run: |
-          if git diff --quiet -- data.js; then
-            echo 'No data changes.'
-            exit 0
-          fi
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          while [ "$ATTEMPT" -le "$MAX_ATTEMPTS" ]; do
+            echo "=== Refresh attempt $ATTEMPT/$MAX_ATTEMPTS ==="
+            git fetch origin main
+            git reset --hard origin/main
+            START_HEAD=$(git rev-parse HEAD)
 
-          # Re-check main immediately before committing. If another commit landed while
-          # the long scrape was running, regenerate on the new HEAD rather than rebasing
-          # a generated data.js file and creating a merge conflict.
-          git fetch origin main
-          LOCAL_HEAD=$(git rev-parse HEAD)
-          REMOTE_HEAD=$(git rev-parse origin/main)
-          if [ "$LOCAL_HEAD" != "$REMOTE_HEAD" ]; then
-            echo "main changed during refresh; restarting from latest main to avoid data.js conflict"
-            exit 78
-          fi
+            npm run sync:main-market
+            npm run refresh:sa || true
+            npm run refresh:sa-research || true
+            npm run refresh:jse || true
+            npm run refresh:jse-links || true
 
-          git add data.js
-          git commit -m 'refresh full JSE Main Market daily data and SA research'
-          git push origin HEAD:main
+            node - <<'NODE'
+            const fs = require('fs');
+            const vm = require('vm');
+            const raw = fs.readFileSync('data.js','utf8');
+            const m = raw.match(/window\.JSE_DASHBOARD_DATA\s*=\s*([\s\S]*);\s*$/);
+            if (!m) throw new Error('Unable to parse data.js');
+            const data = vm.runInNewContext(`(${m[1]})`);
+            if (!Array.isArray(data.stocks) || data.stocks.length < 20) {
+              throw new Error(`Main Market universe unexpectedly small: ${data.stocks?.length || 0}`);
+            }
+            const bad = data.stocks.filter(s => !s.ticker || !s.company);
+            if (bad.length) throw new Error(`Invalid stock records: ${bad.length}`);
+            const priced = data.stocks.filter(s => s.price != null && Number.isFinite(Number(s.price))).length;
+            const researched = data.stocks.filter(s => s.pe != null || s.roe != null || s.ttmDps != null).length;
+            const valued = data.stocks.filter(s => s.buyLow != null && s.buyHigh != null && s.rating).length;
+            console.log(`Validated ${data.stocks.length} Main Market stocks; ${priced} priced, ${researched} with SA research fields, ${valued} with rating/buy-zone data.`);
+            NODE
+
+            if git diff --quiet -- data.js; then
+              echo 'No data changes.'
+              exit 0
+            fi
+
+            git fetch origin main
+            REMOTE_HEAD=$(git rev-parse origin/main)
+            if [ "$START_HEAD" = "$REMOTE_HEAD" ]; then
+              git config user.name 'github-actions[bot]'
+              git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+              git add data.js
+              git commit -m 'refresh full JSE Main Market daily data and SA research'
+              git push origin HEAD:main
+              exit 0
+            fi
+
+            echo "main changed during attempt $ATTEMPT; discarding generated data and retrying from latest main"
+            ATTEMPT=$((ATTEMPT+1))
+          done
+
+          echo "main changed during both refresh attempts; leaving workflow successful without publishing stale data"
+          exit 0
