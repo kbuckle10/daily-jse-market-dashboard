@@ -67,7 +67,41 @@ jobs:
             npm run refresh:jse-actions || true
             npm run refresh:book-value || true
 
-            node -e 'const fs=require("fs"),vm=require("vm"); const raw=fs.readFileSync("data.js","utf8"); const m=raw.match(/window\.JSE_DASHBOARD_DATA\s*=\s*([\s\S]*);\s*$/); if(!m) throw new Error("Unable to parse data.js"); const data=vm.runInNewContext(`(${m[1]})`); if(!Array.isArray(data.stocks)||data.stocks.length<20) throw new Error(`Main Market universe unexpectedly small: ${data.stocks?.length||0}`); const bad=data.stocks.filter(s=>!s.ticker||!s.company); if(bad.length) throw new Error(`Invalid stock records: ${bad.length}`); const priced=data.stocks.filter(s=>s.price!=null&&Number.isFinite(Number(s.price))).length; const researched=data.stocks.filter(s=>s.pe!=null||s.roe!=null||s.ttmDps!=null).length; const valued=data.stocks.filter(s=>s.buyLow!=null&&s.buyHigh!=null&&s.rating).length; const book=data.stocks.filter(s=>s.pb!=null&&s.bookValuePerShare!=null&&s.bookValueStatus).length; if(book<10) throw new Error(`Book-value enrichment unexpectedly sparse: ${book}`); const ghl=data.stocks.find(s=>s.ticker==="GHL"); if(ghl && ghl.jseCorporateActionStatus==="ok" && ghl.latestDividendCurrency!=="TTD") throw new Error(`GHL JSE corporate-action currency mismatch: ${ghl.latestDividendCurrency}`); console.log(`Validated ${data.stocks.length} Main Market stocks; ${priced} priced, ${researched} with SA research fields, ${valued} with rating/buy-zone data, ${book} with book-value valuation.`);'
+            node <<'NODE'
+          const fs = require('fs');
+          const vm = require('vm');
+          const raw = fs.readFileSync('data.js','utf8');
+          const m = raw.match(/window\.JSE_DASHBOARD_DATA\s*=\s*([\s\S]*);\s*$/);
+          if (!m) throw new Error('Unable to parse data.js');
+          const data = vm.runInNewContext(`(${m[1]})`);
+          if (!Array.isArray(data.stocks) || data.stocks.length < 20) throw new Error(`Main Market universe unexpectedly small: ${data.stocks?.length || 0}`);
+          const bad = data.stocks.filter(s => !s.ticker || !s.company);
+          if (bad.length) throw new Error(`Invalid stock records: ${bad.length}`);
+
+          const priced = data.stocks.filter(s => s.price != null && Number.isFinite(Number(s.price))).length;
+          const researched = data.stocks.filter(s => s.pe != null || s.roe != null || s.ttmDps != null).length;
+          const valued = data.stocks.filter(s => s.buyLow != null && s.buyHigh != null && s.rating).length;
+          const book = data.stocks.filter(s => s.pb != null && s.bookValuePerShare != null && s.bookValueStatus).length;
+          if (book < 10) throw new Error(`Book-value enrichment unexpectedly sparse: ${book}`);
+
+          const coreTickers = ['TJH','CAR','NCBFG','SVL','GK','JMMBGL','KW','SEP','LASD','LASM','BIL','SJ'];
+          const requiredPerformance = ['dayJmd','dayPct','w1','m1','ytd','m3','m6','y1'];
+          const coreErrors = [];
+          for (const ticker of coreTickers) {
+            const stock = data.stocks.find(s => s.ticker === ticker);
+            if (!stock) { coreErrors.push(`${ticker}: missing stock record`); continue; }
+            if (stock.price == null || !Number.isFinite(Number(stock.price))) coreErrors.push(`${ticker}: price`);
+            if (!['JSE','SA'].includes(stock.source)) coreErrors.push(`${ticker}: source`);
+            for (const field of requiredPerformance) {
+              if (stock[field] == null || !Number.isFinite(Number(stock[field]))) coreErrors.push(`${ticker}: ${field}`);
+            }
+          }
+          if (coreErrors.length) throw new Error(`Core 12-stock validation failed: ${coreErrors.join(', ')}`);
+
+          const ghl = data.stocks.find(s => s.ticker === 'GHL');
+          if (ghl && ghl.jseCorporateActionStatus === 'ok' && ghl.latestDividendCurrency !== 'TTD') throw new Error(`GHL JSE corporate-action currency mismatch: ${ghl.latestDividendCurrency}`);
+          console.log(`Validated ${data.stocks.length} Main Market stocks; ${priced} priced, ${researched} with SA research fields, ${valued} with rating/buy-zone data, ${book} with book-value valuation. Core 12 all have price, DAY, 1W, 1M, YTD, 3M, 6M and 1Y.`);
+          NODE
 
             if git diff --quiet -- data.js; then
               echo 'No data changes.'
