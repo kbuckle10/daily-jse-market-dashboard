@@ -6,6 +6,7 @@ const DATA_FILE = 'data.js';
 const CONFIG = {
   GHL: { market: 'ttse', nativeCurrency: 'TTD', primaryTicker: 'GHL' }
 };
+const PERIODS = [['m1','1M'],['ytd','YTD'],['m3','3M'],['m6','6M'],['y1','1Y']];
 
 function readData() {
   const raw = fs.readFileSync(DATA_FILE, 'utf8');
@@ -56,6 +57,35 @@ function parseDividend(text) {
     exDate:grab(text,[/Ex-Dividend Date\s*([A-Za-z]{3}\s+\d{1,2},\s+\d{4})/i])
   };
 }
+function returnRegex(label){
+  const e=label.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  return new RegExp(`([+-]?\\d+(?:\\.\\d+)?)%\\s*\\(${e}\\)`,'i');
+}
+async function clickExactLabel(page,label){
+  const candidates=[page.getByText(label,{exact:true}),page.locator('button').filter({hasText:new RegExp(`^\\s*${label}\\s*$`)}),page.locator('[role="button"]').filter({hasText:new RegExp(`^\\s*${label}\\s*$`)}),page.locator('a').filter({hasText:new RegExp(`^\\s*${label}\\s*$`)})];
+  for(const loc of candidates){
+    const n=await loc.count().catch(()=>0);
+    for(let i=0;i<n;i++){
+      const el=loc.nth(i);
+      if(!await el.isVisible().catch(()=>false)) continue;
+      await el.scrollIntoViewIfNeeded().catch(()=>{});
+      const clicked=await el.click({force:true,timeout:2500}).then(()=>true).catch(()=>false);
+      if(clicked) return true;
+    }
+  }
+  return false;
+}
+async function capturePeriod(page,label){
+  if(!await clickExactLabel(page,label)) return null;
+  const re=returnRegex(label);
+  for(let i=0;i<16;i++){
+    await page.waitForTimeout(300);
+    const body=await page.locator('body').innerText().catch(()=>'');
+    const m=body.match(re);
+    if(m) return Number(m[1]);
+  }
+  return null;
+}
 async function firstDividendRow(page) {
   const tables=page.locator('table');
   for(let i=0;i<await tables.count();i++){
@@ -69,6 +99,17 @@ async function firstDividendRow(page) {
   }
   return null;
 }
+async function extractHistoryRows(page){
+  const rows=await page.locator('table tbody tr').evaluateAll(trs=>trs.map(tr=>Array.from(tr.querySelectorAll('td')).map(td=>td.textContent?.trim()||''))).catch(()=>[]);
+  return rows.filter(r=>r.length>=5).map(r=>({date:new Date(r[0]),close:Number(String(r[4]).replace(/,/g,''))})).filter(r=>!Number.isNaN(r.date.valueOf())&&Number.isFinite(r.close));
+}
+function historicalReturn(rows,days){
+  if(rows.length<2) return null;
+  const sorted=[...rows].sort((a,b)=>b.date-a.date), latest=sorted[0];
+  const target=new Date(latest.date); target.setDate(target.getDate()-days);
+  const comparison=sorted.find(r=>r.date<=target);
+  return comparison ? ((latest.close/comparison.close)-1)*100 : null;
+}
 
 const data=readData();
 const browser=await chromium.launch({headless:true});
@@ -78,7 +119,25 @@ for(const [ticker,cfg] of Object.entries(CONFIG)){
   const s=data.stocks.find(x=>x.ticker===ticker); if(!s) continue;
   console.log(`\n=== ${ticker}: primary listing ${cfg.market.toUpperCase()} ===`);
   let research='', dividend='', row=null, ok=false;
-  for(const suffix of ['', 'financials/', 'statistics/']){
+  const overview=await context.newPage();
+  try{
+    const url=`https://stockanalysis.com/quote/${cfg.market}/${cfg.primaryTicker}/`;
+    if(await goto(overview,url)){
+      const text=await overview.locator('body').innerText().catch(()=>'');
+      if(text){research+='\n'+text;ok=true;}
+      s.performanceFieldStatus=s.performanceFieldStatus||{};
+      for(const [field,label] of PERIODS){
+        const value=await capturePeriod(overview,label);
+        if(value!=null&&Number.isFinite(value)){
+          s[field]=Number(value.toFixed(2));
+          s.performanceFieldStatus[field]='primary-listing-captured';
+          console.log(`${label}: ${s[field]}% (${cfg.market.toUpperCase()} primary)`);
+        }
+      }
+    }
+  } finally { await overview.close(); }
+
+  for(const suffix of ['financials/', 'statistics/']){
     const p=await context.newPage();
     try{const url=`https://stockanalysis.com/quote/${cfg.market}/${cfg.primaryTicker}/${suffix}`; if(await goto(p,url)){const text=await p.locator('body').innerText().catch(()=>''); if(text){research+='\n'+text;ok=true;}}}finally{await p.close();}
   }
@@ -86,14 +145,29 @@ for(const [ticker,cfg] of Object.entries(CONFIG)){
   try{const url=`https://stockanalysis.com/quote/${cfg.market}/${cfg.primaryTicker}/dividend/`; if(await goto(p,url)){dividend=await p.locator('body').innerText().catch(()=>''); row=await firstDividendRow(p);}}finally{await p.close();}
   if(!ok){s.primaryListingResearchStatus='scraper-error'; console.warn(`${ticker}: TTSE research failed; preserving prior values`); continue;}
 
+  const historyPage=await context.newPage();
+  try{
+    const url=`https://stockanalysis.com/quote/${cfg.market}/${cfg.primaryTicker}/history/`;
+    if(await goto(historyPage,url)){
+      await historyPage.waitForSelector('table tbody tr',{timeout:12000}).catch(()=>{});
+      const rows=await extractHistoryRows(historyPage);
+      const w1=historicalReturn(rows,7);
+      if(w1!=null&&Number.isFinite(w1)){
+        s.w1=Number(w1.toFixed(2));
+        s.performanceFieldStatus=s.performanceFieldStatus||{};
+        s.performanceFieldStatus.w1='primary-listing-history-derived';
+        console.log(`1W: ${s.w1}% (${cfg.market.toUpperCase()} history)`);
+      }
+    }
+  } finally { await historyPage.close(); }
+
   const st=parseStats(research), dv=parseDividend(dividend), jmdPrice=num(s.price);
   s.pe=st.pe ?? s.pe; s.forwardPe=st.forwardPe ?? s.forwardPe; s.pb=st.pb ?? s.pb; s.roe=st.roe ?? s.roe; s.roa=st.roa ?? s.roa;
   s.epsGrowth=st.epsGrowth ?? s.epsGrowth; s.revenueGrowth=st.revenueGrowth ?? s.revenueGrowth; s.netIncomeGrowth=st.netIncomeGrowth ?? s.netIncomeGrowth; s.debtEquity=st.debtEquity ?? s.debtEquity;
   s.payoutRatio=dv.payout ?? s.payoutRatio; s.dividendGrowth=dv.growth ?? s.dividendGrowth;
 
-  // Ratios/yield are currency-neutral. For JSE valuation fields, derive JMD-equivalent
-  // per-share values from the JSE price and the primary-listing ratios rather than
-  // trusting StockAnalysis's faulty JMSE currency conversion for GHL.
+  // Keep the actual JSE/JMD share price, but use the primary TTSE listing for
+  // company ratios, fundamentals, dividends, and performance/history context.
   if(jmdPrice && st.pe>0) s.epsTtm=Number((jmdPrice/st.pe).toFixed(4));
   if(jmdPrice && st.pb>0) s.bookValuePerShare=Number((jmdPrice/st.pb).toFixed(4));
   if(jmdPrice && dv.yield!=null){s.trailingYield=Number(dv.yield.toFixed(2)); s.ttmDps=Number((jmdPrice*dv.yield/100).toFixed(4)); s.dividendDataStatus='validated-primary-listing';}
@@ -103,15 +177,15 @@ for(const [ticker,cfg] of Object.entries(CONFIG)){
   s.nativeDividendCurrency=cfg.nativeCurrency;
   s.primaryListingResearchStatus='ok';
 
-  // Convert latest native dividend to a JMD-equivalent amount using the ratio of
-  // latest dividend to annual DPS, applied to the JMD-equivalent annual DPS.
   if(row?.amount!=null && dv.annualDps>0 && s.ttmDps!=null){
     s.latestDividend=Number((s.ttmDps*(row.amount/dv.annualDps)).toFixed(4));
     s.latestDividendDataStatus='primary-listing-derived-jmd';
     s.exDate=row.exDate || dv.exDate || s.exDate; s.recordDate=row.recordDate || s.recordDate; s.payDate=row.payDate || s.payDate;
     s.dividendStatus=`Primary listing ${cfg.market.toUpperCase()} dividend; JMD amount derived for JSE comparison`;
   }
+  s.performanceSource=`StockAnalysis ${cfg.market.toUpperCase()} primary listing`;
   s.researchSource=`StockAnalysis ${cfg.market.toUpperCase()} primary listing`;
+  s.sa=`https://stockanalysis.com/quote/${cfg.market}/${cfg.primaryTicker}/`;
   s.researchUpdated=new Date().toISOString();
   console.log(`PE=${s.pe} PB=${s.pb} ROE=${s.roe} nativeEPS=${st.eps} JMD-equiv EPS=${s.epsTtm} nativeDPS=${dv.annualDps} JMD-equiv DPS=${s.ttmDps} yield=${s.trailingYield}% latestNative=${row?.amount ?? 'N/A'} latestJMD=${s.latestDividend ?? 'N/A'}`);
 }
