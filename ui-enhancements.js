@@ -10,108 +10,44 @@
   const clamp=v=>Math.max(0,Math.min(100,Math.round(v)));
   const avg=a=>{const v=a.filter(x=>x!=null&&Number.isFinite(Number(x))).map(Number);return v.length?v.reduce((x,y)=>x+y,0)/v.length:null;};
   const metric=(v,rules)=>{if(v==null||!Number.isFinite(Number(v)))return null;v=Number(v);for(const [test,score] of rules)if(test(v))return score;return 50;};
-  function styleTags(s){
-    const tags=[];
-    const value=(s.pb!=null&&s.pb<0.8)||(s.pe!=null&&s.pe>0&&s.pe<10)||(s.bookDiscountPct!=null&&s.bookDiscountPct>=20);
-    const income=(s.trailingYield||0)>=3;
-    const growth=(s.epsGrowth||0)>=12||(s.revenueGrowth||0)>=10||(s.y1||0)>=20;
-    if(value)tags.push('Value'); if(income)tags.push('Income'); if(growth)tags.push('Growth');
-    if(!tags.length)tags.push('Core');
-    return tags.slice(0,3);
-  }
-  function valuationSignal(s){
-    const status=String(s.bookValueStatus||'').toUpperCase();
-    if(!status)return 'N/A';
-    if(status.includes('DEEP'))return 'Deep Value';
-    if(status.includes('SIGNIFICANT DISCOUNT')||status.includes('BELOW BOOK')||status.includes('DISCOUNT'))return 'Undervalued';
-    if(status.includes('NEAR BOOK')||status.includes('AT BOOK')||status.includes('FAIR'))return 'Fair Value';
-    if(status.includes('HIGH PREMIUM')||status.includes('EXTREME PREMIUM'))return 'Expensive';
-    if(status.includes('PREMIUM'))return 'Premium';
-    return s.bookValueStatus.replace(/\b\w/g,c=>c.toUpperCase()).replace(/\B\w/g,c=>c.toLowerCase());
-  }
+  const HELP={
+    valuation:'Valuation score (0–100): combines P/E, P/B, modeled fair-value upside and buy-zone position. Higher generally means a more attractive entry valuation. P/B is more important for banks, insurers, investment companies and REITs.',
+    quality:'Quality score (0–100): based on ROE and ROA. Higher sustainable profitability generally scores better; unusually high values still require business context.',
+    growth:'Growth score (0–100): combines EPS growth, revenue growth and net-income growth. Higher positive, durable growth scores better; contractions reduce the score.',
+    financial:'Financial-strength score (0–100): uses debt/equity, current ratio and ROA. Lower sensible leverage and adequate liquidity score better. Current ratio is de-emphasized for financial institutions.',
+    dividend:'Dividend score (0–100): combines trailing yield, payout ratio and dividend growth. A high yield alone is not enough; sustainability and dividend direction matter.',
+    momentum:'Momentum score (0–100): combines 1M, 3M, 6M and 1Y price performance. Higher means stronger broad price trend; it is a timing signal, not a valuation measure.',
+    pe:'P/E = share price ÷ earnings per share. It shows how much investors pay for each dollar of earnings. Lower can mean cheaper, but very low P/E may reflect weak or risky earnings; compare with the sector and growth outlook.',
+    pb:'P/B = share price ÷ book value per share. Below 1.0× means price is below reported book value. This can signal undervaluation or genuine business risk. It is especially useful for banks, insurers and asset-heavy businesses.',
+    roe:'ROE = net income ÷ shareholders’ equity. It measures how effectively equity capital generates profit. Higher sustainable ROE is generally better, but leverage can inflate it.',
+    roa:'ROA = net income ÷ total assets. It measures profit generated from the asset base. Higher is generally better, but normal levels differ significantly by sector.',
+    epsGrowth:'EPS growth measures the change in earnings per share, normally versus the comparable prior period. Positive sustainable growth is generally favorable; one-off earnings can distort it.',
+    payout:'Payout ratio = dividends ÷ earnings. It indicates how much profit is distributed to shareholders. A moderate payout can support sustainability; above 100% may mean dividends exceed current earnings.',
+    divGrowth:'Dividend growth measures the change in dividends paid per share. Positive growth can indicate improving shareholder income, but past increases do not guarantee future dividends.',
+    yield:'Dividend yield = trailing annual dividend per share ÷ current share price. It estimates cash income relative to price, but dividends are not guaranteed and stale dividends can make the yield misleading.',
+    book:'Price vs Book compares market price with reported book value per share. A discount may offer value, but the market can price a stock below book because of weak profitability, asset-quality concerns or poor outlook.',
+    signal:'Valuation Signal summarizes the valuation lens from Deep Value through Expensive. It is separate from the primary Buy/Hold/Avoid rating because a cheap stock can still have weak fundamentals.'
+  };
+  const help=(label,key)=>`<span class="expert-help-label">${label}<button type="button" class="expert-help" aria-label="Explain ${label}" data-tooltip="${HELP[key]}">?</button></span>`;
+  function styleTags(s){const tags=[];const value=(s.pb!=null&&s.pb<0.8)||(s.pe!=null&&s.pe>0&&s.pe<10)||(s.bookDiscountPct!=null&&s.bookDiscountPct>=20);const income=(s.trailingYield||0)>=3;const growth=(s.epsGrowth||0)>=12||(s.revenueGrowth||0)>=10||(s.y1||0)>=20;if(value)tags.push('Value');if(income)tags.push('Income');if(growth)tags.push('Growth');if(!tags.length)tags.push('Core');return tags.slice(0,3);}
+  function valuationSignal(s){const status=String(s.bookValueStatus||'').toUpperCase();if(!status)return'N/A';if(status.includes('DEEP'))return'Deep Value';if(status.includes('SIGNIFICANT DISCOUNT')||status.includes('BELOW BOOK')||status.includes('DISCOUNT'))return'Undervalued';if(status.includes('NEAR BOOK')||status.includes('AT BOOK')||status.includes('FAIR'))return'Fair Value';if(status.includes('HIGH PREMIUM')||status.includes('EXTREME PREMIUM'))return'Expensive';if(status.includes('PREMIUM'))return'Premium';return s.bookValueStatus.replace(/\b\w/g,c=>c.toUpperCase()).replace(/\B\w/g,c=>c.toLowerCase());}
   function expertScores(s){
-    const sector=String(s.sector||'').toLowerCase();
-    const bookSensitive=/bank|financial|insurance|investment|real estate|reit/.test(sector);
-    const peScore=metric(s.pe,[[v=>v>0&&v<8,95],[v=>v<11,85],[v=>v<15,70],[v=>v<20,55],[v=>v<25,40],[v=>v>=25,25]]);
-    const pbScore=metric(s.pb,bookSensitive?[[v=>v<.6,95],[v=>v<.8,88],[v=>v<1,78],[v=>v<1.3,62],[v=>v<1.7,45],[v=>v>=1.7,28]]:[[v=>v<.8,85],[v=>v<1.2,75],[v=>v<2,62],[v=>v<4,48],[v=>v>=4,35]]);
-    const zoneScore=s.zoneStatus==='below'?92:s.zoneStatus==='in'?82:s.zoneStatus==='above'?42:null;
-    const fairScore=s.fairValue!=null&&s.price!=null&&s.fairValue>0?clamp(50+((s.fairValue/s.price)-1)*120):null;
-    const valuation=avg([peScore,pbScore,zoneScore,fairScore]);
-
-    const roeScore=metric(s.roe,[[v=>v>=20,95],[v=>v>=15,85],[v=>v>=10,72],[v=>v>=7,58],[v=>v>=0,42],[v=>v<0,15]]);
-    const roaScore=metric(s.roa,[[v=>v>=8,92],[v=>v>=5,82],[v=>v>=3,70],[v=>v>=1,58],[v=>v>=0,42],[v=>v<0,15]]);
-    const quality=avg([roeScore,roaScore]);
-
-    const epsGrowthScore=metric(s.epsGrowth,[[v=>v>=25,95],[v=>v>=15,85],[v=>v>=8,75],[v=>v>=0,60],[v=>v>=-10,42],[v=>v<-10,22]]);
-    const revGrowthScore=metric(s.revenueGrowth,[[v=>v>=15,90],[v=>v>=8,80],[v=>v>=3,68],[v=>v>=0,58],[v=>v>=-8,42],[v=>v<-8,25]]);
-    const niGrowthScore=metric(s.netIncomeGrowth,[[v=>v>=20,92],[v=>v>=10,82],[v=>v>=3,68],[v=>v>=0,58],[v=>v>=-10,42],[v=>v<-10,22]]);
-    const growth=avg([epsGrowthScore,revGrowthScore,niGrowthScore]);
-
-    const currentScore=bookSensitive?null:metric(s.currentRatio,[[v=>v>=1.5&&v<=3.5,85],[v=>v>=1.1&&v<1.5,68],[v=>v>3.5,72],[v=>v>=.8,45],[v=>v<.8,25]]);
-    const debtScore=metric(s.debtEquity,[[v=>v<=.4,90],[v=>v<=.8,78],[v=>v<=1.3,63],[v=>v<=2,45],[v=>v>2,25]]);
-    const financial=avg([currentScore,debtScore,roaScore]);
-
-    const yieldScore=metric(s.trailingYield,[[v=>v>=7,95],[v=>v>=5,88],[v=>v>=3.5,78],[v=>v>=2,62],[v=>v>0,45],[v=>v===0,20]]);
-    const payoutScore=metric(s.payoutRatio,[[v=>v>=20&&v<=55,90],[v=>v>55&&v<=75,75],[v=>v<20&&v>=0,70],[v=>v>75&&v<=100,52],[v=>v>100,22]]);
-    const divGrowthScore=metric(s.dividendGrowth,[[v=>v>=10,90],[v=>v>=5,80],[v=>v>0,68],[v=>v===0,55],[v=>v<0,30]]);
-    const dividend=avg([yieldScore,payoutScore,divGrowthScore]);
-
-    const m1=metric(s.m1,[[v=>v>=15,82],[v=>v>=5,76],[v=>v>=0,64],[v=>v>=-5,55],[v=>v>=-15,38],[v=>v<-15,22]]);
-    const m3=metric(s.m3,[[v=>v>=25,90],[v=>v>=10,82],[v=>v>=0,68],[v=>v>=-10,48],[v=>v<-10,28]]);
-    const m6=metric(s.m6,[[v=>v>=35,92],[v=>v>=15,84],[v=>v>=0,68],[v=>v>=-15,45],[v=>v<-15,25]]);
-    const y1=metric(s.y1,[[v=>v>=50,92],[v=>v>=20,85],[v=>v>=5,72],[v=>v>=0,62],[v=>v>=-15,45],[v=>v<-15,25]]);
-    const momentum=avg([m1,m3,m6,y1]);
-    return {valuation,quality,growth,financial,dividend,momentum};
+    const sector=String(s.sector||'').toLowerCase();const bookSensitive=/bank|financial|insurance|investment|real estate|reit/.test(sector);
+    const peScore=metric(s.pe,[[v=>v>0&&v<8,95],[v=>v<11,85],[v=>v<15,70],[v=>v<20,55],[v=>v<25,40],[v=>v>=25,25]]);const pbScore=metric(s.pb,bookSensitive?[[v=>v<.6,95],[v=>v<.8,88],[v=>v<1,78],[v=>v<1.3,62],[v=>v<1.7,45],[v=>v>=1.7,28]]:[[v=>v<.8,85],[v=>v<1.2,75],[v=>v<2,62],[v=>v<4,48],[v=>v>=4,35]]);const zoneScore=s.zoneStatus==='below'?92:s.zoneStatus==='in'?82:s.zoneStatus==='above'?42:null;const fairScore=s.fairValue!=null&&s.price!=null&&s.fairValue>0?clamp(50+((s.fairValue/s.price)-1)*120):null;const valuation=avg([peScore,pbScore,zoneScore,fairScore]);
+    const roeScore=metric(s.roe,[[v=>v>=20,95],[v=>v>=15,85],[v=>v>=10,72],[v=>v>=7,58],[v=>v>=0,42],[v=>v<0,15]]);const roaScore=metric(s.roa,[[v=>v>=8,92],[v=>v>=5,82],[v=>v>=3,70],[v=>v>=1,58],[v=>v>=0,42],[v=>v<0,15]]);const quality=avg([roeScore,roaScore]);
+    const epsGrowthScore=metric(s.epsGrowth,[[v=>v>=25,95],[v=>v>=15,85],[v=>v>=8,75],[v=>v>=0,60],[v=>v>=-10,42],[v=>v<-10,22]]);const revGrowthScore=metric(s.revenueGrowth,[[v=>v>=15,90],[v=>v>=8,80],[v=>v>=3,68],[v=>v>=0,58],[v=>v>=-8,42],[v=>v<-8,25]]);const niGrowthScore=metric(s.netIncomeGrowth,[[v=>v>=20,92],[v=>v>=10,82],[v=>v>=3,68],[v=>v>=0,58],[v=>v>=-10,42],[v=>v<-10,22]]);const growth=avg([epsGrowthScore,revGrowthScore,niGrowthScore]);
+    const currentScore=bookSensitive?null:metric(s.currentRatio,[[v=>v>=1.5&&v<=3.5,85],[v=>v>=1.1&&v<1.5,68],[v=>v>3.5,72],[v=>v>=.8,45],[v=>v<.8,25]]);const debtScore=metric(s.debtEquity,[[v=>v<=.4,90],[v=>v<=.8,78],[v=>v<=1.3,63],[v=>v<=2,45],[v=>v>2,25]]);const financial=avg([currentScore,debtScore,roaScore]);
+    const yieldScore=metric(s.trailingYield,[[v=>v>=7,95],[v=>v>=5,88],[v=>v>=3.5,78],[v=>v>=2,62],[v=>v>0,45],[v=>v===0,20]]);const payoutScore=metric(s.payoutRatio,[[v=>v>=20&&v<=55,90],[v=>v>55&&v<=75,75],[v=>v<20&&v>=0,70],[v=>v>75&&v<=100,52],[v=>v>100,22]]);const divGrowthScore=metric(s.dividendGrowth,[[v=>v>=10,90],[v=>v>=5,80],[v=>v>0,68],[v=>v===0,55],[v=>v<0,30]]);const dividend=avg([yieldScore,payoutScore,divGrowthScore]);
+    const m1=metric(s.m1,[[v=>v>=15,82],[v=>v>=5,76],[v=>v>=0,64],[v=>v>=-5,55],[v=>v>=-15,38],[v=>v<-15,22]]);const m3=metric(s.m3,[[v=>v>=25,90],[v=>v>=10,82],[v=>v>=0,68],[v=>v>=-10,48],[v=>v<-10,28]]);const m6=metric(s.m6,[[v=>v>=35,92],[v=>v>=15,84],[v=>v>=0,68],[v=>v>=-15,45],[v=>v<-15,25]]);const y1=metric(s.y1,[[v=>v>=50,92],[v=>v>=20,85],[v=>v>=5,72],[v=>v>=0,62],[v=>v>=-15,45],[v=>v<-15,25]]);const momentum=avg([m1,m3,m6,y1]);return{valuation,quality,growth,financial,dividend,momentum};
   }
-  function scoreTone(v){if(v==null)return'neutral';if(v>=75)return'positive';if(v>=55)return'amber';return'negative';}
-  function scoreLabel(v){if(v==null)return'N/A';return String(clamp(v));}
-  function expertSummary(s,sc){
-    const entries=Object.entries(sc).filter(([,v])=>v!=null).sort((a,b)=>b[1]-a[1]);
-    if(!entries.length)return 'Insufficient data for a multi-factor expert read.';
-    const names={valuation:'valuation',quality:'business quality',growth:'growth',financial:'financial strength',dividend:'income',momentum:'momentum'};
-    const strong=entries.filter(([,v])=>v>=75).slice(0,2).map(([k])=>names[k]);
-    const weak=entries.filter(([,v])=>v<50).slice(0,1).map(([k])=>names[k]);
-    let text=strong.length?`Strengths: ${strong.join(' + ')}`:'Balanced profile';
-    if(weak.length)text+=`; watch ${weak[0]}`;
-    if(s.zoneStatus==='above')text+='; current price is above the preferred buy zone';
-    else if(s.zoneStatus==='in')text+='; current price is in the preferred buy zone';
-    else if(s.zoneStatus==='below')text+='; price is below the modeled buy zone';
-    return text+'.';
-  }
-  function scorecardHtml(s){
-    const sc=expertScores(s);
-    const labels=[['Valuation','valuation'],['Quality','quality'],['Growth','growth'],['Financial','financial'],['Dividend','dividend'],['Momentum','momentum']];
-    return `<div class="expert-scorecard"><div class="expert-score-head"><strong>Expert scorecard</strong><span>existing data • 0–100 lenses</span></div><div class="expert-score-grid">${labels.map(([label,key])=>{const v=sc[key];return `<div class="expert-score-item"><div><small>${label}</small><strong class="${scoreTone(v)}">${scoreLabel(v)}</strong></div><div class="expert-meter"><i class="${scoreTone(v)}" style="width:${v==null?0:clamp(v)}%"></i></div></div>`;}).join('')}</div><p class="expert-read">${expertSummary(s,sc)}</p></div>`;
-  }
+  function scoreTone(v){if(v==null)return'neutral';if(v>=75)return'positive';if(v>=55)return'amber';return'negative';}function scoreLabel(v){if(v==null)return'N/A';return String(clamp(v));}
+  function expertSummary(s,sc){const entries=Object.entries(sc).filter(([,v])=>v!=null).sort((a,b)=>b[1]-a[1]);if(!entries.length)return'Insufficient data for a multi-factor expert read.';const names={valuation:'valuation',quality:'business quality',growth:'growth',financial:'financial strength',dividend:'income',momentum:'momentum'};const strong=entries.filter(([,v])=>v>=75).slice(0,2).map(([k])=>names[k]);const weak=entries.filter(([,v])=>v<50).slice(0,1).map(([k])=>names[k]);let text=strong.length?`Strengths: ${strong.join(' + ')}`:'Balanced profile';if(weak.length)text+=`; watch ${weak[0]}`;if(s.zoneStatus==='above')text+='; current price is above the preferred buy zone';else if(s.zoneStatus==='in')text+='; current price is in the preferred buy zone';else if(s.zoneStatus==='below')text+='; price is below the modeled buy zone';return text+'.';}
+  function scorecardHtml(s){const sc=expertScores(s);const labels=[['Valuation','valuation'],['Quality','quality'],['Growth','growth'],['Financial','financial'],['Dividend','dividend'],['Momentum','momentum']];return `<div class="expert-scorecard"><div class="expert-score-head"><strong>Expert scorecard</strong><span>existing data • 0–100 lenses</span></div><div class="expert-score-grid">${labels.map(([label,key])=>{const v=sc[key];return `<div class="expert-score-item"><div>${help(label,key)}<strong class="${scoreTone(v)}">${scoreLabel(v)}</strong></div><div class="expert-meter"><i class="${scoreTone(v)}" style="width:${v==null?0:clamp(v)}%"></i></div></div>`;}).join('')}</div><p class="expert-read">${expertSummary(s,sc)}</p></div>`;}
   const styleHtml=s=>`<div class="investor-badges"><span class="sector-badge">${s.sector||'Other'}</span>${styleTags(s).map(x=>`<span class="style-badge ${x.toLowerCase()}">${x}</span>`).join('')}</div>`;
-  function decorateCards(){
-    document.querySelectorAll('.stock-card').forEach(card=>{
-      const ticker=card.querySelector('h3')?.textContent?.trim(); const s=byTicker.get(ticker); if(!s)return;
-      const company=card.querySelector('.company');
-      if(company&&!card.querySelector('.investor-badges'))company.insertAdjacentHTML('afterend',styleHtml(s));
-    });
-  }
-  function fixTtmCurrency(){
-    document.querySelectorAll('#stockTableBody tr').forEach(tr=>{
-      const ticker=tr.querySelector('.ticker')?.textContent?.trim(); const s=byTicker.get(ticker); if(!s)return;
-      const cells=tr.querySelectorAll('td'); if(cells[9])cells[9].textContent=dpsMoney(s);
-    });
-  }
-  function renderFreshCapital(){
-    const el=document.getElementById('rankingList'); if(!el)return;
-    const rows=[...tracked()].sort((a,b)=>(a.rank??999)-(b.rank??999));
-    if(!rows.length){el.innerHTML='<p class="neutral">Add tickers to build your Fresh Capital ranking.</p>';return;}
-    el.innerHTML=rows.map((s,i)=>{
-      const discount=s.bookDiscountPct==null?'Book N/A':s.bookDiscountPct>=0?`${fmt(s.bookDiscountPct,0)}% below book`:`${fmt(Math.abs(s.bookDiscountPct),0)}% above book`;
-      const zone=s.zoneStatus==='in'?'IN ZONE':s.zoneStatus==='below'?'BELOW ZONE':'ABOVE ZONE';
-      return `<article class="fresh-card"><div class="fresh-rank">#${i+1}</div><div class="fresh-main"><div class="fresh-title"><div><strong>${s.ticker}</strong><span>${s.company||''}</span></div><span class="rating ${s.ratingClass||'hold'}">${s.rating||'N/A'}</span></div>${styleHtml(s)}<div class="fresh-metrics"><span><small>Price</small><strong>J$${fmt(s.price,2)}</strong></span><span><small>Yield</small><strong>${fmt(s.trailingYield,2)}%</strong></span><span><small>P/B</small><strong>${s.pb==null?'N/A':fmt(s.pb,2)+'×'}</strong></span><span><small>Book</small><strong>${discount}</strong></span></div>${scorecardHtml(s)}<div class="fresh-footer"><p>${s.reason||''}</p><span class="zone-status ${s.zoneStatus||'above'}">${zone}</span></div><div class="fresh-secondary">Valuation signal: <strong>${valuationSignal(s)}</strong> <span>• sector-aware</span></div></div></article>`;
-    }).join('');
-  }
-  let scheduled=false;
-  function apply(){if(scheduled)return;scheduled=true;requestAnimationFrame(()=>{scheduled=false;decorateCards();fixTtmCurrency();renderFreshCapital();});}
-  window.addEventListener('load',apply);
-  window.addEventListener('storage',apply);
-  document.addEventListener('click',()=>setTimeout(apply,30));
-  const target=document.querySelector('main')||document.body;
-  new MutationObserver(muts=>{if(muts.some(m=>[...m.addedNodes].some(n=>n.nodeType===1&&!n.classList?.contains('fresh-card'))))apply();}).observe(target,{childList:true,subtree:true});
+  function decorateCards(){document.querySelectorAll('.stock-card').forEach(card=>{const ticker=card.querySelector('h3')?.textContent?.trim();const s=byTicker.get(ticker);if(!s)return;const company=card.querySelector('.company');if(company&&!card.querySelector('.investor-badges'))company.insertAdjacentHTML('afterend',styleHtml(s));});}
+  function fixTtmCurrency(){document.querySelectorAll('#stockTableBody tr').forEach(tr=>{const ticker=tr.querySelector('.ticker')?.textContent?.trim();const s=byTicker.get(ticker);if(!s)return;const cells=tr.querySelectorAll('td');if(cells[9])cells[9].textContent=dpsMoney(s);});}
+  function renderFreshCapital(){const el=document.getElementById('rankingList');if(!el)return;const rows=[...tracked()].sort((a,b)=>(a.rank??999)-(b.rank??999));if(!rows.length){el.innerHTML='<p class="neutral">Add tickers to build your Fresh Capital ranking.</p>';return;}el.innerHTML=rows.map((s,i)=>{const discount=s.bookDiscountPct==null?'Book N/A':s.bookDiscountPct>=0?`${fmt(s.bookDiscountPct,0)}% below book`:`${fmt(Math.abs(s.bookDiscountPct),0)}% above book`;const zone=s.zoneStatus==='in'?'IN ZONE':s.zoneStatus==='below'?'BELOW ZONE':'ABOVE ZONE';return `<article class="fresh-card"><div class="fresh-rank">#${i+1}</div><div class="fresh-main"><div class="fresh-title"><div><strong>${s.ticker}</strong><span>${s.company||''}</span></div><span class="rating ${s.ratingClass||'hold'}">${s.rating||'N/A'}</span></div>${styleHtml(s)}<div class="fresh-metrics"><span><small>Price</small><strong>J$${fmt(s.price,2)}</strong></span><span>${help('Yield','yield')}<strong>${fmt(s.trailingYield,2)}%</strong></span><span>${help('P/B','pb')}<strong>${s.pb==null?'N/A':fmt(s.pb,2)+'×'}</strong></span><span>${help('Book','book')}<strong>${discount}</strong></span></div>${scorecardHtml(s)}<div class="fresh-footer"><p>${s.reason||''}</p><span class="zone-status ${s.zoneStatus||'above'}">${zone}</span></div><div class="fresh-secondary">${help('Valuation signal','signal')} <strong>${valuationSignal(s)}</strong> <span>• sector-aware</span></div></div></article>`;}).join('');}
+  function bindHelp(){document.addEventListener('click',e=>{const btn=e.target.closest('.expert-help');if(btn){e.preventDefault();e.stopPropagation();const open=btn.classList.contains('open');document.querySelectorAll('.expert-help.open').forEach(x=>x.classList.remove('open'));if(!open)btn.classList.add('open');return;}document.querySelectorAll('.expert-help.open').forEach(x=>x.classList.remove('open'));});}
+  let scheduled=false;function apply(){if(scheduled)return;scheduled=true;requestAnimationFrame(()=>{scheduled=false;decorateCards();fixTtmCurrency();renderFreshCapital();});}
+  bindHelp();window.addEventListener('load',apply);window.addEventListener('storage',apply);document.addEventListener('click',()=>setTimeout(apply,30));const target=document.querySelector('main')||document.body;new MutationObserver(muts=>{if(muts.some(m=>[...m.addedNodes].some(n=>n.nodeType===1&&!n.classList?.contains('fresh-card'))))apply();}).observe(target,{childList:true,subtree:true});
 })();
