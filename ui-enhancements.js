@@ -7,6 +7,9 @@
   const curPrefix=c=>c==='TTD'?'TT$':c==='USD'?'US$':'J$';
   const dpsMoney=s=>s.ttmDps==null?'N/A':`${curPrefix(s.ttmDpsCurrency||'JMD')}${fmt(s.ttmDps,2)}`;
   const tracked=()=>{let a=[];try{a=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]')}catch{}const set=new Set(Array.isArray(a)?a:[]);return DATA.stocks.filter(s=>set.has(s.ticker));};
+  const clamp=v=>Math.max(0,Math.min(100,Math.round(v)));
+  const avg=a=>{const v=a.filter(x=>x!=null&&Number.isFinite(Number(x))).map(Number);return v.length?v.reduce((x,y)=>x+y,0)/v.length:null;};
+  const metric=(v,rules)=>{if(v==null||!Number.isFinite(Number(v)))return null;v=Number(v);for(const [test,score] of rules)if(test(v))return score;return 50;};
   function styleTags(s){
     const tags=[];
     const value=(s.pb!=null&&s.pb<0.8)||(s.pe!=null&&s.pe>0&&s.pe<10)||(s.bookDiscountPct!=null&&s.bookDiscountPct>=20);
@@ -25,6 +28,60 @@
     if(status.includes('HIGH PREMIUM')||status.includes('EXTREME PREMIUM'))return 'Expensive';
     if(status.includes('PREMIUM'))return 'Premium';
     return s.bookValueStatus.replace(/\b\w/g,c=>c.toUpperCase()).replace(/\B\w/g,c=>c.toLowerCase());
+  }
+  function expertScores(s){
+    const sector=String(s.sector||'').toLowerCase();
+    const bookSensitive=/bank|financial|insurance|investment|real estate|reit/.test(sector);
+    const peScore=metric(s.pe,[[v=>v>0&&v<8,95],[v=>v<11,85],[v=>v<15,70],[v=>v<20,55],[v=>v<25,40],[v=>v>=25,25]]);
+    const pbScore=metric(s.pb,bookSensitive?[[v=>v<.6,95],[v=>v<.8,88],[v=>v<1,78],[v=>v<1.3,62],[v=>v<1.7,45],[v=>v>=1.7,28]]:[[v=>v<.8,85],[v=>v<1.2,75],[v=>v<2,62],[v=>v<4,48],[v=>v>=4,35]]);
+    const zoneScore=s.zoneStatus==='below'?92:s.zoneStatus==='in'?82:s.zoneStatus==='above'?42:null;
+    const fairScore=s.fairValue!=null&&s.price!=null&&s.fairValue>0?clamp(50+((s.fairValue/s.price)-1)*120):null;
+    const valuation=avg([peScore,pbScore,zoneScore,fairScore]);
+
+    const roeScore=metric(s.roe,[[v=>v>=20,95],[v=>v>=15,85],[v=>v>=10,72],[v=>v>=7,58],[v=>v>=0,42],[v=>v<0,15]]);
+    const roaScore=metric(s.roa,[[v=>v>=8,92],[v=>v>=5,82],[v=>v>=3,70],[v=>v>=1,58],[v=>v>=0,42],[v=>v<0,15]]);
+    const quality=avg([roeScore,roaScore]);
+
+    const epsGrowthScore=metric(s.epsGrowth,[[v=>v>=25,95],[v=>v>=15,85],[v=>v>=8,75],[v=>v>=0,60],[v=>v>=-10,42],[v=>v<-10,22]]);
+    const revGrowthScore=metric(s.revenueGrowth,[[v=>v>=15,90],[v=>v>=8,80],[v=>v>=3,68],[v=>v>=0,58],[v=>v>=-8,42],[v=>v<-8,25]]);
+    const niGrowthScore=metric(s.netIncomeGrowth,[[v=>v>=20,92],[v=>v>=10,82],[v=>v>=3,68],[v=>v>=0,58],[v=>v>=-10,42],[v=>v<-10,22]]);
+    const growth=avg([epsGrowthScore,revGrowthScore,niGrowthScore]);
+
+    const currentScore=bookSensitive?null:metric(s.currentRatio,[[v=>v>=1.5&&v<=3.5,85],[v=>v>=1.1&&v<1.5,68],[v=>v>3.5,72],[v=>v>=.8,45],[v=>v<.8,25]]);
+    const debtScore=metric(s.debtEquity,[[v=>v<=.4,90],[v=>v<=.8,78],[v=>v<=1.3,63],[v=>v<=2,45],[v=>v>2,25]]);
+    const financial=avg([currentScore,debtScore,roaScore]);
+
+    const yieldScore=metric(s.trailingYield,[[v=>v>=7,95],[v=>v>=5,88],[v=>v>=3.5,78],[v=>v>=2,62],[v=>v>0,45],[v=>v===0,20]]);
+    const payoutScore=metric(s.payoutRatio,[[v=>v>=20&&v<=55,90],[v=>v>55&&v<=75,75],[v=>v<20&&v>=0,70],[v=>v>75&&v<=100,52],[v=>v>100,22]]);
+    const divGrowthScore=metric(s.dividendGrowth,[[v=>v>=10,90],[v=>v>=5,80],[v=>v>0,68],[v=>v===0,55],[v=>v<0,30]]);
+    const dividend=avg([yieldScore,payoutScore,divGrowthScore]);
+
+    const m1=metric(s.m1,[[v=>v>=15,82],[v=>v>=5,76],[v=>v>=0,64],[v=>v>=-5,55],[v=>v>=-15,38],[v=>v<-15,22]]);
+    const m3=metric(s.m3,[[v=>v>=25,90],[v=>v>=10,82],[v=>v>=0,68],[v=>v>=-10,48],[v=>v<-10,28]]);
+    const m6=metric(s.m6,[[v=>v>=35,92],[v=>v>=15,84],[v=>v>=0,68],[v=>v>=-15,45],[v=>v<-15,25]]);
+    const y1=metric(s.y1,[[v=>v>=50,92],[v=>v>=20,85],[v=>v>=5,72],[v=>v>=0,62],[v=>v>=-15,45],[v=>v<-15,25]]);
+    const momentum=avg([m1,m3,m6,y1]);
+    return {valuation,quality,growth,financial,dividend,momentum};
+  }
+  function scoreTone(v){if(v==null)return'neutral';if(v>=75)return'positive';if(v>=55)return'amber';return'negative';}
+  function scoreLabel(v){if(v==null)return'N/A';return String(clamp(v));}
+  function expertSummary(s,sc){
+    const entries=Object.entries(sc).filter(([,v])=>v!=null).sort((a,b)=>b[1]-a[1]);
+    if(!entries.length)return 'Insufficient data for a multi-factor expert read.';
+    const names={valuation:'valuation',quality:'business quality',growth:'growth',financial:'financial strength',dividend:'income',momentum:'momentum'};
+    const strong=entries.filter(([,v])=>v>=75).slice(0,2).map(([k])=>names[k]);
+    const weak=entries.filter(([,v])=>v<50).slice(0,1).map(([k])=>names[k]);
+    let text=strong.length?`Strengths: ${strong.join(' + ')}`:'Balanced profile';
+    if(weak.length)text+=`; watch ${weak[0]}`;
+    if(s.zoneStatus==='above')text+='; current price is above the preferred buy zone';
+    else if(s.zoneStatus==='in')text+='; current price is in the preferred buy zone';
+    else if(s.zoneStatus==='below')text+='; price is below the modeled buy zone';
+    return text+'.';
+  }
+  function scorecardHtml(s){
+    const sc=expertScores(s);
+    const labels=[['Valuation','valuation'],['Quality','quality'],['Growth','growth'],['Financial','financial'],['Dividend','dividend'],['Momentum','momentum']];
+    return `<div class="expert-scorecard"><div class="expert-score-head"><strong>Expert scorecard</strong><span>existing data • 0–100 lenses</span></div><div class="expert-score-grid">${labels.map(([label,key])=>{const v=sc[key];return `<div class="expert-score-item"><div><small>${label}</small><strong class="${scoreTone(v)}">${scoreLabel(v)}</strong></div><div class="expert-meter"><i class="${scoreTone(v)}" style="width:${v==null?0:clamp(v)}%"></i></div></div>`;}).join('')}</div><p class="expert-read">${expertSummary(s,sc)}</p></div>`;
   }
   const styleHtml=s=>`<div class="investor-badges"><span class="sector-badge">${s.sector||'Other'}</span>${styleTags(s).map(x=>`<span class="style-badge ${x.toLowerCase()}">${x}</span>`).join('')}</div>`;
   function decorateCards(){
@@ -47,7 +104,7 @@
     el.innerHTML=rows.map((s,i)=>{
       const discount=s.bookDiscountPct==null?'Book N/A':s.bookDiscountPct>=0?`${fmt(s.bookDiscountPct,0)}% below book`:`${fmt(Math.abs(s.bookDiscountPct),0)}% above book`;
       const zone=s.zoneStatus==='in'?'IN ZONE':s.zoneStatus==='below'?'BELOW ZONE':'ABOVE ZONE';
-      return `<article class="fresh-card"><div class="fresh-rank">#${i+1}</div><div class="fresh-main"><div class="fresh-title"><div><strong>${s.ticker}</strong><span>${s.company||''}</span></div><span class="rating ${s.ratingClass||'hold'}">${s.rating||'N/A'}</span></div>${styleHtml(s)}<div class="fresh-metrics"><span><small>Price</small><strong>J$${fmt(s.price,2)}</strong></span><span><small>Yield</small><strong>${fmt(s.trailingYield,2)}%</strong></span><span><small>P/B</small><strong>${s.pb==null?'N/A':fmt(s.pb,2)+'×'}</strong></span><span><small>Book</small><strong>${discount}</strong></span></div><div class="fresh-footer"><p>${s.reason||''}</p><span class="zone-status ${s.zoneStatus||'above'}">${zone}</span></div><div class="fresh-secondary">Valuation signal: <strong>${valuationSignal(s)}</strong> <span>• sector-aware</span></div></div></article>`;
+      return `<article class="fresh-card"><div class="fresh-rank">#${i+1}</div><div class="fresh-main"><div class="fresh-title"><div><strong>${s.ticker}</strong><span>${s.company||''}</span></div><span class="rating ${s.ratingClass||'hold'}">${s.rating||'N/A'}</span></div>${styleHtml(s)}<div class="fresh-metrics"><span><small>Price</small><strong>J$${fmt(s.price,2)}</strong></span><span><small>Yield</small><strong>${fmt(s.trailingYield,2)}%</strong></span><span><small>P/B</small><strong>${s.pb==null?'N/A':fmt(s.pb,2)+'×'}</strong></span><span><small>Book</small><strong>${discount}</strong></span></div>${scorecardHtml(s)}<div class="fresh-footer"><p>${s.reason||''}</p><span class="zone-status ${s.zoneStatus||'above'}">${zone}</span></div><div class="fresh-secondary">Valuation signal: <strong>${valuationSignal(s)}</strong> <span>• sector-aware</span></div></div></article>`;
     }).join('');
   }
   let scheduled=false;
