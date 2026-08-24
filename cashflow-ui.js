@@ -43,10 +43,10 @@
   function help(label, key) {
     return `<span class="cash-metric-label">${label}<button type="button" class="expert-help" aria-label="Explain ${label}" data-tooltip="${HELP[key]}">?</button></span>`;
   }
-  function stripHtml(s) {
+  function stripHtml(s, { includePayout = true } = {}) {
     const financial = isFinancial(s);
     const items = [];
-    if (s.payoutRatio != null) {
+    if (includePayout && s.payoutRatio != null) {
       items.push(`<div class="cash-health-item">${help('Payout ratio','payout')}<strong class="${toneForPayout(Number(s.payoutRatio))}">${pct(s.payoutRatio)}</strong></div>`);
     }
     if (!financial && s.freeCashFlow != null) {
@@ -69,7 +69,7 @@
       const s = byTicker.get(ticker);
       if (!s) return;
       card.querySelector('.cash-health-strip')?.remove();
-      const html = stripHtml(s);
+      const html = stripHtml(s, { includePayout: false });
       if (!html) return;
       const badges = card.querySelector('.investor-badges');
       if (badges) badges.insertAdjacentHTML('afterend', html);
