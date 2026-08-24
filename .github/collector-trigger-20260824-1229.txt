@@ -1,0 +1,2 @@
+Manual pre-schedule collector trigger requested 2026-08-24 12:29 Jamaica time.
+Purpose: run Refresh Daily JSE Main Market after comprehensive StockAnalysis Statistics collector integration.
