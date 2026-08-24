@@ -17,6 +17,9 @@
         pointer-events:none;
       }
       .expert-help[aria-expanded="true"]{color:var(--text)!important;border-color:var(--accent)!important}
+      .investor-badges .sector-badge{order:0}
+      .investor-badges::after{content:"";flex-basis:100%;width:0;height:0;order:1}
+      .investor-badges .style-badge{order:2}
       .mobile-watchlist-filter{display:none;gap:6px;width:100%;grid-column:1/-1}
       .mobile-watchlist-filter button{flex:1;min-width:0;border:1px solid var(--border);background:var(--surface2);color:var(--muted);border-radius:10px;padding:9px 7px;font-weight:800;font-size:.68rem}
       .mobile-watchlist-filter button.active{color:var(--accent);background:var(--blue-bg);border-color:var(--accent)}
