@@ -12,15 +12,17 @@ function readData() {
   return vm.runInNewContext(`(${m[1]})`);
 }
 function writeData(d) { fs.writeFileSync(DATA_FILE, `window.JSE_DASHBOARD_DATA = ${JSON.stringify(d, null, 2)};\n`); }
-function parseScaled(value) {
+function parseScaled(value, statementMultiplier = 1) {
   if (value == null) return null;
   let s = String(value).trim();
   if (!s || /^(?:n\/?a|--|-|—)$/i.test(s)) return null;
   const neg = /^\(.*\)$/.test(s);
-  s = s.replace(/[()$,\s]/g, '').replace(/^(?:JMD|TTD|USD|J\$|TT\$|US\$)/i, '');
+  s = s.replace(/[()\s]/g, '').replace(/^(?:JMD|TTD|USD|J\$|TT\$|US\$|\$)/i, '').replace(/,/g, '');
   const m = s.match(/^([+-]?[0-9]*\.?[0-9]+)([KMBT])?$/i);
   if (!m) return null;
-  const scale = { K: 1e3, M: 1e6, B: 1e9, T: 1e12 }[String(m[2] || '').toUpperCase()] || 1;
+  const suffix = String(m[2] || '').toUpperCase();
+  const explicitScale = { K: 1e3, M: 1e6, B: 1e9, T: 1e12 }[suffix] || null;
+  const scale = explicitScale ?? statementMultiplier;
   const n = Number(m[1]) * scale * (neg ? -1 : 1);
   return Number.isFinite(n) ? n : null;
 }
@@ -48,7 +50,14 @@ function marketConfig(s) {
   if (c) return c;
   return { market: 'jmse', ticker: s.ticker, currency: 'JMD' };
 }
-async function tableMetric(page, labelRegex) {
+async function statementMultiplier(page) {
+  const text = await page.locator('body').innerText().catch(() => '');
+  if (/financials?\s+in\s+billions|in\s+billions/i.test(text)) return 1e9;
+  if (/financials?\s+in\s+millions|in\s+millions/i.test(text)) return 1e6;
+  if (/financials?\s+in\s+thousands|in\s+thousands/i.test(text)) return 1e3;
+  return 1;
+}
+async function tableMetric(page, labelRegex, multiplier = 1) {
   const tables = page.locator('table');
   for (let i = 0; i < await tables.count(); i++) {
     const rows = tables.nth(i).locator('tbody tr');
@@ -56,7 +65,7 @@ async function tableMetric(page, labelRegex) {
       const cells = await rows.nth(r).locator('th,td').allTextContents().catch(() => []);
       if (!cells.length || !labelRegex.test(cells[0].trim())) continue;
       for (let j = 1; j < cells.length; j++) {
-        const n = parseScaled(cells[j]);
+        const n = parseScaled(cells[j], multiplier);
         if (n != null) return n;
       }
     }
@@ -99,9 +108,10 @@ for (const s of data.stocks) {
     if (await goto(cashPage, `${base}financials/cash-flow-statement/`)) {
       ok = true;
       period = await firstPeriodLabel(cashPage);
-      operatingCashFlow = await tableMetric(cashPage, /^(?:operating cash flow|cash from operating activities|net cash provided by operating activities)$/i);
-      freeCashFlow = await tableMetric(cashPage, /^free cash flow$/i);
-      capitalExpenditures = await tableMetric(cashPage, /^(?:capital expenditures|capital expenditure|capex)$/i);
+      const mult = await statementMultiplier(cashPage);
+      operatingCashFlow = await tableMetric(cashPage, /^(?:operating cash flow|cash from operating activities|net cash provided by operating activities)$/i, mult);
+      freeCashFlow = await tableMetric(cashPage, /^free cash flow$/i, mult);
+      capitalExpenditures = await tableMetric(cashPage, /^(?:capital expenditures|capital expenditure|capex)$/i, mult);
     }
   } finally { await cashPage.close(); }
 
@@ -109,7 +119,8 @@ for (const s of data.stocks) {
   try {
     if (await goto(balancePage, `${base}financials/balance-sheet/`)) {
       ok = true;
-      cashAndEquivalents = await tableMetric(balancePage, /^(?:cash & equivalents|cash and equivalents|cash & short-term investments|cash and short-term investments|cash, cash equivalents & short-term investments)$/i);
+      const mult = await statementMultiplier(balancePage);
+      cashAndEquivalents = await tableMetric(balancePage, /^(?:cash & equivalents|cash and equivalents|cash & short-term investments|cash and short-term investments|cash, cash equivalents & short-term investments)$/i, mult);
     }
   } finally { await balancePage.close(); }
 
@@ -142,7 +153,7 @@ for (const s of data.stocks) {
   s.cashFlowUrl = `${base}financials/cash-flow-statement/`;
   s.cashFlowUpdated = new Date().toISOString();
 
-  const dps = parsePlain(s.ttmDps);
+  const dps = CROSSLISTED[s.ticker] ? parsePlain(s.nativeAnnualDps) : parsePlain(s.ttmDps);
   if (freeCashFlowPerShare != null && freeCashFlowPerShare > 0 && dps != null && dps >= 0) {
     s.fcfPayoutRatio = Number((dps / freeCashFlowPerShare * 100).toFixed(2));
   } else if (freeCashFlowPerShare != null && freeCashFlowPerShare <= 0) {
