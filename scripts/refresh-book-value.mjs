@@ -59,28 +59,45 @@ function ratingFromScore(score){
 
 const data=readData();
 for(const s of data.stocks){
-  const price=n(s.price), pb=n(s.pb);
+  const price=n(s.price);
+  const directBvps=n(s.statisticsBookValuePerShare ?? s.bookValuePerShare);
+  const reportedPb=n(s.pb);
+  const calculatedPb=(price!=null&&price>0&&directBvps!=null&&directBvps>0)?price/directBvps:null;
+  const pb=calculatedPb ?? reportedPb;
   const cls=sectorClass(s.sector);
   const sig=labelForPb(pb);
   s.bookValueSectorClass=cls;
   s.bookValueStatus=sig.label;
   s.bookValueTone=sig.tone;
-  if(price!=null&&price>0&&pb!=null&&pb>0){
-    s.bookValuePerShare=Number((price/pb).toFixed(2));
-    s.bookDiscountPct=Number(((1-pb)*100).toFixed(1));
+
+  if(directBvps!=null&&directBvps>0){
+    s.bookValuePerShare=Number(directBvps.toFixed(2));
+    s.bookValueSource=s.statisticsSource==='StockAnalysis'?'StockAnalysis Statistics':'Existing direct BVPS';
+  } else if(price!=null&&price>0&&reportedPb!=null&&reportedPb>0){
+    s.bookValuePerShare=Number((price/reportedPb).toFixed(2));
+    s.bookValueSource='Derived from price / reported P/B';
   } else {
     s.bookValuePerShare=null;
+    s.bookValueSource='Unavailable';
+  }
+
+  if(price!=null&&price>0&&s.bookValuePerShare!=null&&s.bookValuePerShare>0){
+    const currentPb=price/s.bookValuePerShare;
+    s.calculatedPbFromJsePrice=Number(currentPb.toFixed(4));
+    s.bookDiscountPct=Number(((s.bookValuePerShare-price)/s.bookValuePerShare*100).toFixed(1));
+  } else {
     s.bookDiscountPct=null;
   }
-  const adj=adjustment(pb,cls);
+
+  const valuationPb=n(s.calculatedPbFromJsePrice) ?? reportedPb;
+  const adj=adjustment(valuationPb,cls);
   s.bookValueScoreAdjustment=adj;
   const baseScore=Number.isFinite(n(s.score))?n(s.score):null;
   s.bookAdjustedScore=baseScore==null?null:clamp(baseScore+adj,0,100);
   s.bookAdjustedRating=s.bookAdjustedScore==null?(s.rating||'N/A'):ratingFromScore(s.bookAdjustedScore);
   const comparison=s.bookDiscountPct==null?'book value unavailable':s.bookDiscountPct>0?`${s.bookDiscountPct}% below book`:s.bookDiscountPct<0?`${Math.abs(s.bookDiscountPct)}% above book`:'at book value';
   const weighting=cls==='book-sensitive'?'high relevance for this sector':cls==='asset-heavy'?'moderate relevance for this sector':'low weighting for this sector';
-  s.bookValueAnalysis=`P/B ${pb!=null?pb.toFixed(2)+'x':'N/A'}; ${comparison}; ${sig.label}; ${weighting}.`;
-  // Preserve explicit analyst ratings, but let book value influence automatic scoring/allocation.
+  s.bookValueAnalysis=`P/B ${valuationPb!=null?valuationPb.toFixed(2)+'x':'N/A'}; ${comparison}; ${sig.label}; ${weighting}.`;
   if(s.analysisSource==='AUTO-SA' && s.bookAdjustedScore!=null){
     s.score=s.bookAdjustedScore;
     s.rating=s.bookAdjustedRating;
