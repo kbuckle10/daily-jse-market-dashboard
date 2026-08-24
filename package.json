@@ -5,7 +5,7 @@
   "scripts": {
     "sync:main-market": "node scripts/sync-main-market.mjs",
     "refresh:sa": "node scripts/refresh-sa-performance.mjs",
-    "refresh:sa-research": "node scripts/refresh-sa-research.mjs",
+    "refresh:sa-research": "node scripts/refresh-sa-research.mjs && node scripts/refresh-sa-cashflow.mjs",
     "refresh:crosslisted": "node scripts/refresh-crosslisted-primary.mjs",
     "refresh:book-value": "node scripts/refresh-book-value.mjs",
     "refresh:jse": "node scripts/refresh-jse-market.mjs",
