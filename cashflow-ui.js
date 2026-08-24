@@ -43,10 +43,10 @@
   function help(label, key) {
     return `<span class="cash-metric-label">${label}<button type="button" class="expert-help" aria-label="Explain ${label}" data-tooltip="${HELP[key]}">?</button></span>`;
   }
-  function stripHtml(s, { includePayout = true } = {}) {
+  function stripHtml(s) {
     const financial = isFinancial(s);
     const items = [];
-    if (includePayout && s.payoutRatio != null) {
+    if (s.payoutRatio != null) {
       items.push(`<div class="cash-health-item">${help('Payout ratio','payout')}<strong class="${toneForPayout(Number(s.payoutRatio))}">${pct(s.payoutRatio)}</strong></div>`);
     }
     if (!financial && s.freeCashFlow != null) {
@@ -63,18 +63,10 @@
     return `<div class="cash-health-strip">${items.join('')}${note}</div>`;
   }
 
+  // Keep the regular stock cards compact. Cash/dividend-health metrics are
+  // intentionally reserved for the Fresh Capital / expert-ranking analysis.
   function decorateStockCards() {
-    document.querySelectorAll('.stock-card').forEach(card => {
-      const ticker = card.querySelector('h3')?.textContent?.trim();
-      const s = byTicker.get(ticker);
-      if (!s) return;
-      card.querySelector('.cash-health-strip')?.remove();
-      const html = stripHtml(s, { includePayout: false });
-      if (!html) return;
-      const badges = card.querySelector('.investor-badges');
-      if (badges) badges.insertAdjacentHTML('afterend', html);
-      else card.querySelector('.company')?.insertAdjacentHTML('afterend', html);
-    });
+    document.querySelectorAll('.stock-card .cash-health-strip').forEach(el => el.remove());
   }
   function decorateFreshCapital() {
     document.querySelectorAll('.fresh-card').forEach(card => {
