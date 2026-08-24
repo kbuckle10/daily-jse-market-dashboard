@@ -140,9 +140,18 @@
     }
   }
 
+  function ensureCashflowUi() {
+    if (document.querySelector('script[data-cashflow-ui]')) return;
+    const script = document.createElement('script');
+    script.dataset.cashflowUi = 'true';
+    script.src = `cashflow-ui.js?v=${Date.now()}`;
+    document.head.appendChild(script);
+  }
+
   ensureStyles();
   prepareButtons();
   ensureMobileWatchlistFilter();
+  ensureCashflowUi();
   document.addEventListener('mouseover', onPointerOver, true);
   document.addEventListener('mouseout', onPointerOut, true);
   document.addEventListener('click', onClick, true);
