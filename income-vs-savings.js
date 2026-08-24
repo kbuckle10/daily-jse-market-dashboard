@@ -145,6 +145,12 @@
     }).join('');
   }
 
+  function saveShareInput(input) {
+    const ticker = input.dataset.sharesTicker;
+    holdings[ticker] = Math.max(0, Math.floor(Number(input.value || 0)));
+    localStorage.setItem(HOLDINGS_KEY, JSON.stringify(holdings));
+  }
+
   function init() {
     ensureModeControls();
     const rateSlider = $('savingsRateSlider');
@@ -170,10 +176,22 @@
     document.body.addEventListener('input', e => {
       const input = e.target.closest('.shares-owned-input');
       if (!input) return;
-      const ticker = input.dataset.sharesTicker;
-      holdings[ticker] = Math.max(0, Math.floor(Number(input.value || 0)));
-      localStorage.setItem(HOLDINGS_KEY, JSON.stringify(holdings));
+      // Persist each keystroke without rerendering the entire card list. Rerendering
+      // here replaced the focused input node and caused the page to jump vertically.
+      saveShareInput(input);
+    });
+    document.body.addEventListener('change', e => {
+      const input = e.target.closest('.shares-owned-input');
+      if (!input) return;
+      saveShareInput(input);
+      const scrollY = window.scrollY;
       render();
+      requestAnimationFrame(() => window.scrollTo({ top: scrollY, left: 0, behavior: 'auto' }));
+    });
+    document.body.addEventListener('keydown', e => {
+      const input = e.target.closest('.shares-owned-input');
+      if (!input || e.key !== 'Enter') return;
+      input.blur();
     });
     render();
   }
