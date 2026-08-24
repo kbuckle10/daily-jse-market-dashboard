@@ -106,6 +106,8 @@
     const style = document.createElement('style');
     style.id = 'cashflowUiStyles';
     style.textContent = `
+      .stock-card .card-top{align-items:flex-start!important}
+      .stock-card .card-top>.rating{align-self:flex-start!important;margin-top:0!important;flex:0 0 auto}
       .cash-health-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:7px;margin:10px 0 2px;padding:9px;border:1px solid var(--border);background:var(--surface2);border-radius:12px}
       .cash-health-item{min-width:0;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:10px;padding:8px 10px;border:1px solid var(--border);background:var(--surface);border-radius:9px;overflow:visible}
       .cash-health-item strong{font-size:.72rem;white-space:nowrap;justify-self:end;position:relative;z-index:1}
@@ -114,6 +116,9 @@
       .cash-sector-note{grid-column:1/-1;color:var(--muted);font-size:.56rem;line-height:1.3;padding:1px 2px}
       .cash-health-strip .positive{color:var(--green)}.cash-health-strip .amber{color:var(--amber)}.cash-health-strip .negative{color:var(--red)}
       @media(max-width:720px){
+        .stock-card .card-top{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;align-items:start!important;column-gap:10px!important}
+        .stock-card .card-top>.rating{grid-column:2;grid-row:1;align-self:start!important;justify-self:end;margin-top:0!important}
+        .stock-card .card-top>div:first-child{grid-column:1;grid-row:1;min-width:0}
         .cash-health-strip{grid-template-columns:1fr;gap:6px;padding:8px}
         .cash-health-item{grid-template-columns:minmax(0,1fr) auto;min-height:42px;padding:8px 10px}
         .cash-health-item strong{font-size:.72rem}
