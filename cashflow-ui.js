@@ -63,8 +63,6 @@
     return `<div class="cash-health-strip">${items.join('')}${note}</div>`;
   }
 
-  // Keep the regular stock cards compact. Cash/dividend-health metrics are
-  // intentionally reserved for the Fresh Capital / expert-ranking analysis.
   function decorateStockCards() {
     document.querySelectorAll('.stock-card .cash-health-strip').forEach(el => el.remove());
   }
@@ -140,4 +138,12 @@
   new MutationObserver(muts => {
     if (muts.some(m => [...m.addedNodes].some(n => n.nodeType === 1))) apply();
   }).observe(document.querySelector('main') || document.body, { childList:true, subtree:true });
+})();
+
+(() => {
+  if (document.querySelector('script[data-focus-typeahead]')) return;
+  const script = document.createElement('script');
+  script.dataset.focusTypeahead = 'true';
+  script.src = `focus-typeahead.js?v=${Date.now()}`;
+  document.head.appendChild(script);
 })();
