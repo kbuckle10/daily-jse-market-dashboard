@@ -1,24 +1,33 @@
 (() => {
-  let popover = null;
-  let activeButton = null;
-  let pinned = false;
-  const DATA = window.JSE_DASHBOARD_DATA;
-  const byTicker = new Map((DATA?.stocks || []).map(s => [String(s.ticker).toUpperCase(), s]));
+  let popover=null,activeButton=null,pinned=false;
+  const DATA=window.JSE_DASHBOARD_DATA;
+  if(!DATA?.stocks)return;
+  const STORAGE_KEY='dailyJseTrackedTickersV2';
+  const HOLDINGS_KEY='dailyJseShareHoldingsV1';
+  const byTicker=new Map(DATA.stocks.map(s=>[String(s.ticker).toUpperCase(),s]));
+  const num=v=>v==null||!Number.isFinite(Number(v))?null:Number(v);
+  const clamp=v=>Math.max(0,Math.min(100,Math.round(v)));
+  const avg=a=>{const v=a.filter(x=>x!=null&&Number.isFinite(Number(x))).map(Number);return v.length?v.reduce((x,y)=>x+y,0)/v.length:null;};
+  const metric=(v,rules)=>{v=num(v);if(v==null)return null;for(const [test,score] of rules)if(test(v))return score;return 50;};
+  const monthsSince=v=>{if(!v)return null;const d=new Date(v);return Number.isNaN(d.valueOf())?null:(Date.now()-d.getTime())/(1000*60*60*24*30.44);};
 
-  function ensureStyles() {
-    if (document.getElementById('expertTooltipFixStyles')) return;
-    const style = document.createElement('style');
-    style.id = 'expertTooltipFixStyles';
-    style.textContent = `
-      .expert-help::after{display:none!important}
-      .expert-tooltip-popover{position:fixed;z-index:100000;max-width:340px;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);box-shadow:0 12px 36px rgba(0,0,0,.38);font:500 .72rem/1.45 Inter,system-ui,sans-serif;text-align:left;pointer-events:none}
-      .expert-help[aria-expanded="true"]{color:var(--text)!important;border-color:var(--accent)!important}
+  function trackedStocks(){let a=[];try{a=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]')}catch{}const set=new Set((Array.isArray(a)?a:[]).map(x=>String(x).toUpperCase()));return DATA.stocks.filter(s=>set.has(String(s.ticker).toUpperCase()));}
+  function currentFocus(){const select=document.getElementById('tickerFocusFilter');return select?.value&&select.value!=='all'?select.value.toUpperCase():null;}
+  function focusStocks(stocks=trackedStocks()){const f=currentFocus();return f?stocks.filter(s=>String(s.ticker).toUpperCase()===f):stocks;}
+
+  function ensureStyles(){
+    if(document.getElementById('expertTooltipFixStyles'))return;
+    const style=document.createElement('style');style.id='expertTooltipFixStyles';style.textContent=`
+      .expert-help::after{display:none!important}.expert-tooltip-popover{position:fixed;z-index:100000;max-width:340px;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);box-shadow:0 12px 36px rgba(0,0,0,.38);font:500 .72rem/1.45 Inter,system-ui,sans-serif;text-align:left;pointer-events:none}.expert-help[aria-expanded="true"]{color:var(--text)!important;border-color:var(--accent)!important}
       .investor-badges .sector-badge{order:0}.investor-badges::after{content:"";flex-basis:100%;width:0;height:0;order:1}.investor-badges .style-badge{order:2}
       .mobile-watchlist-filter{display:none;gap:6px;width:100%;grid-column:1/-1}.mobile-watchlist-filter button{flex:1;min-width:0;border:1px solid var(--border);background:var(--surface2);color:var(--muted);border-radius:10px;padding:9px 7px;font-weight:800;font-size:.68rem}.mobile-watchlist-filter button.active{color:var(--accent);background:var(--blue-bg);border-color:var(--accent)}
-      @media(max-width:720px){.expert-tooltip-popover{left:14px!important;right:14px!important;bottom:16px!important;top:auto!important;max-width:none}.mobile-watchlist-filter{display:flex!important}#watchlistStatusFilter{display:none!important}.ticker-search-wrap{display:grid!important;grid-template-columns:1fr auto!important;gap:8px!important}.ticker-search{grid-column:1/-1!important;grid-row:1!important}.mobile-watchlist-filter{grid-column:1/-1!important;grid-row:2!important}#showAllTickersBtn{grid-column:1/-1!important;grid-row:3!important;width:100%!important}}
-    `;
-    document.head.appendChild(style);
+      .ticker-focus-control{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:.72rem;font-weight:700}.ticker-focus-control select{min-width:145px;border:1px solid var(--border);border-radius:10px;background:var(--surface2);color:var(--text);padding:8px 10px;font:inherit}.ticker-focus-control strong{color:var(--text)}
+      .ticker-focus-hidden{display:none!important}.overall-expert-score{display:flex;align-items:baseline;gap:4px;margin-left:auto;padding:5px 8px;border:1px solid var(--border);border-radius:9px;background:var(--surface2);white-space:nowrap}.overall-expert-score span{font-size:.6rem;color:var(--muted);font-weight:700}.overall-expert-score strong{font-size:1rem}.overall-expert-score small{font-size:.58rem;color:var(--muted)}
+      .score-allocation-note{font-size:.68rem;color:var(--muted);line-height:1.45}.score-allocation-detail{font-size:.6rem;color:var(--muted);font-weight:600;margin-left:4px}.allocation-segment[data-score-allocation]{min-width:1px}
+      @media(max-width:720px){.expert-tooltip-popover{left:14px!important;right:14px!important;bottom:16px!important;top:auto!important;max-width:none}.mobile-watchlist-filter{display:flex!important}#watchlistStatusFilter{display:none!important}.ticker-search-wrap{display:grid!important;grid-template-columns:1fr auto!important;gap:8px!important}.ticker-search{grid-column:1/-1!important;grid-row:1!important}.mobile-watchlist-filter{grid-column:1/-1!important;grid-row:2!important}#showAllTickersBtn{grid-column:1/-1!important;grid-row:3!important;width:100%!important}.toolbar{flex-wrap:wrap}.ticker-focus-control{width:100%;justify-content:space-between}.ticker-focus-control select{flex:1;min-width:0}.overall-expert-score{margin-left:0}}
+    `;document.head.appendChild(style);
   }
+
   function prepareButtons(root=document){root.querySelectorAll?.('.expert-help[data-tooltip]').forEach(button=>{if(!button.hasAttribute('title'))button.setAttribute('title',button.getAttribute('data-tooltip'));if(!button.hasAttribute('aria-expanded'))button.setAttribute('aria-expanded','false');});}
   function closePopover(force=false){if(pinned&&!force)return;if(activeButton)activeButton.setAttribute('aria-expanded','false');popover?.remove();popover=null;activeButton=null;pinned=false;}
   function positionPopover(button){if(!popover||window.innerWidth<=720)return;const r=button.getBoundingClientRect(),pr=popover.getBoundingClientRect();let left=r.left+r.width/2-pr.width/2;left=Math.max(12,Math.min(left,window.innerWidth-pr.width-12));let top=r.top-pr.height-10;if(top<12)top=Math.min(window.innerHeight-pr.height-12,r.bottom+10);popover.style.left=`${left}px`;popover.style.top=`${top}px`;}
@@ -31,67 +40,62 @@
   function ensureMobileWatchlistFilter(){const select=document.getElementById('watchlistStatusFilter'),wrap=document.querySelector('.ticker-search-wrap');if(!select||!wrap)return;let group=document.querySelector('.mobile-watchlist-filter');if(!group){group=document.createElement('div');group.className='mobile-watchlist-filter';group.setAttribute('role','group');group.setAttribute('aria-label','Filter watchlist stocks');group.innerHTML='<button type="button" data-mobile-watchlist="all">All</button><button type="button" data-mobile-watchlist="tracked">Tracked</button><button type="button" data-mobile-watchlist="untracked">Untracked</button>';wrap.insertBefore(group,document.getElementById('showAllTickersBtn'));}const sync=()=>group.querySelectorAll('[data-mobile-watchlist]').forEach(b=>b.classList.toggle('active',b.dataset.mobileWatchlist===select.value));sync();if(!group.dataset.bound){group.dataset.bound='true';group.addEventListener('click',e=>{const b=e.target.closest('[data-mobile-watchlist]');if(!b)return;select.value=b.dataset.mobileWatchlist;select.dispatchEvent(new Event('change',{bubbles:true}));sync();});select.addEventListener('change',sync);}}
   function ensureCashflowUi(){if(document.querySelector('script[data-cashflow-ui]'))return;const script=document.createElement('script');script.dataset.cashflowUi='true';script.src=`cashflow-ui.js?v=${Date.now()}`;document.head.appendChild(script);}
 
-  const num=v=>v==null||!Number.isFinite(Number(v))?null:Number(v);
-  const monthsSince=v=>{if(!v)return null;const d=new Date(v);return Number.isNaN(d.valueOf())?null:(Date.now()-d.getTime())/(1000*60*60*24*30.44);};
   function analystNarrative(s){
-    const pe=num(s.pe), pb=num(s.calculatedPbFromJsePrice)??num(s.pb), epsg=num(s.epsGrowth), revg=num(s.revenueGrowth), yieldPct=num(s.trailingYield), payout=num(s.payoutRatio), fcfPayout=num(s.fcfPayoutRatio), fcf=num(s.freeCashFlow), roe=num(s.roe), book=num(s.bookDiscountPct), y1=num(s.y1), m3=num(s.m3), divAge=monthsSince(s.payDate);
-    const positives=[]; const cautions=[];
-
-    if((pe!=null&&pe>0&&pe<12)||(pb!=null&&pb<1)) positives.push('attractive valuation');
-    if(book!=null&&book>=15) positives.push(`${book.toFixed(0)}% discount to book value`);
-    else if(book!=null&&book<=-50) cautions.push(`the shares trade ${Math.abs(book).toFixed(0)}% above book value`);
-    if(yieldPct!=null&&yieldPct>=4&&!(divAge!=null&&divAge>18)) positives.push('meaningful dividend income');
-    if(roe!=null&&roe>=15) positives.push('strong profitability');
-    if(epsg!=null&&epsg>=8) positives.push('earnings growth');
-    else if(epsg!=null&&epsg<0) cautions.push('earnings are under pressure');
-    if(revg!=null&&revg>=8) positives.push('solid revenue growth');
-
-    // Treat a high earnings payout as context, not an automatic negative.
-    if(payout!=null&&payout>85){
-      if(fcf!=null&&fcf>0&&fcfPayout!=null&&fcfPayout<=80){
-        positives.push('the dividend remains supported by free cash flow');
-        if(epsg!=null&&epsg<0)cautions.push('the high earnings payout leaves less cushion if earnings weakness continues');
-      }else if(fcfPayout!=null&&fcfPayout>100){
-        cautions.push('the dividend currently exceeds free-cash-flow coverage');
-      }else if(fcf!=null&&fcf<0){
-        cautions.push('negative free cash flow weakens dividend coverage');
-      }else if(payout>100){
-        cautions.push('the dividend exceeds current earnings');
-      }else if(epsg!=null&&epsg<0){
-        cautions.push('the high earnings payout leaves a narrow buffer while earnings are falling');
-      }
-    }
-
-    if(divAge!=null&&divAge>18)cautions.push('the dividend record is stale and should not be treated as current income');
-    if(s.zoneStatus==='above') cautions.push('the current price is above the preferred buy zone');
-    if(y1!=null&&y1<-15) cautions.push('longer-term price momentum is weak');
-    else if(y1!=null&&y1>=20&&m3!=null&&m3>=0) positives.push('positive broader price momentum');
-
-    const pos=[...new Set(positives)].slice(0,3), risk=[...new Set(cautions)].slice(0,2);
-    if(pos.length&&risk.length)return `${pos.map((x,i)=>i?x:x[0].toUpperCase()+x.slice(1)).join(' + ')} support the investment case, while ${risk.join(' and ')}.`;
-    if(pos.length)return `${pos.map((x,i)=>i?x:x[0].toUpperCase()+x.slice(1)).join(' + ')} support the current investment case.`;
-    if(risk.length)return `Caution is warranted because ${risk.join(' and ')}.`;
-    return s.reason||'The available valuation, quality, growth, income, cash-flow and momentum metrics present a balanced investment profile.';
+    const pe=num(s.pe),pb=num(s.calculatedPbFromJsePrice)??num(s.pb),epsg=num(s.epsGrowth),revg=num(s.revenueGrowth),yieldPct=num(s.currentDividendYield)??num(s.trailingYield),payout=num(s.payoutRatio),fcfPayout=num(s.fcfPayoutRatio),fcf=num(s.freeCashFlow),roe=num(s.roe),book=num(s.bookDiscountPct),y1=num(s.y1),m3=num(s.m3),divAge=monthsSince(s.payDate);const positives=[],cautions=[];
+    if((pe!=null&&pe>0&&pe<12)||(pb!=null&&pb<1))positives.push('attractive valuation');if(book!=null&&book>=15)positives.push(`${book.toFixed(0)}% discount to book value`);else if(book!=null&&book<=-50)cautions.push(`the shares trade ${Math.abs(book).toFixed(0)}% above book value`);if(yieldPct!=null&&yieldPct>=4&&!(divAge!=null&&divAge>18))positives.push('meaningful dividend income');if(roe!=null&&roe>=15)positives.push('strong profitability');if(epsg!=null&&epsg>=8)positives.push('earnings growth');else if(epsg!=null&&epsg<0)cautions.push('earnings are under pressure');if(revg!=null&&revg>=8)positives.push('solid revenue growth');
+    if(payout!=null&&payout>85){if(fcf!=null&&fcf>0&&fcfPayout!=null&&fcfPayout<=80){positives.push('the dividend remains supported by free cash flow');if(epsg!=null&&epsg<0)cautions.push('the high earnings payout leaves less cushion if earnings weakness continues');}else if(fcfPayout!=null&&fcfPayout>100)cautions.push('the dividend currently exceeds free-cash-flow coverage');else if(fcf!=null&&fcf<0)cautions.push('negative free cash flow weakens dividend coverage');else if(payout>100)cautions.push('the dividend exceeds current earnings');else if(epsg!=null&&epsg<0)cautions.push('the high earnings payout leaves a narrow buffer while earnings are falling');}
+    if(divAge!=null&&divAge>18)cautions.push('the dividend record is stale and should not be treated as current income');if(s.zoneStatus==='above')cautions.push('the current price is above the preferred buy zone');if(y1!=null&&y1<-15)cautions.push('longer-term price momentum is weak');else if(y1!=null&&y1>=20&&m3!=null&&m3>=0)positives.push('positive broader price momentum');
+    const pos=[...new Set(positives)].slice(0,3),risk=[...new Set(cautions)].slice(0,2);if(pos.length&&risk.length)return `${pos.map((x,i)=>i?x:x[0].toUpperCase()+x.slice(1)).join(' + ')} support the investment case, while ${risk.join(' and ')}.`;if(pos.length)return `${pos.map((x,i)=>i?x:x[0].toUpperCase()+x.slice(1)).join(' + ')} support the current investment case.`;if(risk.length)return `Caution is warranted because ${risk.join(' and ')}.`;return s.reason||'The available valuation, quality, growth, income, cash-flow and momentum metrics present a balanced investment profile.';
   }
-  function updateAnalystNarratives(){
-    document.querySelectorAll('.stock-card').forEach(card=>{const t=card.querySelector('h3')?.textContent?.trim().toUpperCase(),s=byTicker.get(t);const p=card.querySelector('.rank-reason');if(s&&p)p.textContent=analystNarrative(s);});
-    document.querySelectorAll('.movement-item').forEach(card=>{const t=card.querySelector('.movement-head strong')?.textContent?.trim().toUpperCase(),s=byTicker.get(t);const p=card.querySelector('p');if(s&&p)p.textContent=analystNarrative(s);});
-    document.querySelectorAll('.fresh-card').forEach(card=>{const t=card.querySelector('.fresh-title strong')?.textContent?.trim().toUpperCase(),s=byTicker.get(t);const p=card.querySelector('.fresh-footer p');if(s&&p)p.textContent=analystNarrative(s);});
+  function updateAnalystNarratives(){document.querySelectorAll('.stock-card').forEach(card=>{const s=byTicker.get(card.querySelector('h3')?.textContent?.trim().toUpperCase()),p=card.querySelector('.rank-reason');if(s&&p)p.textContent=analystNarrative(s);});document.querySelectorAll('.movement-item').forEach(card=>{const s=byTicker.get(card.querySelector('.movement-head strong')?.textContent?.trim().toUpperCase()),p=card.querySelector('p');if(s&&p)p.textContent=analystNarrative(s);});document.querySelectorAll('.fresh-card').forEach(card=>{const s=byTicker.get(card.querySelector('.fresh-title strong')?.textContent?.trim().toUpperCase()),p=card.querySelector('.fresh-footer p');if(s&&p)p.textContent=analystNarrative(s);});}
+
+  function refreshStatus(){const pill=document.getElementById('updatedPill');if(!pill)return;const d=DATA.refreshedAt?new Date(DATA.refreshedAt):null;if(!d||Number.isNaN(d.valueOf())){pill.textContent=`Data refreshed • ${DATA.updated||'latest dataset'}`;return;}const mins=Math.max(0,Math.floor((Date.now()-d.getTime())/60000));const relative=mins<1?'just now':mins<60?`${mins} min${mins===1?'':'s'} ago`:mins<1440?`${Math.floor(mins/60)} hr${Math.floor(mins/60)===1?'':'s'} ago`:`${Math.floor(mins/1440)} day${Math.floor(mins/1440)===1?'':'s'} ago`;const time=new Intl.DateTimeFormat('en-JM',{timeZone:'America/Jamaica',hour:'numeric',minute:'2-digit'}).format(d);pill.textContent=`Data refreshed ${relative} • ${time} Jamaica`;pill.title=`Last completed dashboard refresh: ${new Intl.DateTimeFormat('en-JM',{timeZone:'America/Jamaica',dateStyle:'medium',timeStyle:'short'}).format(d)}`;}
+
+  // Shared six-lens expert scoring. These rules intentionally mirror the visible scorecard.
+  function expertScores(s){
+    const sector=String(s.sector||'').toLowerCase(),bookSensitive=/bank|financial|insurance|investment|real estate|reit/.test(sector);
+    const peScore=metric(s.pe,[[v=>v>0&&v<8,95],[v=>v<11,85],[v=>v<15,70],[v=>v<20,55],[v=>v<25,40],[v=>v>=25,25]]),pbScore=metric(s.pb,bookSensitive?[[v=>v<.6,95],[v=>v<.8,88],[v=>v<1,78],[v=>v<1.3,62],[v=>v<1.7,45],[v=>v>=1.7,28]]:[[v=>v<.8,85],[v=>v<1.2,75],[v=>v<2,62],[v=>v<4,48],[v=>v>=4,35]]),zoneScore=s.zoneStatus==='below'?92:s.zoneStatus==='in'?82:s.zoneStatus==='above'?42:null,fairScore=s.fairValue!=null&&s.price!=null&&s.fairValue>0?clamp(50+((s.fairValue/s.price)-1)*120):null,valuation=avg([peScore,pbScore,zoneScore,fairScore]);
+    const roeScore=metric(s.roe,[[v=>v>=20,95],[v=>v>=15,85],[v=>v>=10,72],[v=>v>=7,58],[v=>v>=0,42],[v=>v<0,15]]),roaScore=metric(s.roa,[[v=>v>=8,92],[v=>v>=5,82],[v=>v>=3,70],[v=>v>=1,58],[v=>v>=0,42],[v=>v<0,15]]),quality=avg([roeScore,roaScore]);
+    const epsGrowthScore=metric(s.epsGrowth,[[v=>v>=25,95],[v=>v>=15,85],[v=>v>=8,75],[v=>v>=0,60],[v=>v>=-10,42],[v=>v<-10,22]]),revGrowthScore=metric(s.revenueGrowth,[[v=>v>=15,90],[v=>v>=8,80],[v=>v>=3,68],[v=>v>=0,58],[v=>v>=-8,42],[v=>v<-8,25]]),niGrowthScore=metric(s.netIncomeGrowth,[[v=>v>=20,92],[v=>v>=10,82],[v=>v>=3,68],[v=>v>=0,58],[v=>v>=-10,42],[v=>v<-10,22]]),growth=avg([epsGrowthScore,revGrowthScore,niGrowthScore]);
+    const currentScore=bookSensitive?null:metric(s.currentRatio,[[v=>v>=1.5&&v<=3.5,85],[v=>v>=1.1&&v<1.5,68],[v=>v>3.5,72],[v=>v>=.8,45],[v=>v<.8,25]]),debtScore=metric(s.debtEquity,[[v=>v<=.4,90],[v=>v<=.8,78],[v=>v<=1.3,63],[v=>v<=2,45],[v=>v>2,25]]),financial=avg([currentScore,debtScore,roaScore]);
+    const yieldInput=num(s.currentDividendYield)??num(s.trailingYield),yieldScore=metric(yieldInput,[[v=>v>=7,95],[v=>v>=5,88],[v=>v>=3.5,78],[v=>v>=2,62],[v=>v>0,45],[v=>v===0,20]]),payoutScore=metric(s.payoutRatio,[[v=>v>=20&&v<=55,90],[v=>v>55&&v<=75,75],[v=>v<20&&v>=0,70],[v=>v>75&&v<=100,52],[v=>v>100,22]]),divGrowthScore=metric(s.dividendGrowth,[[v=>v>=10,90],[v=>v>=5,80],[v=>v>0,68],[v=>v===0,55],[v=>v<0,30]]),dividend=avg([yieldScore,payoutScore,divGrowthScore]);
+    const m1=metric(s.m1,[[v=>v>=15,82],[v=>v>=5,76],[v=>v>=0,64],[v=>v>=-5,55],[v=>v>=-15,38],[v=>v<-15,22]]),m3=metric(s.m3,[[v=>v>=25,90],[v=>v>=10,82],[v=>v>=0,68],[v=>v>=-10,48],[v=>v<-10,28]]),m6=metric(s.m6,[[v=>v>=35,92],[v=>v>=15,84],[v=>v>=0,68],[v=>v>=-15,45],[v=>v<-15,25]]),y1=metric(s.y1,[[v=>v>=50,92],[v=>v>=20,85],[v=>v>=5,72],[v=>v>=0,62],[v=>v>=-15,45],[v=>v<-15,25]]),momentum=avg([m1,m3,m6,y1]);
+    return{valuation,quality,growth,financial,dividend,momentum};
   }
-  function refreshStatus(){
-    const pill=document.getElementById('updatedPill'); if(!pill||!DATA)return;
-    const raw=DATA.refreshedAt; const d=raw?new Date(raw):null;
-    if(!d||Number.isNaN(d.valueOf())){pill.textContent=`Data refreshed • ${DATA.updated||'latest dataset'}`;return;}
-    const mins=Math.max(0,Math.floor((Date.now()-d.getTime())/60000));
-    const relative=mins<1?'just now':mins<60?`${mins} min${mins===1?'':'s'} ago`:mins<1440?`${Math.floor(mins/60)} hr${Math.floor(mins/60)===1?'':'s'} ago`:`${Math.floor(mins/1440)} day${Math.floor(mins/1440)===1?'':'s'} ago`;
-    const time=new Intl.DateTimeFormat('en-JM',{timeZone:'America/Jamaica',hour:'numeric',minute:'2-digit'}).format(d);
-    pill.textContent=`Data refreshed ${relative} • ${time} Jamaica`;
-    pill.title=`Last completed dashboard refresh: ${new Intl.DateTimeFormat('en-JM',{timeZone:'America/Jamaica',dateStyle:'medium',timeStyle:'short'}).format(d)}`;
+  const SCORE_WEIGHTS={valuation:.20,quality:.20,growth:.15,financial:.15,dividend:.20,momentum:.10};
+  function overallScore(s){const sc=expertScores(s);let weighted=0,used=0;for(const [k,w] of Object.entries(SCORE_WEIGHTS)){if(sc[k]!=null){weighted+=sc[k]*w;used+=w;}}return used?clamp(weighted/used):null;}
+  function scoreTone(v){return v==null?'neutral':v>=75?'positive':v>=55?'amber':'negative';}
+
+  function ensureTickerFocusFilter(){
+    const toolbar=document.querySelector('.toolbar');if(!toolbar)return null;let select=document.getElementById('tickerFocusFilter');if(!select){const label=document.createElement('label');label.className='ticker-focus-control';label.innerHTML='<strong>Focus</strong><select id="tickerFocusFilter" aria-label="Focus dashboard on one tracked ticker"><option value="all">All tracked</option></select>';toolbar.insertBefore(label,toolbar.querySelector('.sort-control')||null);select=label.querySelector('select');select.addEventListener('change',()=>{applyAnalyticsEnhancements(true);window.dispatchEvent(new CustomEvent('jse:ticker-focus',{detail:{ticker:currentFocus()}}));});}
+    const existing=select.value||'all',tickers=trackedStocks().map(s=>String(s.ticker).toUpperCase()).sort();const signature=tickers.join('|');if(select.dataset.signature!==signature){select.innerHTML='<option value="all">All tracked</option>'+tickers.map(t=>`<option value="${t}">${t}</option>`).join('');select.value=tickers.includes(existing)?existing:'all';select.dataset.signature=signature;}return select;
   }
 
-  ensureStyles();prepareButtons();ensureMobileWatchlistFilter();ensureCashflowUi();refreshStatus();updateAnalystNarratives();
+  function elementTicker(el,selector){return el.querySelector(selector)?.textContent?.trim().toUpperCase()||'';}
+  function applyTickerFocus(){
+    const focus=currentFocus();const groups=[['#stockTableBody tr','.ticker'],['#cardView .stock-card','h3'],['#bookValueBody tr','td strong'],['#bookValueCards .book-mobile-card','.book-mobile-head strong'],['#movementList .movement-item','.movement-head strong'],['#rankingList .fresh-card','.fresh-title strong'],['#incomeComparisonList .income-row','.income-stock strong']];
+    for(const [items,selector] of groups)document.querySelectorAll(items).forEach(el=>{const t=elementTicker(el,selector);el.classList.toggle('ticker-focus-hidden',Boolean(focus&&t&&t!==focus));});
+    document.querySelectorAll('#rankingList .fresh-card').forEach(card=>{const rank=card.querySelector('.fresh-rank');if(!rank)return;if(!rank.dataset.originalRank)rank.dataset.originalRank=rank.textContent;if(focus&&!card.classList.contains('ticker-focus-hidden'))rank.textContent='#1';else rank.textContent=rank.dataset.originalRank;});
+    const leader=document.getElementById('incomeLeader');if(focus&&leader){const s=byTicker.get(focus),dps=num(s?.currentAnnualDps)??num(s?.ttmDps),price=num(s?.price),amount=num(document.getElementById('investmentAmountSlider')?.value)||0,shares=price>0?Math.floor(amount/price):0;if(s&&dps!=null)leader.textContent=`Focused ${focus}: ${shares.toLocaleString('en-US')} shares × ${dps.toFixed(2)} DPS = ${(shares*dps).toLocaleString('en-US',{maximumFractionDigits:0})}/yr`;}
+  }
+
+  function injectOverallScores(){
+    document.querySelectorAll('#rankingList .fresh-card').forEach(card=>{const ticker=elementTicker(card,'.fresh-title strong'),s=byTicker.get(ticker),head=card.querySelector('.expert-score-head');if(!s||!head)return;const score=overallScore(s);let badge=head.querySelector('.overall-expert-score');if(!badge){badge=document.createElement('div');badge.className='overall-expert-score';head.appendChild(badge);}badge.title='Overall Expert Score = Valuation 20% + Quality 20% + Growth 15% + Financial 15% + Dividend 20% + Momentum 10%. Missing lenses are reweighted across available data.';badge.innerHTML=`<span>Overall</span><strong class="${scoreTone(score)}">${score==null?'N/A':score}</strong><small>/100</small>`;});
+    const panel=document.querySelector('.score-framework-panel'),note=panel?.querySelector('.score-framework-note');if(note){const text='Overall Expert Score combines the six lenses using: Valuation 20% + Quality 20% + Growth 15% + Financial 15% + Dividend 20% + Momentum 10%. Missing lenses are reweighted across available data. The Primary Buy / Hold / Avoid rating remains a separate eligibility decision.';if(note.textContent!==text)note.textContent=text;}
+  }
+
+  function renderScoreBasedAllocation(){
+    const bar=document.getElementById('allocationBar'),legend=document.getElementById('allocationLegend'),panel=bar?.closest('.allocation-panel');if(!bar||!legend)return;let eligible=focusStocks(trackedStocks()).filter(s=>s.ratingClass==='buy');const scored=eligible.map(s=>{const overall=overallScore(s),entry=s.zoneStatus==='below'?1.10:s.zoneStatus==='in'?1.00:.80;return{s,overall,entry,raw:overall==null?0:overall*entry};}).filter(x=>x.raw>0);const total=scored.reduce((a,x)=>a+x.raw,0);const allocations=total?scored.map(x=>({...x,pct:x.raw/total*100})):[];const sig=allocations.map(x=>`${x.s.ticker}:${x.pct.toFixed(3)}:${x.overall}:${x.entry}`).join('|')||'none';if(bar.dataset.analyticsSignature!==sig||!bar.querySelector('[data-score-allocation]')){const colors=['var(--viz1,#5b8cff)','var(--viz2,#48d7a0)','var(--viz3,#ffd166)','var(--viz4,#9f7aea)','var(--viz5,#38bdf8)','var(--viz6,#fb7185)'];bar.innerHTML=allocations.map((x,i)=>`<div class="allocation-segment" data-score-allocation="true" title="${x.s.ticker}: ${x.pct.toFixed(1)}% • Overall ${x.overall}/100 • Entry ${x.entry.toFixed(2)}×" style="width:${x.pct}%;background:${colors[i%colors.length]}"></div>`).join('');legend.innerHTML=allocations.map((x,i)=>`<div class="legend-item"><span class="legend-dot" style="background:${colors[i%colors.length]}"></span><strong>${x.s.ticker}</strong> ${x.pct.toFixed(1)}% <span class="score-allocation-detail">score ${x.overall} • ${x.entry.toFixed(2)}× entry</span></div>`).join('')||'<span class="neutral">No Buy-rated stocks in the current focus are eligible for new-money allocation.</span>';bar.dataset.analyticsSignature=sig;}
+    const note=panel?.querySelector('.allocation-note');if(note){const text='Buy-rated stocks only. Allocation weight = Overall Expert Score × entry-price multiplier (below buy zone 1.10×, in zone 1.00×, above zone 0.80×), then the eligible weights are normalized to 100%. Hold, Watch and Avoid receive 0%.';if(note.textContent!==text)note.textContent=text;note.classList.add('score-allocation-note');}
+  }
+
+  function applyAnalyticsEnhancements(force=false){ensureTickerFocusFilter();injectOverallScores();applyTickerFocus();renderScoreBasedAllocation();}
+
+  ensureStyles();prepareButtons();ensureMobileWatchlistFilter();ensureCashflowUi();refreshStatus();updateAnalystNarratives();applyAnalyticsEnhancements(true);
   setInterval(refreshStatus,60000);
   document.addEventListener('mouseover',onPointerOver,true);document.addEventListener('mouseout',onPointerOut,true);document.addEventListener('click',onClick,true);document.addEventListener('keydown',onKey,true);
-  window.addEventListener('resize',()=>{if(activeButton)positionPopover(activeButton);ensureMobileWatchlistFilter();});window.addEventListener('scroll',()=>{if(!pinned)closePopover(true);},true);
-  let queued=false;new MutationObserver(mutations=>{for(const mutation of mutations)for(const node of mutation.addedNodes)if(node.nodeType===1)prepareButtons(node);ensureMobileWatchlistFilter();if(!queued){queued=true;requestAnimationFrame(()=>{queued=false;updateAnalystNarratives();refreshStatus();});}}).observe(document.documentElement,{childList:true,subtree:true});
+  document.addEventListener('input',e=>{if(e.target?.id==='investmentAmountSlider')requestAnimationFrame(applyTickerFocus);});
+  window.addEventListener('resize',()=>{if(activeButton)positionPopover(activeButton);ensureMobileWatchlistFilter();});window.addEventListener('scroll',()=>{if(!pinned)closePopover(true);},true);window.addEventListener('storage',()=>setTimeout(()=>applyAnalyticsEnhancements(true),0));
+  document.body.addEventListener('click',e=>{if(e.target.closest?.('[data-ticker],#resetTrackedBtn'))setTimeout(()=>applyAnalyticsEnhancements(true),20);});
+  let queued=false;new MutationObserver(mutations=>{for(const mutation of mutations)for(const node of mutation.addedNodes)if(node.nodeType===1)prepareButtons(node);ensureMobileWatchlistFilter();if(!queued){queued=true;requestAnimationFrame(()=>{queued=false;updateAnalystNarratives();refreshStatus();applyAnalyticsEnhancements();});}}).observe(document.documentElement,{childList:true,subtree:true});
 })();
