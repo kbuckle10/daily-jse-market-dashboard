@@ -106,5 +106,8 @@ for(const s of data.stocks){
     s.reason=`${s.reason||''} Book-value lens: ${s.bookValueAnalysis}`.trim();
   }
 }
+// This is written by the final enrichment step, so the UI can show the age of the
+// last completed dataset rather than repeating the source-policy text.
+data.refreshedAt=new Date().toISOString();
 writeData(data);
-console.log(`Book-value valuation enrichment complete for ${data.stocks.length} stocks.`);
+console.log(`Book-value valuation enrichment complete for ${data.stocks.length} stocks at ${data.refreshedAt}.`);
