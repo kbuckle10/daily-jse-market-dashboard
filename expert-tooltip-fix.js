@@ -32,24 +32,46 @@
   function ensureCashflowUi(){if(document.querySelector('script[data-cashflow-ui]'))return;const script=document.createElement('script');script.dataset.cashflowUi='true';script.src=`cashflow-ui.js?v=${Date.now()}`;document.head.appendChild(script);}
 
   const num=v=>v==null||!Number.isFinite(Number(v))?null:Number(v);
+  const monthsSince=v=>{if(!v)return null;const d=new Date(v);return Number.isNaN(d.valueOf())?null:(Date.now()-d.getTime())/(1000*60*60*24*30.44);};
   function analystNarrative(s){
-    const pe=num(s.pe), pb=num(s.calculatedPbFromJsePrice)??num(s.pb), epsg=num(s.epsGrowth), yieldPct=num(s.trailingYield), payout=num(s.payoutRatio), roe=num(s.roe), book=num(s.bookDiscountPct);
+    const pe=num(s.pe), pb=num(s.calculatedPbFromJsePrice)??num(s.pb), epsg=num(s.epsGrowth), revg=num(s.revenueGrowth), yieldPct=num(s.trailingYield), payout=num(s.payoutRatio), fcfPayout=num(s.fcfPayoutRatio), fcf=num(s.freeCashFlow), roe=num(s.roe), book=num(s.bookDiscountPct), y1=num(s.y1), m3=num(s.m3), divAge=monthsSince(s.payDate);
     const positives=[]; const cautions=[];
+
     if((pe!=null&&pe>0&&pe<12)||(pb!=null&&pb<1)) positives.push('attractive valuation');
-    if(yieldPct!=null&&yieldPct>=4) positives.push('dividend income');
-    if(roe!=null&&roe>=15) positives.push('strong profitability');
-    if(epsg!=null&&epsg>=8) positives.push('earnings growth');
-    if(epsg!=null&&epsg<0) cautions.push('earnings are under pressure');
-    if(payout!=null&&payout>85) cautions.push('the payout ratio is high');
-    if(s.zoneStatus==='above') cautions.push('the current price is above the preferred buy zone');
-    if(num(s.y1)!=null&&num(s.y1)<-15) cautions.push('longer-term price momentum is weak');
     if(book!=null&&book>=15) positives.push(`${book.toFixed(0)}% discount to book value`);
     else if(book!=null&&book<=-50) cautions.push(`the shares trade ${Math.abs(book).toFixed(0)}% above book value`);
+    if(yieldPct!=null&&yieldPct>=4&&!(divAge!=null&&divAge>18)) positives.push('meaningful dividend income');
+    if(roe!=null&&roe>=15) positives.push('strong profitability');
+    if(epsg!=null&&epsg>=8) positives.push('earnings growth');
+    else if(epsg!=null&&epsg<0) cautions.push('earnings are under pressure');
+    if(revg!=null&&revg>=8) positives.push('solid revenue growth');
+
+    // Treat a high earnings payout as context, not an automatic negative.
+    if(payout!=null&&payout>85){
+      if(fcf!=null&&fcf>0&&fcfPayout!=null&&fcfPayout<=80){
+        positives.push('the dividend remains supported by free cash flow');
+        if(epsg!=null&&epsg<0)cautions.push('the high earnings payout leaves less cushion if earnings weakness continues');
+      }else if(fcfPayout!=null&&fcfPayout>100){
+        cautions.push('the dividend currently exceeds free-cash-flow coverage');
+      }else if(fcf!=null&&fcf<0){
+        cautions.push('negative free cash flow weakens dividend coverage');
+      }else if(payout>100){
+        cautions.push('the dividend exceeds current earnings');
+      }else if(epsg!=null&&epsg<0){
+        cautions.push('the high earnings payout leaves a narrow buffer while earnings are falling');
+      }
+    }
+
+    if(divAge!=null&&divAge>18)cautions.push('the dividend record is stale and should not be treated as current income');
+    if(s.zoneStatus==='above') cautions.push('the current price is above the preferred buy zone');
+    if(y1!=null&&y1<-15) cautions.push('longer-term price momentum is weak');
+    else if(y1!=null&&y1>=20&&m3!=null&&m3>=0) positives.push('positive broader price momentum');
+
     const pos=[...new Set(positives)].slice(0,3), risk=[...new Set(cautions)].slice(0,2);
-    if(pos.length&&risk.length)return `${pos.map((x,i)=>i?x:x[0].toUpperCase()+x.slice(1)).join(' + ')} support the investment case, but ${risk.join(' and ')}.`;
+    if(pos.length&&risk.length)return `${pos.map((x,i)=>i?x:x[0].toUpperCase()+x.slice(1)).join(' + ')} support the investment case, while ${risk.join(' and ')}.`;
     if(pos.length)return `${pos.map((x,i)=>i?x:x[0].toUpperCase()+x.slice(1)).join(' + ')} support the current investment case.`;
     if(risk.length)return `Caution is warranted because ${risk.join(' and ')}.`;
-    return s.reason||'The available valuation, quality, growth, income and momentum metrics present a balanced investment profile.';
+    return s.reason||'The available valuation, quality, growth, income, cash-flow and momentum metrics present a balanced investment profile.';
   }
   function updateAnalystNarratives(){
     document.querySelectorAll('.stock-card').forEach(card=>{const t=card.querySelector('h3')?.textContent?.trim().toUpperCase(),s=byTicker.get(t);const p=card.querySelector('.rank-reason');if(s&&p)p.textContent=analystNarrative(s);});
