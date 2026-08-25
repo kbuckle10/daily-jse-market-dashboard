@@ -32,8 +32,26 @@ const fields=[
 ];
 for(const [key,labels,parser] of fields)setNum(s,key,map,labels,parser||parsePlain);
 if(s.price!=null&&s.bookValuePerShare!=null&&Number(s.bookValuePerShare)>0){s.calculatedPbFromJsePrice=Number((Number(s.price)/Number(s.bookValuePerShare)).toFixed(4));s.bookDiscountPct=Number(((Number(s.bookValuePerShare)-Number(s.price))/Number(s.bookValuePerShare)*100).toFixed(2));}
-if(s.freeCashFlowPerShare!=null&&Number(s.freeCashFlowPerShare)>0&&s.ttmDps!=null)s.fcfPayoutRatio=Number((Number(s.ttmDps)/Number(s.freeCashFlowPerShare)*100).toFixed(2));
-s.statisticsCurrency=cfg.currency;s.statisticsMarket=cfg.market.toUpperCase();s.statisticsSource='StockAnalysis';s.statisticsUrl=url;s.statisticsUpdated=new Date().toISOString();s.statisticsDataStatus='captured';const found=[s.bookValuePerShare,s.payoutRatio,s.freeCashFlow,s.cashAndEquivalents,s.roe,s.pb].filter(v=>v!=null).length;console.log(`${s.ticker}: BVPS=${s.bookValuePerShare??'N/A'} P/B=${s.pb??'N/A'} payout=${s.payoutRatio??'N/A'} FCF=${s.freeCashFlow??'N/A'} cash=${s.cashAndEquivalents??'N/A'} key=${found}/6`);
+// Keep paid trailing-12-month DPS (ttmDps) separate from the current annual dividend rate.
+// StockAnalysis Dividend Per Share reflects the current annual dividend amount and can include
+// an already-declared upcoming payment. The official JSE corporate-action fields remain the
+// authority for the latest declaration amount and dates.
+if(s.statisticsDividendPerShare!=null&&Number.isFinite(Number(s.statisticsDividendPerShare))){
+  s.currentAnnualDps=Number(s.statisticsDividendPerShare);
+  s.currentAnnualDpsCurrency=cfg.currency;
+  s.currentAnnualDpsStatus='stockanalysis-current-annual-dividend';
+  s.currentAnnualDpsSource='StockAnalysis Statistics; latest declaration/dates validated from JSE when available';
+  if(s.price>0&&cfg.currency==='JMD')s.currentDividendYield=Number((Number(s.currentAnnualDps)/Number(s.price)*100).toFixed(2));
+  else if(s.statisticsDividendYield!=null)s.currentDividendYield=Number(s.statisticsDividendYield);
+}else{
+  s.currentAnnualDps=null;
+  s.currentAnnualDpsCurrency=cfg.currency;
+  s.currentAnnualDpsStatus='not-found';
+  s.currentAnnualDpsSource='StockAnalysis Statistics';
+  s.currentDividendYield=null;
+}
+if(s.freeCashFlowPerShare!=null&&Number(s.freeCashFlowPerShare)>0){const dividendForCoverage=s.currentAnnualDps!=null?s.currentAnnualDps:s.ttmDps;if(dividendForCoverage!=null)s.fcfPayoutRatio=Number((Number(dividendForCoverage)/Number(s.freeCashFlowPerShare)*100).toFixed(2));}
+s.statisticsCurrency=cfg.currency;s.statisticsMarket=cfg.market.toUpperCase();s.statisticsSource='StockAnalysis';s.statisticsUrl=url;s.statisticsUpdated=new Date().toISOString();s.statisticsDataStatus='captured';const found=[s.bookValuePerShare,s.payoutRatio,s.freeCashFlow,s.cashAndEquivalents,s.roe,s.pb].filter(v=>v!=null).length;console.log(`${s.ticker}: BVPS=${s.bookValuePerShare??'N/A'} P/B=${s.pb??'N/A'} payout=${s.payoutRatio??'N/A'} FCF=${s.freeCashFlow??'N/A'} cash=${s.cashAndEquivalents??'N/A'} paidTTM=${s.ttmDps??'N/A'} currentAnnualDPS=${s.currentAnnualDps??'N/A'} currentYield=${s.currentDividendYield??'N/A'}% key=${found}/6`);
 }finally{await page.close();}}
 
 async function runPool(items,worker,count){let next=0;const runners=Array.from({length:Math.min(count,items.length)},async()=>{while(true){const i=next++;if(i>=items.length)return;await worker(items[i],i);}});await Promise.all(runners);}
