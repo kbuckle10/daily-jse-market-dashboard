@@ -34,12 +34,22 @@
     return { cls: 'amber', text: `${s.rating || 'Hold'} • income may appeal, but not model new-money eligible` };
   }
 
+  // Current/declared annual DPS is the income-planning metric. It can include an
+  // officially declared upcoming dividend already reflected in StockAnalysis's
+  // current annual dividend figure. Paid TTM DPS remains a separate historical metric.
   function annualDps(s) {
+    if (s.currentAnnualDps != null && Number.isFinite(Number(s.currentAnnualDps))) return Number(s.currentAnnualDps);
     return s.ttmDps != null && Number.isFinite(Number(s.ttmDps)) ? Number(s.ttmDps) : null;
+  }
+  function annualDpsCurrency(s) { return s.currentAnnualDpsCurrency || s.ttmDpsCurrency || 'JMD'; }
+  function currentYield(s) {
+    if (s.currentDividendYield != null && Number.isFinite(Number(s.currentDividendYield))) return Number(s.currentDividendYield);
+    if (s.trailingYield != null && Number.isFinite(Number(s.trailingYield))) return Number(s.trailingYield);
+    return null;
   }
 
   function impliedDps(s) {
-    const eps = Number(s.eps), payout = Number(s.payoutRatio);
+    const eps = Number(s.epsTtm ?? s.eps), payout = Number(s.payoutRatio);
     if (!Number.isFinite(eps) || !Number.isFinite(payout) || payout < 0) return null;
     return eps * payout / 100;
   }
@@ -48,7 +58,7 @@
     const panel = document.querySelector('.income-vs-savings-panel');
     const controls = panel?.querySelector('.income-controls');
     if (!panel || !controls || panel.querySelector('.income-mode-switch')) return;
-    controls.insertAdjacentHTML('beforebegin', `<div class="income-mode-switch" role="group" aria-label="Dividend income calculation mode"><button type="button" class="income-mode-btn active" data-income-mode="investment">Investment amount</button><button type="button" class="income-mode-btn" data-income-mode="shares">Shares owned</button></div><p class="income-mode-note" id="incomeModeNote">Investment mode estimates whole shares at the current JSE price, then calculates income as shares × trailing annual DPS.</p>`);
+    controls.insertAdjacentHTML('beforebegin', `<div class="income-mode-switch" role="group" aria-label="Dividend income calculation mode"><button type="button" class="income-mode-btn active" data-income-mode="investment">Investment amount</button><button type="button" class="income-mode-btn" data-income-mode="shares">Shares owned</button></div><p class="income-mode-note" id="incomeModeNote">Investment mode estimates whole shares at the current JSE price, then calculates income as shares × current annual DPS.</p>`);
     const amountControl = $('investmentAmountSlider')?.closest('.income-control');
     if (amountControl) amountControl.dataset.investmentControl = 'true';
   }
@@ -70,15 +80,15 @@
     document.querySelectorAll('.income-mode-btn').forEach(b => b.classList.toggle('active', b.dataset.incomeMode === mode));
     const modeNote = $('incomeModeNote');
     if (modeNote) modeNote.textContent = mode === 'investment'
-      ? 'Investment mode estimates whole shares at the current JSE price, then calculates income as shares × trailing annual DPS.'
-      : 'Shares-owned mode uses your entered holdings directly. Bank savings income is compared against the current market value of those shares.';
+      ? 'Investment mode estimates whole shares at the current JSE price, then calculates income as shares × current annual DPS. Declared upcoming dividends may be included once officially announced.'
+      : 'Shares-owned mode uses your entered holdings directly. Dividend income uses current annual DPS; bank savings income is compared against the current market value of those shares.';
 
     const rows = trackedStocks()
-      .filter(s => annualDps(s) != null || (s.trailingYield != null && Number.isFinite(Number(s.trailingYield))))
+      .filter(s => annualDps(s) != null || currentYield(s) != null)
       .sort((a, b) => {
         const ar = dividendRecency(a) === 'current' ? 1 : 0;
         const br = dividendRecency(b) === 'current' ? 1 : 0;
-        return br - ar || Number(b.trailingYield || -1) - Number(a.trailingYield || -1);
+        return br - ar || Number(currentYield(b) ?? -1) - Number(currentYield(a) ?? -1);
       });
 
     if (!rows.length) {
@@ -98,13 +108,14 @@
       if (income > leaderIncome) { leaderIncome = income; leader = { s, shares, income }; }
     }
     $('incomeLeader').textContent = leader
-      ? `${leader.s.ticker}: ${leader.shares.toLocaleString('en-US')} shares × ${curMoney(annualDps(leader.s), leader.s.ttmDpsCurrency || 'JMD', 2)} DPS = ${curMoney(leader.income, leader.s.ttmDpsCurrency || 'JMD')}/yr`
-      : 'No tracked stock has a recent dividend payment with usable DPS';
+      ? `${leader.s.ticker}: ${leader.shares.toLocaleString('en-US')} shares × ${curMoney(annualDps(leader.s), annualDpsCurrency(leader.s), 2)} current annual DPS = ${curMoney(leader.income, annualDpsCurrency(leader.s))}/yr`
+      : 'No tracked stock has a recent/declared dividend with usable annual DPS';
 
     list.innerHTML = rows.map(s => {
       const dps = annualDps(s);
+      const paidTtm = s.ttmDps != null && Number.isFinite(Number(s.ttmDps)) ? Number(s.ttmDps) : null;
       const implied = impliedDps(s);
-      const dpsCurrency = s.ttmDpsCurrency || 'JMD';
+      const dpsCurrency = annualDpsCurrency(s);
       const recency = dividendRecency(s);
       const stale = recency === 'stale';
       const price = Number(s.price);
@@ -113,12 +124,13 @@
       const savingsPrincipal = mode === 'shares' ? marketValue : investment;
       const savingsIncome = savingsPrincipal == null ? null : savingsPrincipal * savingsRate / 100;
       const stockIncome = stale || dps == null ? null : shares * dps;
-      const y = s.trailingYield != null && Number.isFinite(Number(s.trailingYield)) ? Number(s.trailingYield) : null;
+      const y = currentYield(s);
       const premium = y == null ? null : y - savingsRate;
       const multiple = savingsRate > 0 && y != null ? y / savingsRate : null;
       const note = ratingNote(s);
       const currencyComparable = dpsCurrency === 'JMD';
       const impliedChange = dps != null && implied != null && dps !== 0 ? ((implied / dps) - 1) * 100 : null;
+      const dpsBasis = s.currentAnnualDps != null ? 'Current annual' : 'Paid TTM fallback';
       const sharesInput = mode === 'shares'
         ? `<div class="shares-owned-control"><label for="shares-${s.ticker}">Shares owned</label><input id="shares-${s.ticker}" class="shares-owned-input" type="number" inputmode="numeric" min="0" step="1" value="${shares || ''}" placeholder="0" data-shares-ticker="${s.ticker}"></div>`
         : `<div class="shares-owned-summary"><small>Estimated shares</small><strong>${shares.toLocaleString('en-US')}</strong><span>${marketValue == null ? '' : `${money(marketValue)} at current price`}</span></div>`;
@@ -128,16 +140,17 @@
           <span class="rating ${s.ratingClass || 'hold'}">${s.rating || 'N/A'}</span>
         </div>
         ${sharesInput}
-        <div class="income-formula">${shares.toLocaleString('en-US')} shares × ${dps == null ? 'DPS N/A' : curMoney(dps, dpsCurrency, 2)} = <strong>${stockIncome == null ? (stale ? 'Not current' : 'N/A') : curMoney(stockIncome, dpsCurrency)}</strong> / year</div>
+        <div class="income-formula">${shares.toLocaleString('en-US')} shares × ${dps == null ? 'DPS N/A' : curMoney(dps, dpsCurrency, 2)} = <strong>${stockIncome == null ? (stale ? 'Not current' : 'N/A') : curMoney(stockIncome, dpsCurrency)}</strong> / year <small>(${dpsBasis})</small></div>
         <div class="income-metrics">
-          <div>${tip('Trailing annual DPS', 'Actual dividends per share paid over the trailing 12-month period. Annual cash income is shares owned × this DPS.')}<strong class="${stale ? 'negative' : ''}">${dps == null ? 'N/A' : curMoney(dps, dpsCurrency, 2)}</strong></div>
-          <div>${tip('Earnings-implied DPS', 'Estimated DPS if the company maintained its current payout ratio: EPS × payout ratio. This is analytical capacity, not a declared or guaranteed dividend.')}<strong>${implied == null ? 'N/A' : curMoney(implied, dpsCurrency, 2)}</strong>${impliedChange == null ? '' : `<small class="${impliedChange >= 0 ? 'positive' : 'negative'}">${impliedChange >= 0 ? '+' : ''}${fmt(impliedChange, 1)}% vs trailing</small>`}</div>
-          <div>${tip('Dividend yield', 'Trailing annual DPS relative to current share price. Yield is useful for comparing income efficiency, but your actual cash dividend is determined by shares × DPS.')}<strong>${y == null ? 'N/A' : fmt(y, 2) + '%'}</strong></div>
-          <div>${tip('Yield premium', 'Dividend yield minus the selected bank savings rate. pp means percentage points. This compares yield rates, not guaranteed cash returns.')}<strong class="${stale || premium == null ? 'neutral' : premium >= 0 ? 'positive' : 'negative'}">${stale ? 'Historical' : premium == null ? 'N/A' : `${premium >= 0 ? '+' : ''}${fmt(premium, 2)} pp`}</strong></div>
-          <div>${tip('Stock income / yr', 'Actual calculation basis used here: number of shares × trailing annual DPS. Stale dividends are not projected as current income.')}<strong>${stockIncome == null ? (stale ? 'Not current' : 'N/A') : curMoney(stockIncome, dpsCurrency)}</strong></div>
+          <div>${tip('Current annual DPS', 'Current annual dividend per share used for income planning. It may include an officially declared upcoming dividend once announced. StockAnalysis supplies the annual figure; JSE remains authoritative for the latest declaration amount and dates.')}<strong class="${stale ? 'negative' : ''}">${dps == null ? 'N/A' : curMoney(dps, dpsCurrency, 2)}</strong></div>
+          <div>${tip('Paid TTM DPS', 'Historical dividends per share actually paid during the trailing 12 months, based on JSE corporate-action payment dates. This remains separate from current annual DPS.')}<strong>${paidTtm == null ? 'N/A' : curMoney(paidTtm, s.ttmDpsCurrency || dpsCurrency, 2)}</strong></div>
+          <div>${tip('Earnings-implied DPS', 'Estimated DPS if the company maintained its current payout ratio: EPS × payout ratio. This is analytical capacity, not a declared or guaranteed dividend.')}<strong>${implied == null ? 'N/A' : curMoney(implied, dpsCurrency, 2)}</strong>${impliedChange == null ? '' : `<small class="${impliedChange >= 0 ? 'positive' : 'negative'}">${impliedChange >= 0 ? '+' : ''}${fmt(impliedChange, 1)}% vs current annual</small>`}</div>
+          <div>${tip('Current dividend yield', 'Current annual DPS divided by the current share price. A declared upcoming dividend may therefore be reflected before its payment date.')}<strong>${y == null ? 'N/A' : fmt(y, 2) + '%'}</strong></div>
+          <div>${tip('Yield premium', 'Current dividend yield minus the selected bank savings rate. pp means percentage points. This compares yield rates, not guaranteed cash returns.')}<strong class="${stale || premium == null ? 'neutral' : premium >= 0 ? 'positive' : 'negative'}">${stale ? 'Historical' : premium == null ? 'N/A' : `${premium >= 0 ? '+' : ''}${fmt(premium, 2)} pp`}</strong></div>
+          <div>${tip('Stock income / yr', 'Calculation basis used here: number of shares × current annual DPS. Officially declared upcoming dividends can be included; stale dividend histories are not projected as current income.')}<strong>${stockIncome == null ? (stale ? 'Not current' : 'N/A') : curMoney(stockIncome, dpsCurrency)}</strong></div>
           <div>${tip('Savings income / yr', mode === 'shares' ? 'Current market value of your entered shares × selected bank savings rate.' : 'Selected investment amount × bank savings rate.')}<strong>${savingsIncome == null ? 'N/A' : money(savingsIncome)}</strong></div>
-          <div>${tip('Vs savings', 'Dividend yield divided by the selected bank savings rate. For foreign-currency dividends, the cash amounts are not directly comparable without an FX conversion.')}<strong>${stale ? 'Historical' : multiple == null ? 'N/A' : fmt(multiple, 1) + '×'}</strong></div>
-          <div>${tip('Last dividend pay', 'Most recent dividend payment date in the collected data. More than 12 months triggers a warning; more than 18 months is treated as stale.')}<strong class="${stale ? 'negative' : recency === 'aging' ? 'amber' : ''}">${s.payDate || 'N/A'}</strong></div>
+          <div>${tip('Vs savings', 'Current dividend yield divided by the selected bank savings rate. For foreign-currency dividends, the cash amounts are not directly comparable without an FX conversion.')}<strong>${stale ? 'Historical' : multiple == null ? 'N/A' : fmt(multiple, 1) + '×'}</strong></div>
+          <div>${tip('Latest declared pay', 'Payment date for the latest official dividend declaration in the collected data. A future date indicates an announced upcoming payment. More than 12 months without a newer declaration triggers a recency warning.')}<strong class="${stale ? 'negative' : recency === 'aging' ? 'amber' : ''}">${s.payDate || 'N/A'}</strong></div>
         </div>
         ${!currencyComparable ? `<p class="income-currency-note amber">Dividend income is in ${dpsCurrency}; bank savings is in JMD. Cash amounts are shown separately because an FX rate is required for a direct currency comparison.</p>` : ''}
         <p class="income-rating-note ${note.cls}">${note.text}</p>
@@ -176,8 +189,6 @@
     document.body.addEventListener('input', e => {
       const input = e.target.closest('.shares-owned-input');
       if (!input) return;
-      // Persist each keystroke without rerendering the entire card list. Rerendering
-      // here replaced the focused input node and caused the page to jump vertically.
       saveShareInput(input);
     });
     document.body.addEventListener('change', e => {
