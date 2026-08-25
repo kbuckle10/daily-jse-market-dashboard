@@ -5,10 +5,11 @@
 
   function tracked(){let saved=[];try{saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');}catch{}const set=new Set((Array.isArray(saved)?saved:[]).map(x=>String(x).toUpperCase()));return (window.JSE_DASHBOARD_DATA?.stocks||[]).filter(s=>set.has(s.ticker));}
   function comparison(s){return s.bookDiscountPct==null?'N/A':s.bookDiscountPct>0?`${num(s.bookDiscountPct,1)}% below book`:s.bookDiscountPct<0?`${num(Math.abs(s.bookDiscountPct),1)}% above book`:'At book';}
+  function comparisonTone(s){return s.bookDiscountPct==null?'neutral':s.bookDiscountPct>0?'positive':s.bookDiscountPct<0?'negative':'neutral';}
 
   function profile(s){
     const sector=String(s.sector||'').toLowerCase(), ticker=String(s.ticker||'').toUpperCase();
-    const roe=n(s.roe), roic=n(s.roic), fcf=n(s.freeCashFlow), fcfPayout=n(s.fcfPayoutRatio), epsg=n(s.epsGrowth), yieldPct=n(s.trailingYield);
+    const roe=n(s.roe), roic=n(s.roic), fcf=n(s.freeCashFlow), fcfPayout=n(s.fcfPayoutRatio), yieldPct=n(s.trailingYield);
     const strongEconomics=(roe!=null&&roe>=20)||(roic!=null&&roic>=15);
     const cashSupported=fcf!=null&&fcf>0&&(fcfPayout==null||fcfPayout<=85);
     const incomeSupported=yieldPct!=null&&yieldPct>=3&&cashSupported;
@@ -25,7 +26,6 @@
     const premium=discount!=null&&discount<0, below=discount!=null&&discount>0;
     const strongReturns=(roe!=null&&roe>=15)||(roic!=null&&roic>=12);
     const strongCash=fcf!=null&&fcf>0&&(fcfPayout==null||fcfPayout<=85);
-    const earningsOkay=epsg==null||epsg>=0;
     let signal='Near Book', tone='neutral';
 
     if(below){signal=discount>=35?'Deep Value Discount':'Below Book';tone='positive';}
@@ -62,6 +62,7 @@
     .book-context-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}.book-context-tags span{display:inline-flex;padding:3px 6px;border:1px solid var(--border);border-radius:999px;background:var(--surface);font-size:.58rem;color:var(--muted)}
     .book-context-tags .support{color:var(--green)}.book-context-tags .watch{color:var(--amber)}
     .book-signal.amber{color:var(--amber)}
+    .book-relevance{font-weight:800}.book-relevance.high{color:#9b7cff}.book-relevance.medium{color:var(--amber)}.book-relevance.low{color:var(--accent)}
     .book-mobile-context{margin:10px 0 0;padding:10px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--muted);font-size:.67rem;line-height:1.42}
   `;document.head.appendChild(style);}
 
@@ -76,11 +77,11 @@
   function render(){
     const body=$('bookValueBody'),note=$('bookValueNote'),cards=$('bookValueCards');if(!body||!note)return;ensureStyles();updateHeaders();
     const rows=tracked().sort((a,b)=>(b.bookDiscountPct??-999)-(a.bookDiscountPct??-999));
-    body.innerHTML=rows.length?rows.map(s=>{const c=context(s);const tags=[...c.supports.map(x=>`<span class="support">Supports: ${x}</span>`),...c.watches.map(x=>`<span class="watch">Watch: ${x}</span>`)].join('');return `<tr><td><strong>${s.ticker}</strong><br><small>${s.company||''}</small></td><td>${money(s.price)}</td><td>${money(s.bookValuePerShare)}</td><td>${s.calculatedPbFromJsePrice==null?(s.pb==null?'N/A':num(s.pb,2)+'×'):num(s.calculatedPbFromJsePrice,2)+'×'}</td><td>${comparison(s)}</td><td><strong class="book-signal ${c.tone}">${c.signal}</strong><br><small>${c.profile.type}</small><div class="book-context">${c.narrative}${tags?`<div class="book-context-tags">${tags}</div>`:''}</div></td><td><strong>${c.profile.weight}</strong><br><small>P/B does not override the primary rating</small></td><td><strong>${s.rating||s.bookAdjustedRating||'N/A'}</strong></td></tr>`;}).join(''):'<tr><td colspan="8" class="neutral">Add tickers to see the price-to-book context.</td></tr>';
+    body.innerHTML=rows.length?rows.map(s=>{const c=context(s);const tags=[...c.supports.map(x=>`<span class="support">Supports: ${x}</span>`),...c.watches.map(x=>`<span class="watch">Watch: ${x}</span>`)].join('');return `<tr><td><strong>${s.ticker}</strong><br><small>${s.company||''}</small></td><td>${money(s.price)}</td><td>${money(s.bookValuePerShare)}</td><td>${s.calculatedPbFromJsePrice==null?(s.pb==null?'N/A':num(s.pb,2)+'×'):num(s.calculatedPbFromJsePrice,2)+'×'}</td><td><strong class="${comparisonTone(s)}">${comparison(s)}</strong></td><td><strong class="book-signal ${c.tone}">${c.signal}</strong><br><small>${c.profile.type}</small><div class="book-context">${c.narrative}${tags?`<div class="book-context-tags">${tags}</div>`:''}</div></td><td><strong class="book-relevance ${c.profile.key}">${c.profile.weight}</strong><br><small>P/B does not override the primary rating</small></td><td><strong>${s.rating||s.bookAdjustedRating||'N/A'}</strong></td></tr>`;}).join(''):'<tr><td colspan="8" class="neutral">Add tickers to see the price-to-book context.</td></tr>';
 
-    if(cards)cards.innerHTML=rows.length?rows.map(s=>{const c=context(s);const tags=[...c.supports.map(x=>`<span class="support">Supports: ${x}</span>`),...c.watches.map(x=>`<span class="watch">Watch: ${x}</span>`)].join('');return `<article class="book-mobile-card"><div class="book-mobile-head"><div><strong>${s.ticker}</strong><small>${s.company||''}</small></div><strong class="book-signal ${c.tone}">${c.signal}</strong></div><div class="book-mobile-grid"><div><span>Price</span><strong>${money(s.price)}</strong></div><div><span>Book value/share</span><strong>${money(s.bookValuePerShare)}</strong></div><div><span>P/B</span><strong>${s.calculatedPbFromJsePrice==null?(s.pb==null?'N/A':num(s.pb,2)+'×'):num(s.calculatedPbFromJsePrice,2)+'×'}</strong></div><div><span>Price vs book</span><strong>${comparison(s)}</strong></div><div><span>P/B relevance</span><strong>${c.profile.weight.replace(' P/B relevance','')}</strong></div><div><span>Primary rating</span><strong>${s.rating||s.bookAdjustedRating||'N/A'}</strong></div></div><div class="book-mobile-context">${c.narrative}${tags?`<div class="book-context-tags">${tags}</div>`:''}</div></article>`;}).join(''):'<p class="neutral">Add tickers to see the price-to-book context.</p>';
+    if(cards)cards.innerHTML=rows.length?rows.map(s=>{const c=context(s);const tags=[...c.supports.map(x=>`<span class="support">Supports: ${x}</span>`),...c.watches.map(x=>`<span class="watch">Watch: ${x}</span>`)].join('');return `<article class="book-mobile-card"><div class="book-mobile-head"><div><strong>${s.ticker}</strong><small>${s.company||''}</small></div><strong class="book-signal ${c.tone}">${c.signal}</strong></div><div class="book-mobile-grid"><div><span>Price</span><strong>${money(s.price)}</strong></div><div><span>Book value/share</span><strong>${money(s.bookValuePerShare)}</strong></div><div><span>P/B</span><strong>${s.calculatedPbFromJsePrice==null?(s.pb==null?'N/A':num(s.pb,2)+'×'):num(s.calculatedPbFromJsePrice,2)+'×'}</strong></div><div><span>Price vs book</span><strong class="${comparisonTone(s)}">${comparison(s)}</strong></div><div><span>P/B relevance</span><strong class="book-relevance ${c.profile.key}">${c.profile.weight.replace(' P/B relevance','')}</strong></div><div><span>Primary rating</span><strong>${s.rating||s.bookAdjustedRating||'N/A'}</strong></div></div><div class="book-mobile-context">${c.narrative}${tags?`<div class="book-context-tags">${tags}</div>`:''}</div></article>`;}).join(''):'<p class="neutral">Add tickers to see the price-to-book context.</p>';
 
-    note.textContent='P/B is a context signal, not an automatic Buy / Hold / Avoid rule. It receives high weight for book-sensitive businesses such as banks, insurers, investment and real-estate companies; lower weight for businesses whose value is driven more by earnings power and cash generation. A high-P/B stock can still be attractive when profitability, free cash flow, dividend safety and entry price justify the premium.';
+    note.textContent='Price vs book uses direction colors: below book is green, above book is red, and near book is neutral. P/B relevance uses separate analytical colors so importance is not confused with good/bad: High = violet, Moderate = amber, Low = blue. P/B remains a context signal and does not automatically determine Buy / Hold / Avoid.';
   }
 
   const obs=new MutationObserver(()=>render());window.addEventListener('load',()=>{render();const target=$('subtitleTickers');if(target)obs.observe(target,{childList:true,subtree:true,characterData:true});window.addEventListener('storage',render);document.body.addEventListener('click',e=>{if(e.target.closest('[data-ticker],#resetTrackedBtn'))setTimeout(render,0);});});
