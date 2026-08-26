@@ -32,33 +32,42 @@
   function hasCompellingValueSignals(s){
     const pe=num(s.pe),pb=num(s.calculatedPbFromJsePrice)??num(s.pb),discount=num(s.bookDiscountPct);
     if(isBookSensitive(s)){
-      // For banks/financials/insurers, book value is economically important. Require the
-      // below-book signal to be supported by a reasonable earnings multiple so that a
-      // distressed balance sheet is not labelled Value solely because P/B is low.
       const meaningfulBookDiscount=(discount!=null&&discount>=10)||(pb!=null&&pb<=0.90);
       const earningsSupport=pe!=null&&pe>0&&pe<=15;
       return meaningfulBookDiscount&&earningsSupport;
     }
-    // Outside book-sensitive sectors, require two independent valuation signals rather
-    // than treating below-book status alone as sufficient evidence of Value.
     const lowPb=pb!=null&&pb<=1.0;
     const lowPe=pe!=null&&pe>0&&pe<=12;
     const meaningfulBookDiscount=discount!=null&&discount>=15;
     return lowPe&&(lowPb||meaningfulBookDiscount);
   }
 
+  function hasIncomeProfile(s,sc){
+    const age=monthsSince(s.payDate),activeDividend=(age==null?Boolean(s.payDate||s.exDate||s.currentAnnualDps):age<=18);
+    const payout=num(s.payoutRatio),fcfPayout=num(s.fcfPayoutRatio),fcf=num(s.freeCashFlow);
+    // Income is an investment style, not merely evidence that a dividend exists. Require
+    // a meaningful current yield, a recent/active dividend and an adequate dividend lens.
+    if((sc.yieldPct??0)<3||!activeDividend||sc.dividend==null||Math.round(sc.dividend)<55)return false;
+    // A token payout is more characteristic of a company retaining earnings for growth.
+    // Very high payout is acceptable only when cash-flow coverage provides support.
+    if(payout!=null&&payout<15)return false;
+    if(payout!=null&&payout>100){
+      const cashCovered=fcf!=null&&fcf>0&&fcfPayout!=null&&fcfPayout<=90;
+      if(!cashCovered)return false;
+    }
+    if(fcfPayout!=null&&fcfPayout>120)return false;
+    return true;
+  }
+
   function categories(s){
     const sc=scores(s),cats=[];
-    // Classification uses the same rounded score investors see in the UI. A second,
-    // sector-aware path recognizes compelling valuation evidence, especially for banks.
     if((sc.valuation!=null&&Math.round(sc.valuation)>=65)||hasCompellingValueSignals(s))cats.push('Value');
-    const age=monthsSince(s.payDate),activeDividend=(age==null?Boolean(s.payDate||s.exDate||s.currentAnnualDps):age<=18);
-    if((sc.yieldPct??0)>=3&&activeDividend&&sc.dividend!=null&&Math.round(sc.dividend)>=55)cats.push('Income');
+    if(hasIncomeProfile(s,sc))cats.push('Income');
     if(sc.growth!=null&&Math.round(sc.growth)>=65)cats.push('Growth');
     return cats;
   }
   const displayCategories=s=>{const cats=categories(s);return cats.length?cats:['Neutral'];};
-  window.JSE_INVESTMENT_CATEGORIES={categories,displayCategories,scores,hasCompellingValueSignals};
+  window.JSE_INVESTMENT_CATEGORIES={categories,displayCategories,scores,hasCompellingValueSignals,hasIncomeProfile};
 
   function ensureStyles(){if(document.getElementById('investmentStyleFilterStyles'))return;const st=document.createElement('style');st.id='investmentStyleFilterStyles';st.textContent=`
     .style-filter-bar{display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding:8px 10px;border:1px solid var(--border);border-radius:12px;background:var(--surface2);margin:8px 0}.style-filter-label{font-size:.66rem;font-weight:800;color:var(--muted);margin-right:2px}.style-filter-chip,.style-match-mode{border:1px solid var(--border);background:var(--surface);color:var(--muted);border-radius:999px;padding:6px 10px;font-size:.64rem;font-weight:800;cursor:pointer}.style-filter-chip.active{color:var(--text);border-color:var(--accent);background:var(--blue-bg)}.style-filter-chip.value.active{color:#7dd3fc}.style-filter-chip.income.active{color:#86efac}.style-filter-chip.growth.active{color:#fcd34d}.style-match-mode{margin-left:auto}.style-filter-note{font-size:.58rem;color:var(--muted)}.dynamic-style-badges{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px}.dynamic-style-badges .style-badge{font-size:.55rem}.style-badge.neutral{color:var(--muted);border-color:var(--border);background:var(--surface2)}.style-category-hidden{display:none!important}@media(max-width:720px){.style-filter-bar{gap:6px}.style-match-mode{margin-left:0}.style-filter-note{flex-basis:100%}}
