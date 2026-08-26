@@ -63,3 +63,10 @@
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(init,0));else setTimeout(init,0);
 })();
+
+if(!document.querySelector('script[data-investment-style-filters]')){
+  const s=document.createElement('script');
+  s.dataset.investmentStyleFilters='true';
+  s.src=`investment-style-filters.js?v=${Date.now()}`;
+  document.head.appendChild(s);
+}
