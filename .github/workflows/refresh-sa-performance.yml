@@ -3,8 +3,8 @@ name: Refresh Daily JSE Main Market
 on:
   workflow_dispatch:
   schedule:
-    # 22:00 UTC = 17:00 Jamaica (UTC-5 year-round)
-    - cron: '0 22 * * *'
+    # 21:30 UTC = 16:30 Jamaica (UTC-5 year-round)
+    - cron: '30 21 * * *'
   push:
     branches: [main]
     paths:
@@ -101,6 +101,20 @@ jobs:
           const ghl = data.stocks.find(s => s.ticker === 'GHL');
           if (ghl && ghl.jseCorporateActionStatus === 'ok' && ghl.latestDividendCurrency !== 'TTD') throw new Error(`GHL JSE corporate-action currency mismatch: ${ghl.latestDividendCurrency}`);
           console.log(`Validated ${data.stocks.length} Main Market stocks; ${priced} priced, ${researched} with SA research fields, ${valued} with rating/buy-zone data, ${book} with book-value valuation. Core 12 all have price, DAY, 1W, 1M, YTD, 3M, 6M and 1Y.`);
+          NODE
+
+            # Stamp the completion time only after every collector and validation has finished.
+            # The UI converts this UTC ISO timestamp to America/Jamaica for display.
+            node <<'NODE'
+          const fs = require('fs');
+          const vm = require('vm');
+          const raw = fs.readFileSync('data.js','utf8');
+          const m = raw.match(/window\.JSE_DASHBOARD_DATA\s*=\s*([\s\S]*);\s*$/);
+          if (!m) throw new Error('Unable to parse data.js for refresh timestamp');
+          const data = vm.runInNewContext(`(${m[1]})`);
+          data.refreshedAt = new Date().toISOString();
+          fs.writeFileSync('data.js', `window.JSE_DASHBOARD_DATA = ${JSON.stringify(data, null, 2)};\n`);
+          console.log(`Stamped successful refresh completion: ${data.refreshedAt}`);
           NODE
 
             if git diff --quiet -- data.js; then
