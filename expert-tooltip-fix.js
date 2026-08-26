@@ -51,7 +51,6 @@
 
   function refreshStatus(){const pill=document.getElementById('updatedPill');if(!pill)return;const d=DATA.refreshedAt?new Date(DATA.refreshedAt):null;if(!d||Number.isNaN(d.valueOf())){pill.textContent=`Data refreshed • ${DATA.updated||'latest dataset'}`;return;}const mins=Math.max(0,Math.floor((Date.now()-d.getTime())/60000));const relative=mins<1?'just now':mins<60?`${mins} min${mins===1?'':'s'} ago`:mins<1440?`${Math.floor(mins/60)} hr${Math.floor(mins/60)===1?'':'s'} ago`:`${Math.floor(mins/1440)} day${Math.floor(mins/1440)===1?'':'s'} ago`;const time=new Intl.DateTimeFormat('en-JM',{timeZone:'America/Jamaica',hour:'numeric',minute:'2-digit'}).format(d);pill.textContent=`Data refreshed ${relative} • ${time} Jamaica`;pill.title=`Last completed dashboard refresh: ${new Intl.DateTimeFormat('en-JM',{timeZone:'America/Jamaica',dateStyle:'medium',timeStyle:'short'}).format(d)}`;}
 
-  // Shared six-lens expert scoring. These rules intentionally mirror the visible scorecard.
   function expertScores(s){
     const sector=String(s.sector||'').toLowerCase(),bookSensitive=/bank|financial|insurance|investment|real estate|reit/.test(sector);
     const peScore=metric(s.pe,[[v=>v>0&&v<8,95],[v=>v<11,85],[v=>v<15,70],[v=>v<20,55],[v=>v<25,40],[v=>v>=25,25]]),pbScore=metric(s.pb,bookSensitive?[[v=>v<.6,95],[v=>v<.8,88],[v=>v<1,78],[v=>v<1.3,62],[v=>v<1.7,45],[v=>v>=1.7,28]]:[[v=>v<.8,85],[v=>v<1.2,75],[v=>v<2,62],[v=>v<4,48],[v=>v>=4,35]]),zoneScore=s.zoneStatus==='below'?92:s.zoneStatus==='in'?82:s.zoneStatus==='above'?42:null,fairScore=s.fairValue!=null&&s.price!=null&&s.fairValue>0?clamp(50+((s.fairValue/s.price)-1)*120):null,valuation=avg([peScore,pbScore,zoneScore,fairScore]);
@@ -75,6 +74,9 @@
   function applyTickerFocus(){
     const focus=currentFocus();const groups=[['#stockTableBody tr','.ticker'],['#cardView .stock-card','h3'],['#bookValueBody tr','td strong'],['#bookValueCards .book-mobile-card','.book-mobile-head strong'],['#movementList .movement-item','.movement-head strong'],['#rankingList .fresh-card','.fresh-title strong'],['#incomeComparisonList .income-row','.income-stock strong']];
     for(const [items,selector] of groups)document.querySelectorAll(items).forEach(el=>{const t=elementTicker(el,selector);el.classList.toggle('ticker-focus-hidden',Boolean(focus&&t&&t!==focus));});
+    // The investment-style module can re-decorate table/card rows after Focus changes.
+    // Re-assert the Focus visibility after its mutation pass so Table and Cards remain consistent.
+    if(focus){document.querySelectorAll('#stockTableBody tr').forEach(row=>{const t=elementTicker(row,'.ticker');if(t===focus)row.classList.remove('ticker-focus-hidden');});document.querySelectorAll('#cardView .stock-card').forEach(card=>{const t=elementTicker(card,'h3');if(t===focus)card.classList.remove('ticker-focus-hidden');});}
     document.querySelectorAll('#rankingList .fresh-card').forEach(card=>{const rank=card.querySelector('.fresh-rank');if(!rank)return;if(!rank.dataset.originalRank)rank.dataset.originalRank=rank.textContent;if(focus&&!card.classList.contains('ticker-focus-hidden'))rank.textContent='#1';else rank.textContent=rank.dataset.originalRank;});
     const leader=document.getElementById('incomeLeader');if(focus&&leader){const s=byTicker.get(focus),dps=num(s?.currentAnnualDps)??num(s?.ttmDps),price=num(s?.price),amount=num(document.getElementById('investmentAmountSlider')?.value)||0,shares=price>0?Math.floor(amount/price):0;if(s&&dps!=null)leader.textContent=`Focused ${focus}: ${shares.toLocaleString('en-US')} shares × ${dps.toFixed(2)} DPS = ${(shares*dps).toLocaleString('en-US',{maximumFractionDigits:0})}/yr`;}
   }
@@ -96,6 +98,7 @@
   document.addEventListener('mouseover',onPointerOver,true);document.addEventListener('mouseout',onPointerOut,true);document.addEventListener('click',onClick,true);document.addEventListener('keydown',onKey,true);
   document.addEventListener('input',e=>{if(e.target?.id==='investmentAmountSlider')requestAnimationFrame(applyTickerFocus);});
   window.addEventListener('resize',()=>{if(activeButton)positionPopover(activeButton);ensureMobileWatchlistFilter();});window.addEventListener('scroll',()=>{if(!pinned)closePopover(true);},true);window.addEventListener('storage',()=>setTimeout(()=>applyAnalyticsEnhancements(true),0));
+  window.addEventListener('jse:ticker-focus',()=>requestAnimationFrame(()=>requestAnimationFrame(applyTickerFocus)));
   document.body.addEventListener('click',e=>{if(e.target.closest?.('[data-ticker],#resetTrackedBtn'))setTimeout(()=>applyAnalyticsEnhancements(true),20);});
   let queued=false;new MutationObserver(mutations=>{for(const mutation of mutations)for(const node of mutation.addedNodes)if(node.nodeType===1)prepareButtons(node);ensureMobileWatchlistFilter();if(!queued){queued=true;requestAnimationFrame(()=>{queued=false;updateAnalystNarratives();refreshStatus();applyAnalyticsEnhancements();});}}).observe(document.documentElement,{childList:true,subtree:true});
 })();
