@@ -140,4 +140,4 @@ jobs:
           echo "main changed during both refresh attempts; leaving workflow successful without publishing stale data"
           exit 0
 
-# Manual trigger marker: comprehensive Statistics collector run 2026-08-24 12:xx Jamaica
+# Manual trigger marker: production refresh 2026-08-26 Jamaica
