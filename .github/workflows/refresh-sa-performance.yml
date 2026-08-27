@@ -3,8 +3,10 @@ name: Refresh Daily JSE Main Market
 on:
   workflow_dispatch:
   schedule:
-    # 21:30 UTC = 16:30 Jamaica (UTC-5 year-round)
+    # Primary: 21:30 UTC = 16:30 Jamaica (UTC-5 year-round)
     - cron: '30 21 * * *'
+    # Safety fallback: 22:00 UTC = 17:00 Jamaica. It skips if today's primary refresh already published.
+    - cron: '0 22 * * *'
   push:
     branches: [main]
     paths:
@@ -19,7 +21,8 @@ permissions:
 
 concurrency:
   group: daily-jse-main-market-refresh
-  cancel-in-progress: true
+  # Do not let the 5 PM fallback cancel a delayed/running 4:30 PM primary refresh.
+  cancel-in-progress: false
 
 jobs:
   refresh:
@@ -33,18 +36,83 @@ jobs:
           ref: main
           fetch-depth: 0
 
+      - name: Decide whether this run is needed
+        id: guard
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_SCHEDULE: ${{ github.event.schedule }}
+        run: |
+          set -e
+          echo "event=$EVENT_NAME schedule=${EVENT_SCHEDULE:-none}"
+
+          # Manual runs, push-triggered runs and the 4:30 PM primary always proceed.
+          if [ "$EVENT_NAME" != "schedule" ] || [ "$EVENT_SCHEDULE" != "0 22 * * *" ]; then
+            echo "run_refresh=true" >> "$GITHUB_OUTPUT"
+            echo "Proceeding: this is not the 5 PM safety fallback."
+            exit 0
+          fi
+
+          # The 5 PM safety run should only proceed if today's successful Jamaica refresh
+          # has not already been published to data.js by the 4:30 PM primary.
+          node <<'NODE' > /tmp/fallback_guard.txt
+          const fs = require('fs');
+          const vm = require('vm');
+          const raw = fs.readFileSync('data.js','utf8');
+          const m = raw.match(/window\.JSE_DASHBOARD_DATA\s*=\s*([\s\S]*);\s*$/);
+          if (!m) {
+            console.log('RUN|Unable to parse data.js, so fallback will run');
+            process.exit(0);
+          }
+          const data = vm.runInNewContext(`(${m[1]})`);
+          if (!data.refreshedAt) {
+            console.log('RUN|No refreshedAt timestamp, so fallback will run');
+            process.exit(0);
+          }
+          const refreshed = new Date(data.refreshedAt);
+          if (Number.isNaN(refreshed.valueOf())) {
+            console.log('RUN|Invalid refreshedAt timestamp, so fallback will run');
+            process.exit(0);
+          }
+          const jamaicaDate = d => new Intl.DateTimeFormat('en-CA', {
+            timeZone: 'America/Jamaica', year: 'numeric', month: '2-digit', day: '2-digit'
+          }).format(d);
+          const now = new Date();
+          const sameJamaicaDay = jamaicaDate(refreshed) === jamaicaDate(now);
+          const ageMinutes = (now - refreshed) / 60000;
+          if (sameJamaicaDay && ageMinutes >= 0 && ageMinutes <= 180) {
+            console.log(`SKIP|Today's refresh already published at ${data.refreshedAt} (${ageMinutes.toFixed(1)} minutes ago)`);
+          } else {
+            console.log(`RUN|No recent successful Jamaica refresh found for today; refreshedAt=${data.refreshedAt}`);
+          }
+          NODE
+
+          cat /tmp/fallback_guard.txt
+          DECISION=$(cut -d'|' -f1 /tmp/fallback_guard.txt | tail -1)
+          if [ "$DECISION" = "SKIP" ]; then
+            echo "run_refresh=false" >> "$GITHUB_OUTPUT"
+            echo "5 PM fallback skipped because today's primary refresh already completed."
+          else
+            echo "run_refresh=true" >> "$GITHUB_OUTPUT"
+            echo "5 PM fallback will run because today's primary refresh is missing or stale."
+          fi
+
       - name: Setup Node
+        if: steps.guard.outputs.run_refresh == 'true'
         uses: actions/setup-node@v5
         with:
           node-version: '22'
 
       - name: Install dependencies
+        if: steps.guard.outputs.run_refresh == 'true'
         run: npm install
 
       - name: Install Chromium
+        if: steps.guard.outputs.run_refresh == 'true'
         run: npx playwright install --with-deps chromium
 
       - name: Refresh full dataset from a stable main HEAD
+        if: steps.guard.outputs.run_refresh == 'true'
         shell: bash
         run: |
           set -e
