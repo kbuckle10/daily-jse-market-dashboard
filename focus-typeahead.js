@@ -19,18 +19,30 @@
     const bar=document.getElementById('allocationBar');
     const legend=document.getElementById('allocationLegend');
     if(!bar||!legend)return;
-
     const pctFromBar=el=>{const m=String(el.getAttribute('title')||'').match(/:\s*([0-9]+(?:\.[0-9]+)?)%/);return m?Number(m[1]):-Infinity;};
     const pctFromLegend=el=>{const m=String(el.textContent||'').match(/([0-9]+(?:\.[0-9]+)?)%/);return m?Number(m[1]):-Infinity;};
-    const reorder=(parent,score)=>{
-      const current=[...parent.children];
-      if(current.length<2)return;
-      const sorted=[...current].sort((a,b)=>score(b)-score(a));
-      if(sorted.every((el,i)=>el===current[i]))return;
-      const frag=document.createDocumentFragment();sorted.forEach(el=>frag.appendChild(el));parent.appendChild(frag);
-    };
-    reorder(bar,pctFromBar);
-    reorder(legend,pctFromLegend);
+    const reorder=(parent,score)=>{const current=[...parent.children];if(current.length<2)return;const sorted=[...current].sort((a,b)=>score(b)-score(a));if(sorted.every((el,i)=>el===current[i]))return;const frag=document.createDocumentFragment();sorted.forEach(el=>frag.appendChild(el));parent.appendChild(frag);};
+    reorder(bar,pctFromBar);reorder(legend,pctFromLegend);
+  }
+
+  function reconcilePrimaryViews(){
+    const wanted=new Set(selected.map(x=>String(x).toUpperCase()));
+    const focusing=wanted.size>0;
+    const styleFilterActive=Boolean(document.querySelector('[data-style-filter-kind="main"] .style-filter-chip.active'));
+    const reconcile=(selector,tickerSelector)=>document.querySelectorAll(selector).forEach(el=>{
+      const ticker=el.querySelector(tickerSelector)?.textContent?.trim().toUpperCase()||'';
+      const shouldShow=!focusing||wanted.has(ticker);
+      el.classList.toggle('ticker-focus-hidden',!shouldShow);
+      // When no investment-style chip is active, nothing else should suppress the
+      // focused row/card. This prevents stale style-filter state from blanking Table.
+      if(!styleFilterActive&&shouldShow)el.classList.remove('style-category-hidden');
+    });
+    reconcile('#stockTableBody tr','.ticker');
+    reconcile('#cardView .stock-card','h3');
+  }
+
+  function queueReconcile(){
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{reconcilePrimaryViews();sortSuggestedAllocation();}));
   }
 
   function watchAllocation(){
@@ -40,10 +52,7 @@
     let scheduled=false;
     const queue=()=>{if(scheduled)return;scheduled=true;requestAnimationFrame(()=>{scheduled=false;sortSuggestedAllocation();});};
     new MutationObserver(queue).observe(panel,{childList:true,subtree:true,characterData:true});
-    window.addEventListener('jse-focus-change',queue);
-    window.addEventListener('jse:ticker-focus',queue);
-    window.addEventListener('storage',queue);
-    queue();
+    window.addEventListener('jse-focus-change',queue);window.addEventListener('jse:ticker-focus',queue);window.addEventListener('storage',queue);queue();
   }
 
   function init(){
@@ -52,21 +61,22 @@
     const wrap=document.createElement('div');wrap.className='focus-typeahead';wrap.innerHTML='<div class="focus-shell"><div class="focus-chips"></div><input class="focus-typeahead-input" type="text" autocomplete="off" spellcheck="false" aria-label="Add ticker to focus comparison" placeholder="All tracked / type ticker…"><button type="button" class="focus-clear" aria-label="Clear focus" title="Show all tracked">×</button></div><div class="focus-typeahead-menu" role="listbox" hidden></div><span class="focus-count"></span>';
     select.insertAdjacentElement('afterend',wrap);const input=wrap.querySelector('.focus-typeahead-input'),chips=wrap.querySelector('.focus-chips'),clear=wrap.querySelector('.focus-clear'),menu=wrap.querySelector('.focus-typeahead-menu'),count=wrap.querySelector('.focus-count');
 
-    const apply=()=>{const valid=new Set(trackedStocks().map(s=>String(s.ticker).toUpperCase()));selected=selected.filter(x=>valid.has(x)).slice(0,MAX_FOCUS);select.value=selected.length===1?selected[0]:'all';select.dataset.focusTickers=selected.join(',');select.dispatchEvent(new CustomEvent('change',{bubbles:true,detail:{focusTickers:[...selected]}}));window.dispatchEvent(new CustomEvent('jse-focus-change',{detail:{focusTickers:[...selected]}}));renderChips();setTimeout(sortSuggestedAllocation,0);};
+    const apply=()=>{const valid=new Set(trackedStocks().map(s=>String(s.ticker).toUpperCase()));selected=selected.filter(x=>valid.has(x)).slice(0,MAX_FOCUS);select.value=selected.length===1?selected[0]:'all';select.dataset.focusTickers=selected.join(',');select.dispatchEvent(new CustomEvent('change',{bubbles:true,detail:{focusTickers:[...selected]}}));window.dispatchEvent(new CustomEvent('jse-focus-change',{detail:{focusTickers:[...selected]}}));renderChips();queueReconcile();};
     const renderChips=()=>{chips.innerHTML=selected.map(t=>`<span class="focus-chip">${t}<button type="button" data-remove-focus="${t}" aria-label="Remove ${t}">×</button></span>`).join('');input.placeholder=selected.length?selected.length<MAX_FOCUS?'Add ticker…':'4 selected':'All tracked / type ticker…';input.disabled=selected.length>=MAX_FOCUS;clear.style.visibility=selected.length?'visible':'hidden';count.textContent=selected.length>1?`Compare ${selected.length}/${MAX_FOCUS}`:selected.length===1?'Focus 1/4':'';};
     const add=t=>{t=String(t).toUpperCase();if(!selected.includes(t)&&selected.length<MAX_FOCUS)selected.push(t);input.value='';menu.hidden=true;apply();};
     const remove=t=>{selected=selected.filter(x=>x!==t);apply();};
     const renderMenu=()=>{const q=input.value.trim().toLowerCase(),rows=trackedStocks().filter(s=>!selected.includes(String(s.ticker).toUpperCase())).filter(s=>!q||String(s.ticker).toLowerCase().includes(q)||String(s.company||'').toLowerCase().includes(q)).sort((a,b)=>String(a.ticker).localeCompare(String(b.ticker)));menu.innerHTML=rows.slice(0,12).map(s=>`<button type="button" class="focus-option" data-focus-value="${String(s.ticker).toUpperCase()}"><strong>${s.ticker}</strong><span>${s.company||''}</span></button>`).join('')||'<div class="focus-option"><span>No additional tracked ticker matches</span></div>';menu.hidden=false;};
 
-    input.addEventListener('focus',renderMenu);input.addEventListener('input',renderMenu);input.addEventListener('keydown',e=>{if(e.key==='Escape'){menu.hidden=true;input.value='';input.blur();return}if(e.key==='Enter'){const q=input.value.trim().toUpperCase(),exact=trackedStocks().find(s=>String(s.ticker).toUpperCase()===q&&!selected.includes(q)),first=menu.querySelector('[data-focus-value]');if(exact||first){e.preventDefault();add(exact?exact.ticker:first.dataset.focusValue)}}});menu.addEventListener('mousedown',e=>{const b=e.target.closest('[data-focus-value]');if(b){e.preventDefault();add(b.dataset.focusValue)}});chips.addEventListener('click',e=>{const b=e.target.closest('[data-remove-focus]');if(b)remove(b.dataset.removeFocus)});clear.addEventListener('click',()=>{selected=[];input.value='';apply()});document.addEventListener('click',e=>{if(!wrap.contains(e.target))menu.hidden=true});window.addEventListener('storage',apply);
+    input.addEventListener('focus',renderMenu);input.addEventListener('input',renderMenu);input.addEventListener('keydown',e=>{if(e.key==='Escape'){menu.hidden=true;input.value='';input.blur();return}if(e.key==='Enter'){const q=input.value.trim().toUpperCase(),exact=trackedStocks().find(s=>String(s.ticker).toUpperCase()===q&&!selected.includes(q)),first=menu.querySelector('[data-focus-value]');if(exact||first){e.preventDefault();add(exact?exact.ticker:first.dataset.focusValue)}}});menu.addEventListener('mousedown',e=>{const b=e.target.closest('[data-focus-value]');if(b){e.preventDefault();add(b.dataset.focusValue)}});chips.addEventListener('click',e=>{const b=e.target.closest('[data-remove-focus]');if(b)remove(b.dataset.removeFocus)});clear.addEventListener('click',()=>{selected=[];input.value='';apply()});document.addEventListener('click',e=>{if(!wrap.contains(e.target))menu.hidden=true});window.addEventListener('storage',apply);window.addEventListener('jse:ticker-focus',queueReconcile);
+
+    // app.js, investment-style filters and card decorators all mutate these views.
+    // Reconcile Focus after any of those render passes so Table and Cards stay in sync.
+    const primary=document.querySelector('main')||document.body;let pending=false;new MutationObserver(()=>{if(pending)return;pending=true;requestAnimationFrame(()=>{pending=false;reconcilePrimaryViews();});}).observe(primary,{childList:true,subtree:true});
     renderChips();apply();watchAllocation();
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(init,0));else setTimeout(init,0);
 })();
 
 if(!document.querySelector('script[data-investment-style-filters]')){
-  const s=document.createElement('script');
-  s.dataset.investmentStyleFilters='true';
-  s.src=`investment-style-filters.js?v=${Date.now()}`;
-  document.head.appendChild(s);
+  const s=document.createElement('script');s.dataset.investmentStyleFilters='true';s.src=`investment-style-filters.js?v=${Date.now()}`;document.head.appendChild(s);
 }
