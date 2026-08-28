@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 
 const DATA_FILE='data.js';
+const ONLY_TICKER=String(process.env.TICKER||'').trim().toUpperCase();
 function readData(){const raw=fs.readFileSync(DATA_FILE,'utf8');const m=raw.match(/window\.JSE_DASHBOARD_DATA\s*=\s*([\s\S]*);\s*$/);if(!m)throw new Error('Unable to parse data.js');return vm.runInNewContext(`(${m[1]})`);}
 function writeData(d){fs.writeFileSync(DATA_FILE,`window.JSE_DASHBOARD_DATA = ${JSON.stringify(d,null,2)};\n`);}
 async function fxRate(currency,date){
@@ -12,7 +13,10 @@ async function fxRate(currency,date){
 }
 const iso=v=>{if(!v)return null;const d=new Date(v);return Number.isNaN(d.valueOf())?null:d.toISOString().slice(0,10);};
 const data=readData();
-for(const s of data.stocks){
+let queue=data.stocks;
+if(ONLY_TICKER)queue=queue.filter(s=>String(s.ticker).toUpperCase()===ONLY_TICKER);
+if(ONLY_TICKER&&!queue.length)throw new Error(`Ticker ${ONLY_TICKER} not found in data.js`);
+for(const s of queue){
   const currency=String(s.latestDividendCurrency||'JMD').toUpperCase();
   const amount=Number(s.latestDividend);
   s.latestDividendOriginalAmount=Number.isFinite(amount)?amount:null;
@@ -27,3 +31,4 @@ for(const s of data.stocks){
   else{s.latestDividendJmd=null;s.latestDividendFxRate=null;s.latestDividendFxDate=basis;s.latestDividendFxSource=null;s.latestDividendDisplayCurrency=currency;s.latestDividendFxStatus='unavailable';}
 }
 writeData(data);
+console.log(`Dividend FX${ONLY_TICKER?` (${ONLY_TICKER})`:''}: processed ${queue.length} ticker(s).`);
