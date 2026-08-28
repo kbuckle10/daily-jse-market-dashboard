@@ -25,9 +25,11 @@
     return `${prefix(curr)}${amount(v,2)}`;
   }
   const setHtml=(el,html)=>{if(el&&el.innerHTML!==html)el.innerHTML=html;};
+  const columnIndex=label=>{const head=document.querySelector('#tableView thead tr');return head?[...head.children].findIndex(th=>th.textContent.trim()===label):-1;};
   function apply(){
     document.querySelectorAll('.stock-card').forEach(card=>{const s=byTicker.get(card.querySelector('h3')?.textContent?.trim().toUpperCase());if(!s)return;const rows=[...card.querySelectorAll('.metric-row')];const row=rows.find(r=>/Latest dividend/i.test(r.textContent));const strong=row?.querySelector('strong');const d=display(s);if(strong&&d)setHtml(strong,`<span class="dividend-display-main">${d.main}</span>${d.sub?`<small class="dividend-display-sub">${d.sub}</small>`:''}`);});
-    document.querySelectorAll('#stockTableBody tr').forEach(row=>{const ticker=row.querySelector('.ticker')?.textContent?.trim().toUpperCase(),s=byTicker.get(ticker),d=s&&display(s);if(!d)return;const cells=row.querySelectorAll('td');const ttm=ttmDisplay(s);if(cells[9]&&ttm)setHtml(cells[9],ttm);const cell=cells[11];if(cell)setHtml(cell,`<strong>${d.main}</strong>${d.sub?`<br><small>${d.sub}</small>`:''}<br><small>${s.dividendStatus||''}</small>`);});
+    const ttmIdx=columnIndex('TTM DPS'),latestIdx=columnIndex('Latest Div.');
+    document.querySelectorAll('#stockTableBody tr').forEach(row=>{const ticker=row.querySelector('.ticker')?.textContent?.trim().toUpperCase(),s=byTicker.get(ticker),d=s&&display(s);if(!d)return;const cells=row.querySelectorAll('td');const ttm=ttmDisplay(s);if(ttmIdx>=0&&cells[ttmIdx]&&ttm)setHtml(cells[ttmIdx],ttm);if(latestIdx>=0&&cells[latestIdx])setHtml(cells[latestIdx],`<strong>${d.main}</strong>${d.sub?`<br><small>${d.sub}</small>`:''}<br><small>${s.dividendStatus||''}</small>`);});
   }
   const style=document.createElement('style');style.textContent='.dividend-display-main{display:block}.dividend-display-sub{display:block;color:var(--muted);font-size:.58rem;line-height:1.3;margin-top:2px}';document.head.appendChild(style);
   let scheduled=false;const schedule=()=>{if(scheduled)return;scheduled=true;requestAnimationFrame(()=>{scheduled=false;apply();});};
