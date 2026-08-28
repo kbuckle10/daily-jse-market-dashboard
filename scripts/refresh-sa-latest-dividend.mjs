@@ -3,6 +3,7 @@ import vm from 'node:vm';
 import { chromium } from 'playwright';
 
 const DATA_FILE='data.js';
+const ONLY_TICKER=String(process.env.TICKER||'').trim().toUpperCase();
 function readData(){const raw=fs.readFileSync(DATA_FILE,'utf8');const m=raw.match(/window\.JSE_DASHBOARD_DATA\s*=\s*([\s\S]*);\s*$/);if(!m)throw new Error('Unable to parse data.js');return vm.runInNewContext(`(${m[1]})`);}
 function writeData(d){fs.writeFileSync(DATA_FILE,`window.JSE_DASHBOARD_DATA = ${JSON.stringify(d,null,2)};\n`);}
 const num=s=>{if(s==null)return null;const m=String(s).replace(/,/g,'').match(/-?[0-9]+(?:\.[0-9]+)?/);return m?Number(m[0]):null;};
@@ -27,9 +28,12 @@ async function firstDividendRow(page){
 }
 
 const data=readData();
+let queue=data.stocks;
+if(ONLY_TICKER)queue=queue.filter(s=>String(s.ticker).toUpperCase()===ONLY_TICKER);
+if(ONLY_TICKER&&!queue.length)throw new Error(`Ticker ${ONLY_TICKER} not found in data.js`);
 const browser=await chromium.launch({headless:true});
 const context=await browser.newContext({viewport:{width:1440,height:1000},userAgent:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/151 Safari/537.36'});
-for(const s of data.stocks){
+for(const s of queue){
   const page=await context.newPage();
   try{
     const url=`https://stockanalysis.com/quote/jmse/${s.ticker}/dividend/`;
@@ -59,3 +63,4 @@ for(const s of data.stocks){
 }
 await browser.close();
 writeData(data);
+console.log(`SA latest dividend${ONLY_TICKER?` (${ONLY_TICKER})`:''}: processed ${queue.length} ticker(s).`);
