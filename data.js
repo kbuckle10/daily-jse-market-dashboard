@@ -4335,7 +4335,7 @@ window.JSE_DASHBOARD_DATA = {
       "fairValue": 845.61,
       "dividendDataStatus": "validated-primary-listing",
       "researchFetchStatus": "ok",
-      "latestDividendDataStatus": "official-jse",
+      "latestDividendDataStatus": "official-jse-sa-confirmed",
       "performanceFieldStatus": {
         "m1": "primary-listing-captured",
         "ytd": "primary-listing-captured",
@@ -4476,7 +4476,15 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "Sep 11, 2026",
         "url": "https://stockanalysis.com/quote/ttse/GHL/dividend/",
         "listing": "TTSE primary listing"
-      }
+      },
+      "latestDividendOriginalAmount": 0.32,
+      "latestDividendOriginalCurrency": "TTD",
+      "latestDividendJmd": null,
+      "latestDividendFxRate": null,
+      "latestDividendFxDate": "2026-08-18",
+      "latestDividendFxSource": null,
+      "latestDividendDisplayCurrency": "TTD",
+      "latestDividendFxStatus": "unavailable"
     },
     {
       "rank": 26,
@@ -8801,11 +8809,11 @@ window.JSE_DASHBOARD_DATA = {
       "y1": -8.57,
       "ttmDps": 0.0005,
       "trailingYield": 4.97,
-      "latestDividend": 0.0005,
-      "exDate": "2025-08-22",
-      "recordDate": "2025-08-22",
-      "payDate": "2025-09-12",
-      "dividendStatus": "Official JSE corporate action dividend (USD)",
+      "latestDividend": 0.07342,
+      "exDate": "Aug 25, 2026",
+      "recordDate": "Aug 25, 2026",
+      "payDate": "Sep 24, 2026",
+      "dividendStatus": "StockAnalysis newer declared dividend (JMSE listing) — JSE corporate-action table pending/cross-check JSE news",
       "rating": "HOLD",
       "ratingClass": "hold",
       "reason": "Below Book / Modest ROE • score 58. Weekly master-universe research baseline; daily price/history refresh follows.",
@@ -8816,7 +8824,7 @@ window.JSE_DASHBOARD_DATA = {
       "zoneStatus": "above",
       "allocation": 58,
       "jse": "https://www.jamstockex.com/trading/instruments/?instrument=309",
-      "dividendUrl": "https://www.jamstockex.com/trading/instruments/?instrument=309",
+      "dividendUrl": "https://stockanalysis.com/quote/jmse/SIL/dividend/",
       "sa": "https://stockanalysis.com/quote/jmse/SIL/",
       "source": "JSE",
       "performanceSource": "SA",
@@ -8840,7 +8848,7 @@ window.JSE_DASHBOARD_DATA = {
       "fairValue": 3.6,
       "dividendDataStatus": "validated",
       "researchFetchStatus": "ok",
-      "latestDividendDataStatus": "official-jse",
+      "latestDividendDataStatus": "sa-newer-declaration",
       "performanceFieldStatus": {
         "m1": "captured",
         "ytd": "captured",
@@ -8858,7 +8866,7 @@ window.JSE_DASHBOARD_DATA = {
       "bookAdjustedScore": 81,
       "bookAdjustedRating": "Strong Buy",
       "bookValueAnalysis": "P/B 0.66x; 34.2% below book; SIGNIFICANT DISCOUNT; high relevance for this sector.",
-      "latestDividendCurrency": "USD",
+      "latestDividendCurrency": "JMD",
       "jseCorporateActionStatus": "ok",
       "ttmDpsCurrency": "USD",
       "ttmDpsStatus": "official-jse-corporate-actions-trailing-12m",
@@ -8968,7 +8976,14 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "Sep 24, 2026",
         "url": "https://stockanalysis.com/quote/jmse/SIL/dividend/",
         "listing": "JMSE listing"
-      }
+      },
+      "latestDividendOriginalAmount": 0.07342,
+      "latestDividendOriginalCurrency": "JMD",
+      "latestDividendJmd": 0.07342,
+      "latestDividendFxRate": 1,
+      "latestDividendFxDate": null,
+      "latestDividendFxSource": "native JMD declaration",
+      "latestDividendDisplayCurrency": "JMD"
     },
     {
       "rank": 52,
