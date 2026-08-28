@@ -3,8 +3,10 @@
   if (!DATA?.stocks) return;
   const byTicker = new Map(DATA.stocks.map(s => [String(s.ticker).toUpperCase(), s]));
   const valid=v=>v && String(v).trim() && !/^N\/?A$/i.test(String(v).trim());
-  const payDate=s=>valid(s.payDate)?s.payDate:(valid(s.saLatestDividend?.payDate)?s.saLatestDividend.payDate:null);
-  const parseDate=v=>{if(!valid(v))return null;const d=new Date(v);return Number.isNaN(d.valueOf())?null:d;};
+  const rawPayDate=s=>valid(s.payDate)?s.payDate:(valid(s.saLatestDividend?.payDate)?s.saLatestDividend.payDate:null);
+  const isoDate=v=>{if(!valid(v))return null;const text=String(v).trim();const m=text.match(/^(\d{4})-(\d{2})-(\d{2})/);if(m)return`${m[1]}-${m[2]}-${m[3]}`;const d=new Date(text);if(Number.isNaN(d.valueOf()))return text;return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;};
+  const payDate=s=>isoDate(rawPayDate(s));
+  const parseDate=v=>{if(!valid(v))return null;const d=new Date(`${isoDate(v)}T23:59:59`);return Number.isNaN(d.valueOf())?null:d;};
   const isFuturePay=s=>{const d=parseDate(payDate(s));return d?d.getTime()>Date.now():false;};
   const ageMonths=s=>{const d=parseDate(payDate(s));if(!d||isFuturePay(s))return null;return(Date.now()-d.getTime())/(1000*60*60*24*30.44);};
   const recency=s=>{if(isFuturePay(s))return'next';const m=ageMonths(s);if(m==null)return'unknown';if(m>18)return'stale';if(m>12)return'aging';return'current';};
