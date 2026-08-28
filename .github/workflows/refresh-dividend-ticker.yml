@@ -1,0 +1,90 @@
+name: Refresh Targeted Dividends
+
+on:
+  workflow_dispatch:
+    inputs:
+      tickers:
+        description: 'Comma-separated tickers (for example SIL,GHL)'
+        required: false
+        default: 'SIL,GHL'
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/refresh-dividend-ticker.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-jse-main-market-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh-dividends:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout latest main
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Refresh selected dividend records
+        shell: bash
+        env:
+          REQUESTED_TICKERS: ${{ github.event.inputs.tickers || 'SIL,GHL' }}
+        run: |
+          set -e
+          git fetch origin main
+          git reset --hard origin/main
+          IFS=',' read -ra ITEMS <<< "$REQUESTED_TICKERS"
+          for raw in "${ITEMS[@]}"; do
+            ticker=$(echo "$raw" | xargs | tr '[:lower:]' '[:upper:]')
+            [ -z "$ticker" ] && continue
+            echo "=== Targeted dividend refresh: $ticker ==="
+            npm run refresh:dividend-ticker -- "$ticker"
+          done
+
+      - name: Validate SIL and GHL dividend metadata
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs=require('fs'),vm=require('vm');
+          const raw=fs.readFileSync('data.js','utf8');
+          const m=raw.match(/window\.JSE_DASHBOARD_DATA\s*=\s*([\s\S]*);\s*$/);
+          if(!m)throw new Error('Unable to parse data.js');
+          const d=vm.runInNewContext(`(${m[1]})`);
+          for(const ticker of ['SIL','GHL']){
+            const s=d.stocks.find(x=>x.ticker===ticker);
+            if(!s)throw new Error(`${ticker}: missing`);
+            console.log(`${ticker}: latest=${s.latestDividend} ${s.latestDividendCurrency}; ex=${s.exDate}; record=${s.recordDate}; pay=${s.payDate}; JMD=${s.latestDividendJmd}; status=${s.latestDividendDataStatus}`);
+          }
+          NODE
+
+      - name: Publish targeted dividend updates
+        shell: bash
+        run: |
+          set -e
+          if git diff --quiet -- data.js; then
+            echo 'No dividend data changes.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data.js
+          git commit -m 'refresh targeted dividend data for SIL and GHL'
+          git pull --rebase origin main
+          git push origin HEAD:main
