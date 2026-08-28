@@ -26,7 +26,9 @@
     const list=document.getElementById('rankingList');if(!list)return;
     const cards=[...list.querySelectorAll(':scope > .fresh-card')];if(cards.length<2)return;
     const ranked=cards.map(card=>{const ticker=card.querySelector('.fresh-title strong')?.textContent?.trim().toUpperCase(),s=byTicker.get(ticker);const overall=overallFromCard(card,s),mult=entryMultiplier(s),freshScore=overall*mult;return{card,ticker,s,overall,mult,freshScore,tier:ratingTier(s)};}).sort((a,b)=>b.tier-a.tier||b.freshScore-a.freshScore||b.overall-a.overall||a.ticker.localeCompare(b.ticker));
-    ranked.forEach((x,i)=>{if(list.children[i]!==x.card)list.appendChild(x.card);const badge=x.card.querySelector('.fresh-rank');if(badge){const text=`#${i+1}`;if(badge.textContent!==text)badge.textContent=text;badge.title=`Dynamic Fresh Capital rank • Overall ${x.overall.toFixed(0)} × ${x.mult.toFixed(2)} entry adjustment = ${x.freshScore.toFixed(1)} • ${x.tier===3?'Buy-class':x.tier===2?'Hold-class':'Avoid-class'} priority`;badge.dataset.freshScore=x.freshScore.toFixed(1);}});
+    const frag=document.createDocumentFragment();
+    ranked.forEach((x,i)=>{const badge=x.card.querySelector('.fresh-rank');if(badge){const text=`#${i+1}`;if(badge.textContent!==text)badge.textContent=text;badge.title=`Dynamic Fresh Capital rank • Overall ${x.overall.toFixed(0)} × ${x.mult.toFixed(2)} entry adjustment = ${x.freshScore.toFixed(1)} • ${x.tier===3?'Buy-class':x.tier===2?'Hold-class':'Avoid-class'} priority`;badge.dataset.freshScore=x.freshScore.toFixed(1);}frag.appendChild(x.card);});
+    list.appendChild(frag);
     const panel=document.getElementById('freshCapitalSection');const badge=panel?.querySelector('.panel-badge');if(badge&&badge.textContent!=='Dynamic: rating • score • entry')badge.textContent='Dynamic: rating • score • entry';
   }
   function headerIndex(head,label){return [...head.children].findIndex(x=>x.textContent.trim()===label);}
