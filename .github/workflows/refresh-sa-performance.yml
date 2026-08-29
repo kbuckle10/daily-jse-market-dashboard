@@ -5,7 +5,7 @@ on:
   schedule:
     # Primary: 21:30 UTC = 16:30 Jamaica (UTC-5 year-round)
     - cron: '30 21 * * *'
-    # Safety fallback: 22:00 UTC = 17:00 Jamaica. It skips if today's primary refresh already published.
+    # Safety fallback: 22:00 UTC = 17:00 Jamaica. It skips only if a post-close refresh already published.
     - cron: '0 22 * * *'
   push:
     branches: [main]
@@ -53,8 +53,9 @@ jobs:
             exit 0
           fi
 
-          # The 5 PM safety run should only proceed if today's successful Jamaica refresh
-          # has not already been published to data.js by the 4:30 PM primary.
+          # The 5 PM safety run skips only when a successful refresh from the
+          # post-close window (4:30 PM Jamaica or later) has already published today.
+          # A pre-market or overnight refresh on the same date must never suppress it.
           node <<'NODE' > /tmp/fallback_guard.txt
           const fs = require('fs');
           const vm = require('vm');
@@ -77,13 +78,22 @@ jobs:
           const jamaicaDate = d => new Intl.DateTimeFormat('en-CA', {
             timeZone: 'America/Jamaica', year: 'numeric', month: '2-digit', day: '2-digit'
           }).format(d);
+          const jamaicaClock = d => {
+            const parts = new Intl.DateTimeFormat('en-US', {
+              timeZone: 'America/Jamaica', hour12: false, hour: '2-digit', minute: '2-digit'
+            }).formatToParts(d);
+            const get = type => Number(parts.find(p => p.type === type)?.value || 0);
+            return { hour: get('hour'), minute: get('minute') };
+          };
           const now = new Date();
           const sameJamaicaDay = jamaicaDate(refreshed) === jamaicaDate(now);
           const ageMinutes = (now - refreshed) / 60000;
-          if (sameJamaicaDay && ageMinutes >= 0 && ageMinutes <= 180) {
-            console.log(`SKIP|Today's refresh already published at ${data.refreshedAt} (${ageMinutes.toFixed(1)} minutes ago)`);
+          const clock = jamaicaClock(refreshed);
+          const postCloseRefresh = clock.hour > 16 || (clock.hour === 16 && clock.minute >= 30);
+          if (sameJamaicaDay && postCloseRefresh && ageMinutes >= 0 && ageMinutes <= 180) {
+            console.log(`SKIP|Post-close refresh already published at ${data.refreshedAt} (${ageMinutes.toFixed(1)} minutes ago)`);
           } else {
-            console.log(`RUN|No recent successful Jamaica refresh found for today; refreshedAt=${data.refreshedAt}`);
+            console.log(`RUN|No recent post-close Jamaica refresh found; refreshedAt=${data.refreshedAt}`);
           }
           NODE
 
@@ -91,10 +101,10 @@ jobs:
           DECISION=$(cut -d'|' -f1 /tmp/fallback_guard.txt | tail -1)
           if [ "$DECISION" = "SKIP" ]; then
             echo "run_refresh=false" >> "$GITHUB_OUTPUT"
-            echo "5 PM fallback skipped because today's primary refresh already completed."
+            echo "5 PM fallback skipped because today's post-close primary refresh already completed."
           else
             echo "run_refresh=true" >> "$GITHUB_OUTPUT"
-            echo "5 PM fallback will run because today's primary refresh is missing or stale."
+            echo "5 PM fallback will run because today's post-close primary refresh is missing or stale."
           fi
 
       - name: Setup Node
@@ -201,11 +211,27 @@ jobs:
               exit 0
             fi
 
-            echo "main changed during attempt $ATTEMPT; discarding generated data and retrying from latest main"
+            # UI-only commits during the ~30 minute collector must not discard a valid refresh.
+            # If collector/data inputs did not change, transplant the generated data.js onto
+            # latest main and publish it while preserving all intervening UI commits.
+            if git diff --quiet "$START_HEAD" "$REMOTE_HEAD" -- data.js package.json package-lock.json scripts .github/workflows/refresh-sa-performance.yml; then
+              echo "main changed only in non-collector/UI files; publishing refreshed data on top of latest main"
+              cp data.js /tmp/refreshed-data.js
+              git reset --hard origin/main
+              cp /tmp/refreshed-data.js data.js
+              git config user.name 'github-actions[bot]'
+              git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+              git add data.js
+              git commit -m 'refresh full JSE Main Market daily data and SA research'
+              git push origin HEAD:main
+              exit 0
+            fi
+
+            echo "collector/data inputs changed during attempt $ATTEMPT; discarding generated data and retrying from latest main"
             ATTEMPT=$((ATTEMPT+1))
           done
 
-          echo "main changed during both refresh attempts; leaving workflow successful without publishing stale data"
-          exit 0
+          echo "collector/data inputs changed during both refresh attempts; failing instead of reporting false success without publishing"
+          exit 1
 
 # Manual trigger marker: production refresh 2026-08-27 Jamaica
