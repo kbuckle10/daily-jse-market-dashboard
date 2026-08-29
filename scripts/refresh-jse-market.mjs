@@ -25,18 +25,60 @@ function headerIndex(headers, patterns) {
   return -1;
 }
 function formatDate(value) {
-  const d = new Date(value);
-  if (Number.isNaN(d.valueOf())) return null;
+  const s=String(value??'').trim();
+  if(!s) return null;
+  let d=null;
+  let m=s.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if(m) d=new Date(Date.UTC(Number(m[1]),Number(m[2])-1,Number(m[3])));
+  if(!d && (m=s.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})$/))) d=new Date(Date.UTC(Number(m[3]),Number(m[1])-1,Number(m[2])));
+  if(!d) { const parsed=new Date(s); if(!Number.isNaN(parsed.valueOf())) d=parsed; }
+  if(!d || Number.isNaN(d.valueOf())) return null;
   return new Intl.DateTimeFormat('en-US', {month:'short', day:'numeric', year:'numeric', timeZone:'UTC'}).format(d);
 }
-function extractTradeDate(body) {
+function extractTradeDateFromText(body) {
   const candidates = [
     /(?:trade|trading)\s*date\s*[:\-]?\s*([A-Za-z]+\s+\d{1,2},\s+\d{4})/i,
+    /(?:trade|trading)\s*date\s*[:\-]?\s*(\d{4}-\d{2}-\d{2})/i,
     /(?:trade|trading)\s*date\s*[:\-]?\s*(\d{1,2}[\/-]\d{1,2}[\/-]\d{4})/i,
-    /(?:as\s+of|for)\s+([A-Za-z]+\s+\d{1,2},\s+\d{4})/i
+    /(?:market|trade)\s*summary\s*(?:for|as\s+of)?\s*[:\-]?\s*([A-Za-z]+\s+\d{1,2},\s+\d{4})/i,
+    /(?:market|trade)\s*summary\s*(?:for|as\s+of)?\s*[:\-]?\s*(\d{1,2}[\/-]\d{1,2}[\/-]\d{4})/i
   ];
   for (const re of candidates) { const m = body.match(re); if (m) { const label = formatDate(m[1]); if (label) return label; } }
   return null;
+}
+async function extractTradeDate(page,body){
+  const textDate=extractTradeDateFromText(body);
+  if(textDate) return {label:textDate,source:'page text'};
+  const controls=await page.locator('input, select').evaluateAll(els=>els.map(el=>{
+    const id=el.id||''; const name=el.getAttribute('name')||''; const cls=el.className||'';
+    const label=id?document.querySelector(`label[for="${CSS.escape(id)}"]`)?.textContent||'':'';
+    const parent=(el.closest('form, .form-group, .field, .filter, .date, .datepicker')?.textContent||el.parentElement?.textContent||'').replace(/\s+/g,' ').trim().slice(0,300);
+    const selected=el.tagName==='SELECT' ? el.options[el.selectedIndex]?.text||'' : '';
+    return {id,name,cls,label,parent,value:el.value||'',selected};
+  })).catch(()=>[]);
+  const bad=/record|payment|pay\s*date|ex[-\s]?date|dividend|financial|report|year\s*end|fiscal/i;
+  const good=/trade|trading|market|summary|as\s*of|date/i;
+  const ranked=[];
+  for(const c of controls){
+    const context=`${c.id} ${c.name} ${c.cls} ${c.label} ${c.parent}`;
+    if(bad.test(context)) continue;
+    for(const raw of [c.value,c.selected]){
+      const label=formatDate(raw); if(!label) continue;
+      let score=0;
+      if(/trade|trading/.test(context.toLowerCase())) score+=100;
+      if(/market|summary/.test(context.toLowerCase())) score+=60;
+      if(/date/.test(context.toLowerCase())) score+=20;
+      if(good.test(context)) score+=10;
+      ranked.push({label,score,raw,context});
+    }
+  }
+  ranked.sort((a,b)=>b.score-a.score);
+  if(ranked.length){
+    const best=ranked[0];
+    console.log(`JSE trade date control candidate: ${best.raw} -> ${best.label} (score ${best.score})`);
+    return {label:best.label,source:'page control'};
+  }
+  return {label:null,source:null};
 }
 async function dismissOverlays(page) {
   for (const text of ['Accept','Accept All','I Agree','Agree','Got it','Close']) {
@@ -106,9 +148,9 @@ let captured=new Map(); let tradeDate=null;
 try {
   if(await gotoJse(page)){
     const body=await page.locator('body').innerText().catch(()=>'');
-    tradeDate=extractTradeDate(body);
+    const td=await extractTradeDate(page,body); tradeDate=td.label;
     const tables=await extractTables(page);
-    console.log(`JSE rendered ${tables.length} table(s); ${tradeDate?`detected trade date ${tradeDate}`:'trade date not proven — existing price dates will be preserved until direct-instrument verification'}.`);
+    console.log(`JSE rendered ${tables.length} table(s); ${tradeDate?`detected trade date ${tradeDate} from ${td.source}`:'trade date not proven — existing price dates will be preserved until direct-instrument verification'}.`);
     const ranked=[...tables].sort((a,b)=>scoreTable(b,tickers)-scoreTable(a,tickers));
     for(const table of ranked){const parsed=parseTable(table,tickers);for(const [ticker,quote] of parsed)if(!captured.has(ticker))captured.set(ticker,quote);if(captured.size===tickers.length)break;}
     if(!captured.size) console.warn(body.slice(0,3000));
