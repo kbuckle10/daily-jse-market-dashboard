@@ -11,10 +11,10 @@
     "refresh:dividend-ticker": "node scripts/refresh-dividend-ticker.mjs",
     "refresh:crosslisted": "node scripts/refresh-crosslisted-primary.mjs",
     "refresh:book-value": "node scripts/refresh-book-value.mjs",
-    "refresh:jse": "node scripts/refresh-jse-market.mjs && node scripts/refresh-jse-instruments.mjs",
     "refresh:jse-links": "node scripts/refresh-jse-links.mjs",
+    "refresh:jse": "node scripts/refresh-jse-links.mjs && node scripts/refresh-jse-market.mjs && node scripts/refresh-jse-instruments.mjs",
     "refresh:jse-actions": "node scripts/refresh-jse-corporate-actions.mjs",
-    "refresh:daily": "npm run sync:main-market && npm run refresh:sa && npm run refresh:sa-research && npm run refresh:crosslisted && npm run refresh:jse && npm run refresh:jse-links && npm run refresh:jse-actions && npm run refresh:sa-latest-dividend && npm run refresh:dividend-fx && npm run refresh:book-value"
+    "refresh:daily": "npm run sync:main-market && npm run refresh:sa && npm run refresh:sa-research && npm run refresh:crosslisted && npm run refresh:jse && npm run refresh:jse-actions && npm run refresh:sa-latest-dividend && npm run refresh:dividend-fx && npm run refresh:book-value"
   },
   "devDependencies": {
     "playwright": "1.55.0"
