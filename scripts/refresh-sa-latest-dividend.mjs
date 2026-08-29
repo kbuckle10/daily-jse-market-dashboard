@@ -9,7 +9,8 @@ function writeData(d){fs.writeFileSync(DATA_FILE,`window.JSE_DASHBOARD_DATA = ${
 const num=s=>{if(s==null)return null;const m=String(s).replace(/,/g,'').match(/-?[0-9]+(?:\.[0-9]+)?/);return m?Number(m[0]):null;};
 const dateValue=v=>{const d=new Date(v);return Number.isNaN(d.valueOf())?0:d.valueOf();};
 function currencyFromText(text,fallback='JMD'){const s=String(text||'').toUpperCase();if(/TTD|TT\$/.test(s))return 'TTD';if(/USD|US\$/.test(s))return 'USD';if(/JMD|J\$/.test(s))return 'JMD';return fallback;}
-function saDividendSource(s){const p=s.primaryListing;if(p?.market&&p?.ticker){return {url:`https://stockanalysis.com/quote/${String(p.market).toLowerCase()}/${p.ticker}/dividend/`,currency:String(p.currency||'JMD').toUpperCase(),label:`${String(p.market).toUpperCase()} primary listing`};}return {url:`https://stockanalysis.com/quote/jmse/${s.ticker}/dividend/`,currency:'JMD',label:'JMSE listing'};}
+function saDividendSource(s){const p=s.primaryListing;if(p?.market&&p?.ticker){return {url:`https://stockanalysis.com/quote/${String(p.market).toLowerCase()}/${p.ticker}/dividend/`,currency:String(p.currency||'JMD').toUpperCase(),label:`${String(p.market).toUpperCase()} primary listing`,jmse:false};}return {url:`https://stockanalysis.com/quote/jmse/${s.ticker}/dividend/`,currency:'JMD',label:'JMSE listing',jmse:true};}
+function originalCurrencyHint(s){return String(s.jseDividendCurrencyHint||s.ttmDpsCurrency||s.latestDividendOriginalCurrency||s.latestDividendCurrency||'JMD').toUpperCase();}
 async function goto(page,url){for(let i=0;i<3;i++){try{await page.goto(url,{waitUntil:'domcontentloaded',timeout:30000});await page.waitForLoadState('load',{timeout:8000}).catch(()=>{});return true;}catch(e){if(i===2)console.warn(`goto failed ${url}: ${e.message}`);else await page.waitForTimeout(1000*(i+1));}}return false;}
 async function firstDividendRow(page,fallbackCurrency='JMD'){
   const tables=page.locator('table');
@@ -47,15 +48,36 @@ for(const s of queue){
     s.saLatestDividendStatus='captured';
     s.saLatestDividend={amount:row.amount,currency:row.currency,exDate:row.exDate,recordDate:row.recordDate,payDate:row.payDate,url,listing:source.label};
     if(saDate>existingDate){
-      s.latestDividend=row.amount;
-      s.latestDividendCurrency=row.currency||s.latestDividendCurrency||source.currency;
+      const hint=originalCurrencyHint(s);
       s.exDate=row.exDate||s.exDate||'N/A';
       s.recordDate=row.recordDate||s.recordDate||'N/A';
       s.payDate=row.payDate||s.payDate||'N/A';
       s.dividendUrl=url;
-      s.dividendStatus=`StockAnalysis newer declared dividend (${source.label}) — JSE corporate-action table pending/cross-check JSE news`;
       s.latestDividendDataStatus='sa-newer-declaration';
-      console.log(`${s.ticker}: SA newer event ${s.latestDividendCurrency} ${row.amount}; ex=${row.exDate} record=${row.recordDate} pay=${row.payDate}; ${source.label}`);
+      if(source.jmse){
+        // StockAnalysis normalizes JMSE dividend amounts to JMD. Preserve that as the
+        // market-value equivalent while carrying the original declaration currency
+        // only as a JSE-history hint until an official JSE declaration/action confirms it.
+        s.latestDividend=row.amount;
+        s.latestDividendCurrency='JMD';
+        s.latestDividendJmd=row.amount;
+        s.latestDividendJmdEquivalent=row.amount;
+        s.latestDividendOriginalAmount=null;
+        s.latestDividendOriginalCurrency=hint;
+        s.latestDividendOriginalCurrencyBasis=hint==='JMD'?'JSE dividend history / native JMD':'JSE dividend history hint; official newest-event amount pending';
+        s.latestDividendDeclaredAmountStatus=hint==='JMD'?'native-jmd':'pending-official-jse-declaration';
+        s.dividendStatus=hint==='JMD'
+          ? 'StockAnalysis newer declared dividend (JMSE, JMD) — JSE corporate-action table pending'
+          : `StockAnalysis newer declared dividend (JMSE JMD equivalent) — historical JSE currency ${hint}; official newest-event amount pending`;
+      } else {
+        s.latestDividend=row.amount;
+        s.latestDividendCurrency=row.currency||source.currency;
+        s.latestDividendOriginalAmount=row.amount;
+        s.latestDividendOriginalCurrency=s.latestDividendCurrency;
+        s.latestDividendDeclaredAmountStatus='primary-listing-source';
+        s.dividendStatus=`StockAnalysis newer declared dividend (${source.label}) — JSE corporate-action table pending/cross-check JSE news`;
+      }
+      console.log(`${s.ticker}: SA newer event displayed ${row.currency} ${row.amount}; original-currency hint=${hint}; ex=${row.exDate} record=${row.recordDate} pay=${row.payDate}; ${source.label}`);
     } else if(saDate===existingDate && /official-jse/i.test(String(s.latestDividendDataStatus||''))){
       s.latestDividendDataStatus='official-jse-sa-confirmed';
     }
