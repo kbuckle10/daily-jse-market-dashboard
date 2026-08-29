@@ -17,10 +17,29 @@ let queue=data.stocks;
 if(ONLY_TICKER)queue=queue.filter(s=>String(s.ticker).toUpperCase()===ONLY_TICKER);
 if(ONLY_TICKER&&!queue.length)throw new Error(`Ticker ${ONLY_TICKER} not found in data.js`);
 for(const s of queue){
+  const pendingForeignSa=/^sa-newer-declaration$/i.test(String(s.latestDividendDataStatus||''))
+    && String(s.latestDividendDeclaredAmountStatus||'')==='pending-official-jse-declaration'
+    && String(s.latestDividendOriginalCurrency||'JMD').toUpperCase()!=='JMD';
+
+  if(pendingForeignSa){
+    const jmd=Number(s.latestDividendJmdEquivalent??s.latestDividendJmd??s.latestDividend);
+    if(Number.isFinite(jmd)){
+      s.latestDividendJmd=jmd;
+      s.latestDividendJmdEquivalent=jmd;
+      s.latestDividendDisplayCurrency='JMD';
+      s.latestDividendFxRate=null;
+      s.latestDividendFxDate=null;
+      s.latestDividendFxSource='StockAnalysis JMSE displayed JMD equivalent; no reverse conversion performed';
+      s.latestDividendFxStatus='sa-jmd-equivalent';
+    }
+    continue;
+  }
+
   const currency=String(s.latestDividendCurrency||'JMD').toUpperCase();
   const amount=Number(s.latestDividend);
   s.latestDividendOriginalAmount=Number.isFinite(amount)?amount:null;
   s.latestDividendOriginalCurrency=currency;
+  s.latestDividendDeclaredAmountStatus='official-or-native';
   if(!Number.isFinite(amount))continue;
   if(currency==='JMD'){
     s.latestDividendJmd=amount;s.latestDividendFxRate=1;s.latestDividendFxDate=null;s.latestDividendFxSource='native JMD declaration';s.latestDividendDisplayCurrency='JMD';continue;
