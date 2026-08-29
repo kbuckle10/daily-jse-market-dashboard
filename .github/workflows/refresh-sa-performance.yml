@@ -7,14 +7,6 @@ on:
     - cron: '30 21 * * *'
     # Safety fallback: 22:00 UTC = 17:00 Jamaica. It skips only if a post-close refresh already published.
     - cron: '0 22 * * *'
-  push:
-    branches: [main]
-    paths:
-      - 'data.js'
-      - 'package.json'
-      - 'package-lock.json'
-      - 'scripts/**'
-      - '.github/workflows/refresh-sa-performance.yml'
 
 permissions:
   contents: write
@@ -46,7 +38,7 @@ jobs:
           set -e
           echo "event=$EVENT_NAME schedule=${EVENT_SCHEDULE:-none}"
 
-          # Manual runs, push-triggered runs and the 4:30 PM primary always proceed.
+          # Manual runs and the 4:30 PM primary always proceed.
           if [ "$EVENT_NAME" != "schedule" ] || [ "$EVENT_SCHEDULE" != "0 22 * * *" ]; then
             echo "run_refresh=true" >> "$GITHUB_OUTPUT"
             echo "Proceeding: this is not the 5 PM safety fallback."
