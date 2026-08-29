@@ -11,8 +11,8 @@ on:
       - 'package.json'
       - 'package-lock.json'
   schedule:
-    - cron: '30 21 * * *' # 4:30 PM Jamaica
-    - cron: '0 22 * * *'  # 5:00 PM Jamaica fallback
+    - cron: '30 21 * * 1-5' # 4:30 PM Jamaica, Monday-Friday
+    - cron: '0 22 * * 1-5'  # 5:00 PM Jamaica fallback, Monday-Friday
 
 permissions:
   contents: write
@@ -41,7 +41,15 @@ jobs:
           EVENT_NAME: ${{ github.event_name }}
           EVENT_SCHEDULE: ${{ github.event.schedule }}
         run: |
-          if [ "$EVENT_NAME" != "schedule" ] || [ "$EVENT_SCHEDULE" != "0 22 * * *" ]; then echo "run_refresh=true" >> "$GITHUB_OUTPUT"; exit 0; fi
+          if [ "$EVENT_NAME" != "workflow_dispatch" ]; then
+            DOW=$(TZ=America/Jamaica date +%u)
+            if [ "$DOW" -ge 6 ]; then
+              echo "Weekend in Jamaica; skipping automatic refresh."
+              echo "run_refresh=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          fi
+          if [ "$EVENT_NAME" != "schedule" ] || [ "$EVENT_SCHEDULE" != "0 22 * * 1-5" ]; then echo "run_refresh=true" >> "$GITHUB_OUTPUT"; exit 0; fi
           node <<'NODE' >/tmp/guard
           const fs=require('fs'),vm=require('vm');const raw=fs.readFileSync('data.js','utf8'),m=raw.match(/window\.JSE_DASHBOARD_DATA\s*=\s*([\s\S]*);\s*$/);if(!m){console.log('RUN');process.exit()};const d=vm.runInNewContext(`(${m[1]})`),r=new Date(d.refreshedAt),n=new Date();if(Number.isNaN(r.valueOf())){console.log('RUN');process.exit()};const fmt=x=>new Intl.DateTimeFormat('en-CA',{timeZone:'America/Jamaica',year:'numeric',month:'2-digit',day:'2-digit'}).format(x);const p=new Intl.DateTimeFormat('en-US',{timeZone:'America/Jamaica',hour12:false,hour:'2-digit',minute:'2-digit'}).formatToParts(r),g=t=>Number(p.find(x=>x.type===t)?.value||0),post=g('hour')>16||(g('hour')===16&&g('minute')>=30),age=(n-r)/60000;console.log(fmt(r)===fmt(n)&&post&&age>=0&&age<=180?'SKIP':'RUN');
           NODE
