@@ -19,8 +19,8 @@ const parseDate=v=>{
   if(Number.isNaN(d.valueOf())) return null;
   return d;
 };
-const dateFromText=text=>{
-  const patterns=[/(?:trade|trading|price)\s*date\s*[:\-]?\s*([A-Za-z]+\s+\d{1,2},\s+\d{4})/i,/(?:trade|trading|price)\s*date\s*[:\-]?\s*(\d{4}-\d{2}-\d{2})/i,/(?:as\s+of|date)\s*[:\-]?\s*([A-Za-z]+\s+\d{1,2},\s+\d{4})/i];
+const explicitTradeDateFromText=text=>{
+  const patterns=[/(?:trade|trading|price)\s*date\s*[:\-]?\s*([A-Za-z]+\s+\d{1,2},\s+\d{4})/i,/(?:trade|trading|price)\s*date\s*[:\-]?\s*(\d{4}-\d{2}-\d{2})/i,/(?:trade|trading|price)\s*date\s*[:\-]?\s*(\d{1,2}[\/-]\d{1,2}[\/-]\d{4})/i];
   for(const re of patterns){const m=text.match(re);if(m){const d=parseDate(m[1]);if(d)return labelDate(d);}}
   return null;
 };
@@ -47,12 +47,6 @@ function tradeDateFromTables(tables,price){
         if(d&&nearly(close,price)) matches.push(d);
       }
     }
-    for(const row of rows){
-      const d=row.map(parseDate).find(Boolean);
-      if(!d) continue;
-      const nums=row.map(num).filter(v=>v!=null);
-      if(nums.some(v=>nearly(v,price))) matches.push(d);
-    }
   }
   if(!matches.length)return null;
   const latest=new Date(Math.max(...matches.map(d=>d.valueOf())));
@@ -72,7 +66,7 @@ async function parseInstrument(page,stock){
     let dayJmd=labeledNumber(body,['Price Change','Change']);
     let dayPct=labeledNumber(body,['Percentage Change','Percent Change','% Change']);
     let volume=labeledNumber(body,['Volume','Volume Traded','Shares Traded']);
-    let tradeDate=dateFromText(body);
+    let tradeDate=explicitTradeDateFromText(body);
     const tables=await page.locator('table').evaluateAll(ts=>ts.map(t=>Array.from(t.querySelectorAll('tr')).map(tr=>Array.from(tr.querySelectorAll('th,td')).map(x=>(x.textContent||'').replace(/\s+/g,' ').trim())))).catch(()=>[]);
     for(const rows of tables){
       for(const row of rows){
