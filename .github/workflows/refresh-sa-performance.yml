@@ -2,6 +2,14 @@ name: Refresh Daily JSE Main Market
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/refresh-sa-performance.yml'
+      - 'scripts/**'
+      - 'package.json'
+      - 'package-lock.json'
   schedule:
     - cron: '30 21 * * *' # 4:30 PM Jamaica
     - cron: '0 22 * * *'  # 5:00 PM Jamaica fallback
