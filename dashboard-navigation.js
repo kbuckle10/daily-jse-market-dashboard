@@ -1,4 +1,5 @@
 (() => {
+  if('scrollRestoration' in history)history.scrollRestoration='manual';
   const sections=[
     ['Market','tableView'],
     ['Book Value','bookValueSection'],
@@ -30,6 +31,9 @@
       const update=()=>b.classList.toggle('show',window.scrollY>500);window.addEventListener('scroll',update,{passive:true});update();
     }
     document.querySelectorAll('.dashboard-jump-nav a').forEach(a=>a.addEventListener('click',e=>{const target=document.querySelector(a.getAttribute('href'));if(target){e.preventDefault();target.scrollIntoView({behavior:'smooth',block:'start'});history.replaceState(null,'',a.getAttribute('href'));}}));
+    // On a normal load/refresh, always begin at the dashboard header. Explicit section hashes remain respected.
+    if(!location.hash)requestAnimationFrame(()=>window.scrollTo(0,0));
   }
+  window.addEventListener('pageshow',()=>{if(!location.hash)requestAnimationFrame(()=>window.scrollTo(0,0));});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
