@@ -27,6 +27,8 @@ const isoDate=(value)=>{
   if(dmy){const months={jan:'01',feb:'02',mar:'03',apr:'04',may:'05',jun:'06',jul:'07',aug:'08',sep:'09',oct:'10',nov:'11',dec:'12'};return `${dmy[3]}-${months[dmy[2].slice(0,3).toLowerCase()]}-${String(dmy[1]).padStart(2,'0')}`;}
   return null;
 };
+const displayDate=iso=>{if(!iso)return null;const [y,m,d]=iso.split('-').map(Number);return new Intl.DateTimeFormat('en-US',{month:'short',day:'numeric',year:'numeric',timeZone:'UTC'}).format(new Date(Date.UTC(y,m-1,d)));};
+const dateFromPriceDate=value=>isoDate(String(value||'').split('•')[0]);
 const quoteDateFromText=text=>{
   for(const label of ['Closing Date','Close Date','Trade Date','Trading Date','As of','Last Updated']){
     const re=new RegExp(`${label}\\s*[:\\-]?\\s*([^\\n|]{4,40})`,'i');
@@ -44,6 +46,16 @@ const heroQuoteFromText=text=>{
   return {price,dayJmd,dayPct};
 };
 
+// refresh-jse-market.mjs runs before this collector. Its latest JSE date is the
+// authoritative completed market session and is used to prevent an unrelated
+// date on an instrument page (for example a fiscal year-end) from downgrading
+// a current hero quote.
+const provenJseDates=data.stocks
+  .filter(s=>/•\s*JSE\s*$/i.test(String(s.priceDate||'')))
+  .map(s=>dateFromPriceDate(s.priceDate)).filter(Boolean).sort();
+const latestProvenJseSession=provenJseDates.at(-1)||null;
+console.log(`Latest proven JSE session entering instrument verification: ${latestProvenJseSession||'none'}`);
+
 async function dismiss(page){for(const t of ['Accept','Accept All','I Agree','Agree','Got it','Close']){const b=page.getByRole('button',{name:new RegExp(`^${t}$`,'i')});if(await b.count().catch(()=>0))await b.first().click({timeout:800}).catch(()=>{});}await page.keyboard.press('Escape').catch(()=>{});}
 async function parseInstrument(page,stock){
   const url=stock.jse;
@@ -53,20 +65,15 @@ async function parseInstrument(page,stock){
     await page.waitForLoadState('load',{timeout:8000}).catch(()=>{});await page.waitForTimeout(1200);await dismiss(page);
     const body=await page.locator('body').innerText().catch(()=>'');
     if(!body||/access denied|forbidden|verify you are human/i.test(body))return null;
-
-    // The large quote immediately below ISIN is the current instrument quote shown by JSE.
-    // Prefer it over generic labels/tables, which can contain stale/historical values.
     const hero=heroQuoteFromText(body);
     let price=hero?.price??null;
     let dayJmd=hero?.dayJmd??null;
     let dayPct=hero?.dayPct??null;
     let quoteDate=quoteDateFromText(body);
     let volume=labeledNumber(body,['Volume','Volume Traded','Shares Traded']);
-
     if(price==null)price=labeledNumber(body,['Closing Price','Close Price','Last Traded Price','Last Price','Last Trade Price']);
     if(dayJmd==null)dayJmd=labeledNumber(body,['Price Change','Change']);
     if(dayPct==null)dayPct=labeledNumber(body,['Percentage Change','Percent Change','% Change']);
-
     const tables=await page.locator('table').evaluateAll(ts=>ts.map(t=>Array.from(t.querySelectorAll('tr')).map(tr=>Array.from(tr.querySelectorAll('th,td')).map(x=>(x.textContent||'').replace(/\s+/g,' ').trim())))).catch(()=>[]);
     if(price==null){
       for(const rows of tables){
@@ -85,26 +92,54 @@ async function parseInstrument(page,stock){
 const browser=await chromium.launch({headless:true});
 const context=await browser.newContext({viewport:{width:1500,height:1000},locale:'en-US',timezoneId:'America/Jamaica',userAgent:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36'});
 const page=await context.newPage();
-let updated=0,missingUrl=0,failed=0;
+let updated=0,missingUrl=0,failed=0,sessionInferred=0,staleFallback=0;
 try{
   for(const stock of data.stocks){
     if(!validInstrumentUrl(stock.jse)){missingUrl++;console.warn(`${stock.ticker}: no direct JSE instrument URL; cannot verify official quote.`);continue;}
     const q=await parseInstrument(page,stock);
-    if(!q){failed++;console.warn(`${stock.ticker}: direct instrument page did not yield a quote; preserving prior value.`);continue;}
+    if(!q){failed++;stock.priceFreshnessStatus='collector-failed';console.warn(`${stock.ticker}: direct instrument page did not yield a quote; preserving prior value.`);continue;}
     const priorPrice=stock.price,priorDate=stock.priceDate;
+    const priorIso=dateFromPriceDate(priorDate);
+    let effectiveDate=q.quoteDate;
+    let dateStatus=q.quoteDate?'instrument-date':'date-not-supplied';
+
+    // A hero quote is the live official quote area. If its nearby parsed date is
+    // older than the proven market session, treat that date as unrelated/stale
+    // and bind the live quote to the proven completed JSE session instead.
+    if(q.quoteSource==='hero'&&latestProvenJseSession&&(!effectiveDate||effectiveDate<latestProvenJseSession)){
+      effectiveDate=latestProvenJseSession;
+      dateStatus=q.quoteDate?'market-session-inferred-stale-page-date':'market-session-inferred';
+      sessionInferred++;
+    }
+
+    // Never allow any instrument-page date to move a known JSE date backwards.
+    if(priorIso&&effectiveDate&&effectiveDate<priorIso){
+      effectiveDate=priorIso;
+      dateStatus='preserved-newer-prior-date';
+    }
+
     stock.price=Number(q.price.toFixed(2));
     if(q.dayJmd!=null)stock.dayJmd=Number(q.dayJmd.toFixed(2));
     if(q.dayPct!=null)stock.dayPct=Number(q.dayPct.toFixed(2));
     if(q.volume!=null)stock.volume=q.volume;
-    // Never label a quote with the collector run date unless JSE itself supplied that date.
-    // If JSE does not expose a parseable quote date, preserve the prior priceDate and rely on verifiedAt.
-    if(q.quoteDate)stock.priceDate=`${q.quoteDate} • JSE`;
-    stock.source='JSE';stock.jseQuoteVerifiedAt=new Date().toISOString();stock.jseQuoteUrl=q.url;stock.jseQuoteSource=q.quoteSource;
+    if(effectiveDate)stock.priceDate=`${displayDate(effectiveDate)} • JSE`;
+    stock.source='JSE';
+    stock.jseQuoteVerifiedAt=new Date().toISOString();
+    stock.jseQuoteUrl=q.url;
+    stock.jseQuoteSource=q.quoteSource;
+    stock.jseQuoteDateStatus=dateStatus;
+    stock.priceFreshnessReference=latestProvenJseSession;
+    if(latestProvenJseSession&&effectiveDate===latestProvenJseSession)stock.priceFreshnessStatus='current';
+    else if(effectiveDate&&latestProvenJseSession&&effectiveDate<latestProvenJseSession){stock.priceFreshnessStatus='stale';staleFallback++;}
+    else stock.priceFreshnessStatus='verified-date-unproven';
     if(stock.ttmDps!=null&&stock.price>0)stock.trailingYield=Number((stock.ttmDps/stock.price*100).toFixed(2));
     if(stock.buyLow!=null&&stock.buyHigh!=null)stock.zoneStatus=stock.price<stock.buyLow?'below':stock.price>stock.buyHigh?'above':'in';
     updated++;
-    console.log(`${stock.ticker}: direct JSE ${priorPrice} (${priorDate}) -> J$${stock.price} (${stock.priceDate||'date not supplied'}) [${q.quoteSource}] via ${q.url}`);
+    console.log(`${stock.ticker}: direct JSE ${priorPrice} (${priorDate}) -> J$${stock.price} (${stock.priceDate||'date not supplied'}) [${q.quoteSource}; ${dateStatus}; ${stock.priceFreshnessStatus}] via ${q.url}`);
   }
 }finally{await browser.close();}
-if(updated){data.updated=refreshDate;write();}
-console.log(`Direct JSE instrument verification: updated ${updated}/${data.stocks.length}; collector date ${refreshDate}; missing URL ${missingUrl}; page/parse failures ${failed}.`);
+if(updated){
+  if(latestProvenJseSession)data.updated=latestProvenJseSession;
+  write();
+}
+console.log(`Direct JSE instrument verification: updated ${updated}/${data.stocks.length}; latest session ${latestProvenJseSession||'unproven'}; session-inferred ${sessionInferred}; stale ${staleFallback}; missing URL ${missingUrl}; page/parse failures ${failed}.`);
