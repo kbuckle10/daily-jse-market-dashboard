@@ -17,7 +17,7 @@
     `<div class="metric-row compact-fundamental-row" data-card-fundamental="pe"><span>P/E</span><strong>${n(s.pe)==null?'N/A':fmt(s.pe,2)+'×'}</strong></div>`,
     `<div class="metric-row compact-fundamental-row" data-card-fundamental="ttm"><span>TTM DPS</span><strong>${ttmMoney(s)}</strong></div>`
   ].join('');}
-  function decorateCards(){document.querySelectorAll('.stock-card').forEach(card=>{card.querySelector('.earnings-strip')?.remove();card.querySelectorAll('.compact-fundamental-row').forEach(el=>el.remove());const t=card.querySelector('h3')?.textContent?.trim().toUpperCase(),s=byTicker.get(t);if(!s)return;const rows=[...card.querySelectorAll('.metric-row')];const trailing=rows.find(r=>/Trailing yield/i.test(r.textContent));const lastTrend=rows.find(r=>/12 Months/i.test(r.textContent));const anchor=trailing||lastTrend;if(anchor)anchor.insertAdjacentHTML(trailing?'beforebegin':'afterend',compactCardRows(s));});}
+  function decorateCards(){document.querySelectorAll('.stock-card').forEach(card=>{card.querySelector('.earnings-strip')?.remove();card.querySelectorAll('.compact-fundamental-row').forEach(el=>el.remove());const t=card.querySelector('h3')?.textContent?.trim().toUpperCase(),s=byTicker.get(t);if(!s)return;const rows=[...card.querySelectorAll('.metric-row')];const yieldRow=rows.find(r=>/(?:Current|Trailing) yield/i.test(r.textContent));const lastTrend=rows.find(r=>/12 Months/i.test(r.textContent));const anchor=yieldRow||lastTrend;if(anchor)anchor.insertAdjacentHTML(yieldRow?'beforebegin':'afterend',compactCardRows(s));});}
   function decorateFresh(){document.querySelectorAll('.fresh-card').forEach(card=>{card.querySelector('.earnings-strip')?.remove();const t=card.querySelector('.fresh-title strong')?.textContent?.trim().toUpperCase(),s=byTicker.get(t);if(!s)return;const html=strip(s);if(!html)return;const cash=card.querySelector('.cash-health-strip'),badges=card.querySelector('.investor-badges');if(cash)cash.insertAdjacentHTML('afterend',html);else if(badges)badges.insertAdjacentHTML('afterend',html);});}
   function overallFromCard(card,s){const m=card.textContent.match(/Overall\s*(\d+(?:\.\d+)?)/i);const v=m?Number(m[1]):Number(s?.score);return Number.isFinite(v)?v:0;}
   function ratingTier(s){const r=`${s?.ratingClass||''} ${s?.rating||''}`.toLowerCase();if(/avoid|sell/.test(r))return 1;if(/buy|accumulate/.test(r))return 3;return 2;}
@@ -35,7 +35,7 @@
   function decorateTable(){
     const table=document.querySelector('#tableView table'),head=table?.querySelector('thead tr');if(!head)return;
     if(!head.querySelector('[data-earnings-col="pe"]')){
-      const yieldTh=[...head.children].find(x=>x.textContent.trim()==='Yield');
+      const yieldTh=[...head.children].find(x=>['Current Yield','Yield'].includes(x.textContent.trim()));
       if(yieldTh){const thPe=document.createElement('th');thPe.dataset.earningsCol='pe';thPe.textContent='P/E';const thEg=document.createElement('th');thEg.dataset.earningsCol='epsg';thEg.textContent='EPS Growth';head.insertBefore(thPe,yieldTh);head.insertBefore(thEg,yieldTh);}
     }
     const ttmIdx=headerIndex(head,'TTM DPS');
