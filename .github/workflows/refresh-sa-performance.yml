@@ -41,10 +41,10 @@ jobs:
           EVENT_NAME: ${{ github.event_name }}
           EVENT_SCHEDULE: ${{ github.event.schedule }}
         run: |
-          if [ "$EVENT_NAME" != "workflow_dispatch" ]; then
+          if [ "$EVENT_NAME" = "schedule" ]; then
             DOW=$(TZ=America/Jamaica date +%u)
             if [ "$DOW" -ge 6 ]; then
-              echo "Weekend in Jamaica; skipping automatic refresh."
+              echo "Weekend in Jamaica; skipping scheduled refresh."
               echo "run_refresh=false" >> "$GITHUB_OUTPUT"
               exit 0
             fi
