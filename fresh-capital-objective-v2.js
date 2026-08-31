@@ -28,14 +28,10 @@
   }
   function eligible(s,mode){const r=String(s.rating||'').toLowerCase();if(/avoid|sell/.test(r))return false;if(mode==='balanced')return s.ratingClass==='buy';if(mode==='income')return currentYield(s)>=3&&incomeScore(s)>=55;return objectiveScore(s,mode)>=60&&ratingTier(s)>=2;}
   function incomeLabel(s){const q=incomeScore(s);return q>=80?'STRONG':q>=68?'GOOD':q>=55?'CAUTION':'WEAK';}
-  function allocate(items,mode){
-    if(!items.length)return[];
-    const raw=items.map(s=>({s,w:Math.max(1,objectiveScore(s,mode)-45)}));
-    const total=raw.reduce((a,x)=>a+x.w,0)||1;
-    return raw.map(x=>({...x,p:x.w/total*100})).sort((a,b)=>b.p-a.p);
-  }
+  function allocate(items,mode){if(!items.length)return[];const raw=items.map(s=>({s,w:Math.max(1,objectiveScore(s,mode)-45)}));const total=raw.reduce((a,x)=>a+x.w,0)||1;return raw.map(x=>({...x,p:x.w/total*100})).sort((a,b)=>b.p-a.p);}
   function ensureStyles(){if($('freshCapitalObjectiveStyles'))return;const st=document.createElement('style');st.id='freshCapitalObjectiveStyles';st.textContent='.fresh-objective-bar{display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding:8px 10px;border:1px solid var(--border);border-radius:12px;background:var(--surface2);margin:8px 0}.fresh-objective-label{font-size:.66rem;font-weight:800;color:var(--muted)}.fresh-objective-btn{border:1px solid var(--border);background:var(--surface);color:var(--muted);border-radius:999px;padding:6px 10px;font-size:.64rem;font-weight:800;cursor:pointer}.fresh-objective-btn.active{color:var(--text);border-color:var(--accent);background:var(--blue-bg)}.fresh-objective-note{font-size:.58rem;color:var(--muted)}@media(max-width:720px){.fresh-objective-note{flex-basis:100%}}';document.head.appendChild(st);}
   let mode=MODES.includes(localStorage.getItem(OBJECTIVE_KEY))?localStorage.getItem(OBJECTIVE_KEY):'balanced';
+  let renderTimer=null;
   function render(){
     const rank=$('rankingList'),bar=$('allocationBar'),legend=$('allocationLegend');if(!rank||!bar||!legend)return;
     const t=tracked();const ranked=[...t].sort((a,b)=>objectiveScore(b,mode)-objectiveScore(a,mode));const eligibleRows=ranked.filter(s=>eligible(s,mode));const allocation=allocate(eligibleRows,mode);
@@ -47,12 +43,14 @@
     document.querySelectorAll('[data-fresh-objective]').forEach(b=>b.classList.toggle('active',b.dataset.freshObjective===mode));
     const badge=document.querySelector('#freshCapitalSection .panel-badge');if(badge)badge.textContent=`${mode[0].toUpperCase()+mode.slice(1)} objective`;
   }
+  function renderLast(){clearTimeout(renderTimer);renderTimer=setTimeout(render,80);}
   function setup(){
     ensureStyles();const panel=$('freshCapitalSection');if(!panel)return;
-    let ctl=$('freshCapitalObjective');if(!ctl){ctl=document.createElement('div');ctl.id='freshCapitalObjective';ctl.className='fresh-objective-bar';ctl.innerHTML='<span class="fresh-objective-label">Objective</span>'+MODES.map(x=>`<button type="button" class="fresh-objective-btn" data-fresh-objective="${x}">${x[0].toUpperCase()+x.slice(1)}</button>`).join('')+'<span class="fresh-objective-note">Changes Fresh Capital ranking + new-money allocation</span>';panel.querySelector('.panel-heading')?.insertAdjacentElement('afterend',ctl);ctl.addEventListener('click',e=>{const b=e.target.closest('[data-fresh-objective]');if(!b)return;mode=b.dataset.freshObjective;localStorage.setItem(OBJECTIVE_KEY,mode);render();});}
-    render();
-    document.addEventListener('click',e=>{if(e.target.closest('[data-ticker],#resetTrackedBtn'))setTimeout(render,25);});
-    window.addEventListener('storage',e=>{if(e.key===STORAGE_KEY||e.key===OBJECTIVE_KEY){if(e.key===OBJECTIVE_KEY&&MODES.includes(e.newValue))mode=e.newValue;render();}});
+    let ctl=$('freshCapitalObjective');if(!ctl){ctl=document.createElement('div');ctl.id='freshCapitalObjective';ctl.className='fresh-objective-bar';ctl.innerHTML='<span class="fresh-objective-label">Objective</span>'+MODES.map(x=>`<button type="button" class="fresh-objective-btn" data-fresh-objective="${x}">${x[0].toUpperCase()+x.slice(1)}</button>`).join('')+'<span class="fresh-objective-note">Changes Fresh Capital ranking + new-money allocation</span>';panel.querySelector('.panel-heading')?.insertAdjacentElement('afterend',ctl);ctl.addEventListener('click',e=>{const b=e.target.closest('[data-fresh-objective]');if(!b)return;e.preventDefault();mode=b.dataset.freshObjective;localStorage.setItem(OBJECTIVE_KEY,mode);document.querySelectorAll('[data-fresh-objective]').forEach(x=>x.classList.toggle('active',x===b));const badge=document.querySelector('#freshCapitalSection .panel-badge');if(badge)badge.textContent=`${mode[0].toUpperCase()+mode.slice(1)} objective`;renderLast();});}
+    renderLast();
+    document.addEventListener('click',e=>{if(e.target.closest('[data-ticker],#resetTrackedBtn'))renderLast();});
+    window.addEventListener('storage',e=>{if(e.key===STORAGE_KEY||e.key===OBJECTIVE_KEY){if(e.key===OBJECTIVE_KEY&&MODES.includes(e.newValue))mode=e.newValue;renderLast();}});
+    window.JSE_FRESH_CAPITAL_V2={render:renderLast,getMode:()=>mode,setMode:m=>{if(MODES.includes(m)){mode=m;localStorage.setItem(OBJECTIVE_KEY,m);renderLast();}}};
   }
   setup();
 })();
