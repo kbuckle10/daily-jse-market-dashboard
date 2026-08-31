@@ -29,12 +29,13 @@
     return clamp((num(s.score)??50)*.60+(ratingTier(s)*18)*.25+(s.zoneStatus==='below'?95:s.zoneStatus==='in'?82:s.zoneStatus==='above'?40:55)*.15);
   }
   function eligible(s,m){const r=String(s.rating||'').toLowerCase();if(/avoid|sell/.test(r))return false;if(m==='balanced')return s.ratingClass==='buy';if(m==='income')return currentYield(s)>=3&&incomeScore(s)>=55;return objectiveScore(s,m)>=60&&ratingTier(s)>=2;}
+  function rankCompare(a,b,m){const d=objectiveScore(b,m)-objectiveScore(a,m);if(Math.abs(d)>0.0001)return d;const tier=ratingTier(b)-ratingTier(a);if(tier)return tier;return String(a.ticker).localeCompare(String(b.ticker));}
   function incomeLabel(s){const q=incomeScore(s);return q>=80?'STRONG':q>=68?'GOOD':q>=55?'CAUTION':'WEAK';}
   function allocate(items,m){
     if(!items.length)return[];
-    const raw=items.map(s=>{const score=objectiveScore(s,m);const base=Math.max(1,score-50);return{s,w:base*base};});
+    const raw=items.map(s=>{const score=objectiveScore(s,m);const base=Math.max(1,score-50);return{s,w:base*base,score};});
     const total=raw.reduce((a,x)=>a+x.w,0)||1;
-    return raw.map(x=>({...x,p:x.w/total*100})).sort((a,b)=>b.p-a.p);
+    return raw.map(x=>({...x,p:x.w/total*100})).sort((a,b)=>b.p-a.p||rankCompare(a.s,b.s,m));
   }
   function tags(s){const out=[];const p=pb(s);if((p!=null&&p<1)||(num(s.pe)!=null&&s.pe>0&&s.pe<10)||(num(s.bookDiscountPct)!=null&&s.bookDiscountPct>=20))out.push('Value');if(currentYield(s)>=3)out.push('Income');if((num(s.epsGrowth)??0)>=12||(num(s.revenueGrowth)??0)>=10||(num(s.y1)??0)>=20)out.push('Growth');if(!out.length)out.push('Core');return out;}
   function objectiveReason(s){
@@ -52,24 +53,27 @@
   let renderTimer=null;
   function render(){
     const rank=$('rankingList'),bar=$('allocationBar'),legend=$('allocationLegend');if(!rank||!bar||!legend)return;
-    const t=tracked();const qualifying=t.filter(s=>eligible(s,mode)).sort((a,b)=>objectiveScore(b,mode)-objectiveScore(a,mode));const allocation=allocate(qualifying,mode);
+    const t=tracked();
+    const qualifying=t.filter(s=>eligible(s,mode)).sort((a,b)=>rankCompare(a,b,mode));
+    const allocationCandidates=mode==='balanced'?qualifying.filter(s=>s.ratingClass==='buy'):qualifying.filter(s=>!/avoid|sell/i.test(String(s.rating||'')));
+    const allocation=allocate(allocationCandidates,mode);
     rank.innerHTML=qualifying.map(card).join('')||`<p class="neutral">No tracked stocks currently qualify for the ${mode} objective.</p>`;
     const colors=['var(--viz1,#5b8cff)','var(--viz2,#48d7a0)','var(--viz3,#ffd166)','var(--viz4,#9f7aea)','var(--viz5,#38bdf8)','var(--viz6,#fb7185)'];
     bar.innerHTML=allocation.map((x,i)=>`<div class="allocation-segment" title="${x.s.ticker} ${x.p.toFixed(1)}%" style="width:${x.p.toFixed(3)}%;background:${colors[i%colors.length]}"></div>`).join('');
-    legend.innerHTML=allocation.map((x,i)=>`<div class="legend-item"><span class="legend-dot" style="background:${colors[i%colors.length]}"></span><strong>${x.s.ticker}</strong> ${x.p.toFixed(1)}% <small>• ${mode} ${objectiveScore(x.s,mode).toFixed(0)}</small></div>`).join('')||`<span class="neutral">No tracked stocks currently qualify for ${mode} new-money allocation.</span>`;
-    const note=document.querySelector('#allocationSection .allocation-note');if(note)note.textContent=`${mode[0].toUpperCase()+mode.slice(1)} objective allocation: 100% is redistributed only across the ${qualifying.length} qualifying tracked stock${qualifying.length===1?'':'s'} using the selected objective score.`;
+    legend.innerHTML=allocation.map((x,i)=>`<div class="legend-item"><span class="legend-dot" style="background:${colors[i%colors.length]}"></span><strong>${x.s.ticker}</strong> ${x.p.toFixed(1)}% <small>• ${mode} ${x.score.toFixed(0)} • ${x.s.rating||'N/A'}</small></div>`).join('')||`<span class="neutral">No tracked stocks currently qualify for ${mode} new-money allocation.</span>`;
+    const note=document.querySelector('#allocationSection .allocation-note');if(note)note.textContent=mode==='balanced'?`Balanced allocation remains Buy-class only and is distributed across ${allocationCandidates.length} qualifying tracked stock${allocationCandidates.length===1?'':'s'}.`:`${mode[0].toUpperCase()+mode.slice(1)} allocation includes all qualifying Buy, Hold and Watch stocks; Avoid/Sell are excluded. 100% is distributed by ${mode} score across ${allocationCandidates.length} qualifying stock${allocationCandidates.length===1?'':'s'}.`;
     const totalBadge=document.querySelector('#allocationSection .panel-heading > strong');if(totalBadge)totalBadge.textContent=`100% • ${mode[0].toUpperCase()+mode.slice(1)}`;
     document.querySelectorAll('[data-fresh-objective]').forEach(b=>b.classList.toggle('active',b.dataset.freshObjective===mode));
-    const badge=document.querySelector('#freshCapitalSection .panel-badge');if(badge)badge.textContent=`${mode[0].toUpperCase()+mode.slice(1)} objective • ${qualifying.length}/${t.length} qualify`;
+    const badge=document.querySelector('#freshCapitalSection .panel-badge');if(badge)badge.textContent=`${mode[0].toUpperCase()+mode.slice(1)} objective • sorted high→low • ${qualifying.length}/${t.length} qualify`;
   }
   function renderLast(){clearTimeout(renderTimer);renderTimer=setTimeout(render,60);}
   function setup(){
     ensureStyles();const panel=$('freshCapitalSection');if(!panel)return;
-    let ctl=$('freshCapitalObjective');if(!ctl){ctl=document.createElement('div');ctl.id='freshCapitalObjective';ctl.className='fresh-objective-bar';ctl.innerHTML='<span class="fresh-objective-label">Objective</span>'+MODES.map(x=>`<button type="button" class="fresh-objective-btn" data-fresh-objective="${x}">${x[0].toUpperCase()+x.slice(1)}</button>`).join('')+'<span class="fresh-objective-note">Filters Fresh Capital ranking + new-money allocation</span>';panel.querySelector('.panel-heading')?.insertAdjacentElement('afterend',ctl);ctl.addEventListener('click',e=>{const b=e.target.closest('[data-fresh-objective]');if(!b)return;e.preventDefault();e.stopPropagation();mode=b.dataset.freshObjective;localStorage.setItem(OBJECTIVE_KEY,mode);render();});}
+    let ctl=$('freshCapitalObjective');if(!ctl){ctl=document.createElement('div');ctl.id='freshCapitalObjective';ctl.className='fresh-objective-bar';ctl.innerHTML='<span class="fresh-objective-label">Objective</span>'+MODES.map(x=>`<button type="button" class="fresh-objective-btn" data-fresh-objective="${x}">${x[0].toUpperCase()+x.slice(1)}</button>`).join('')+'<span class="fresh-objective-note">Filters and sorts Fresh Capital by selected objective score</span>';panel.querySelector('.panel-heading')?.insertAdjacentElement('afterend',ctl);ctl.addEventListener('click',e=>{const b=e.target.closest('[data-fresh-objective]');if(!b)return;e.preventDefault();e.stopPropagation();mode=b.dataset.freshObjective;localStorage.setItem(OBJECTIVE_KEY,mode);render();});}
     render();
     document.addEventListener('click',e=>{if(e.target.closest('[data-ticker],#resetTrackedBtn'))renderLast();});
     window.addEventListener('storage',e=>{if(e.key===STORAGE_KEY||e.key===OBJECTIVE_KEY){if(e.key===OBJECTIVE_KEY&&MODES.includes(e.newValue))mode=e.newValue;renderLast();}});
-    window.JSE_FRESH_CAPITAL_V2={render,getMode:()=>mode,setMode:m=>{if(MODES.includes(m)){mode=m;localStorage.setItem(OBJECTIVE_KEY,m);render();}},getQualifying:()=>tracked().filter(s=>eligible(s,mode)),getAllocation:()=>allocate(tracked().filter(s=>eligible(s,mode)),mode)};
+    window.JSE_FRESH_CAPITAL_V2={render,getMode:()=>mode,setMode:m=>{if(MODES.includes(m)){mode=m;localStorage.setItem(OBJECTIVE_KEY,m);render();}},getQualifying:()=>tracked().filter(s=>eligible(s,mode)).sort((a,b)=>rankCompare(a,b,mode)),getAllocation:()=>allocate((mode==='balanced'?tracked().filter(s=>eligible(s,mode)&&s.ratingClass==='buy'):tracked().filter(s=>eligible(s,mode)&&!/avoid|sell/i.test(String(s.rating||'')))),mode)};
   }
   setup();
 })();
