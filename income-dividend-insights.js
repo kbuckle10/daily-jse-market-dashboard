@@ -10,7 +10,7 @@
   const latestDiv=s=>num(s.latestDividend);
   const mode=()=>localStorage.getItem(MODEKEY)||window.JSE_FRESH_CAPITAL_V2?.getMode?.()||'balanced';
 
-  function ensureStyles(){if(document.getElementById('incomeDividendInsightStyles'))return;const st=document.createElement('style');st.id='incomeDividendInsightStyles';st.textContent='.income-payout-strip{display:flex;gap:8px;flex-wrap:wrap;margin:7px 0 3px}.income-payout-chip{display:flex;flex-direction:column;gap:1px;min-width:105px;padding:6px 8px;border:1px solid var(--border);border-radius:9px;background:var(--surface2)}.income-payout-chip small{font-size:.56rem;color:var(--muted);font-weight:700}.income-payout-chip strong{font-size:.72rem}.allocation-income-detail{display:block;margin-left:18px;margin-top:2px;font-size:.58rem;color:var(--muted)}';document.head.appendChild(st);}
+  function ensureStyles(){if(document.getElementById('incomeDividendInsightStyles'))return;const st=document.createElement('style');st.id='incomeDividendInsightStyles';st.textContent='.income-payout-strip{display:flex;gap:8px;flex-wrap:wrap;margin:7px 0 3px}.income-payout-chip{display:flex;flex-direction:column;gap:1px;min-width:105px;padding:6px 8px;border:1px solid var(--border);border-radius:9px;background:var(--surface2)}.income-payout-chip small{font-size:.56rem;color:var(--muted);font-weight:700}.income-payout-chip strong{font-size:.72rem}.allocation-income-detail{display:block;margin-left:18px;margin-top:2px;font-size:.58rem;color:var(--muted)}.performance-rating-insight{display:block;margin-top:4px;line-height:1.35}';document.head.appendChild(st);}
 
   function tickerFromCard(card){return card.querySelector('.fresh-title strong')?.textContent?.trim().toUpperCase()||'';}
   function decorateIncomeCards(){
@@ -29,7 +29,7 @@
   function applyCustomSort(){const select=document.getElementById('sortSelect');if(!select||!['latest-dividend-desc','annual-dps-desc'].includes(select.value))return;const cmp=comparator(select.value),tbody=document.getElementById('stockTableBody'),cardView=document.getElementById('cardView');if(tbody){[...tbody.querySelectorAll('tr')].sort((x,y)=>{const a=stockForElement(x,'row'),b=stockForElement(y,'row');return a&&b?cmp(a,b):0;}).forEach(x=>tbody.appendChild(x));}if(cardView){[...cardView.querySelectorAll('.stock-card')].sort((x,y)=>{const a=stockForElement(x,'card'),b=stockForElement(y,'card');return a&&b?cmp(a,b):0;}).forEach(x=>cardView.appendChild(x));}}
   function ensureSortOptions(){const select=document.getElementById('sortSelect');if(!select)return;const add=(value,label)=>{if(select.querySelector(`option[value="${value}"]`))return;const o=document.createElement('option');o.value=value;o.textContent=label;select.appendChild(o);};add('latest-dividend-desc','Latest dividend payout: high to low (currency grouped)');add('annual-dps-desc','Current annual DPS: high to low (currency grouped)');select.title='Dividend payout sorts are grouped by declared currency so JMD, TTD and USD amounts are not treated as directly comparable.';}
 
-  function performanceNarrative(s){
+  function performanceNarrative(s,includeRating=true){
     const y=num(s.currentDividendYield)??num(s.trailingYield),pe=num(s.pe),pb=num(s.calculatedPbFromJsePrice)??num(s.pb),epsg=num(s.epsGrowth),revg=num(s.revenueGrowth),roe=num(s.roe),book=num(s.bookDiscountPct),payout=num(s.payoutRatio),fcf=num(s.fcfPayoutRatio),m1=num(s.m1),y1=num(s.y1);
     const positives=[],risks=[];
     if(y!=null&&y>=5)positives.push(`${fmt(y,2)}% current yield`);else if(y!=null&&y>=3)positives.push(`${fmt(y,2)}% income yield`);
@@ -44,17 +44,20 @@
     if(revg!=null&&revg<0)risks.push(`revenue growth ${fmt(revg,1)}%`);
     if(s.zoneStatus==='above')risks.push('price above target buy zone');
     if(y1!=null&&y1<=-15)risks.push(`1Y price trend ${fmt(y1,1)}%`);else if(m1!=null&&m1<=-10)risks.push(`1M price trend ${fmt(m1,1)}%`);
-    const p=positives.slice(0,3),r=risks.slice(0,2),rating=s.rating||'N/A';
-    if(p.length&&r.length)return `${rating}: ${p.join(' • ')} support the case, but ${r.join(' and ')} warrant caution.`;
-    if(p.length)return `${rating}: ${p.join(' • ')} are the strongest current positives.`;
-    if(r.length)return `${rating}: ${r.join(' and ')} are the main current risks.`;
-    return `${rating}: valuation, earnings, dividend and price-trend signals are mixed; use the detailed metrics above for the decision.`;
+    const p=positives.slice(0,3),r=risks.slice(0,2),rating=s.rating||'N/A',prefix=includeRating?`${rating}: `:'';
+    if(p.length&&r.length)return `${prefix}${p.join(' • ')} support the case, but ${r.join(' and ')} warrant caution.`;
+    if(p.length)return `${prefix}${p.join(' • ')} are the strongest current positives.`;
+    if(r.length)return `${prefix}${r.join(' and ')} are the main current risks.`;
+    return `${prefix}Valuation, earnings, dividend and price-trend signals are mixed; use the detailed metrics for the decision.`;
   }
   function decoratePerformanceCards(){
-    document.querySelectorAll('#cardView .stock-card').forEach(card=>{const s=stockForElement(card,'card'),p=card.querySelector('.rank-reason');if(s&&p)p.textContent=performanceNarrative(s);card.querySelectorAll('.metric-row').forEach(row=>{const label=row.querySelector('span');if(label&&/trailing yield/i.test(label.textContent||''))label.textContent='Current yield';});});
+    document.querySelectorAll('#cardView .stock-card').forEach(card=>{const s=stockForElement(card,'card'),p=card.querySelector('.rank-reason');if(s&&p)p.textContent=performanceNarrative(s,true);card.querySelectorAll('.metric-row').forEach(row=>{const label=row.querySelector('span');if(label&&/trailing yield/i.test(label.textContent||''))label.textContent='Current yield';});});
+  }
+  function decoratePerformanceTable(){
+    document.querySelectorAll('#stockTableBody tr').forEach(row=>{const s=stockForElement(row,'row');if(!s)return;const rating=row.querySelector('.rating');if(!rating)return;const cell=rating.closest('td');if(!cell)return;let detail=cell.querySelector('small');if(!detail){detail=document.createElement('small');cell.appendChild(detail);}detail.classList.add('performance-rating-insight');detail.textContent=performanceNarrative(s,false);});
   }
 
-  let timer;function refresh(delay=280){clearTimeout(timer);timer=setTimeout(()=>{ensureSortOptions();decorateIncomeCards();decorateAllocation();applyCustomSort();decoratePerformanceCards();},delay);}
+  let timer;function refresh(delay=280){clearTimeout(timer);timer=setTimeout(()=>{ensureSortOptions();decorateIncomeCards();decorateAllocation();applyCustomSort();decoratePerformanceCards();decoratePerformanceTable();},delay);}
   ensureStyles();ensureSortOptions();refresh(320);
   document.addEventListener('change',e=>{if(e.target?.id==='sortSelect'||e.target?.id==='watchlistStatusFilter')refresh(40);});
   document.addEventListener('click',e=>{if(e.target.closest?.('[data-fresh-objective],[data-ticker],#resetTrackedBtn,.filter-tile,#tableViewBtn,#cardViewBtn,#showAllTickersBtn'))refresh(300);});
