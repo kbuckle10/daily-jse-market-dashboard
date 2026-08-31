@@ -50,8 +50,6 @@
   window.JSE_INVESTMENT_CATEGORIES={categories,displayCategories,scores,hasCompellingValueSignals,hasIncomeProfile};
 
   function ensureStyles(){if(document.getElementById('investmentStyleFilterStyles'))return;const st=document.createElement('style');st.id='investmentStyleFilterStyles';st.textContent=`.style-filter-bar{display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding:8px 10px;border:1px solid var(--border);border-radius:12px;background:var(--surface2);margin:8px 0}.style-filter-label{font-size:.66rem;font-weight:800;color:var(--muted);margin-right:2px}.style-filter-chip,.style-match-mode{border:1px solid var(--border);background:var(--surface);color:var(--muted);border-radius:999px;padding:6px 10px;font-size:.64rem;font-weight:800;cursor:pointer}.style-filter-chip.active{color:var(--text);border-color:var(--accent);background:var(--blue-bg)}.style-filter-chip.value.active{color:#7dd3fc}.style-filter-chip.income.active{color:#86efac}.style-filter-chip.growth.active{color:#fcd34d}.style-match-mode{margin-left:auto}.style-filter-note{font-size:.58rem;color:var(--muted)}.dynamic-style-badges{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px}.dynamic-style-badges .style-badge{font-size:.55rem}.style-badge.neutral{color:var(--muted);border-color:var(--border);background:var(--surface2)}.style-category-hidden{display:none!important}@media(max-width:720px){.style-filter-bar{gap:6px}.style-match-mode{margin-left:0}.style-filter-note{flex-basis:100%}}`;document.head.appendChild(st);}
-  function bar(kind){const wrap=document.createElement('div');wrap.className='style-filter-bar';wrap.dataset.styleFilterKind=kind;wrap.innerHTML=`<span class="style-filter-label">Investment style</span><button class="style-filter-chip value" data-style="Value">Value</button><button class="style-filter-chip income" data-style="Income">Income</button><button class="style-filter-chip growth" data-style="Growth">Growth</button><button class="style-match-mode" data-style-mode>Any</button><span class="style-filter-note">${kind==='watch'?'Filter stocks before adding':'Filter tracked stocks'}</span>`;return wrap;}
-  function ensureControls(){const tm=document.querySelector('.ticker-manager .ticker-search-wrap');if(tm&&!document.querySelector('[data-style-filter-kind="watch"]'))tm.insertAdjacentElement('afterend',bar('watch'));const tb=document.querySelector('.toolbar');if(tb&&!document.querySelector('[data-style-filter-kind="main"]'))tb.insertAdjacentElement('beforebegin',bar('main'));}
   function matches(cats,selected,mode){if(!selected.size)return true;return mode==='all'?[...selected].every(x=>cats.includes(x)):[...selected].some(x=>cats.includes(x));}
   function tickerFrom(el,kind){if(kind==='watch')return el.querySelector('.ticker-result-main strong')?.textContent?.trim().toUpperCase()||'';return el.querySelector('.ticker')?.textContent?.trim().toUpperCase()||el.querySelector('h3')?.textContent?.trim().toUpperCase()||'';}
   function badgesHtml(s){return displayCategories(s).map(x=>`<span class="style-badge ${x.toLowerCase()}">${x}</span>`).join('');}
@@ -61,20 +59,21 @@
     [...document.querySelectorAll('#stockTableBody tr'),...document.querySelectorAll('#cardView .stock-card')].forEach(el=>{const t=tickerFrom(el,'main'),s=byTicker.get(t);if(!s)return;el.classList.toggle('style-category-hidden',!matches(categories(s),state.main,state.mainMode));});
   }
 
-  let scheduled=false;function scheduleApply(delay=0){if(scheduled)return;scheduled=true;setTimeout(()=>{scheduled=false;ensureControls();applyFilters();},delay);}
-  function bind(){
-    document.addEventListener('click',e=>{
-      const chip=e.target.closest('.style-filter-chip[data-style]');
-      if(chip){const host=chip.closest('.style-filter-bar'),kind=host?.dataset.styleFilterKind;if(!kind)return;const set=kind==='watch'?state.watch:state.main,val=chip.dataset.style;set.has(val)?set.delete(val):set.add(val);chip.classList.toggle('active',set.has(val));applyFilters();return;}
-      const modeBtn=e.target.closest('[data-style-mode]');
-      if(modeBtn){const kind=modeBtn.closest('.style-filter-bar')?.dataset.styleFilterKind;if(!kind)return;const key=kind==='watch'?'watchMode':'mainMode';state[key]=state[key]==='any'?'all':'any';modeBtn.textContent=state[key]==='any'?'Any':'All';modeBtn.title=state[key]==='any'?'Show stocks matching any selected style':'Show only stocks matching all selected styles';applyFilters();return;}
-      if(e.target.closest('.filter-tile,#tableViewBtn,#cardViewBtn,#showAllTickersBtn,[data-ticker],#resetTrackedBtn'))scheduleApply(20);
-    });
-    document.addEventListener('input',e=>{if(e.target.matches('#tickerSearch'))scheduleApply(20);});
-    document.addEventListener('change',e=>{if(e.target.matches('#sortSelect,#watchlistStatusFilter'))scheduleApply(20);});
-    window.addEventListener('storage',()=>scheduleApply(0));
-    window.addEventListener('jse-focus-change',()=>scheduleApply(0));
+  function makeBar(kind){
+    const wrap=document.createElement('div');wrap.className='style-filter-bar';wrap.dataset.styleFilterKind=kind;
+    wrap.innerHTML=`<span class="style-filter-label">Investment style</span><button type="button" class="style-filter-chip value" data-style="Value">Value</button><button type="button" class="style-filter-chip income" data-style="Income">Income</button><button type="button" class="style-filter-chip growth" data-style="Growth">Growth</button><button type="button" class="style-match-mode" data-style-mode>Any</button><span class="style-filter-note">${kind==='watch'?'Filter stocks before adding':'Filter tracked stocks'}</span>`;
+    const set=kind==='watch'?state.watch:state.main;
+    wrap.querySelectorAll('[data-style]').forEach(btn=>btn.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();const val=btn.dataset.style;set.has(val)?set.delete(val):set.add(val);btn.classList.toggle('active',set.has(val));applyFilters();}));
+    const modeBtn=wrap.querySelector('[data-style-mode]');modeBtn?.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();const key=kind==='watch'?'watchMode':'mainMode';state[key]=state[key]==='any'?'all':'any';modeBtn.textContent=state[key]==='any'?'Any':'All';modeBtn.title=state[key]==='any'?'Show stocks matching any selected style':'Show only stocks matching all selected styles';applyFilters();});
+    return wrap;
   }
+  function ensureControls(){const tm=document.querySelector('.ticker-manager .ticker-search-wrap');if(tm&&!document.querySelector('[data-style-filter-kind="watch"]'))tm.insertAdjacentElement('afterend',makeBar('watch'));const tb=document.querySelector('.toolbar');if(tb&&!document.querySelector('[data-style-filter-kind="main"]'))tb.insertAdjacentElement('beforebegin',makeBar('main'));}
 
-  ensureStyles();ensureControls();bind();scheduleApply(0);window.addEventListener('load',()=>scheduleApply(0));
+  let scheduled=false;function scheduleApply(delay=0){if(scheduled)return;scheduled=true;setTimeout(()=>{scheduled=false;ensureControls();applyFilters();},delay);}
+  document.addEventListener('click',e=>{if(e.target.closest('.filter-tile,#tableViewBtn,#cardViewBtn,#showAllTickersBtn,[data-ticker],#resetTrackedBtn'))scheduleApply(30);});
+  document.addEventListener('input',e=>{if(e.target.matches('#tickerSearch'))scheduleApply(30);});
+  document.addEventListener('change',e=>{if(e.target.matches('#sortSelect,#watchlistStatusFilter'))scheduleApply(30);});
+  window.addEventListener('storage',()=>scheduleApply(0));window.addEventListener('jse-focus-change',()=>scheduleApply(0));
+
+  ensureStyles();ensureControls();scheduleApply(0);window.addEventListener('load',()=>scheduleApply(0));
 })();
