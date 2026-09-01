@@ -25,6 +25,8 @@ for(const file of files){
 const missing=baseline.stocks.map(s=>String(s.ticker).toUpperCase()).filter(t=>!seen.has(t));
 if(missing.length)throw new Error(`Shard merge missing ${missing.length} ticker(s): ${missing.join(', ')}`);
 baseline.stocks=baseline.stocks.map(s=>merged.get(String(s.ticker).toUpperCase()));
+baseline.priceLabel='Latest completed JSE close';
+baseline.priceSourcePolicy='JSE Trade Summary/Trade Quotes primary; StockAnalysis historical/fallback; direct JSE instrument pages retained for company links and corporate actions.';
 baseline.refreshedAt=new Date().toISOString();
 delete baseline.shard;
 fs.writeFileSync('data.js',`window.JSE_DASHBOARD_DATA = ${JSON.stringify(baseline,null,2)};\n`);
