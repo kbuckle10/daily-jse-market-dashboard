@@ -5,7 +5,7 @@
     ['Book Value','bookValueSection'],
     ['Market Watch','marketWatchSection'],
     ['Fresh Capital','freshCapitalSection'],
-    ['Scorecard','scoreFrameworkSection'],
+    ['Analysis Framework','scoreFrameworkSection'],
     ['Income','incomeOpportunitySection'],
     ['Allocation','allocationSection']
   ];
