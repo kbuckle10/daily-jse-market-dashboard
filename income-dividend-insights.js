@@ -56,8 +56,9 @@
   function decoratePerformanceTable(){
     document.querySelectorAll('#stockTableBody tr').forEach(row=>{const s=stockForElement(row,'row');if(!s)return;const rating=row.querySelector('.rating');if(!rating)return;const cell=rating.closest('td');if(!cell)return;let detail=cell.querySelector('small');if(!detail){detail=document.createElement('small');cell.appendChild(detail);}detail.classList.add('performance-rating-insight');detail.textContent=performanceNarrative(s,false);});
   }
+  function decorateUpdatedPill(){const pill=document.getElementById('updatedPill');if(!pill)return;pill.textContent=`Latest completed JSE close • ${D.updated||'N/A'}`;pill.title='JSE Trade Summary/Trade Quotes is primary for the latest completed close. StockAnalysis is used for historical/performance fallback; direct JSE instrument pages remain for company links and corporate actions.';}
 
-  let timer;function refresh(delay=280){clearTimeout(timer);timer=setTimeout(()=>{ensureSortOptions();decorateIncomeCards();decorateAllocation();applyCustomSort();decoratePerformanceCards();decoratePerformanceTable();},delay);}
+  let timer;function refresh(delay=280){clearTimeout(timer);timer=setTimeout(()=>{ensureSortOptions();decorateIncomeCards();decorateAllocation();applyCustomSort();decoratePerformanceCards();decoratePerformanceTable();decorateUpdatedPill();},delay);}
   ensureStyles();ensureSortOptions();refresh(320);
   document.addEventListener('change',e=>{if(e.target?.id==='sortSelect'||e.target?.id==='watchlistStatusFilter')refresh(40);});
   document.addEventListener('click',e=>{if(e.target.closest?.('[data-fresh-objective],[data-ticker],#resetTrackedBtn,.filter-tile,#tableViewBtn,#cardViewBtn,#showAllTickersBtn'))refresh(300);});
