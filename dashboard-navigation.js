@@ -10,6 +10,14 @@
     ['Allocation','allocationSection']
   ];
 
+  function loadLatestDividendEstimator(){
+    if(document.querySelector('script[data-latest-dividend-estimator]'))return;
+    const s=document.createElement('script');
+    s.src='latest-dividend-estimator.js?v='+Date.now();
+    s.dataset.latestDividendEstimator='true';
+    document.head.appendChild(s);
+  }
+
   function initClearInputsModal(){
     const clearBtn=document.getElementById('clearIncomeInputsBtn');
     if(!clearBtn||document.getElementById('clearIncomeInputsDialog'))return;
@@ -58,6 +66,7 @@
   }
 
   function init(){
+    loadLatestDividendEstimator();
     const map={
       bookValueSection:document.querySelector('.book-value-panel'),
       marketWatchSection:document.querySelector('.analysis-grid article:first-child'),
