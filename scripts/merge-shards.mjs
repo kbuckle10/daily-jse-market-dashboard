@@ -25,9 +25,28 @@ for(const file of files){
 const missing=baseline.stocks.map(s=>String(s.ticker).toUpperCase()).filter(t=>!seen.has(t));
 if(missing.length)throw new Error(`Shard merge missing ${missing.length} ticker(s): ${missing.join(', ')}`);
 baseline.stocks=baseline.stocks.map(s=>merged.get(String(s.ticker).toUpperCase()));
+
+// Derive the dataset close date from actual refreshed JSE quote dates instead of
+// carrying forward the previous top-level `updated` value. Only JSE-sourced
+// quote dates participate; StockAnalysis fallback/history dates must not advance
+// the official-close banner.
+const parseQuoteDate=value=>{
+  if(!value)return null;
+  const text=String(value).replace(/\s*•.*$/,'').trim();
+  const d=new Date(text);
+  return Number.isNaN(d.getTime())?null:d;
+};
+const jseDates=baseline.stocks
+  .filter(s=>String(s.priceSource||s.source||'').toUpperCase().includes('JSE')||/•\s*JSE\s*$/i.test(String(s.priceDate||'')))
+  .map(s=>parseQuoteDate(s.priceDate||s.jsePriceDate||s.quoteDate))
+  .filter(Boolean);
+if(jseDates.length){
+  const latest=new Date(Math.max(...jseDates.map(d=>d.getTime())));
+  baseline.updated=latest.toISOString().slice(0,10);
+}
 baseline.priceLabel='Latest completed JSE close';
 baseline.priceSourcePolicy='JSE Trade Summary/Trade Quotes primary; StockAnalysis historical/fallback; direct JSE instrument pages retained for company links and corporate actions.';
 baseline.refreshedAt=new Date().toISOString();
 delete baseline.shard;
 fs.writeFileSync('data.js',`window.JSE_DASHBOARD_DATA = ${JSON.stringify(baseline,null,2)};\n`);
-console.log(`Merged ${files.length} shards covering ${seen.size} dynamic Main Market tickers; refreshedAt=${baseline.refreshedAt}`);
+console.log(`Merged ${files.length} shards covering ${seen.size} dynamic Main Market tickers; updated=${baseline.updated}; refreshedAt=${baseline.refreshedAt}`);
