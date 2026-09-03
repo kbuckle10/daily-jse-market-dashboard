@@ -10,7 +10,8 @@
   const today=()=>{const d=new Date();d.setHours(0,0,0,0);return d;};
   const state=v=>{const d=parse(v);if(!d)return'unknown';d.setHours(0,0,0,0);const t=today();return d>t?'upcoming':d<t?'passed':'today';};
   const cls=v=>`div-date ${state(v)}`;
-  const html=(label,v)=>`<span class="${cls(v)}"><b>${label}:</b> ${fmt(v)}</span>`;
+  const tableHtml=(label,v)=>`<span class="${cls(v)}"><b>${label}:</b> ${fmt(v)}</span>`;
+  const cardHtml=v=>`<span class="${cls(v)}">${fmt(v)}</span>`;
   function styles(){if(document.getElementById('dividendDateUiStyles'))return;const s=document.createElement('style');s.id='dividendDateUiStyles';s.textContent=`
     .dividend-date-stack{display:flex;flex-direction:column;gap:4px;align-items:flex-start;white-space:nowrap}
     .div-date{display:inline-flex;align-items:center;gap:3px;border-radius:6px;padding:2px 5px;font-size:.67rem;font-weight:650;line-height:1.35;border:1px solid transparent}
@@ -19,11 +20,12 @@
     .div-date.passed{color:var(--muted);background:rgba(148,163,184,.07);border-color:rgba(148,163,184,.14)}
     .div-date.unknown{color:var(--muted)}
     .stock-card .dividend-ex-date-row strong{display:flex;justify-content:flex-end}
-    @media(max-width:520px){.div-date{font-size:.64rem}.stock-card .dividend-ex-date-row strong{justify-content:flex-start}}
+    .stock-card .dividend-ex-date-row .div-date{padding:0;border:0;background:transparent;font-size:inherit;font-weight:800}
+    @media(max-width:520px){.div-date{font-size:.64rem}.stock-card .dividend-ex-date-row strong{justify-content:flex-end}.stock-card .dividend-ex-date-row .div-date{font-size:inherit}}
   `;document.head.appendChild(s);}
   function tickerFromRow(row){return row.querySelector('.ticker')?.textContent?.trim().toUpperCase()||'';}
-  function table(){document.querySelectorAll('#stockTableBody tr').forEach(row=>{const s=byTicker.get(tickerFromRow(row));if(!s)return;const cells=row.children;if(cells.length<14)return;const e=event(s);const dateCell=cells[cells.length-3];if(!dateCell)return;dateCell.innerHTML=`<div class="dividend-date-stack">${html('Ex',e.exDate)}${html('Rec',e.recordDate)}${html('Pay',e.payDate)}</div>`;});}
-  function cards(){document.querySelectorAll('#cardView .stock-card').forEach(card=>{const ticker=card.querySelector('h3')?.textContent?.trim().toUpperCase(),s=byTicker.get(ticker);if(!s)return;const e=event(s);let row=card.querySelector('.dividend-ex-date-row');if(!row){const latest=[...card.querySelectorAll('.metric-row')].find(r=>r.textContent.includes('Latest dividend'));if(!latest)return;latest.insertAdjacentHTML('afterend','<div class="metric-row dividend-ex-date-row"><span>Ex-dividend date</span><strong></strong></div>');row=latest.nextElementSibling;}const strong=row.querySelector('strong');if(strong)strong.innerHTML=html('Ex',e.exDate);});}
+  function table(){document.querySelectorAll('#stockTableBody tr').forEach(row=>{const s=byTicker.get(tickerFromRow(row));if(!s)return;const cells=row.children;if(cells.length<14)return;const e=event(s);const dateCell=cells[cells.length-3];if(!dateCell)return;dateCell.innerHTML=`<div class="dividend-date-stack">${tableHtml('Ex',e.exDate)}${tableHtml('Rec',e.recordDate)}${tableHtml('Pay',e.payDate)}</div>`;});}
+  function cards(){document.querySelectorAll('#cardView .stock-card').forEach(card=>{const ticker=card.querySelector('h3')?.textContent?.trim().toUpperCase(),s=byTicker.get(ticker);if(!s)return;const e=event(s);let row=card.querySelector('.dividend-ex-date-row');if(!row){const latest=[...card.querySelectorAll('.metric-row')].find(r=>r.textContent.includes('Latest dividend'));if(!latest)return;latest.insertAdjacentHTML('afterend','<div class="metric-row dividend-ex-date-row"><span>Ex-dividend date</span><strong></strong></div>');row=latest.nextElementSibling;}const strong=row.querySelector('strong');if(strong)strong.innerHTML=cardHtml(e.exDate);});}
   function apply(){table();cards();}
   styles();apply();
   let queued=false;new MutationObserver(()=>{if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;apply();});}).observe(document.querySelector('#tableView')?.parentElement||document.body,{childList:true,subtree:true});
