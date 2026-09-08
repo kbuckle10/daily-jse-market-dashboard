@@ -2,12 +2,8 @@
   const DATA = window.JSE_DASHBOARD_DATA;
   if (!DATA?.stocks) return;
 
-  // Indicative FX-to-JMD rates. Original dividend currency is always preserved.
-  // Update rates/date/source during the daily collector refresh when automated FX is added.
   const FX = DATA.fxRates || {
-    base: 'JMD',
-    asOf: '2026-09-07',
-    source: 'Indicative market FX',
+    base: 'JMD', asOf: '2026-09-07', source: 'Indicative market FX',
     rates: { JMD: 1, TTD: 23.42, BBD: 79.28, USD: 158.50 }
   };
   const rates = FX.rates || FX;
@@ -16,38 +12,48 @@
   const money = (v,c='JMD',d=2) => Number.isFinite(Number(v)) ? `${prefix(c)}${Number(v).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d})}` : 'N/A';
   const rate = c => Number(rates[String(c||'JMD').toUpperCase()]);
   const toJmd = (v,c) => Number.isFinite(Number(v)) && Number.isFinite(rate(c)) ? Number(v)*rate(c) : null;
-  const currency = s => String(s?.latestDividendCurrency || s?.currentAnnualDpsCurrency || s?.ttmDpsCurrency || 'JMD').toUpperCase();
+
+  // Currency must follow the exact dividend field being displayed/calculated.
+  const annualDps = s => s?.currentAnnualDps != null && Number.isFinite(Number(s.currentAnnualDps)) ? Number(s.currentAnnualDps) : (s?.ttmDps != null && Number.isFinite(Number(s.ttmDps)) ? Number(s.ttmDps) : null);
+  const annualCurrency = s => String(s?.currentAnnualDps != null ? (s.currentAnnualDpsCurrency || 'JMD') : (s?.ttmDpsCurrency || 'JMD')).toUpperCase();
+  const latestCurrency = s => String(s?.latestDividendCurrency || s?.currentAnnualDpsCurrency || s?.ttmDpsCurrency || 'JMD').toUpperCase();
 
   function styles(){
     if(document.getElementById('fxIncomeStyles')) return;
     const st=document.createElement('style'); st.id='fxIncomeStyles';
-    st.textContent=`.fx-jmd-equivalent{display:block;margin-top:3px;font-size:.58rem;color:var(--muted)}.fx-jmd-equivalent strong{color:var(--text);font-size:.64rem}.fx-income-note{margin-top:8px;padding:7px 9px;border:1px solid var(--border);border-radius:9px;color:var(--muted);font-size:.57rem;line-height:1.4}`;
+    st.textContent=`.fx-jmd-equivalent{display:block;margin-top:4px;font-size:.58rem;color:var(--muted)}.fx-jmd-equivalent strong{color:var(--text);font-size:.66rem}.fx-jmd-total{font-weight:800}.fx-income-note{margin-top:8px;padding:7px 9px;border:1px solid var(--border);border-radius:9px;color:var(--muted);font-size:.57rem;line-height:1.4}`;
     document.head.appendChild(st);
   }
-
   function ticker(row){return row.querySelector('.income-stock strong')?.textContent?.trim().toUpperCase()||'';}
+  function displayedShares(row,s){
+    const live=Number(row.querySelector('[data-shares-ticker]')?.value);
+    if(Number.isFinite(live)&&live>=0) return Math.floor(live);
+    const text=row.querySelector('.shares-owned-summary strong')?.textContent || row.querySelector('.income-formula')?.textContent || '';
+    const m=text.replace(/,/g,'').match(/([0-9]+)\s*shares/i);
+    return m ? Number(m[1]) : 0;
+  }
 
   function decorateRows(){
     document.querySelectorAll('#incomeComparisonList .income-row').forEach(row=>{
       const s=byTicker.get(ticker(row)); if(!s) return;
-      const cur=currency(s), r=rate(cur);
-      if(cur==='JMD'||!Number.isFinite(r)) return;
-      const dps=Number(s.currentAnnualDps ?? s.ttmDps);
-      const shares=Number(row.querySelector('[data-shares-ticker]')?.value||0);
+      const dps=annualDps(s), cur=annualCurrency(s), r=rate(cur), shares=displayedShares(row,s);
       const formula=row.querySelector('.income-formula');
-      if(formula && !formula.querySelector('.fx-jmd-equivalent') && Number.isFinite(dps)){
+      formula?.querySelectorAll('.fx-jmd-equivalent').forEach(n=>n.remove());
+      if(formula && cur!=='JMD' && Number.isFinite(r) && dps!=null){
         const jdps=toJmd(dps,cur), jincome=shares>0?shares*jdps:null;
-        formula.insertAdjacentHTML('beforeend',`<span class="fx-jmd-equivalent">JMD equivalent: <strong>${money(jdps,'JMD',2)}/share${jincome!=null?` • ${money(jincome,'JMD',0)}/yr`:''}</strong> • 1 ${cur} = ${money(r,'JMD',2)}</span>`);
+        formula.insertAdjacentHTML('beforeend',`<span class="fx-jmd-equivalent">JMD equivalent: <strong>${money(jdps,'JMD',2)}/share${jincome!=null?` • <span class="fx-jmd-total">${money(jincome,'JMD',0)}/yr</span>`:''}</strong> • 1 ${cur} = ${money(r,'JMD',2)}</span>`);
       }
+
       const estimator=row.querySelector('.latest-dividend-estimator');
       if(estimator){
-        const input=estimator.querySelector('[data-latest-dividend-input]');
-        const v=Number(input?.value);
-        const sharesNow=Number(row.querySelector('[data-shares-ticker]')?.value||0);
-        const payout=Number.isFinite(v)&&sharesNow>0?toJmd(v*sharesNow,cur):null;
+        const lcur=latestCurrency(s), lr=rate(lcur), input=estimator.querySelector('[data-latest-dividend-input]'), v=Number(input?.value);
         let fx=estimator.querySelector('.fx-jmd-equivalent');
-        if(!fx){fx=document.createElement('span');fx.className='fx-jmd-equivalent';estimator.querySelector('.latest-dividend-payout')?.appendChild(fx);}
-        if(fx) fx.innerHTML=payout==null?'':`JMD equivalent: <strong>${money(payout,'JMD',2)}</strong>`;
+        if(lcur==='JMD'||!Number.isFinite(lr)){ if(fx)fx.remove(); }
+        else {
+          const payout=Number.isFinite(v)&&shares>0?toJmd(v*shares,lcur):null;
+          if(!fx){fx=document.createElement('span');fx.className='fx-jmd-equivalent';estimator.querySelector('.latest-dividend-payout')?.appendChild(fx);}
+          if(fx)fx.innerHTML=payout==null?'':`JMD equivalent: <strong>${money(payout,'JMD',2)}</strong> • 1 ${lcur} = ${money(lr,'JMD',2)}`;
+        }
       }
     });
     const panel=document.querySelector('.income-vs-savings-panel');
@@ -55,10 +61,10 @@
   }
 
   styles();
-  const run=()=>setTimeout(decorateRows,80);
+  let timer; const run=()=>{clearTimeout(timer);timer=setTimeout(decorateRows,100);};
   document.addEventListener('input',e=>{if(e.target.closest?.('[data-shares-ticker],[data-latest-dividend-input]'))run();});
   document.addEventListener('change',e=>{if(e.target.closest?.('[data-shares-ticker],[data-latest-dividend-input],.income-mode-btn'))run();});
   const list=document.getElementById('incomeComparisonList'); if(list)new MutationObserver(run).observe(list,{childList:true});
-  window.JSE_FX={rates,toJmd,asOf:FX.asOf,source:FX.source};
+  window.JSE_FX={rates,toJmd,annualCurrency,latestCurrency,asOf:FX.asOf,source:FX.source};
   run();
 })();
