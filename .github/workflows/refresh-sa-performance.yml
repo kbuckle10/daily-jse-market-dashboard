@@ -144,7 +144,36 @@ jobs:
       - name: Validate merged dataset
         run: |
           node <<'NODE'
-          const fs=require('fs'),vm=require('vm'),raw=fs.readFileSync('data.js','utf8'),m=raw.match(/window\.JSE_DASHBOARD_DATA\s*=\s*([\s\S]*);\s*$/),d=vm.runInNewContext(`(${m[1]})`);if(!Array.isArray(d.stocks)||d.stocks.length<20)throw Error('Invalid merged universe');const dup=d.stocks.map(s=>s.ticker).filter((t,i,a)=>a.indexOf(t)!==i);if(dup.length)throw Error(`Duplicate tickers: ${dup.join(',')}`);const core=['TJH','CAR','NCBFG','SVL','GK','JMMBGL','KW','SEP','LASD','LASM','BIL','SJ'];for(const t of core){const s=d.stocks.find(x=>x.ticker===t);if(!s||!Number.isFinite(Number(s.price)))throw Error(`${t}: missing price`)}const g=d.stocks.find(x=>x.ticker==='GHL');if(g&&g.primaryListing?.market!=='TTSE')throw Error(`GHL primary listing not TTSE: ${g.primaryListing?.market}`);if(g&&g.latestDividendCurrency!=='TTD')throw Error(`GHL dividend currency not TTD: ${g.latestDividendCurrency}`);console.log(`Validated ${d.stocks.length} dynamic tickers; no duplicates; GHL TTSE/TTD rule preserved.`);
+          const fs = require('fs');
+          const vm = require('vm');
+          const raw = fs.readFileSync('data.js', 'utf8');
+          const m = raw.match(/window\.JSE_DASHBOARD_DATA\s*=\s*([\s\S]*);\s*$/);
+          if (!m) throw Error('Unable to parse merged data.js');
+          const d = vm.runInNewContext(`(${m[1]})`);
+          if (!Array.isArray(d.stocks) || d.stocks.length < 20) throw Error('Invalid merged universe');
+          const dup = d.stocks.map(s => s.ticker).filter((t, i, a) => a.indexOf(t) !== i);
+          if (dup.length) throw Error(`Duplicate tickers: ${dup.join(',')}`);
+
+          const core = ['TJH','CAR','NCBFG','SVL','GK','JMMBGL','KW','SEP','LASD','LASM','BIL','SJ'];
+          const requiredPerformance = ['dayJmd','dayPct','w1','m1','ytd','m3','m6','y1'];
+          const errors = [];
+          for (const ticker of core) {
+            const s = d.stocks.find(x => x.ticker === ticker);
+            if (!s) { errors.push(`${ticker}: missing stock record`); continue; }
+            if (!Number.isFinite(Number(s.price))) errors.push(`${ticker}: price`);
+            if (!['JSE','SA'].includes(s.source)) errors.push(`${ticker}: source=${s.source ?? 'missing'}`);
+            if (!s.priceDate) errors.push(`${ticker}: priceDate`);
+            if (!s.performanceSource) errors.push(`${ticker}: performanceSource`);
+            for (const field of requiredPerformance) {
+              if (!Number.isFinite(Number(s[field]))) errors.push(`${ticker}: ${field}`);
+            }
+          }
+          if (errors.length) throw Error(`Core 12-stock validation failed: ${errors.join(', ')}`);
+
+          const g = d.stocks.find(x => x.ticker === 'GHL');
+          if (g && g.primaryListing?.market !== 'TTSE') throw Error(`GHL primary listing not TTSE: ${g.primaryListing?.market}`);
+          if (g && g.latestDividendCurrency !== 'TTD') throw Error(`GHL dividend currency not TTD: ${g.latestDividendCurrency}`);
+          console.log(`Validated ${d.stocks.length} dynamic tickers; core 12 have Price, DAY, 1W, 1M, YTD, 3M, 6M, 1Y and source metadata; no duplicates; GHL TTSE/TTD rule preserved.`);
           NODE
       - name: Publish once
         env:
