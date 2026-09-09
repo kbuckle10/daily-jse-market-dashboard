@@ -18,6 +18,7 @@
   function loadDividendDateUi(){loadHelper('dividend-date-ui.js','data-dividend-date-ui');}
   function loadMarketWatchInsights(){loadHelper('market-watch-insights.js','data-market-watch-insights');}
   function loadFxIncome(){loadHelper('fx-income.js','data-fx-income');}
+  function loadFreshCapitalMetrics(){loadHelper('fresh-capital-metrics.js','data-fresh-capital-metrics');}
 
   function initClearInputsModal(){
     const clearBtn=document.getElementById('clearIncomeInputsBtn');
@@ -33,7 +34,7 @@
   }
 
   function init(){
-    loadLatestDividendEstimator();loadDividendDateUi();loadMarketWatchInsights();loadFxIncome();
+    loadLatestDividendEstimator();loadDividendDateUi();loadMarketWatchInsights();loadFxIncome();loadFreshCapitalMetrics();
     const map={bookValueSection:document.querySelector('.book-value-panel'),marketWatchSection:document.querySelector('.analysis-grid article:first-child'),freshCapitalSection:document.querySelector('.fresh-capital-panel'),scoreFrameworkSection:document.querySelector('.score-framework-panel'),incomeOpportunitySection:document.querySelector('.income-vs-savings-panel'),allocationSection:document.querySelector('.allocation-panel')};
     Object.entries(map).forEach(([id,el])=>{if(el&&!el.id)el.id=id});
     const anchor=document.querySelector('.filter-grid');if(anchor&&!document.querySelector('.dashboard-jump-nav')){const nav=document.createElement('nav');nav.className='dashboard-jump-nav';nav.setAttribute('aria-label','Dashboard sections');nav.innerHTML='<span class="jump-label">Jump to</span><div class="jump-links">'+sections.map(([label,id])=>`<a href="#${id}">${label}</a>`).join('')+'</div>';anchor.insertAdjacentElement('beforebegin',nav);}
