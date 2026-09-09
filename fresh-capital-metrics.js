@@ -7,11 +7,11 @@
   const fmtPct = v => num(v) == null ? 'N/A' : `${Number(v).toFixed(1)}%`;
   const fmtX = v => num(v) == null ? 'N/A' : `${Number(v).toFixed(1)}×`;
   const fmtPerShare = (v,c='JMD') => num(v)==null?'N/A':`${c==='TTD'?'TT$':c==='USD'?'US$':'J$'}${Number(v).toFixed(2)}`;
-  const fmtCash = (v,c='JMD') => {
+  const fmtCash = (v,c='JMD',absolute=false) => {
     v=num(v); if(v==null)return 'N/A';
-    const a=Math.abs(v), p=c==='TTD'?'TT$':c==='USD'?'US$':'J$';
+    const raw=absolute?Math.abs(v):v,a=Math.abs(raw),p=c==='TTD'?'TT$':c==='USD'?'US$':'J$';
     const body=a>=1e9?`${(a/1e9).toFixed(2)}B`:a>=1e6?`${(a/1e6).toFixed(1)}M`:a>=1e3?`${(a/1e3).toFixed(1)}K`:a.toFixed(0);
-    return `${v<0?'-':''}${p}${body}`;
+    return `${!absolute&&raw<0?'-':''}${p}${body}`;
   };
   const isProperty=s=>PROPERTY.has(String(s.ticker||'').toUpperCase())||/property|real estate|reit/i.test(String(s.sector||''));
 
@@ -36,37 +36,46 @@
   function clsGrowth(v) { v=num(v); if(v==null)return ''; return v>=10?'positive':v<0?'negative':''; }
   function clsPayout(v) { v=num(v); if(v==null)return ''; return v>100?'negative':v>80?'amber':v>=20&&v<=70?'positive':''; }
   function clsRoe(v) { v=num(v); if(v==null)return ''; return v>=15?'positive':v<5?'negative':''; }
-  function clsDebt(v) { v=num(v); if(v==null)return ''; return v>0?'positive':'amber'; }
+  function clsDebt(v) { v=num(v); if(v==null)return ''; return v<0?'amber':'positive'; }
+  function clsCover(v) { v=num(v); if(v==null)return ''; return v<2?'amber':v>=3?'positive':''; }
 
   function decorate() {
     document.querySelectorAll('#rankingList .fresh-objective-card').forEach(card => {
       const ticker = card.querySelector('.fresh-title strong')?.textContent?.trim().toUpperCase();
       const s = byTicker.get(ticker); if (!s) return;
+      const property=isProperty(s);
       let extra = card.querySelector('.fresh-extra-metrics');
       if (!extra) { extra=document.createElement('div');extra.className='fresh-extra-metrics';card.querySelector('.fresh-metrics')?.insertAdjacentElement('afterend',extra); }
       const roe=num(s.roe),eps=num(s.epsGrowth),payout=num(s.payoutRatio),rev=num(s.revenueGrowth);
+      const propertyGrowth=num(s.ffoGrowth)??num(s.affoGrowth);
+      const propertyCoverage=num(s.affoPayoutRatio)??num(s.ffoPayoutRatio);
+      const growthLabel=property&&propertyGrowth!=null?(num(s.ffoGrowth)!=null?'FFO Growth':'AFFO Growth'):'EPS Growth';
+      const growthValue=property&&propertyGrowth!=null?propertyGrowth:eps;
+      const payoutLabel=property&&propertyCoverage!=null?(num(s.affoPayoutRatio)!=null?'AFFO Payout':'FFO Payout'):'Payout Ratio';
+      const payoutValue=property&&propertyCoverage!=null?propertyCoverage:payout;
       extra.innerHTML=`
         <span><small>ROE</small><strong class="${clsRoe(roe)}">${fmtPct(roe)}</strong></span>
-        <span><small>EPS Growth</small><strong class="${clsGrowth(eps)}">${fmtPct(eps)}</strong></span>
-        <span><small>Payout Ratio</small><strong class="${clsPayout(payout)}">${fmtPct(payout)}</strong></span>
+        <span><small>${growthLabel}</small><strong class="${clsGrowth(growthValue)}">${fmtPct(growthValue)}</strong></span>
+        <span><small>${payoutLabel}</small><strong class="${clsPayout(payoutValue)}">${fmtPct(payoutValue)}</strong></span>
         <span><small>Revenue Growth</small><strong class="${clsGrowth(rev)}">${fmtPct(rev)}</strong></span>`;
 
       let heavy=card.querySelector('.fresh-heavy-metrics');
       if(!heavy){heavy=document.createElement('div');heavy.className='fresh-heavy-metrics';extra.insertAdjacentElement('afterend',heavy);}
       const currency=s.ffoCurrency||s.cashFlowCurrency||s.statisticsCurrency||'JMD';
-      if(isProperty(s)&&[s.ffoPerShare,s.ffoGrowth,s.ffoPayoutRatio,s.affoPerShare].some(v=>num(v)!=null)){
-        const coverage=num(s.affoPayoutRatio)??num(s.ffoPayoutRatio);
-        heavy.innerHTML=`<span class="fresh-heavy-label">Property cash & coverage</span>
+      if(property){
+        const debt=num(s.netCash),cover=num(s.interestCoverage);
+        heavy.innerHTML=`<span class="fresh-heavy-label">Property cash & leverage</span>
           <span>FFO/share <b>${fmtPerShare(s.ffoPerShare,currency)}</b></span>
-          <span>FFO growth <b class="${clsGrowth(s.ffoGrowth)}">${fmtPct(s.ffoGrowth)}</b></span>
-          <span>${num(s.affoPayoutRatio)!=null?'AFFO':'FFO'} payout <b class="${clsPayout(coverage)}">${fmtPct(coverage)}</b></span>
-          <span>FCF/share <b>${fmtPerShare(s.freeCashFlowPerShare,s.cashFlowCurrency||currency)}</b></span>`;
+          <span>FCF/share <b>${fmtPerShare(s.freeCashFlowPerShare,s.cashFlowCurrency||currency)}</b></span>
+          <span>${debt!=null&&debt<0?'Net debt':'Net cash'} <b class="${clsDebt(debt)}">${fmtCash(debt,s.statisticsCurrency||'JMD',debt!=null&&debt<0)}</b></span>
+          <span>Interest cover <b class="${clsCover(cover)}">${fmtX(cover)}</b></span>`;
       }else{
+        const debt=num(s.netCash);
         heavy.innerHTML=`<span class="fresh-heavy-label">Cash & coverage</span>
           <span>FCF/share <b>${fmtPerShare(s.freeCashFlowPerShare,s.cashFlowCurrency||'JMD')}</b></span>
           <span>FCF payout <b class="${clsPayout(s.fcfPayoutRatio)}">${fmtPct(s.fcfPayoutRatio)}</b></span>
-          <span>${num(s.netCash)!=null&&num(s.netCash)<0?'Net debt':'Net cash'} <b class="${clsDebt(s.netCash)}">${fmtCash(s.netCash,s.statisticsCurrency||'JMD')}</b></span>
-          <span>Interest cover <b>${fmtX(s.interestCoverage)}</b></span>`;
+          <span>${debt!=null&&debt<0?'Net debt':'Net cash'} <b class="${clsDebt(debt)}">${fmtCash(debt,s.statisticsCurrency||'JMD',debt!=null&&debt<0)}</b></span>
+          <span>Interest cover <b class="${clsCover(s.interestCoverage)}">${fmtX(s.interestCoverage)}</b></span>`;
       }
     });
   }
