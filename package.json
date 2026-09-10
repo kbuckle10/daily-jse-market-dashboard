@@ -5,7 +5,7 @@
   "scripts": {
     "sync:main-market": "node scripts/sync-main-market.mjs",
     "refresh:sa": "node scripts/refresh-sa-performance.mjs",
-    "refresh:sa-research": "node scripts/refresh-sa-research.mjs && node scripts/refresh-sa-statistics.mjs && node scripts/refresh-sa-cashflow.mjs && node refresh-sa-ffo.mjs",
+    "refresh:sa-research": "node scripts/refresh-sa-research.mjs && node scripts/refresh-sa-statistics.mjs && node scripts/refresh-sa-cashflow.mjs && node refresh-sa-ffo.mjs && node scripts/refresh-property-ffo-official.mjs",
     "refresh:sa-latest-dividend": "node scripts/refresh-sa-latest-dividend.mjs",
     "refresh:dividend-fx": "node scripts/normalize-dividend-fx.mjs",
     "refresh:dividend-ticker": "node scripts/refresh-dividend-ticker.mjs",
