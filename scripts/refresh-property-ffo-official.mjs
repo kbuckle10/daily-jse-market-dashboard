@@ -4,6 +4,7 @@ import vm from 'node:vm';
 const DATA_FILE='data.js';
 function readData(){const raw=fs.readFileSync(DATA_FILE,'utf8');const m=raw.match(/window\.JSE_DASHBOARD_DATA\s*=\s*([\s\S]*);\s*$/);if(!m)throw new Error('Unable to parse data.js');return vm.runInNewContext(`(${m[1]})`);}
 function writeData(d){fs.writeFileSync(DATA_FILE,`window.JSE_DASHBOARD_DATA = ${JSON.stringify(d,null,2)};\n`);}
+const num=v=>v==null||!Number.isFinite(Number(v))?null:Number(v);
 
 // Verified published FFO values. These supplement the generic SA scraper where the
 // page DOM is not reliably exposed to Playwright. Do not derive FFO from FCF.
@@ -34,6 +35,17 @@ const VERIFIED={
 };
 
 const data=readData();
-for(const s of data.stocks||[]){const v=VERIFIED[String(s.ticker||'').toUpperCase()];if(!v)continue;Object.assign(s,v);s.ffoUpdated=new Date().toISOString();console.log(`${s.ticker}: verified FFO=${s.ffo} ${s.ffoCurrency} (${s.ffoPeriod}) growth=${s.ffoGrowth}% source=${s.ffoSource}`);}
+for(const s of data.stocks||[]){
+  const v=VERIFIED[String(s.ticker||'').toUpperCase()];if(!v)continue;
+  Object.assign(s,v);
+  const dps=num(s.currentAnnualDps)??num(s.ttmDps),ffoPayout=num(s.ffoPayoutRatio);
+  if(num(s.ffoPerShare)==null&&dps!=null&&dps>0&&ffoPayout!=null&&ffoPayout>0){
+    s.ffoPerShare=Number((dps/(ffoPayout/100)).toFixed(4));
+    s.ffoPerShareMethod='derived-from-annual-dps-and-ffo-payout';
+    s.ffoPerShareInputs={annualDps:dps,ffoPayoutRatio:ffoPayout};
+  }
+  s.ffoUpdated=new Date().toISOString();
+  console.log(`${s.ticker}: verified FFO=${s.ffo} ${s.ffoCurrency} (${s.ffoPeriod}) growth=${s.ffoGrowth}% FFO/share=${s.ffoPerShare??'N/A'} source=${s.ffoSource}`);
+}
 writeData(data);
 console.log(`Verified property FFO merge complete (${Object.keys(VERIFIED).length} securities).`);
