@@ -13,31 +13,15 @@
   const investor=(a,b)=>ratingTier(b)-ratingTier(a)||opportunity(b)-opportunity(a)||desc('currentDividendYield',a,b)||desc('trailingYield',a,b)||tie(a,b);
   const coverage=s=>{const eps=num(s?.epsTtm),dps=num(s?.ttmDps),p=num(s?.fcfPayoutRatio);return {e:eps>0&&dps>0?eps/dps:null,f:p>0?100/p:null};};
   const coverageCmp=(a,b)=>{const A=coverage(a),B=coverage(b);if(A.e!=null||B.e!=null){if(A.e==null)return 1;if(B.e==null)return -1;if(A.e!==B.e)return B.e-A.e;}if(A.f!=null||B.f!=null){if(A.f==null)return 1;if(B.f==null)return -1;if(A.f!==B.f)return B.f-A.f;}return investor(a,b);};
-  const paymentCmp=(a,b)=>{const today=new Date();today.setHours(0,0,0,0);const av=date(event(a)?.payDate),bv=date(event(b)?.payDate);const au=av!=null&&av>=today.getTime(),bu=bv!=null&&bv>=today.getTime();if(au!==bu)return au?-1:1;if(au&&bu)return av-bv||tie(a,b);if(av!=null||bv!=null){if(av==null)return 1;if(bv==null)return -1;return bv-av||tie(a,b);}return tie(a,b);};
+  const today=()=>{const d=new Date();d.setHours(0,0,0,0);return d.valueOf();};
+  const upcomingPay=s=>{const p=date(event(s)?.payDate);return p!=null&&p>=today()?p:null;};
+  const paymentCmp=(a,b)=>{const av=upcomingPay(a),bv=upcomingPay(b);if(av!=null&&bv!=null)return av-bv||tie(a,b);if(av!=null)return -1;if(bv!=null)return 1;return tie(a,b);};
   const eventCmp=(a,b)=>{const av=Math.max(date(event(a)?.exDate)||0,date(event(a)?.recordDate)||0,date(event(a)?.payDate)||0)||null,bv=Math.max(date(event(b)?.exDate)||0,date(event(b)?.recordDate)||0,date(event(b)?.payDate)||0)||null;if(av==null&&bv==null)return tie(a,b);if(av==null)return 1;if(bv==null)return -1;return bv-av||tie(a,b);};
   const move=s=>Math.max(Math.abs(num(s?.dayPct)||0),Math.abs(num(s?.m1)||0),Math.abs(num(s?.ytd)||0),Math.abs(num(s?.m3)||0),Math.abs(num(s?.m6)||0),Math.abs(num(s?.y1)||0));
   const zone=s=>s?.zoneStatus==='below'?0:s?.zoneStatus==='in'?1:s?.zoneStatus==='above'?2:3;
-  const cmp=(mode,a,b)=>({
-    rank:investor,
-    'rating-desc':(x,y)=>ratingTier(y)-ratingTier(x)||opportunity(y)-opportunity(x)||tie(x,y),
-    'score-desc':(x,y)=>desc('score',x,y),
-    'zone-best':(x,y)=>zone(x)-zone(y)||investor(x,y),
-    'yield-desc':(x,y)=>{const ax=num(x?.currentDividendYield)??num(x?.trailingYield),by=num(y?.currentDividendYield)??num(y?.trailingYield);if(ax==null&&by==null)return tie(x,y);if(ax==null)return 1;if(by==null)return -1;return by-ax||tie(x,y);},
-    'dividend-coverage-desc':coverageCmp,
-    'payment-soon':paymentCmp,
-    'pe-asc':(x,y)=>asc('pe',x,y),
-    'pb-asc':(x,y)=>asc('pb',x,y),
-    'eps-growth-desc':(x,y)=>desc('epsGrowth',x,y),
-    'movement-impact':(x,y)=>move(y)-move(x)||tie(x,y),
-    'month-desc':(x,y)=>desc('m1',x,y),
-    'ytd-desc':(x,y)=>desc('ytd',x,y),
-    'year-desc':(x,y)=>desc('y1',x,y),
-    'dividend-recent':eventCmp,
-    'price-asc':(x,y)=>asc('price',x,y),
-    ticker:(x,y)=>tie(x,y)
-  }[mode]||investor)(a,b);
+  const cmp=(mode,a,b)=>({rank:investor,'rating-desc':(x,y)=>ratingTier(y)-ratingTier(x)||opportunity(y)-opportunity(x)||tie(x,y),'score-desc':(x,y)=>desc('score',x,y),'zone-best':(x,y)=>zone(x)-zone(y)||investor(x,y),'yield-desc':(x,y)=>{const ax=num(x?.currentDividendYield)??num(x?.trailingYield),by=num(y?.currentDividendYield)??num(y?.trailingYield);if(ax==null&&by==null)return tie(x,y);if(ax==null)return 1;if(by==null)return -1;return by-ax||tie(x,y);},'dividend-coverage-desc':coverageCmp,'payment-soon':paymentCmp,'pe-asc':(x,y)=>asc('pe',x,y),'pb-asc':(x,y)=>asc('pb',x,y),'eps-growth-desc':(x,y)=>desc('epsGrowth',x,y),'movement-impact':(x,y)=>move(y)-move(x)||tie(x,y),'month-desc':(x,y)=>desc('m1',x,y),'ytd-desc':(x,y)=>desc('ytd',x,y),'year-desc':(x,y)=>desc('y1',x,y),'dividend-recent':eventCmp,'price-asc':(x,y)=>asc('price',x,y),ticker:(x,y)=>tie(x,y)}[mode]||investor)(a,b);
   const tickerFrom=el=>String(el?.querySelector?.('.ticker,h3')?.textContent||'').trim().toUpperCase();
   function apply(){const sel=document.getElementById('sortSelect');if(!sel)return;const map=byTicker(),mode=sel.value;const order=[...map.values()].sort((a,b)=>cmp(mode,a,b)).map(s=>String(s.ticker).toUpperCase());const rank=new Map(order.map((t,i)=>[t,i]));const sortDom=(parent,selector)=>{if(!parent)return;[...parent.querySelectorAll(selector)].sort((a,b)=>(rank.get(tickerFrom(a))??9999)-(rank.get(tickerFrom(b))??9999)).forEach(n=>parent.appendChild(n));};sortDom(document.getElementById('stockTableBody'),'tr');sortDom(document.getElementById('cardView'),'.stock-card');}
-  function init(){const sel=document.getElementById('sortSelect');if(!sel)return;const rename=()=>{const y=sel.querySelector('option[value="yield-desc"]');if(y)y.textContent='Current yield: high to low';};rename();sel.addEventListener('change',()=>requestAnimationFrame(()=>requestAnimationFrame(apply)));window.addEventListener('jse-focus-change',()=>requestAnimationFrame(apply));new MutationObserver(()=>requestAnimationFrame(apply)).observe(document.getElementById('stockTableBody')||document.body,{childList:true});setTimeout(apply,100);}
+  function init(){const sel=document.getElementById('sortSelect');if(!sel)return;const rename=()=>{const y=sel.querySelector('option[value="yield-desc"]');if(y)y.textContent='Current yield: high to low';const p=sel.querySelector('option[value="payment-soon"]');if(p)p.textContent='Upcoming payment: future only, soonest first';};rename();sel.addEventListener('change',()=>requestAnimationFrame(()=>requestAnimationFrame(apply)));window.addEventListener('jse-focus-change',()=>requestAnimationFrame(apply));let busy=false;const body=document.getElementById('stockTableBody');if(body)new MutationObserver(()=>{if(busy)return;busy=true;requestAnimationFrame(()=>{apply();busy=false;});}).observe(body,{childList:true});setTimeout(apply,100);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
