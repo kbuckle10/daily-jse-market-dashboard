@@ -11,6 +11,7 @@
     return '';
   }
   function filter(selector,selectors){document.querySelectorAll(selector).forEach(el=>{const t=tickerFrom(el,selectors);if(t)el.classList.toggle('ticker-focus-hidden',!wanted(t));});}
+  function clearFreshHidden(){document.querySelectorAll('#rankingList .ticker-focus-hidden').forEach(el=>el.classList.remove('ticker-focus-hidden'));}
   function apply(){
     const picks=selected();document.body.classList.toggle('compare-focus-mode',picks.length>1);
     filter('#stockTableBody tr',['.ticker','td:first-child strong','td:first-child']);
@@ -18,7 +19,8 @@
     filter('#bookValueBody tr',['td:first-child strong','td:first-child']);
     filter('#bookValueCards > *',['strong','h3']);
     filter('#movementList .movement-item,#movementList > *',['.movement-head strong','strong','h3']);
-    filter('#rankingList .fresh-card,#rankingList > *',['.fresh-title strong','strong','h3']);
+    clearFreshHidden();
+    filter('#rankingList .fresh-card',['.fresh-title strong','strong','h3']);
     filter('#incomeComparisonList .income-row,#incomeComparisonList .income-comparison-card,#incomeComparisonList > *',['.income-stock strong','.income-card-title strong','strong']);
     filter('#allocationLegend > *',['strong']);
     filter('#allocationBar > *',['strong']);
