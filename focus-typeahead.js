@@ -16,4 +16,4 @@
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(init,0));else setTimeout(init,0);
 })();
-if(!document.querySelector('script[data-multi-focus-ui]')){const s=document.createElement('script');s.dataset.multiFocusUi='true';s.src=`multi-focus-ui.js?v=20260915b`;document.head.appendChild(s);}
+if(!document.querySelector('script[data-multi-focus-ui]')){const s=document.createElement('script');s.dataset.multiFocusUi='true';s.src=`multi-focus-ui.js?v=20260915c`;document.head.appendChild(s);}
