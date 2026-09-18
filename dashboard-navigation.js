@@ -1,6 +1,6 @@
 (() => {
   if('scrollRestoration' in history)history.scrollRestoration='manual';
-  const sections=[['Market','tableView'],['Book Value','bookValueSection'],['Market Watch','marketWatchSection'],['Fresh Capital','freshCapitalSection'],['Analysis Framework','scoreFrameworkSection'],['Income','incomeOpportunitySection'],['Allocation','allocationSection']];
+  const sections=[['Market','tableView'],['Market Activity','marketActivitySection'],['Book Value','bookValueSection'],['Market Watch','marketWatchSection'],['Fresh Capital','freshCapitalSection'],['Analysis Framework','scoreFrameworkSection'],['Income','incomeOpportunitySection'],['Allocation','allocationSection']];
   function loadHelper(src,attr){if(document.querySelector(`script[${attr}]`))return;const s=document.createElement('script');s.src=src+'?v='+Date.now();s.setAttribute(attr,'true');document.head.appendChild(s);}
   function loadAdaptivePropertyFramework(){loadHelper('adaptive-property-framework.js','data-adaptive-property-framework');}
   function loadLatestDividendEstimator(){loadHelper('latest-dividend-estimator.js','data-latest-dividend-estimator');}
