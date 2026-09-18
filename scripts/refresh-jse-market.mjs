@@ -171,6 +171,24 @@ try {
   if(await gotoJse(page)){
     const body=await page.locator('body').innerText().catch(()=>'');
     const td=await extractTradeDate(page,body); tradeDate=td.label;
+    // JSE can leave the Trade Summary date control on an older session. Try to
+    // advance any trade-date control to the newest available option before
+    // accepting the page as the latest completed close.
+    const dateControls=page.locator('select');
+    for(let i=0;i<await dateControls.count().catch(()=>0);i++){
+      const el=dateControls.nth(i),meta=((await el.getAttribute('id').catch(()=>''))||'')+' '+((await el.getAttribute('name').catch(()=>''))||'')+' '+((await el.getAttribute('class').catch(()=>''))||'');
+      if(!/date|trade|market|summary/i.test(meta))continue;
+      const opts=await el.locator('option').evaluateAll(os=>os.map(o=>({v:o.value,t:(o.textContent||'').trim()}))).catch(()=>[]);
+      const dated=opts.map(o=>({...o,d:formatDate(o.t)||formatDate(o.v)})).filter(o=>o.d).sort((a,b)=>new Date(b.d)-new Date(a.d));
+      if(dated.length&&dated[0].d!==tradeDate){
+        console.log(`Advancing JSE Trade Summary selector from ${tradeDate||'unknown'} to ${dated[0].d}`);
+        await el.selectOption(dated[0].v).catch(()=>{});
+        await page.waitForTimeout(1800);
+        const refreshed=await page.locator('body').innerText().catch(()=>body),next=await extractTradeDate(page,refreshed);
+        tradeDate=next.label||dated[0].d;
+        break;
+      }
+    }
     const tables=await extractTables(page);
     console.log(`JSE rendered ${tables.length} table(s); ${tradeDate?`detected trade date ${tradeDate} from ${td.source}`:'trade date not proven — existing price dates will be preserved until direct-instrument verification'}.`);
     const securityTables=tables.filter(table=>{
