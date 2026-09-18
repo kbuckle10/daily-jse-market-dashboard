@@ -49,4 +49,12 @@ baseline.priceSourcePolicy='JSE Trade Summary/Trade Quotes primary; StockAnalysi
 baseline.refreshedAt=new Date().toISOString();
 delete baseline.shard;
 fs.writeFileSync('data.js',`window.JSE_DASHBOARD_DATA = ${JSON.stringify(baseline,null,2)};\n`);
+// Persist one deduplicated daily market-activity snapshot after all shards have
+// been merged. This is deliberately outside the UI and does not change rendering.
+const historyScript='scripts/update-market-activity-history.mjs';
+if(fs.existsSync(historyScript)){
+  const {spawnSync}=await import('node:child_process');
+  const r=spawnSync(process.execPath,[historyScript],{stdio:'inherit'});
+  if(r.status!==0)console.warn('Market activity history update failed; dashboard data remains valid.');
+}
 console.log(`Merged ${files.length} shards covering ${seen.size} dynamic Main Market tickers; updated=${baseline.updated}; refreshedAt=${baseline.refreshedAt}`);
