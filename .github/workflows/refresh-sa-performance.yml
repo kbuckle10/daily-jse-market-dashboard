@@ -141,6 +141,12 @@ jobs:
         run: |
           cp baseline/data.js data.js
           node scripts/merge-shards.mjs
+      - name: Refresh authoritative JSE market activity on merged universe
+        run: |
+          npm install
+          npx playwright install --with-deps chromium
+          node scripts/refresh-jse-market.mjs
+          node scripts/update-market-activity-history.mjs
       - name: Validate merged dataset
         run: |
           node <<'NODE'
