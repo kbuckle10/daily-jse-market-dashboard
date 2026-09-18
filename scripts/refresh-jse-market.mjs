@@ -116,29 +116,36 @@ function scoreTable(table,tickers){
   return tickerHits*10+(/symbol|ticker|security/.test(headerText)?2:0)+(/close|closing|last/.test(headerText)?2:0);
 }
 function parseTable(table,tickers){
-  const headerText=table.headers.map(norm).join(' | ');
-  console.log('JSE table headers:',headerText);
-  const headers=table.headers;
-  const symbolIdx=headerIndex(headers,[/^symbol$/,/ticker/,/security\s*code/,/symbol/]);
-  const closeIdx=headerIndex(headers,[/closing\s*price/,/^close$/,/close\s*price/,/last\s*traded\s*price/,/^last$/]);
-  const changeIdx=headerIndex(headers,[/price\s*change/,/^change$/,/change\s*\(?j\$?\)?/]);
-  const pctIdx=headerIndex(headers,[/%\s*change/,/change\s*%/,/percent/]);
-  const volumeIdx=headerIndex(headers,[/volume/,/shares\s*traded/]);
+  const headers=table.headers.map(norm);
+  console.log('JSE table headers:',headers.join(' | '));
+  const symbolIdx=headerIndex(headers,[/^symbol$/,/ticker/,/security\\s*code/,/symbol/]);
+  const closeIdx=headerIndex(headers,[/closing\\s*price/,/^close$/,/close\\s*price/,/last\\s*traded\\s*price/,/^last$/]);
+  const changeIdx=headerIndex(headers,[/price\\s*change/,/^change$/,/change\\s*\\(?j\\$?\\)?/]);
+  const pctIdx=headerIndex(headers,[/%\\s*change/,/change\\s*%/,/percent/]);
+  const volumeIdx=headerIndex(headers,[/^volume$/,/volume\\s*traded/,/shares\\s*traded/,/^units$/, /units\\s*traded/]);
+  const valueIdx=headerIndex(headers,[/^value$/, /value\\s*traded/, /trade\\s*value/]);
+  const tradesIdx=headerIndex(headers,[/^trades$/, /no\\.?\\s*(?:of\\s*)?trades/, /number\\s*of\\s*trades/, /#\\s*trades/]);
   const out=new Map();
   for(const row of table.rows){
-    const upper=row.map(v=>norm(v).toUpperCase()); let ticker=null;
-    if(symbolIdx>=0&&upper[symbolIdx]&&tickers.includes(upper[symbolIdx])) ticker=upper[symbolIdx];
+    const upper=row.map(v=>norm(v).toUpperCase());
+    let ticker=symbolIdx>=0&&tickers.includes(upper[symbolIdx])?upper[symbolIdx]:null;
     if(!ticker) ticker=tickers.find(t=>upper.some(cell=>cell===t))??null;
     if(!ticker) continue;
-    let price=closeIdx>=0?num(row[closeIdx]):null;
-    if(price==null){const symbolCell=upper.findIndex(cell=>cell===ticker);const numericAfter=row.slice(symbolCell+1).map(num).filter(v=>v!=null);if(numericAfter.length) price=numericAfter.at(-1);}
-    if(!(price>0)) continue;
-    const dayJmd=changeIdx>=0?num(row[changeIdx]):null; let dayPct=pctIdx>=0?num(row[pctIdx]):null;
-    if(dayPct==null&&dayJmd!=null&&price-dayJmd>0) dayPct=dayJmd/(price-dayJmd)*100;
+    // Never guess columns from arbitrary numeric cells. A JSE activity table is
+    // accepted only when its headers explicitly identify the fields.
+    const price=closeIdx>=0?num(row[closeIdx]):null;
     const volume=volumeIdx>=0?num(row[volumeIdx]):null;
-    const valueTraded=valueIdx>=0?num(row[valueIdx]):null;
-    const trades=tradesIdx>=0?num(row[tradesIdx]):null;
-    out.set(ticker,{price,dayJmd,dayPct,volume,valueTraded,trades,row});
+    if(price==null && volume==null) continue;
+    const dayJmd=changeIdx>=0?num(row[changeIdx]):null;
+    let dayPct=pctIdx>=0?num(row[pctIdx]):null;
+    if(dayPct==null&&dayJmd!=null&&price!=null&&price-dayJmd>0) dayPct=dayJmd/(price-dayJmd)*100;
+    out.set(ticker,{
+      price:price>0?price:null,
+      dayJmd,dayPct,volume,
+      valueTraded:valueIdx>=0?num(row[valueIdx]):null,
+      trades:tradesIdx>=0?num(row[tradesIdx]):null,
+      row
+    });
   }
   return out;
 }
