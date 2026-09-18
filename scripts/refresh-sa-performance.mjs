@@ -71,7 +71,7 @@ async function captureQuote(page){
 }
 async function extractHistoryRows(page){
   const rows=await page.locator('table tbody tr').evaluateAll(trs=>trs.map(tr=>Array.from(tr.querySelectorAll('td')).map(td=>td.textContent?.trim()||''))).catch(()=>[]);
-  return rows.filter(r=>r.length>=5).map(r=>({date:new Date(r[0]),close:Number(String(r[4]).replace(/,/g,'')),volume:r.length>=8?Number(String(r[7]).replace(/,/g,'')):null})).filter(r=>!Number.isNaN(r.date.valueOf())&&Number.isFinite(r.close));
+  return rows.filter(r=>r.length>=5).map(r=>{const pct=r.length>=7?Number(String(r[6]).replace(/[,%+]/g,'')):null;return {date:new Date(r[0]),close:Number(String(r[4]).replace(/,/g,'')),changePct:Number.isFinite(pct)?pct:null,volume:r.length>=8?Number(String(r[7]).replace(/,/g,'')):null};}).filter(r=>!Number.isNaN(r.date.valueOf())&&Number.isFinite(r.close));
 }
 async function readHistoryRows(context,ticker){
   const page=await context.newPage();
@@ -175,6 +175,17 @@ for(const stock of data.stocks){
         stock.price=Number(latestHistory.close.toFixed(2));
         stock.priceDate=`${iso} • SA delayed`;
         stock.source='SA';
+        // Treat the newest history row as one atomic session record. Never mix
+        // overview change/volume from another snapshot with this close/date.
+        const priorHistory=sortedHistory[1];
+        if(priorHistory&&Number.isFinite(priorHistory.close)){
+          stock.dayJmd=Number((latestHistory.close-priorHistory.close).toFixed(2));
+          stock.dayPct=Number.isFinite(latestHistory.changePct)?Number(latestHistory.changePct.toFixed(2)):Number(((latestHistory.close/priorHistory.close-1)*100).toFixed(2));
+        }else if(Number.isFinite(latestHistory.changePct)){
+          stock.dayPct=Number(latestHistory.changePct.toFixed(2));
+          stock.dayJmd=null;
+        }
+        if(Number.isFinite(latestHistory.volume)&&latestHistory.volume>=0)stock.volume=latestHistory.volume;
         if(stock.ttmDps!=null&&stock.price>0)stock.trailingYield=Number((stock.ttmDps/stock.price*100).toFixed(2));
         if(stock.buyLow!=null&&stock.buyHigh!=null)stock.zoneStatus=stock.price<stock.buyLow?'below':stock.price>stock.buyHigh?'above':'in';
         console.log(`history close: J${stock.price} • ${iso} (normalized freshness anchor)`);
