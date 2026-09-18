@@ -23,7 +23,21 @@
     const g=document.getElementById('marketActivityGrid'),D=window.JSE_DASHBOARD_DATA;if(!g||!D?.stocks?.length)return false;
     const nf=v=>v==null||!Number.isFinite(Number(v))?'N/A':Intl.NumberFormat('en',{notation:'compact',maximumFractionDigits:2}).format(Number(v));
     const pct=v=>v==null||!Number.isFinite(Number(v))?'N/A':Number(v).toFixed(Math.abs(Number(v))<.01?4:2)+'%';
-    g.innerHTML=D.stocks.map(s=>{const r=Number(s.relativeVolume20D),v=Number(s.volume);let lab='Baseline building';if(Number.isFinite(r))lab=r>=2?'High participation':r>=1.2?'Above normal':r>=.6?'Normal activity':'Low activity';if(v===0)lab='No trades';return `<article class="market-activity-card"><div class="market-activity-head"><div><strong>${s.ticker}</strong><small>${s.company||''}</small></div><span class="activity-signal">${lab}</span></div><div class="market-activity-metrics"><span><small>Session Volume</small><b>${nf(s.volume)}</b></span><span><small>20D Avg Volume</small><b>${nf(s.averageVolume20D)}</b></span><span><small>RVOL 20D</small><b>${Number.isFinite(r)?r.toFixed(2)+'×':'N/A'}</b></span><span><small>Turnover</small><b>${pct(s.turnoverPct)}</b></span><span><small>Value Traded</small><b>${nf(s.valueTraded)}</b></span><span><small># Trades</small><b>${nf(s.numberOfTrades)}</b></span></div></article>`}).join('');
+    if(!document.getElementById('marketActivityTheme')){
+      const st=document.createElement('style');st.id='marketActivityTheme';st.textContent=`
+      .market-activity-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px;margin-top:18px}
+      .market-activity-card{border:1px solid var(--border);border-radius:18px;background:var(--surface2);padding:16px;min-width:0}
+      .market-activity-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}
+      .market-activity-identity{min-width:0}.market-activity-identity strong{display:block;font-size:1.02rem;line-height:1.1}.market-activity-identity small{display:block;color:var(--muted);font-size:.72rem;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .activity-signal{flex:0 0 auto;border:1px solid var(--border);border-radius:999px;padding:5px 9px;font-size:.62rem;font-weight:800;color:var(--muted);background:var(--surface)}
+      .market-activity-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+      .market-activity-metric{border:1px solid color-mix(in srgb,var(--border) 70%,transparent);border-radius:11px;background:var(--surface);padding:10px;min-width:0}
+      .market-activity-metric small{display:block;color:var(--muted);font-size:.6rem;line-height:1.25;margin-bottom:5px}.market-activity-metric b{display:block;font-size:.84rem;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .market-activity-source{margin:12px 2px 0;color:var(--muted);font-size:.6rem;line-height:1.4}
+      @media(max-width:520px){.market-activity-grid{grid-template-columns:1fr;gap:12px}.market-activity-card{padding:14px}.market-activity-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
+      `;document.head.appendChild(st);
+    }
+    g.innerHTML=D.stocks.map(s=>{const r=Number(s.relativeVolume20D),v=Number(s.volume);let lab='Baseline building';if(Number.isFinite(r))lab=r>=2?'High participation':r>=1.2?'Above normal':r>=.6?'Normal activity':'Low activity';if(v===0)lab='No trades';const metric=(label,value)=>`<div class="market-activity-metric"><small>${label}</small><b>${value}</b></div>`;return `<article class="market-activity-card"><div class="market-activity-head"><div class="market-activity-identity"><strong>${s.ticker}</strong><small>${s.company||''}</small></div><span class="activity-signal">${lab}</span></div><div class="market-activity-metrics">${metric('Session Volume',nf(s.volume))}${metric('20D Avg Volume',nf(s.averageVolume20D))}${metric('RVOL 20D',Number.isFinite(r)?r.toFixed(2)+'×':'N/A')}${metric('Turnover',pct(s.turnoverPct))}${metric('Value Traded',nf(s.valueTraded))}${metric('# Trades',nf(s.numberOfTrades))}</div><p class="market-activity-source">JSE session activity • 20D baseline where available</p></article>`}).join('');
     return true;
   }
   function bootMarketActivity(){let n=0;const go=()=>{if(renderMarketActivity()||++n>300)return;setTimeout(go,250)};go();}
