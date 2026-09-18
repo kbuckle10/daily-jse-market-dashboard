@@ -179,7 +179,7 @@ try {
       const el=dateControls.nth(i),meta=((await el.getAttribute('id').catch(()=>''))||'')+' '+((await el.getAttribute('name').catch(()=>''))||'')+' '+((await el.getAttribute('class').catch(()=>''))||'');
       if(!/date|trade|market|summary/i.test(meta))continue;
       const opts=await el.locator('option').evaluateAll(os=>os.map(o=>({v:o.value,t:(o.textContent||'').trim()}))).catch(()=>[]);
-      const dated=opts.map(o=>({...o,d:formatDate(o.t)||formatDate(o.v)})).filter(o=>o.d).sort((a,b)=>new Date(b.d)-new Date(a.d));
+      const today=new Date(),min=new Date(today);min.setFullYear(today.getFullYear()-2);const max=new Date(today);max.setDate(today.getDate()+1);const dated=opts.map(o=>({...o,d:formatDate(o.t)||formatDate(o.v)})).filter(o=>{if(!o.d)return false;const d=new Date(o.d);return !Number.isNaN(d.valueOf())&&d>=min&&d<=max;}).sort((a,b)=>new Date(b.d)-new Date(a.d));
       if(dated.length&&dated[0].d!==tradeDate){
         console.log(`Advancing JSE Trade Summary selector from ${tradeDate||'unknown'} to ${dated[0].d}`);
         await el.selectOption(dated[0].v).catch(()=>{});
@@ -215,6 +215,7 @@ try {
 let updated=0;
 for(const stock of data.stocks){
   const quote=captured.get(String(stock.ticker).toUpperCase()); if(!quote) continue;
+  if(!Number.isFinite(quote.price)||quote.price<=0){console.warn(`${stock.ticker}: JSE activity row has no valid closing price; preserving existing quote and skipping JSE price publish.`);continue;}
   stock.price=Number(quote.price.toFixed(2));
   if(quote.dayJmd!=null)stock.dayJmd=Number(quote.dayJmd.toFixed(2));
   if(quote.dayPct!=null)stock.dayPct=Number(quote.dayPct.toFixed(2));
