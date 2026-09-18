@@ -181,6 +181,7 @@ jobs:
         run: |
           set -e
           cp data.js /tmp/refreshed-data.js
+          if [ -f data/market-activity-history.json ]; then cp data/market-activity-history.json /tmp/market-activity-history.json; fi
           git fetch origin main
           REMOTE_HEAD=$(git rev-parse origin/main)
           if [ "$START_HEAD" != "$REMOTE_HEAD" ]; then
@@ -191,9 +192,11 @@ jobs:
           fi
           git reset --hard origin/main
           cp /tmp/refreshed-data.js data.js
+          if [ -f /tmp/market-activity-history.json ]; then mkdir -p data; cp /tmp/market-activity-history.json data/market-activity-history.json; fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          if git diff --quiet -- data.js; then echo 'No data changes.'; exit 0; fi
+          if git diff --quiet -- data.js data/market-activity-history.json; then echo 'No data changes.'; exit 0; fi
           git add data.js
+          if [ -f data/market-activity-history.json ]; then git add data/market-activity-history.json; fi
           git commit -m 'refresh full JSE Main Market via parallel collectors'
           git push origin HEAD:main
