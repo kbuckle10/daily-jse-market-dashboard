@@ -166,7 +166,21 @@ for(const stock of data.stocks){
 
   try{
     const rows=await readHistoryRows(context,ticker);
-    const volumeRows=[...rows].sort((a,b)=>b.date-a.date).filter(r=>Number.isFinite(r.volume)&&r.volume>=0);
+    const sortedHistory=[...rows].sort((a,b)=>b.date-a.date);
+    const latestHistory=sortedHistory[0];
+    if(latestHistory&&Number.isFinite(latestHistory.close)){
+      const iso=latestHistory.date.toISOString().slice(0,10);
+      const currentIso=String(stock.priceDate||'').match(/20\d{2}-\d{2}-\d{2}/)?.[0]||null;
+      if(!currentIso||iso>=currentIso){
+        stock.price=Number(latestHistory.close.toFixed(2));
+        stock.priceDate=`${iso} • SA delayed`;
+        stock.source='SA';
+        if(stock.ttmDps!=null&&stock.price>0)stock.trailingYield=Number((stock.ttmDps/stock.price*100).toFixed(2));
+        if(stock.buyLow!=null&&stock.buyHigh!=null)stock.zoneStatus=stock.price<stock.buyLow?'below':stock.price>stock.buyHigh?'above':'in';
+        console.log(`history close: J${stock.price} • ${iso} (normalized freshness anchor)`);
+      }
+    }
+    const volumeRows=sortedHistory.filter(r=>Number.isFinite(r.volume)&&r.volume>=0);
     if(volumeRows.length){
       const latest=volumeRows[0], baseline=volumeRows.slice(1,21);
       stock.volume=latest.volume;
