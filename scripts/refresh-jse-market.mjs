@@ -118,8 +118,8 @@ function scoreTable(table,tickers){
 function parseTable(table,tickers){
   const headers=table.headers.map(norm);
   console.log('JSE table headers:',headers.join(' | '));
-  const symbolIdx=headerIndex(headers,[/^symbol$/,/ticker/,/security\\s*code/,/symbol/]);
-  const closeIdx=headerIndex(headers,[/closing\\s*price/,/^close$/,/close\\s*price/,/last\\s*traded\\s*price/,/^last$/]);
+  const symbolIdx=headerIndex(headers,[/^symbol$/,/ticker/,/security\s*code/,/symbol/]);
+  const closeIdx=headerIndex(headers,[/closing\s*price/,/^close$/,/close\s*price/,/last\s*traded\s*price/,/^last$/]);
   const changeIdx=headerIndex(headers,[/price\s*change/,/^change$/,/change\s*\(?j\$?\)?/]);
   const pctIdx=headerIndex(headers,[/%\s*change/,/change\s*%/,/percent/]);
   const volumeIdx=headerIndex(headers,[/^volume$/,/volume\s*traded/,/shares\s*traded/,/^units$/, /units\s*traded/]);
@@ -155,8 +155,8 @@ function activityQuality(table,parsed){
   if(/volume|shares\\s*traded|units/.test(h))score+=100;
   if(/symbol|ticker|security/.test(h))score+=30;
   if(/close|closing|last/.test(h))score+=15;
-  if(/value\\s*traded|trade\\s*value/.test(h))score+=10;
-  if(/number\\s*of\\s*trades|no\\.?\\s*of\\s*trades|#\\s*trades/.test(h))score+=10;
+  if(/value\s*traded|trade\s*value/.test(h))score+=10;
+  if(/number\s*of\s*trades|no\.?\s*of\s*trades|#\s*trades/.test(h))score+=10;
   score+=parsed.size;
   return score;
 }
