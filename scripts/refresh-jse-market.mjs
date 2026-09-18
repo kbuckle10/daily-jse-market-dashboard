@@ -120,11 +120,11 @@ function parseTable(table,tickers){
   console.log('JSE table headers:',headers.join(' | '));
   const symbolIdx=headerIndex(headers,[/^symbol$/,/ticker/,/security\\s*code/,/symbol/]);
   const closeIdx=headerIndex(headers,[/closing\\s*price/,/^close$/,/close\\s*price/,/last\\s*traded\\s*price/,/^last$/]);
-  const changeIdx=headerIndex(headers,[/price\\s*change/,/^change$/,/change\\s*\\(?j\\$?\\)?/]);
-  const pctIdx=headerIndex(headers,[/%\\s*change/,/change\\s*%/,/percent/]);
-  const volumeIdx=headerIndex(headers,[/^volume$/,/volume\\s*traded/,/shares\\s*traded/,/^units$/, /units\\s*traded/]);
-  const valueIdx=headerIndex(headers,[/^value$/, /value\\s*traded/, /trade\\s*value/]);
-  const tradesIdx=headerIndex(headers,[/^trades$/, /no\\.?\\s*(?:of\\s*)?trades/, /number\\s*of\\s*trades/, /#\\s*trades/]);
+  const changeIdx=headerIndex(headers,[/price\s*change/,/^change$/,/change\s*\(?j\$?\)?/]);
+  const pctIdx=headerIndex(headers,[/%\s*change/,/change\s*%/,/percent/]);
+  const volumeIdx=headerIndex(headers,[/^volume$/,/volume\s*traded/,/shares\s*traded/,/^units$/, /units\s*traded/]);
+  const valueIdx=headerIndex(headers,[/^value$/, /value\s*traded/, /trade\s*value/]);
+  const tradesIdx=headerIndex(headers,[/^trades$/, /no\.?\s*(?:of\s*)?trades/, /number\s*of\s*trades/, /#\s*trades/]);
   const out=new Map();
   for(const row of table.rows){
     const upper=row.map(v=>norm(v).toUpperCase());
