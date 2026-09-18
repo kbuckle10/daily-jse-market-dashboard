@@ -173,7 +173,13 @@ try {
     const td=await extractTradeDate(page,body); tradeDate=td.label;
     const tables=await extractTables(page);
     console.log(`JSE rendered ${tables.length} table(s); ${tradeDate?`detected trade date ${tradeDate} from ${td.source}`:'trade date not proven — existing price dates will be preserved until direct-instrument verification'}.`);
-    const candidates=tables.map(table=>({table,parsed:parseTable(table,tickers)})).filter(x=>x.parsed.size);
+    const securityTables=tables.filter(table=>{
+      const h=table.headers.map(norm).join(' ').toLowerCase();
+      const text=table.rows.flat().map(norm).join(' ').toUpperCase();
+      return /symbol|security/.test(h) && /volume|units/.test(h) && tickers.some(t=>text.includes(t));
+    });
+    console.log(`JSE security activity tables found: ${securityTables.length}`);
+    const candidates=securityTables.map(table=>({table,parsed:parseTable(table,tickers)})).filter(x=>x.parsed.size);
     candidates.sort((a,b)=>activityQuality(b.table,b.parsed)-activityQuality(a.table,a.parsed)||scoreTable(b.table,tickers)-scoreTable(a.table,tickers));
     for(const {table,parsed} of candidates){
       console.log(`JSE candidate activity score ${activityQuality(table,parsed)}; rows ${parsed.size}`);
