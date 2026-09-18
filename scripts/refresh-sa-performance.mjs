@@ -71,7 +71,7 @@ async function captureQuote(page){
 }
 async function extractHistoryRows(page){
   const rows=await page.locator('table tbody tr').evaluateAll(trs=>trs.map(tr=>Array.from(tr.querySelectorAll('td')).map(td=>td.textContent?.trim()||''))).catch(()=>[]);
-  return rows.filter(r=>r.length>=5).map(r=>({date:new Date(r[0]),close:Number(String(r[4]).replace(/,/g,''))})).filter(r=>!Number.isNaN(r.date.valueOf())&&Number.isFinite(r.close));
+  return rows.filter(r=>r.length>=5).map(r=>({date:new Date(r[0]),close:Number(String(r[4]).replace(/,/g,'')),volume:r.length>=8?Number(String(r[7]).replace(/,/g,'')):null})).filter(r=>!Number.isNaN(r.date.valueOf())&&Number.isFinite(r.close));
 }
 async function readHistoryRows(context,ticker){
   const page=await context.newPage();
@@ -166,6 +166,17 @@ for(const stock of data.stocks){
 
   try{
     const rows=await readHistoryRows(context,ticker);
+    const volumeRows=[...rows].sort((a,b)=>b.date-a.date).filter(r=>Number.isFinite(r.volume)&&r.volume>=0);
+    if(volumeRows.length){
+      const latest=volumeRows[0], baseline=volumeRows.slice(1,21);
+      stock.volume=latest.volume;
+      stock.averageVolume20D=baseline.length?Number((baseline.reduce((a,r)=>a+r.volume,0)/baseline.length).toFixed(2)):null;
+      stock.relativeVolume20D=stock.averageVolume20D>0?Number((stock.volume/stock.averageVolume20D).toFixed(2)):null;
+      const shares=Number(stock.sharesOutstanding);
+      stock.turnoverPct=Number.isFinite(shares)&&shares>0?Number((stock.volume/shares*100).toFixed(6)):null;
+      stock.marketActivity={volume:stock.volume,averageVolume20D:stock.averageVolume20D,relativeVolume20D:stock.relativeVolume20D,sharesOutstanding:Number.isFinite(shares)?shares:null,turnoverPct:stock.turnoverPct,tradeDate:latest.date.toISOString().slice(0,10),volumeSource:'StockAnalysis / S&P Global Market Intelligence',baselineSource:'StockAnalysis prior 20 trading sessions'};
+      console.log(`activity: volume ${stock.volume}, 20D avg ${stock.averageVolume20D}, RVOL ${stock.relativeVolume20D ?? 'N/A'}`);
+    }
     const fallbacks={w1:7,m1:30,m3:92,m6:183,y1:366};
     for(const [field,days] of Object.entries(fallbacks)){
       if(field==='w1' || stock[field]==null){
