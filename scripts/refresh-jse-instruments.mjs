@@ -112,10 +112,19 @@ try{
       sessionInferred++;
     }
 
-    // Never allow any instrument-page date to move a known JSE date backwards.
+    // Never let an older official-page snapshot overwrite a newer delayed
+    // market close. Preserve the entire newer quote (price + date), rather than
+    // combining an old JSE price with a newer date.
     if(priorIso&&effectiveDate&&effectiveDate<priorIso){
-      effectiveDate=priorIso;
-      dateStatus='preserved-newer-prior-date';
+      stock.priceFreshnessStatus='newer-fallback-preserved';
+      stock.jseQuoteVerifiedAt=new Date().toISOString();
+      stock.jseQuoteUrl=q.url;
+      stock.jseQuoteSource=q.quoteSource;
+      stock.jseQuoteDateStatus='older-than-existing-quote';
+      stock.priceFreshnessReference=latestProvenJseSession;
+      staleFallback++;
+      console.warn(`${stock.ticker}: JSE snapshot ${effectiveDate} older than existing ${priorIso}; preserving ${priorPrice} (${priorDate}).`);
+      continue;
     }
 
     stock.price=Number(q.price.toFixed(2));
