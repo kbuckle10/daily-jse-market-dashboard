@@ -134,7 +134,9 @@ function parseTable(table,tickers){
     const dayJmd=changeIdx>=0?num(row[changeIdx]):null; let dayPct=pctIdx>=0?num(row[pctIdx]):null;
     if(dayPct==null&&dayJmd!=null&&price-dayJmd>0) dayPct=dayJmd/(price-dayJmd)*100;
     const volume=volumeIdx>=0?num(row[volumeIdx]):null;
-    out.set(ticker,{price,dayJmd,dayPct,volume,row});
+    const valueTraded=valueIdx>=0?num(row[valueIdx]):null;
+    const trades=tradesIdx>=0?num(row[tradesIdx]):null;
+    out.set(ticker,{price,dayJmd,dayPct,volume,valueTraded,trades,row});
   }
   return out;
 }
@@ -163,6 +165,24 @@ for(const stock of data.stocks){
   if(quote.dayJmd!=null)stock.dayJmd=Number(quote.dayJmd.toFixed(2));
   if(quote.dayPct!=null)stock.dayPct=Number(quote.dayPct.toFixed(2));
   if(quote.volume!=null)stock.volume=quote.volume;
+  if(quote.valueTraded!=null)stock.valueTraded=quote.valueTraded;
+  if(quote.trades!=null)stock.numberOfTrades=quote.trades;
+  const avg20=num(stock.averageVolume20D), shares=num(stock.sharesOutstanding), vol=num(quote.volume);
+  stock.relativeVolume20D=vol!=null&&avg20>0?Number((vol/avg20).toFixed(2)):null;
+  stock.turnoverPct=vol!=null&&shares>0?Number((vol/shares*100).toFixed(6)):null;
+  stock.marketActivity={
+    volume:vol,
+    valueTraded:num(quote.valueTraded),
+    trades:num(quote.trades),
+    averageVolume20D:avg20,
+    relativeVolume20D:stock.relativeVolume20D,
+    sharesOutstanding:shares,
+    turnoverPct:stock.turnoverPct,
+    tradeDate:tradeDate||null,
+    volumeSource:'JSE Trade Summary',
+    baselineSource:avg20!=null?'StockAnalysis 20D average volume':null,
+    sharesSource:shares!=null?(stock.statisticsSource||'StockAnalysis Statistics'):null
+  };
   if(tradeDate) stock.priceDate=`${tradeDate} • JSE`;
   stock.source='JSE';
   if(stock.ttmDps!=null&&stock.price>0)stock.trailingYield=Number((stock.ttmDps/stock.price*100).toFixed(2));
