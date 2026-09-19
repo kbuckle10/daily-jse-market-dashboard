@@ -199,14 +199,17 @@ try {
     console.log(`JSE security activity tables found: ${securityTables.length}`);
     const candidates=securityTables.map(table=>({table,parsed:parseTable(table,tickers)})).filter(x=>x.parsed.size);
     candidates.sort((a,b)=>activityQuality(b.table,b.parsed)-activityQuality(a.table,a.parsed)||scoreTable(b.table,tickers)-scoreTable(a.table,tickers));
+    // The first/highest-quality Trade Summary table is authoritative for the
+    // complete session row. Do not merge later tables into it field-by-field:
+    // JSE renders several security tables and a later table can contain the same
+    // ticker with unrelated small numeric values (previously overwriting volume).
     for(const {table,parsed} of candidates){
-      console.log(`JSE candidate activity score ${activityQuality(table,parsed)}; rows ${parsed.size}`);
+      const quality=activityQuality(table,parsed);
+      console.log(`JSE candidate activity score ${quality}; rows ${parsed.size}`);
       for(const [ticker,quote] of parsed){
-        const prior=captured.get(ticker);
-        if(!prior){captured.set(ticker,quote);continue;}
-        // Prefer explicit activity values from the strongest activity table, while
-        // retaining valid quote fields already captured.
-        captured.set(ticker,{...prior,...Object.fromEntries(Object.entries(quote).filter(([,v])=>v!=null))});
+        if(captured.has(ticker)) continue;
+        captured.set(ticker,quote);
+        console.log(`${ticker}: captured atomic JSE row | close=${quote.price ?? 'N/A'} | change=${quote.dayJmd ?? 'N/A'} | pct=${quote.dayPct ?? 'N/A'} | volume=${quote.volume ?? 'N/A'}`);
       }
     }
     if(!captured.size) console.warn(body.slice(0,3000));
