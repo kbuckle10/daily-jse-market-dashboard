@@ -26,6 +26,20 @@ const missing=baseline.stocks.map(s=>String(s.ticker).toUpperCase()).filter(t=>!
 if(missing.length)throw new Error(`Shard merge missing ${missing.length} ticker(s): ${missing.join(', ')}`);
 baseline.stocks=baseline.stocks.map(s=>merged.get(String(s.ticker).toUpperCase()));
 
+// JSE Trade Summary is authoritative for latest-session activity. Some later
+// shard collectors enrich top-level volume from other tables/sources, so restore
+// the atomic JSE session volume after every shard has finished before publishing
+// or persisting market-activity history.
+for(const s of baseline.stocks){
+  const ma=s.marketActivity;
+  const jseActivity=ma && ma.volumeSource==='JSE Trade Summary' && Number.isFinite(Number(ma.volume));
+  if(jseActivity){
+    s.volume=Number(ma.volume);
+    if(Number.isFinite(Number(ma.valueTraded))) s.valueTraded=Number(ma.valueTraded);
+    if(Number.isFinite(Number(ma.trades))) s.numberOfTrades=Number(ma.trades);
+  }
+}
+
 // Derive the dataset close date from actual refreshed JSE quote dates instead of
 // carrying forward the previous top-level `updated` value. Only JSE-sourced
 // quote dates participate; StockAnalysis fallback/history dates must not advance
