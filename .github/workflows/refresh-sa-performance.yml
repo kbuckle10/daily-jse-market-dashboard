@@ -13,6 +13,7 @@ on:
   schedule:
     - cron: '30 21 * * 1-5' # 4:30 PM Jamaica, Monday-Friday
     - cron: '0 22 * * 1-5'  # 5:00 PM Jamaica fallback, Monday-Friday
+    - cron: '0 23 * * 1-5'  # 6:00 PM Jamaica safety run; guard skips if today's refresh already completed
 
 permissions:
   contents: write
