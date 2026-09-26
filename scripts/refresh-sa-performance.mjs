@@ -202,6 +202,18 @@ for(const stock of data.stocks){
       stock.marketActivity={volume:stock.volume,averageVolume20D:stock.averageVolume20D,relativeVolume20D:stock.relativeVolume20D,sharesOutstanding:Number.isFinite(shares)?shares:null,turnoverPct:stock.turnoverPct,tradeDate:latest.date.toISOString().slice(0,10),volumeSource:'StockAnalysis / S&P Global Market Intelligence',baselineSource:'StockAnalysis prior 20 trading sessions'};
       console.log(`activity: volume ${stock.volume}, 20D avg ${stock.averageVolume20D}, RVOL ${stock.relativeVolume20D ?? 'N/A'}`);
     }
+    // Preserve the earliest available trading observation so newly listed stocks
+    // have a meaningful performance anchor before 3M/YTD/6M/1Y exist.
+    if(sortedHistory.length>=2){
+      const earliest=sortedHistory[sortedHistory.length-1];
+      const latest=sortedHistory[0];
+      if(Number.isFinite(earliest.close)&&earliest.close>0&&Number.isFinite(latest.close)){
+        stock.listingHistoryDate=earliest.date.toISOString().slice(0,10);
+        stock.sinceListing=Number(((latest.close/earliest.close-1)*100).toFixed(2));
+        stock.performanceFieldStatus.sinceListing='history-derived';
+        console.log(`sinceListing: ${stock.sinceListing}% from ${stock.listingHistoryDate} (earliest SA trading history)`);
+      }
+    }
     const fallbacks={w1:7,m1:30,m3:92,m6:183,y1:366};
     for(const [field,days] of Object.entries(fallbacks)){
       if(field==='w1' || stock[field]==null){
