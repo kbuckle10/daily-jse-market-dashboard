@@ -64,6 +64,12 @@ jobs:
           node-version: '22'
       - if: steps.guard.outputs.run_refresh == 'true'
         run: npm run sync:main-market
+      - name: Reconcile against official JSE Main Market ordinary-share universe
+        if: steps.guard.outputs.run_refresh == 'true'
+        run: |
+          npm install
+          npx playwright install chromium
+          node scripts/discover-jse-main-market.mjs
       - name: Validate dynamic universe
         if: steps.guard.outputs.run_refresh == 'true'
         run: |
