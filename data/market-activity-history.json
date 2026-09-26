@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-26T06:08:41.244Z",
+  "updatedAt": "2026-09-26T06:13:54.312Z",
   "tickers": {
     "SEP": [
       {
@@ -3652,6 +3652,17 @@
         "trades": 0,
         "sharesOutstanding": 436630000,
         "floatShares": 352630000
+      }
+    ],
+    "QAINC": [
+      {
+        "date": "2026-09-25",
+        "close": 23,
+        "volume": 114510,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 295650000,
+        "floatShares": 189700000
       }
     ]
   }
