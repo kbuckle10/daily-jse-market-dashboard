@@ -9,6 +9,7 @@ const BASE_URL = 'https://www.jamstockex.com';
 function readData(){ const raw=fs.readFileSync(DATA_FILE,'utf8'),m=raw.match(/window\.JSE_DASHBOARD_DATA\s*=\s*([\s\S]*);\s*$/);if(!m)throw new Error('Unable to parse data.js');return vm.runInNewContext(`(${m[1]})`); }
 function writeData(data){ fs.writeFileSync(DATA_FILE,`window.JSE_DASHBOARD_DATA = ${JSON.stringify(data,null,2)};\n`); }
 function norm(value){ return String(value??'').toLowerCase().replace(/&/g,' and ').replace(/[^a-z0-9]+/g,' ').replace(/\s+/g,' ').trim(); }
+function displayCase(value){ return String(value??'').trim().toLowerCase().replace(/\b\w/g,ch=>ch.toUpperCase()).replace(/\b(Inc|Ltd|Plc|Llc)\b/g,m=>m); }
 function companyCore(name){ return norm(name).replace(/\b(limited|ltd|plc|company|co|group|jamaica|holdings|holding)\b/g,' ').replace(/\s+/g,' ').trim(); }
 function words(value){ return companyCore(value).split(' ').filter(w=>w.length>=3); }
 function tickerRegex(ticker){ return new RegExp(`(^|[^A-Z0-9])${String(ticker).replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}([^A-Z0-9]|$)`,'i'); }
@@ -27,7 +28,7 @@ try{ if(await loadListedPage(page)){ links=await extractInstrumentLinks(page); o
 
 const known=new Set(data.stocks.map(s=>String(s.ticker||'').toUpperCase()));
 let discovered=0;
-for(const row of official){const ticker=String(row.ticker||'').toUpperCase();if(!ticker||known.has(ticker))continue;data.stocks.push({ticker,company:row.company||ticker,sector:row.sector||'Other',ratingBasis:'New JSE listing — research pending',price:null,priceSource:'JSE',eps:null,bvps:null,dps:null,pe:null,pb:null,roe:null,epsGrowth:null,divYield:null,fairValue:'N/A',buyZone:'N/A',score:0,rating:'WATCH',jseUrl:row.href||`${BASE_URL}/?s=${encodeURIComponent(ticker)}`,w1:null,m1:null,m3:null,m6:null,y1:null,ytd:null,performanceSource:'Pending',source:'JSE',priceDate:null,tradeDate:null,dayJmd:null,dayPct:null,volume:null,fundamentalSource:'Pending',universeDiscovery:'Official JSE Listed Companies'});known.add(ticker);discovered++;console.log(`DISCOVERED new Main Market ordinary share: ${ticker} — ${row.company}`);}
+for(const row of official){const ticker=String(row.ticker||'').toUpperCase();if(!ticker||known.has(ticker))continue;data.stocks.push({ticker,company:displayCase(row.company)||ticker,sector:displayCase(row.sector)||'Other',ratingBasis:'New JSE listing — research pending',price:null,priceSource:'JSE',eps:null,bvps:null,dps:null,pe:null,pb:null,roe:null,epsGrowth:null,divYield:null,fairValue:'N/A',buyZone:'N/A',score:0,rating:'WATCH',jseUrl:row.href||`${BASE_URL}/?s=${encodeURIComponent(ticker)}`,w1:null,m1:null,m3:null,m6:null,y1:null,ytd:null,performanceSource:'Pending',source:'JSE',priceDate:null,tradeDate:null,dayJmd:null,dayPct:null,volume:null,fundamentalSource:'Pending',universeDiscovery:'Official JSE Listed Companies'});known.add(ticker);discovered++;console.log(`DISCOVERED new Main Market ordinary share: ${ticker} — ${row.company}`);}
 if(discovered) console.log(`Added ${discovered} newly discovered JSE ordinary-share listing(s) before enrichment.`);
 
 let matched=0,changed=0;
