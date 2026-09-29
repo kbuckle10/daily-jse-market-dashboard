@@ -11908,8 +11908,8 @@ window.JSE_DASHBOARD_DATA = {
     {
       "rank": 54,
       "ticker": "QAINC",
-      "company": "QUANTAS ADVANTAGE INC.",
-      "sector": "FINANCE",
+      "company": "Quantas Advantage Inc.",
+      "sector": "Finance",
       "price": 24.82,
       "priceDate": "Sep 28, 2026 • JSE",
       "dayJmd": 1.82,
