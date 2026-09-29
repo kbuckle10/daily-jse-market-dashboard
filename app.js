@@ -24,7 +24,15 @@ const isBigMover=s=>Math.abs(s.dayPct||0)>=5||Math.abs(s.m1||0)>=5||Math.abs(s.y
 const movementImpact=s=>Math.max(Math.abs(finite(s.dayPct,0)),Math.abs(finite(s.m1,0)),Math.abs(finite(s.ytd,0)),Math.abs(finite(s.m3,0)),Math.abs(finite(s.m6,0)),Math.abs(finite(s.y1,0)));
 const detailedMap=()=>new Map(stocks.map(s=>[s.ticker,s]));
 function dataState(status){if(status==='scraper-error'||status==='validation-error')return '<span class="negative">ERROR</span>';if(status==='not-found')return '<span class="neutral">N/A</span>';if(status==='validation-warning'||status==='price-missing'||status==='partial')return '<span class="amber">CHECK</span>';return null;}
-function yieldDisplay(s){const stateLabel=dataState(s.dividendDataStatus);if(s.trailingYield!=null)return `${fmt(s.trailingYield,2)}%${stateLabel?` <small>${stateLabel}</small>`:''}`;return stateLabel||'<span class="neutral">N/A</span>';}
+const FOREIGN_DIVIDEND_TAX={
+  MASSY:['Trinidad & Tobago',0,'CARICOM DTA'],ASBH:['Trinidad & Tobago',0,'CARICOM DTA'],GHL:['Trinidad & Tobago',0,'CARICOM DTA'],
+  SCIJMD:['Saint Lucia',0,'CARICOM DTA'],FIRSTROCKJMD:['Saint Lucia',0,'CARICOM DTA'],PJX:['Saint Lucia',0,'CARICOM DTA'],PROVEN:['Saint Lucia',0,'CARICOM DTA'],XFUND:['Saint Lucia',0,'CARICOM DTA'],SIL:['Saint Lucia',0,'CARICOM DTA'],SRFJMD:['Saint Lucia',0,'CARICOM DTA'],WIPT:['Saint Lucia',0,'CARICOM DTA'],
+  CPFV:['Barbados',0,'CARICOM DTA'],MPCCEL:['Barbados',0,'CARICOM DTA'],QAINC:['Barbados',0,'CARICOM DTA'],
+  MTL:['Turks & Caicos',0,'No direct income/dividend WHT']
+};
+function dividendTaxProfile(s){const x=FOREIGN_DIVIDEND_TAX[s.ticker];return x?{country:x[0],rate:x[1],basis:x[2]}:{country:'Jamaica',rate:15,basis:'Jamaican resident issuer'};}
+function netYield(s){const y=finite(s.currentDividendYield)??finite(s.trailingYield);if(y==null)return null;return y*(1-dividendTaxProfile(s).rate/100);}
+function yieldDisplay(s){const stateLabel=dataState(s.dividendDataStatus);if(s.trailingYield==null)return stateLabel||'<span class="neutral">N/A</span>';const t=dividendTaxProfile(s),n=netYield(s);return `<strong>${fmt(s.trailingYield,2)}% gross</strong><br><small>${n==null?'N/A':fmt(n,2)+'% net'} • ${t.rate}% tax • ${t.country}</small>${stateLabel?` <small>${stateLabel}</small>`:''}`;}
 function latestDividendLink(s){const stateLabel=dataState(s.latestDividendDataStatus);if(s.latestDividend==null)return stateLabel||'<span class="neutral">N/A</span>';const href=s.dividendUrl||`https://www.jamstockex.com/?tag=${encodeURIComponent(s.ticker)}`;return `<a class="dividend-link" href="${href}" target="_blank" rel="noreferrer">${dividendMoney(s)} ↗</a>${stateLabel?` <small>${stateLabel}</small>`:''}`;}
 function trackedStocks(){return stocks.filter(s=>state.tracked.has(s.ticker));}function pendingTickers(){const map=detailedMap();return [...state.tracked].filter(t=>!map.has(t));}
 function loadWatchlist(){let saved;try{saved=JSON.parse(localStorage.getItem(STORAGE_KEY));}catch{saved=null;}state.tracked=new Set(Array.isArray(saved)?saved.map(t=>String(t).toUpperCase()).filter(Boolean):[]);if(!Array.isArray(saved))localStorage.setItem(STORAGE_KEY,'[]');}
