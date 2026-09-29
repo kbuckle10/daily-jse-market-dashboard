@@ -145,7 +145,15 @@ for(const stock of data.stocks){
     if(await safeGoto(page,`https://stockanalysis.com/quote/jmse/${ticker}/`)){
       overviewOk=true;
       await dismissOverlays(page); await page.waitForTimeout(700);
-      const quote=await captureQuote(page);
+      const overviewText=await page.locator('body').innerText().catch(()=>'');
+      const countryMatch=overviewText.match(/(?:^|\n)Country\s*\n?\s*([^\n]+)/i);
+      if(countryMatch&&countryMatch[1]){
+        stock.saCountry=countryMatch[1].trim();
+        stock.domicile=stock.domicile||stock.saCountry;
+        stock.domicileStatus=stock.domicileStatus==='verified'?'verified':'sa-detected';
+      }
+      stock.primaryListing=stock.primaryListing||{market:'JMSE',ticker,source:'StockAnalysis',url:`https://stockanalysis.com/quote/jmse/${ticker}/`};
+            const quote=await captureQuote(page);
       if(quote){
         stock.price=quote.price; stock.dayJmd=quote.dayJmd; stock.dayPct=quote.dayPct;
         stock.priceDate=`${quote.date} • SA delayed`; stock.source='SA';
