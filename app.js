@@ -7,7 +7,7 @@ const tableBody=$('stockTableBody'),cardView=$('cardView'),tableView=$('tableVie
 const fmt=(v,d=2)=>v==null||Number.isNaN(Number(v))?'N/A':Number(v).toFixed(d);
 const pct=v=>v==null?'<span class="neutral">N/A</span>':`<span class="${v>0?'positive':v<0?'negative':'neutral'}">${v>0?'+':''}${fmt(v,1)}%</span>`;
 const periodPct=(s,field)=>{if(s[field]!=null)return pct(s[field]);if(s.sinceListing!=null&&['ytd','m3','m6','y1'].includes(field))return `<span class="neutral">N/A</span><br><small>Since listing ${pct(s.sinceListing)}</small>`;return pct(null)};
-const money=v=>v==null?'N/A':`J${fmt(v,2)}`;
+const money=v=>v==null?'N/A':'J\u0024'+fmt(v,2);
 const dividendMoney=s=>s.latestDividend==null?'N/A':`${s.latestDividendCurrency==='TTD'?'TT$':s.latestDividendCurrency==='USD'?'US$':'J$'}${fmt(s.latestDividend,2)}`;
 const dateValue=v=>{const d=new Date(v);return Number.isNaN(d.valueOf())?0:d.valueOf();};
 const dividendEventDate=e=>Math.max(dateValue(e?.exDate),dateValue(e?.recordDate),dateValue(e?.payDate));
