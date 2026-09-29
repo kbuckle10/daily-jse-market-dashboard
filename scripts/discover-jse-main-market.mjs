@@ -26,6 +26,12 @@ const page=await context.newPage();
 let links=[],official=[];
 try{ if(await loadListedPage(page)){ links=await extractInstrumentLinks(page); official=await extractOrdinaryUniverse(page); console.log(`Captured ${links.length} JSE instrument link candidates and ${official.length} ordinary-share listings.`); } } finally { await browser.close(); }
 
+// Normalize display labels for the full universe on every refresh. JSE often publishes
+// company/sector names in ALL CAPS; keep tickers uppercase but use readable title case.
+for (const stock of data.stocks) {
+  if (stock.company) stock.company = displayCase(stock.company);
+  if (stock.sector) stock.sector = displayCase(stock.sector);
+}
 const known=new Set(data.stocks.map(s=>String(s.ticker||'').toUpperCase()));
 let discovered=0;
 for(const row of official){const ticker=String(row.ticker||'').toUpperCase();if(!ticker||known.has(ticker))continue;data.stocks.push({ticker,company:displayCase(row.company)||ticker,sector:displayCase(row.sector)||'Other',ratingBasis:'New JSE listing — research pending',price:null,priceSource:'JSE',eps:null,bvps:null,dps:null,pe:null,pb:null,roe:null,epsGrowth:null,divYield:null,fairValue:'N/A',buyZone:'N/A',score:0,rating:'WATCH',jseUrl:row.href||`${BASE_URL}/?s=${encodeURIComponent(ticker)}`,w1:null,m1:null,m3:null,m6:null,y1:null,ytd:null,performanceSource:'Pending',source:'JSE',priceDate:null,tradeDate:null,dayJmd:null,dayPct:null,volume:null,fundamentalSource:'Pending',universeDiscovery:'Official JSE Listed Companies'});known.add(ticker);discovered++;console.log(`DISCOVERED new Main Market ordinary share: ${ticker} — ${row.company}`);}
