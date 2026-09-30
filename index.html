@@ -29,5 +29,26 @@
   });
   save();
   window.JSE_PWA_DIAGNOSTICS=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'{}');}catch(e){return {error:String(e)};}};
+  function showDiag(){
+    let old=document.getElementById('pwaDiagPanel'); if(old) old.remove();
+    const d=window.JSE_PWA_DIAGNOSTICS();
+    const yes=v=>v?'✓':'✗';
+    const panel=document.createElement('div'); panel.id='pwaDiagPanel';
+    panel.style.cssText='position:fixed;left:8px;right:8px;bottom:8px;z-index:99999;background:#07111f;color:#e8f1ff;border:1px solid #31506f;border-radius:12px;padding:10px 12px;font:12px/1.45 monospace;box-shadow:0 8px 30px #0009;max-height:42vh;overflow:auto';
+    panel.innerHTML='<b style="font:700 14px Inter,sans-serif">PWA Diagnostics</b> <button id="pwaDiagClose" style="float:right">×</button><br>'+
+      'Secure context: '+yes(d.secure)+'<br>'+
+      'Manifest: '+yes(d.manifest&&d.manifest.ok)+' '+(d.manifest&&d.manifest.type||'')+'<br>'+
+      '192 icon: '+yes(d.icons&&d.icons['/daily-jse-market-dashboard/icon-192.png']&&d.icons['/daily-jse-market-dashboard/icon-192.png'].ok)+'<br>'+
+      '512 icon: '+yes(d.icons&&d.icons['/daily-jse-market-dashboard/icon-512.png']&&d.icons['/daily-jse-market-dashboard/icon-512.png'].ok)+'<br>'+
+      'SW registered: '+yes(d.serviceWorker&&d.serviceWorker.registered)+'<br>'+
+      'SW ready: '+yes(d.serviceWorker&&d.serviceWorker.ready)+'<br>'+
+      'SW controlling page: '+yes(d.serviceWorker&&d.serviceWorker.controller)+'<br>'+
+      '<b>Install event fired: '+yes(d.beforeInstallPrompt)+'</b><br>'+
+      'Standalone: '+yes(d.standalone);
+    document.body.appendChild(panel);
+    document.getElementById('pwaDiagClose').onclick=()=>panel.remove();
+  }
+  window.JSE_SHOW_PWA_DIAGNOSTICS=showDiag;
+  window.addEventListener('load',()=>setTimeout(showDiag,2500));
 })();
 </script><script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/daily-jse-market-dashboard/sw.js",{scope:"/daily-jse-market-dashboard/"}).catch(console.error));}</script></body></html>
