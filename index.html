@@ -16,7 +16,7 @@ window.addEventListener('beforeinstallprompt',function(){window.__JSE_PWA_INSTAL
         const m=await mr.json();
         state.manifest.id=m.id;state.manifest.start_url=m.start_url;state.manifest.scope=m.scope;state.manifest.display=m.display;
         for(const icon of (m.icons||[])){
-          try{const u=new URL(icon.src,mr.url);const ir=await fetch(u.href,{cache:'no-store'});state.icons[icon.sizes]={ok:ir.ok,status:ir.status,type:ir.headers.get('content-type'),url:u.href};}catch(e){state.icons[icon.sizes]={error:String(e)};}
+          try{const u=new URL(icon.src,'https://kbuckle10.github.io/daily-jse-market-dashboard/manifest.webmanifest');const ir=await fetch(u.href,{cache:'no-store'});state.icons[icon.sizes]={ok:ir.ok,status:ir.status,type:ir.headers.get('content-type'),url:u.href};}catch(e){state.icons[icon.sizes]={error:String(e)};}
         }
       }
     }catch(e){state.manifest={error:String(e)};}
