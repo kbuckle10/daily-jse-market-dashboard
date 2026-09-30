@@ -505,7 +505,7 @@ window.JSE_DASHBOARD_DATA = {
     {
       "rank": 3,
       "ticker": "NCBFG",
-      "company": "Ncb Financial Group",
+      "company": "NCB Financial Group",
       "price": 67.13,
       "priceDate": "Sep 29, 2026 • JSE",
       "dayJmd": 0.16,
@@ -3162,7 +3162,7 @@ window.JSE_DASHBOARD_DATA = {
     {
       "rank": 14,
       "ticker": "JMMBGL",
-      "company": "Jmmb Group",
+      "company": "JMMB Group",
       "price": 19.58,
       "priceDate": "Sep 29, 2026 • JSE",
       "dayJmd": -1.05,
@@ -5136,7 +5136,7 @@ window.JSE_DASHBOARD_DATA = {
     {
       "rank": 22,
       "ticker": "CPFV",
-      "company": "Eppley Caribbean Property Fund Scc",
+      "company": "Eppley Caribbean Property Fund SCC",
       "sector": "Real Estate",
       "price": 42.73,
       "priceDate": "Sep 29, 2026 • JSE",
@@ -7985,7 +7985,7 @@ window.JSE_DASHBOARD_DATA = {
     {
       "rank": 34,
       "ticker": "MPCCEL",
-      "company": "Mpc Caribbean Clean Energy",
+      "company": "MPC Caribbean Clean Energy",
       "sector": "Energy",
       "price": 20.92,
       "priceDate": "Sep 29, 2026 • JSE",
@@ -8671,7 +8671,7 @@ window.JSE_DASHBOARD_DATA = {
     {
       "rank": 37,
       "ticker": "PJX",
-      "company": "Portland Jsx",
+      "company": "Portland JSX",
       "sector": "Investments / Securities",
       "price": 6.65,
       "priceDate": "Sep 29, 2026 • JSE",
@@ -8881,7 +8881,7 @@ window.JSE_DASHBOARD_DATA = {
     {
       "rank": 38,
       "ticker": "PROVEN",
-      "company": "Proven Group",
+      "company": "PROVEN Group",
       "sector": "Investments / Securities",
       "price": 9.9,
       "priceDate": "Sep 29, 2026 • JSE",
@@ -9296,7 +9296,7 @@ window.JSE_DASHBOARD_DATA = {
     {
       "rank": 40,
       "ticker": "QWI",
-      "company": "Qwi Investments",
+      "company": "QWI Investments",
       "sector": "Investments / Securities",
       "price": 0.79,
       "priceDate": "Sep 29, 2026 • JSE",
@@ -10612,7 +10612,7 @@ window.JSE_DASHBOARD_DATA = {
     {
       "rank": 46,
       "ticker": "VMIL",
-      "company": "Vm Investments",
+      "company": "VM Investments",
       "sector": "Investments / Securities",
       "price": 1.9,
       "priceDate": "Sep 29, 2026 • JSE",
@@ -12595,7 +12595,7 @@ window.JSE_DASHBOARD_DATA = {
     {
       "rank": 54,
       "ticker": "QAINC",
-      "company": "Quantas Advantage Inc.",
+      "company": "QUANTAS ADVANTAGE INC.",
       "sector": "Finance",
       "price": 24.51,
       "priceDate": "Sep 29, 2026 • JSE",
