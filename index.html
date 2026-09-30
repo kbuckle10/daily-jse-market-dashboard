@@ -42,8 +42,8 @@ window.addEventListener('beforeinstallprompt',function(){window.__JSE_PWA_INSTAL
     panel.innerHTML='<b style="font:700 14px Inter,sans-serif">PWA Diagnostics</b> <button id="pwaDiagClose" style="float:right">×</button><br>'+
       'Secure context: '+yes(d.secure)+'<br>'+
       'Manifest: '+yes(d.manifest&&d.manifest.ok)+' '+(d.manifest&&d.manifest.type||'')+'<br>'+
-      '192 icon: '+yes(d.icons&&d.icons['/daily-jse-market-dashboard/icon-192.png']&&d.icons['/daily-jse-market-dashboard/icon-192.png'].ok)+'<br>'+
-      '512 icon: '+yes(d.icons&&d.icons['/daily-jse-market-dashboard/icon-512.png']&&d.icons['/daily-jse-market-dashboard/icon-512.png'].ok)+'<br>'+
+      '192 icon: '+yes(d.icons&&d.icons['192x192']&&d.icons['192x192'].ok)+' '+(d.icons&&d.icons['192x192']?((d.icons['192x192'].status||'')+' '+(d.icons['192x192'].type||'')):'')+'<br>'+
+      '512 icon: '+yes(d.icons&&d.icons['512x512']&&d.icons['512x512'].ok)+' '+(d.icons&&d.icons['512x512']?((d.icons['512x512'].status||'')+' '+(d.icons['512x512'].type||'')):'')+'<br>'+
       'SW registered: '+yes(d.serviceWorker&&d.serviceWorker.registered)+'<br>'+
       'SW ready: '+yes(d.serviceWorker&&d.serviceWorker.ready)+'<br>'+
       'SW controlling page: '+yes(d.serviceWorker&&d.serviceWorker.controller)+'<br>'+
