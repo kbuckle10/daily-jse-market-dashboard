@@ -16,7 +16,7 @@ window.addEventListener('beforeinstallprompt',function(){window.__JSE_PWA_INSTAL
         const m=await mr.json();
         state.manifest.id=m.id;state.manifest.start_url=m.start_url;state.manifest.scope=m.scope;state.manifest.display=m.display;
         for(const icon of (m.icons||[])){
-          try{const ir=await fetch(icon.src,{cache:'no-store'});state.icons[icon.src]={ok:ir.ok,status:ir.status,type:ir.headers.get('content-type')};}catch(e){state.icons[icon.src]={error:String(e)};}
+          try{const u=new URL(icon.src,mr.url);const ir=await fetch(u.href,{cache:'no-store'});state.icons[icon.sizes]={ok:ir.ok,status:ir.status,type:ir.headers.get('content-type'),url:u.href};}catch(e){state.icons[icon.sizes]={error:String(e)};}
         }
       }
     }catch(e){state.manifest={error:String(e)};}
@@ -29,6 +29,7 @@ window.addEventListener('beforeinstallprompt',function(){window.__JSE_PWA_INSTAL
       }catch(e){state.serviceWorker.error=String(e);}
     }
     save();
+    setTimeout(()=>{if(window.JSE_SHOW_PWA_DIAGNOSTICS)window.JSE_SHOW_PWA_DIAGNOSTICS();},100);
   });
   save();
   window.JSE_PWA_DIAGNOSTICS=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'{}');}catch(e){return {error:String(e)};}};
@@ -52,6 +53,6 @@ window.addEventListener('beforeinstallprompt',function(){window.__JSE_PWA_INSTAL
     document.getElementById('pwaDiagClose').onclick=()=>panel.remove();
   }
   window.JSE_SHOW_PWA_DIAGNOSTICS=showDiag;
-  window.addEventListener('load',()=>setTimeout(showDiag,2500));
+  window.addEventListener('load',()=>setTimeout(showDiag,5000));
 })();
 </script><script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js",{scope:"./"}).catch(console.error));}</script></body></html>
