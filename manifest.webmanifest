@@ -3,7 +3,7 @@
   "name": "JSE Dividend Dashboard",
   "short_name": "JSE Dashboard",
   "description": "Daily Jamaica Stock Exchange dividend investor dashboard",
-  "start_url": "/daily-jse-market-dashboard/",
+  "start_url": "/daily-jse-market-dashboard/pwa-start.html",
   "scope": "/daily-jse-market-dashboard/",
   "display": "standalone",
   "background_color": "#05080d",
