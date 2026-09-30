@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#05080d">
+<title>JSE Dividend Dashboard</title>
+<link rel="manifest" href="/daily-jse-market-dashboard/manifest.webmanifest?v=20260930android3">
+<link rel="icon" href="/daily-jse-market-dashboard/icon-192.png" sizes="192x192" type="image/png">
+</head>
+<body style="margin:0;background:#05080d;color:#fff;font-family:system-ui;display:grid;place-items:center;min-height:100vh">
+<div>Opening JSE Dividend Dashboard…</div>
+<script>
+if('serviceWorker' in navigator){navigator.serviceWorker.register('/daily-jse-market-dashboard/sw.js',{scope:'/daily-jse-market-dashboard/'}).catch(()=>{});}
+location.replace('/daily-jse-market-dashboard/');
+</script>
+</body>
+</html>
