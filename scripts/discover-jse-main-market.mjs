@@ -27,10 +27,6 @@ try{ if(await loadListedPage(page)){ links=await extractInstrumentLinks(page); o
 
 // Normalize display labels for the full universe on every refresh. JSE often publishes
 // company/sector names in ALL CAPS; keep tickers uppercase but use readable title case.
-for (const stock of data.stocks) {
-  if (stock.company) stock.company = displayCase(stock.company);
-  if (stock.sector) stock.sector = displayCase(stock.sector);
-}
 const officialByTicker=new Map(official.map(r=>[String(r.ticker||'').toUpperCase(),r]));
 for(const stock of data.stocks){const row=officialByTicker.get(String(stock.ticker||'').toUpperCase());if(row){stock.isin=row.isin||stock.isin||null;stock.listingCurrency=row.currency||stock.listingCurrency||null;stock.listingMarket='JMSE';stock.domicileStatus=stock.domicile?stock.domicileStatus||'verified':'review';}}
 const known=new Set(data.stocks.map(s=>String(s.ticker||'').toUpperCase()));
