@@ -21,11 +21,6 @@ function parseRange(value) {
   return nums.length >= 2 ? [nums[0], nums[1]] : [null, null];
 }
 
-const COMPANY_ACRONYMS = new Set(['NCB','JMMB','VM','JSE','QWI','PROVEN','MPC','SCC','JSX']);
-function normalizeCompanyName(value='') {
-  return String(value).toLowerCase().replace(/\b([a-z])/g, m => m.toUpperCase()).replace(/\b([A-Za-z]+)\b/g, w => COMPANY_ACRONYMS.has(w.toUpperCase()) ? w.toUpperCase() : w);
-}
-
 function ratingClass(rating='') {
   const r = rating.toUpperCase();
   if (r.includes('BUY')) return 'buy';
@@ -58,7 +53,7 @@ const merged = master.stocks.map((m, i) => {
     ...prior,
     rank: i + 1,
     ticker,
-    company: normalizeCompanyName(m.company || prior.company || ticker),
+    company: m.company || prior.company || ticker,
     sector: m.sector || prior.sector || 'Other',
     saCountry: prior.saCountry ?? m.saCountry ?? null,
     domicile: prior.domicile ?? m.domicile ?? null,
