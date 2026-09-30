@@ -150,7 +150,8 @@ for(const stock of data.stocks){
       if(countryMatch&&countryMatch[1]){
         stock.saCountry=countryMatch[1].trim();
         if(!stock.domicile||stock.domicileStatus==='review'){stock.domicile=stock.saCountry;stock.domicileStatus='sa-detected';}
-        if(stock.dividendTaxStatus!=='verified')stock.dividendTaxStatus='review';
+        const recognizedCountries=new Set(['Jamaica','Saint Lucia','Barbados','Trinidad & Tobago','Turks & Caicos Islands']);
+        stock.dividendTaxStatus=recognizedCountries.has(stock.saCountry)?'verified':'review';
       }
       stock.primaryListing=stock.primaryListing||{market:'JMSE',ticker,source:'StockAnalysis',url:`https://stockanalysis.com/quote/jmse/${ticker}/`};
             const quote=await captureQuote(page);
