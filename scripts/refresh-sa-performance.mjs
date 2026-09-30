@@ -146,7 +146,15 @@ for(const stock of data.stocks){
       overviewOk=true;
       await dismissOverlays(page); await page.waitForTimeout(700);
       const overviewText=await page.locator('body').innerText().catch(()=>'');
-      const countryMatch=overviewText.match(/(?:^|\n)Country\s*\n?\s*([^\n]+)/i);
+      let countryMatch=overviewText.match(/(?:^|\n)Country\s*\n?\s*([^\n]+)/i);
+      const profilePage=await context.newPage();
+      try{
+        if(await safeGoto(profilePage,`https://stockanalysis.com/quote/jmse/${ticker}/company/`)){
+          await dismissOverlays(profilePage); await profilePage.waitForTimeout(500);
+          const profileText=await profilePage.locator('body').innerText().catch(()=>'');
+          countryMatch=profileText.match(/(?:^|\n)Country\s*\n?\s*([^\n]+)/i)||countryMatch;
+        }
+      }finally{await profilePage.close();}
       if(countryMatch&&countryMatch[1]){
         stock.saCountry=countryMatch[1].trim();
         if(!stock.domicile||stock.domicileStatus==='review'){stock.domicile=stock.saCountry;stock.domicileStatus='sa-detected';}
