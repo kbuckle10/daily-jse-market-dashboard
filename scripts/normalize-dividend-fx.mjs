@@ -16,6 +16,20 @@ const data=readData();
 let queue=data.stocks;
 if(ONLY_TICKER)queue=queue.filter(s=>String(s.ticker).toUpperCase()===ONLY_TICKER);
 if(ONLY_TICKER&&!queue.length)throw new Error(`Ticker ${ONLY_TICKER} not found in data.js`);
+function indicatedYieldFromJmd(s){
+  const price=Number(s.price),jmd=Number(s.latestDividendJmd);
+  if(!(price>0)||!Number.isFinite(jmd))return;
+  if(String(s.yieldBasis||'')==='indicated-first-public-dividend'){
+    s.indicatedDividendJmd=jmd;
+    s.indicatedYield=Number((jmd/price*100).toFixed(2));
+    s.trailingYield=s.indicatedYield;
+    s.ttmDps=jmd;
+    s.ttmDpsCurrency='JMD';
+    s.ttmDpsStatus='indicated-first-public-dividend-fx-normalized';
+    s.ttmDividendCount=1;
+    s.dividendDataStatus='validated-indicated-yield';
+  }
+}
 for(const s of queue){
   const pendingForeignSa=/^sa-newer-declaration$/i.test(String(s.latestDividendDataStatus||''))
     && String(s.latestDividendDeclaredAmountStatus||'')==='pending-official-jse-declaration'
@@ -42,11 +56,11 @@ for(const s of queue){
   s.latestDividendDeclaredAmountStatus='official-or-native';
   if(!Number.isFinite(amount))continue;
   if(currency==='JMD'){
-    s.latestDividendJmd=amount;s.latestDividendFxRate=1;s.latestDividendFxDate=null;s.latestDividendFxSource='native JMD declaration';s.latestDividendDisplayCurrency='JMD';continue;
+    s.latestDividendJmd=amount;s.latestDividendFxRate=1;s.latestDividendFxDate=null;s.latestDividendFxSource='native JMD declaration';s.latestDividendDisplayCurrency='JMD';indicatedYieldFromJmd(s);continue;
   }
   const basis=iso(s.exDate)||iso(s.recordDate)||iso(s.payDate)||new Date().toISOString().slice(0,10);
   const rate=await fxRate(currency,basis);
-  if(rate){s.latestDividendJmd=Number((amount*rate).toFixed(6));s.latestDividendFxRate=Number(rate.toFixed(6));s.latestDividendFxDate=basis;s.latestDividendFxSource='Frankfurter historical FX (ECB/reference-rate based where supported)';s.latestDividendDisplayCurrency=amount<0.01?'JMD':currency;s.latestDividendFxStatus='converted';}
+  if(rate){s.latestDividendJmd=Number((amount*rate).toFixed(6));s.latestDividendFxRate=Number(rate.toFixed(6));s.latestDividendFxDate=basis;s.latestDividendFxSource='Frankfurter historical FX (ECB/reference-rate based where supported)';s.latestDividendDisplayCurrency=amount<0.01?'JMD':currency;s.latestDividendFxStatus='converted';indicatedYieldFromJmd(s);}
   else{s.latestDividendJmd=null;s.latestDividendFxRate=null;s.latestDividendFxDate=basis;s.latestDividendFxSource=null;s.latestDividendDisplayCurrency=currency;s.latestDividendFxStatus='unavailable';}
 }
 writeData(data);
