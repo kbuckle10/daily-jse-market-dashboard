@@ -20,13 +20,29 @@ async function firstDividendRow(page,fallbackCurrency='JMD'){
   return null;
 }
 
+const OFFICIAL_DIVIDEND_OVERRIDES={
+  QAINC:{amount:0.0073,currency:'USD',exDate:'Oct 9, 2026',recordDate:'Oct 9, 2026',payDate:'Oct 23, 2026',url:'https://www.jamstockex.com/',note:'Official JSE revised declaration: USD 0.0073 per stock unit'}
+};
+function applyOfficialOverride(s){
+  const o=OFFICIAL_DIVIDEND_OVERRIDES[String(s.ticker||'').toUpperCase()];
+  if(!o)return false;
+  const eventDate=Math.max(dateValue(o.exDate),dateValue(o.recordDate),dateValue(o.payDate));
+  const currentDate=Math.max(dateValue(s.exDate),dateValue(s.recordDate),dateValue(s.payDate));
+  if(eventDate<currentDate)return false;
+  s.latestDividend=o.amount;s.latestDividendCurrency=o.currency;s.latestDividendOriginalAmount=o.amount;s.latestDividendOriginalCurrency=o.currency;
+  s.latestDividendDeclaredAmountStatus='official-jse-override';s.latestDividendDataStatus='official-jse-override';
+  s.exDate=o.exDate;s.recordDate=o.recordDate;s.payDate=o.payDate;s.dividendUrl=s.jse||o.url;
+  s.dividendStatus=`Official JSE dividend (${o.currency})`;s.jseDividendCurrencyHint=o.currency;
+  s.indicatedDividendDps=o.amount;s.indicatedDividendCurrency=o.currency;s.yieldBasis='indicated-first-public-dividend';
+  return true;
+}
 const data=readData();let queue=data.stocks;if(ONLY_TICKER)queue=queue.filter(s=>String(s.ticker).toUpperCase()===ONLY_TICKER);if(ONLY_TICKER&&!queue.length)throw new Error(`Ticker ${ONLY_TICKER} not found in data.js`);
 const browser=await chromium.launch({headless:true});const context=await browser.newContext({viewport:{width:1440,height:1000},userAgent:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/151 Safari/537.36'});
 for(const s of queue){const page=await context.newPage();try{
-  const source=saDividendSource(s),url=source.url;if(!await goto(page,url)){s.saLatestDividendStatus='scraper-error';continue;}await page.waitForTimeout(500);
+  const officialOverride=applyOfficialOverride(s);const source=saDividendSource(s),url=source.url;if(!await goto(page,url)){s.saLatestDividendStatus='scraper-error';continue;}await page.waitForTimeout(500);
   const frequency=await payoutFrequency(page);if(frequency){s.dividendFrequency=frequency;s.dividendFrequencySource='StockAnalysis Dividends';s.dividendFrequencyUrl=url;s.dividendFrequencyUpdated=new Date().toISOString().slice(0,10);s.dividendFrequencyStatus='captured';}else{s.dividendFrequencyStatus='not-found';}
   const row=await firstDividendRow(page,source.currency);if(!row||row.amount==null){s.saLatestDividendStatus='not-found';continue;}
-  const existingDate=Math.max(dateValue(s.exDate),dateValue(s.recordDate),dateValue(s.payDate));const saDate=Math.max(dateValue(row.exDate),dateValue(row.recordDate),dateValue(row.payDate));
+  if(officialOverride){console.log(`${s.ticker}: official dividend override ${s.latestDividendCurrency} ${s.latestDividend}; pay=${s.payDate}`);continue;}const existingDate=Math.max(dateValue(s.exDate),dateValue(s.recordDate),dateValue(s.payDate));const saDate=Math.max(dateValue(row.exDate),dateValue(row.recordDate),dateValue(row.payDate));
   s.saLatestDividendStatus='captured';s.saLatestDividend={amount:row.amount,currency:source.primary?source.currency:row.currency,exDate:row.exDate,recordDate:row.recordDate,payDate:row.payDate,url,listing:source.label};
   if(source.primary&&!source.jmse){s.latestDividend=row.amount;s.latestDividendCurrency=source.currency;s.latestDividendOriginalAmount=row.amount;s.latestDividendOriginalCurrency=source.currency;s.latestDividendDeclaredAmountStatus='primary-listing-source';s.latestDividendDataStatus='validated-primary-listing';s.exDate=row.exDate||s.exDate||'N/A';s.recordDate=row.recordDate||s.recordDate||'N/A';s.payDate=row.payDate||s.payDate||'N/A';s.dividendUrl=url;s.dividendStatus=`Primary listing ${String(s.primaryListing.market).toUpperCase()} dividend (${source.currency})`;console.log(`${s.ticker}: primary-listing dividend ${source.currency} ${row.amount}; pay=${row.payDate}; frequency=${frequency||'N/A'}`);continue;}
   if(saDate>existingDate){const hint=originalCurrencyHint(s);s.exDate=row.exDate||s.exDate||'N/A';s.recordDate=row.recordDate||s.recordDate||'N/A';s.payDate=row.payDate||s.payDate||'N/A';s.dividendUrl=url;s.latestDividendDataStatus='sa-newer-declaration';if(source.jmse){s.latestDividend=row.amount;s.latestDividendCurrency='JMD';s.latestDividendJmd=row.amount;s.latestDividendJmdEquivalent=row.amount;s.latestDividendOriginalAmount=null;s.latestDividendOriginalCurrency=hint;s.latestDividendOriginalCurrencyBasis=hint==='JMD'?'JSE dividend history / native JMD':'JSE dividend history hint; official newest-event amount pending';s.latestDividendDeclaredAmountStatus=hint==='JMD'?'native-jmd':'pending-official-jse-declaration';s.dividendStatus=hint==='JMD'?'StockAnalysis latest declared dividend (JMSE, JMD)':`StockAnalysis newer declared dividend (JMSE JMD equivalent) — historical JSE currency ${hint}; official newest-event amount pending`;}
