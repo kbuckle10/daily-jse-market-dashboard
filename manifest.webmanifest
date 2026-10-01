@@ -1,15 +1,11 @@
 {
-  "id": "./",
+  "id": "/daily-jse-market-dashboard/",
   "name": "JSE Dividend Dashboard",
   "short_name": "JSE Dashboard",
   "description": "Daily Jamaica Stock Exchange dividend investor dashboard",
-  "start_url": "./",
-  "scope": "./",
+  "start_url": "/daily-jse-market-dashboard/",
+  "scope": "/daily-jse-market-dashboard/",
   "display": "standalone",
-  "display_override": [
-    "standalone",
-    "minimal-ui"
-  ],
   "background_color": "#05080d",
   "theme_color": "#05080d",
   "prefer_related_applications": false,
