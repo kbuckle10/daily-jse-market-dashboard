@@ -50,7 +50,7 @@ jobs:
               exit 0
             fi
           fi
-          # 4:30 PM Jamaica is the primary run. 5:00 PM and 6:00 PM are fallbacks:
+          # 4:30 PM Jamaica is the primary run. 5:05 PM and 6:05 PM are fallbacks:
           # skip either fallback when a fresh post-4:30 PM Jamaica dataset already exists.
           if [ "$EVENT_NAME" != "schedule" ] || [ "$EVENT_SCHEDULE" = "30 21 * * 1-5" ]; then echo "run_refresh=true" >> "$GITHUB_OUTPUT"; exit 0; fi
           node <<'NODE' >/tmp/guard
