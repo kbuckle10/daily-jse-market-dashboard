@@ -1,11 +1,11 @@
-const CACHE='jse-dashboard-shell-v3';
+const CACHE='jse-dashboard-shell-v4';
 const BASE='/daily-jse-market-dashboard/';
 const SHELL=[
   BASE,
   BASE+'index.html',
   BASE+'manifest.webmanifest',
-  BASE+'icon-192.png',
-  BASE+'icon-512.png'
+  BASE+'icon-192-rgba.png',
+  BASE+'icon-512-maskable.png'
 ];
 
 self.addEventListener('install',event=>{
