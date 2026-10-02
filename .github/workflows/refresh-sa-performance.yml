@@ -101,8 +101,15 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '22'
-      - run: npm install
-      - run: npx playwright install chromium
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.npm
+            ~/.cache/ms-playwright
+          key: jse-node-playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+      - run: npm ci
+      - name: Ensure Chromium is available
+        run: npx playwright install chromium
       - uses: actions/download-artifact@v4
         with:
           name: baseline
@@ -122,7 +129,6 @@ jobs:
           npm run refresh:jse || true
           npm run refresh:jse-links || true
           npm run refresh:jse-actions || true
-          npm run refresh:dividend-fx || true
           npm run refresh:book-value || true
       - uses: actions/upload-artifact@v4
         with:
