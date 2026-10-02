@@ -98,6 +98,33 @@ for(const s of queue){
   }
 
   const currency=String(s.latestDividendCurrency||'JMD').toUpperCase();
+  // Keep today's valuation FX separate from the event conversion. Current
+  // income comparisons use this field; historical dividend records remain frozen.
+  if(currency!=='JMD'){
+    const currentFx=await fxRate(currency,null);
+    const currentRate=Number(currentFx?.rate);
+    if(Number.isFinite(currentRate)&&currentRate>0){
+      s.currentFxRate=Number(currentRate.toFixed(6));
+      s.currentFxDate=new Date().toISOString().slice(0,10);
+      s.currentFxSource=currentFx.source;
+      const ttmCurrency=String(s.ttmDpsCurrency||'').toUpperCase();
+      const foreignTtm=ttmCurrency===currency?Number(s.ttmDps):null;
+      if(Number.isFinite(foreignTtm)&&foreignTtm>0&&Number(s.price)>0){
+        s.currentAnnualDpsJmd=Number((foreignTtm*currentRate).toFixed(6));
+        s.currentFxYield=Number((s.currentAnnualDpsJmd/Number(s.price)*100).toFixed(2));
+        s.trailingYield=s.currentFxYield;
+        s.ttmDpsJmd=s.currentAnnualDpsJmd;
+      }else if(String(s.yieldBasis||'')==='indicated-first-public-dividend'&&Number.isFinite(Number(s.latestDividend))&&Number(s.price)>0){
+        s.currentAnnualDpsJmd=Number((Number(s.latestDividend)*currentRate).toFixed(6));
+        s.currentFxYield=Number((s.currentAnnualDpsJmd/Number(s.price)*100).toFixed(2));
+        s.trailingYield=s.currentFxYield;
+        s.indicatedYield=s.currentFxYield;
+        s.ttmDps=s.currentAnnualDpsJmd;
+        s.ttmDpsCurrency='JMD';
+        s.ttmDpsJmd=s.currentAnnualDpsJmd;
+      }
+    }
+  }
   const amount=Number(s.latestDividend);
   s.latestDividendOriginalAmount=Number.isFinite(amount)?amount:null;
   s.latestDividendOriginalCurrency=currency;
