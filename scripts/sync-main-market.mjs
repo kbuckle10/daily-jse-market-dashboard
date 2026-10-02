@@ -54,7 +54,10 @@ const merged = master.stocks.map((m, i) => {
     rank: i + 1,
     ticker,
     company: m.company || prior.company || ticker,
+    // Investment-sector taxonomy comes from the curated master dataset.
+    // Exchange/JSE classification is retained separately by discover-jse-main-market.mjs.
     sector: m.sector || prior.sector || 'Other',
+    jseSector: prior.jseSector ?? null,
     saCountry: prior.saCountry ?? m.saCountry ?? null,
     domicile: prior.domicile ?? m.domicile ?? null,
     domicileStatus: prior.domicileStatus ?? m.domicileStatus ?? 'review',
