@@ -107,7 +107,7 @@ jobs:
             ~/.npm
             ~/.cache/ms-playwright
           key: jse-node-playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-      - run: npm ci
+      - run: npm install
       - name: Ensure Chromium is available
         run: npx playwright install chromium
       - uses: actions/download-artifact@v4
