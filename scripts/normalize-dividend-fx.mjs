@@ -23,6 +23,14 @@ async function fxRate(currency,date){
       throw new Error('USD buy/sell rates not found');
     }catch(e){console.warn(`BOJ USD/JMD: ${e.message}`);}
   }
+  // Barbados dollar is officially pegged at BBD 2 = USD 1.
+  if(currency==='BBD'){
+    try{
+      const usd=await fxRate('USD',date);
+      const usdJmd=Number(usd?.rate);
+      if(Number.isFinite(usdJmd)&&usdJmd>0)return {rate:usdJmd/2,source:'BOJ USD/JMD midpoint; official BBD 2:USD 1 peg'};
+    }catch(e){console.warn('BBD/JMD cross: '+e.message);}
+  }
   // Frankfurter does not provide TTD/JMD. Derive the cross from BOJ's
   // latest USD/JMD midpoint and the Trinidad & Tobago dollar's long-standing
   // USD conversion basis. This is for JMD-equivalent display/yield math.
