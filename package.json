@@ -8,6 +8,7 @@
     "refresh:sa-research": "node scripts/refresh-sa-research.mjs && node scripts/refresh-sa-statistics.mjs && node scripts/refresh-sa-cashflow.mjs && node refresh-sa-ffo.mjs && node scripts/refresh-property-ffo-official.mjs",
     "refresh:sa-latest-dividend": "node scripts/refresh-sa-latest-dividend.mjs",
     "refresh:dividend-fx": "node scripts/normalize-dividend-fx.mjs",
+    "validate:dividends": "node scripts/validate-dividend-integrity.mjs",
     "refresh:dividend-ticker": "node scripts/refresh-dividend-ticker.mjs",
     "refresh:crosslisted": "node scripts/refresh-crosslisted-primary.mjs",
     "refresh:book-value": "node scripts/refresh-book-value.mjs",
