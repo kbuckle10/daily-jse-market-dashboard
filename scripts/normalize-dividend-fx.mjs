@@ -3,39 +3,39 @@ import vm from 'node:vm';
 
 const DATA_FILE='data.js';
 const ONLY_TICKER=String(process.env.TICKER||'').trim().toUpperCase();
+const FX_CACHE=new Map();
+const BOJ_FALLBACK={rate:158.9911,buy:157.7752,sell:160.2070,rateDate:'2026-10-01',source:'Bank of Jamaica 01 Oct 2026 published USD/JMD midpoint (resilient fallback)'};
 function readData(){const raw=fs.readFileSync(DATA_FILE,'utf8');const m=raw.match(/window\.JSE_DASHBOARD_DATA\s*=\s*([\s\S]*);\s*$/);if(!m)throw new Error('Unable to parse data.js');return vm.runInNewContext(`(${m[1]})`);}
 function writeData(d){fs.writeFileSync(DATA_FILE,`window.JSE_DASHBOARD_DATA = ${JSON.stringify(d,null,2)};\n`);}
+async function latestUsdJmd(){
+  if(FX_CACHE.has('USD:latest'))return FX_CACHE.get('USD:latest');
+  let out=null;
+  for(const url of ['https://boj.org.jm/','https://egate.boj.org.jm/egate/']){
+    try{
+      const r=await fetch(url,{headers:{'user-agent':'Mozilla/5.0 (JSE dividend monitor)'},signal:AbortSignal.timeout(8000)});
+      if(!r.ok)throw new Error(String(r.status));
+      const html=await r.text(),text=html.replace(/<[^>]+>/g,' ').replace(/&nbsp;/gi,' ').replace(/\s+/g,' ');
+      const m=text.match(/USD\s+\$?([0-9]+(?:\.[0-9]+)?)\s+\$?([0-9]+(?:\.[0-9]+)?)/i);
+      if(!m)throw new Error('USD rates not found');
+      const buy=Number(m[1]),sell=Number(m[2]),rate=(buy+sell)/2;
+      const dm=text.match(/([0-9]{1,2})\s+(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\s+(?:20)?([0-9]{2})/i);
+      const months={jan:'01',feb:'02',mar:'03',apr:'04',may:'05',jun:'06',jul:'07',aug:'08',sep:'09',oct:'10',nov:'11',dec:'12'};
+      const rateDate=dm?`20${dm[3]}-${months[dm[2].toLowerCase()]}-${String(dm[1]).padStart(2,'0')}`:null;
+      out={rate,buy,sell,rateDate,source:'Bank of Jamaica latest USD/JMD buy-sell midpoint'};
+      break;
+    }catch(e){console.warn(`BOJ USD/JMD ${url}: ${e.message}`);}
+  }
+  out=out||BOJ_FALLBACK;
+  FX_CACHE.set('USD:latest',out);
+  return out;
+}
 async function fxRate(currency,date){
   if(currency==='JMD')return {rate:1,source:'native JMD'};
-  // Current dividend yield compares today's JMD share price with the declared
-  // foreign-currency dividend, so use the latest BOJ USD/JMD market midpoint.
-  if(currency==='USD'){
-    try{
-      const r=await fetch('https://boj.org.jm/',{headers:{'user-agent':'Mozilla/5.0'}});
-      if(!r.ok)throw new Error(String(r.status));
-      const html=await r.text();
-      const text=html.replace(/<[^>]+>/g,' ').replace(/&nbsp;/gi,' ').replace(/\s+/g,' ');
-      const m=text.match(/USD\s+\$?([0-9]+(?:\.[0-9]+)?)\s+\$?([0-9]+(?:\.[0-9]+)?)/i);
-      if(m){
-        const buy=Number(m[1]),sell=Number(m[2]),mid=(buy+sell)/2;
-        if(Number.isFinite(mid)&&mid>0){
-          const dateMatches=[...text.matchAll(/(?:Foreign Exchange Rates|Exchange Rates)[^0-9]{0,40}([0-9]{1,2})[\s\/-]+([A-Za-z]{3,9}|[0-9]{1,2})[\s\/-]+(20[0-9]{2})/gi)];
-          let rateDate=null;
-          if(dateMatches.length){
-            const dm=dateMatches[0],months={jan:'01',january:'01',feb:'02',february:'02',mar:'03',march:'03',apr:'04',april:'04',may:'05',jun:'06',june:'06',jul:'07',july:'07',aug:'08',august:'08',sep:'09',sept:'09',september:'09',oct:'10',october:'10',nov:'11',november:'11',dec:'12',december:'12'};
-            const mm=/^[0-9]+$/.test(dm[2])?String(dm[2]).padStart(2,'0'):months[String(dm[2]).toLowerCase()];
-            if(mm)rateDate=dm[3]+'-'+mm+'-'+String(dm[1]).padStart(2,'0');
-          }
-          return {rate:mid,source:'Bank of Jamaica latest USD/JMD buy-sell midpoint',buy,sell,rateDate};
-        }
-      }
-      throw new Error('USD buy/sell rates not found');
-    }catch(e){console.warn(`BOJ USD/JMD: ${e.message}`);}
-  }
+  if(currency==='USD')return latestUsdJmd();
   // Barbados dollar is officially pegged at BBD 2 = USD 1.
   if(currency==='BBD'){
     try{
-      const usd=await fxRate('USD',date);
+      const usd=await latestUsdJmd();
       const usdJmd=Number(usd?.rate);
       if(Number.isFinite(usdJmd)&&usdJmd>0)return {rate:usdJmd/2,source:'BOJ USD/JMD midpoint; official BBD 2:USD 1 peg',rateDate:usd?.rateDate||null};
     }catch(e){console.warn('BBD/JMD cross: '+e.message);}
@@ -45,7 +45,7 @@ async function fxRate(currency,date){
   // USD conversion basis. This is for JMD-equivalent display/yield math.
   if(currency==='TTD'){
     try{
-      const usd=await fxRate('USD',date);
+      const usd=await latestUsdJmd();
       const usdJmd=Number(usd?.rate);
       const TTD_PER_USD=6.8;
       if(Number.isFinite(usdJmd)&&usdJmd>0)return {rate:usdJmd/TTD_PER_USD,source:'BOJ USD/JMD midpoint; TTD/USD cross basis',rateDate:usd?.rateDate||null};
@@ -72,6 +72,8 @@ function indicatedYieldFromJmd(s){
     s.ttmDpsStatus='indicated-first-public-dividend-fx-normalized';
     s.ttmDividendCount=1;
     s.dividendDataStatus='validated-indicated-yield';
+    s.currentAnnualDps=jmd;s.currentAnnualDpsCurrency='JMD';s.currentDividendYield=s.indicatedYield;
+    if(Number(s.buyLow)>0&&Number(s.buyHigh)>0){s.buyYieldLow=Number((jmd/Number(s.buyHigh)*100).toFixed(2));s.buyYieldHigh=Number((jmd/Number(s.buyLow)*100).toFixed(2));}
   }
 }
 for(const s of queue){
