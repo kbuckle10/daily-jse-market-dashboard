@@ -18,7 +18,16 @@ async function fxRate(currency,date){
       const m=text.match(/USD\s+\$?([0-9]+(?:\.[0-9]+)?)\s+\$?([0-9]+(?:\.[0-9]+)?)/i);
       if(m){
         const buy=Number(m[1]),sell=Number(m[2]),mid=(buy+sell)/2;
-        if(Number.isFinite(mid)&&mid>0)return {rate:mid,source:'Bank of Jamaica latest USD/JMD buy-sell midpoint',buy,sell};
+        if(Number.isFinite(mid)&&mid>0){
+          const dateMatches=[...text.matchAll(/(?:Foreign Exchange Rates|Exchange Rates)[^0-9]{0,40}([0-9]{1,2})[\s\/-]+([A-Za-z]{3,9}|[0-9]{1,2})[\s\/-]+(20[0-9]{2})/gi)];
+          let rateDate=null;
+          if(dateMatches.length){
+            const dm=dateMatches[0],months={jan:'01',january:'01',feb:'02',february:'02',mar:'03',march:'03',apr:'04',april:'04',may:'05',jun:'06',june:'06',jul:'07',july:'07',aug:'08',august:'08',sep:'09',sept:'09',september:'09',oct:'10',october:'10',nov:'11',november:'11',dec:'12',december:'12'};
+            const mm=/^[0-9]+$/.test(dm[2])?String(dm[2]).padStart(2,'0'):months[String(dm[2]).toLowerCase()];
+            if(mm)rateDate=dm[3]+'-'+mm+'-'+String(dm[1]).padStart(2,'0');
+          }
+          return {rate:mid,source:'Bank of Jamaica latest USD/JMD buy-sell midpoint',buy,sell,rateDate};
+        }
       }
       throw new Error('USD buy/sell rates not found');
     }catch(e){console.warn(`BOJ USD/JMD: ${e.message}`);}
@@ -28,7 +37,7 @@ async function fxRate(currency,date){
     try{
       const usd=await fxRate('USD',date);
       const usdJmd=Number(usd?.rate);
-      if(Number.isFinite(usdJmd)&&usdJmd>0)return {rate:usdJmd/2,source:'BOJ USD/JMD midpoint; official BBD 2:USD 1 peg'};
+      if(Number.isFinite(usdJmd)&&usdJmd>0)return {rate:usdJmd/2,source:'BOJ USD/JMD midpoint; official BBD 2:USD 1 peg',rateDate:usd?.rateDate||null};
     }catch(e){console.warn('BBD/JMD cross: '+e.message);}
   }
   // Frankfurter does not provide TTD/JMD. Derive the cross from BOJ's
@@ -39,7 +48,7 @@ async function fxRate(currency,date){
       const usd=await fxRate('USD',date);
       const usdJmd=Number(usd?.rate);
       const TTD_PER_USD=6.8;
-      if(Number.isFinite(usdJmd)&&usdJmd>0)return {rate:usdJmd/TTD_PER_USD,source:'BOJ USD/JMD midpoint; TTD/USD cross basis'};
+      if(Number.isFinite(usdJmd)&&usdJmd>0)return {rate:usdJmd/TTD_PER_USD,source:'BOJ USD/JMD midpoint; TTD/USD cross basis',rateDate:usd?.rateDate||null};
     }catch(e){console.warn(`TTD/JMD cross: ${e.message}`);}
   }
   const d=date&&/^\d{4}-\d{2}-\d{2}$/.test(date)?date:new Date().toISOString().slice(0,10);
@@ -105,7 +114,7 @@ for(const s of queue){
     const currentRate=Number(currentFx?.rate);
     if(Number.isFinite(currentRate)&&currentRate>0){
       s.currentFxRate=Number(currentRate.toFixed(6));
-      s.currentFxDate=new Date().toISOString().slice(0,10);
+      s.currentFxDate=currentFx.rateDate||new Date().toISOString().slice(0,10);
       s.currentFxSource=currentFx.source;
       const ttmCurrency=String(s.ttmDpsCurrency||'').toUpperCase();
       const foreignTtm=ttmCurrency===currency?Number(s.ttmDps):null;
@@ -135,7 +144,7 @@ for(const s of queue){
   }
   const basis=iso(s.exDate)||iso(s.recordDate)||iso(s.payDate)||new Date().toISOString().slice(0,10);
   const fx=await fxRate(currency,basis);const rate=Number(fx?.rate);
-  if(Number.isFinite(rate)&&rate>0){s.latestDividendJmd=Number((amount*rate).toFixed(6));s.latestDividendJmdEquivalent=s.latestDividendJmd;s.latestDividendFxRate=Number(rate.toFixed(6));s.latestDividendFxDate=basis;s.latestDividendFxSource=fx.source;s.latestDividendFxBuy=fx.buy??null;s.latestDividendFxSell=fx.sell??null;s.latestDividendDisplayCurrency=currency;s.latestDividendFxStatus='converted';indicatedYieldFromJmd(s);}
+  if(Number.isFinite(rate)&&rate>0){s.latestDividendJmd=Number((amount*rate).toFixed(6));s.latestDividendJmdEquivalent=s.latestDividendJmd;s.latestDividendFxRate=Number(rate.toFixed(6));s.latestDividendFxDate=fx.rateDate||basis;s.latestDividendFxSource=fx.source;s.latestDividendFxBuy=fx.buy??null;s.latestDividendFxSell=fx.sell??null;s.latestDividendDisplayCurrency=currency;s.latestDividendFxStatus='converted';indicatedYieldFromJmd(s);}
   else{s.latestDividendJmd=null;s.latestDividendFxRate=null;s.latestDividendFxDate=basis;s.latestDividendFxSource=null;s.latestDividendDisplayCurrency=currency;s.latestDividendFxStatus='unavailable';}
 }
 writeData(data);
