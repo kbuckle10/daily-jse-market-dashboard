@@ -153,6 +153,8 @@ jobs:
           node scripts/merge-shards.mjs
       - name: Final dividend FX normalization
         run: npm run refresh:dividend-fx
+      - name: Validate dividend and yield integrity
+        run: npm run validate:dividends
       - name: Update market activity history from StockAnalysis collection
         run: node scripts/update-market-activity-history.mjs
       - name: Validate merged dataset
