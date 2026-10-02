@@ -26,6 +26,13 @@ for(const s of d.stocks||[]){
     if(!(n(s.indicatedYield)>0))errors.push(`${t}: indicated-first-public-dividend missing indicatedYield`);
     if(Math.abs((n(s.indicatedYield)??0)-(y??0))>0.05)errors.push(`${t}: indicatedYield and trailingYield disagree`);
   }
+  if(y!=null&&y>100)errors.push(`${t}: implausible trailing yield ${y}% (possible currency/double-FX error)`);
+}
+const sil=(d.stocks||[]).find(s=>s.ticker==='SIL');
+if(sil){
+  const sy=n(sil.trailingYield);
+  if(String(sil.ttmDpsCurrency||'').toUpperCase()!=='JMD')errors.push('SIL: annual DPS must be normalized to JMD');
+  if(!(sy>3&&sy<7))errors.push(`SIL: normalized trailing yield expected in 3-7% range, got ${sy}`);
 }
 const q=(d.stocks||[]).find(s=>s.ticker==='QAINC');
 if(q&&!(q.latestDividendCurrency==='USD'&&Math.abs(n(q.latestDividend)-0.0073)<1e-9&&n(q.trailingYield)>1))errors.push('QAINC: official USD declaration/normalized yield integrity failed');
