@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-02T06:20:49.060Z",
+  "updatedAt": "2026-10-02T13:26:16.991Z",
   "tickers": {
     "SEP": [
       {
@@ -109,7 +109,7 @@
         "valueTraded": 0,
         "trades": 0,
         "sharesOutstanding": 910890000,
-        "floatShares": 203360000
+        "floatShares": 207810000
       }
     ],
     "KW": [
