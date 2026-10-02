@@ -21,7 +21,7 @@ async function firstDividendRow(page,fallbackCurrency='JMD'){
 }
 
 const OFFICIAL_DIVIDEND_OVERRIDES={
-  QAINC:{amount:0.0073,currency:'USD',exDate:'Oct 9, 2026',recordDate:'Oct 9, 2026',payDate:'Oct 23, 2026',url:'https://www.jamstockex.com/',note:'Official JSE revised declaration: USD 0.0073 per stock unit'},
+  QAINC:{amount:0.0073,currency:'USD',firstPublic:true,exDate:'Oct 9, 2026',recordDate:'Oct 9, 2026',payDate:'Oct 23, 2026',url:'https://www.jamstockex.com/',note:'Official JSE revised declaration: USD 0.0073 per stock unit'},
   SCIJMD:{amount:0.00413,currency:'USD',exDate:'Oct 2, 2026',recordDate:'Oct 2, 2026',payDate:'Oct 23, 2026',url:'https://www.jamstockex.com/trading/instruments/?instrument=1600069',note:'SCI declares dividends in USD; JMD ordinary holders receive the JMD equivalent'}
 };
 function applyOfficialOverride(s){
@@ -34,7 +34,7 @@ function applyOfficialOverride(s){
   s.latestDividendDeclaredAmountStatus='official-jse-override';s.latestDividendDataStatus='official-jse-override';
   s.exDate=o.exDate;s.recordDate=o.recordDate;s.payDate=o.payDate;s.dividendUrl=s.jse||o.url;
   s.dividendStatus=`Official JSE dividend (${o.currency})`;s.jseDividendCurrencyHint=o.currency;
-  s.indicatedDividendDps=o.amount;s.indicatedDividendCurrency=o.currency;s.yieldBasis='indicated-first-public-dividend';
+  if(o.firstPublic){s.indicatedDividendDps=o.amount;s.indicatedDividendCurrency=o.currency;s.yieldBasis='indicated-first-public-dividend';}
   return true;
 }
 const data=readData();let queue=data.stocks;if(ONLY_TICKER)queue=queue.filter(s=>String(s.ticker).toUpperCase()===ONLY_TICKER);if(ONLY_TICKER&&!queue.length)throw new Error(`Ticker ${ONLY_TICKER} not found in data.js`);
