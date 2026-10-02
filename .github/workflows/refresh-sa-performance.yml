@@ -106,7 +106,9 @@ jobs:
           path: |
             ~/.npm
             ~/.cache/ms-playwright
-          key: jse-node-playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          key: jse-node-playwright-${{ runner.os }}-${{ hashFiles('package.json') }}
+          restore-keys: |
+            jse-node-playwright-${{ runner.os }}-
       - run: npm install
       - name: Ensure Chromium is available
         run: npx playwright install chromium
@@ -126,8 +128,8 @@ jobs:
           npm run refresh:sa-research || true
           node scripts/refresh-sa-latest-dividend.mjs || true
           npm run refresh:crosslisted || true
+          # refresh:jse already runs refresh-jse-links.mjs first; do not fetch links twice.
           npm run refresh:jse || true
-          npm run refresh:jse-links || true
           npm run refresh:jse-actions || true
           npm run refresh:book-value || true
       - uses: actions/upload-artifact@v4
