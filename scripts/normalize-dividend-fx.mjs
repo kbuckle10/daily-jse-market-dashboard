@@ -23,6 +23,17 @@ async function fxRate(currency,date){
       throw new Error('USD buy/sell rates not found');
     }catch(e){console.warn(`BOJ USD/JMD: ${e.message}`);}
   }
+  // Frankfurter does not provide TTD/JMD. Derive the cross from BOJ's
+  // latest USD/JMD midpoint and the Trinidad & Tobago dollar's long-standing
+  // USD conversion basis. This is for JMD-equivalent display/yield math.
+  if(currency==='TTD'){
+    try{
+      const usd=await fxRate('USD',date);
+      const usdJmd=Number(usd?.rate);
+      const TTD_PER_USD=6.8;
+      if(Number.isFinite(usdJmd)&&usdJmd>0)return {rate:usdJmd/TTD_PER_USD,source:'BOJ USD/JMD midpoint; TTD/USD cross basis'};
+    }catch(e){console.warn(`TTD/JMD cross: ${e.message}`);}
+  }
   const d=date&&/^\d{4}-\d{2}-\d{2}$/.test(date)?date:new Date().toISOString().slice(0,10);
   const url=`https://api.frankfurter.app/${d}?from=${currency}&to=JMD`;
   try{const r=await fetch(url);if(!r.ok)throw new Error(String(r.status));const j=await r.json();const n=Number(j?.rates?.JMD);return Number.isFinite(n)&&n>0?{rate:n,source:'Frankfurter historical FX'}:null;}catch(e){console.warn(`FX ${currency}/JMD ${d}: ${e.message}`);return null;}
