@@ -109,6 +109,25 @@ for(const s of queue){
   }
 
   const currency=String(s.latestDividendCurrency||'JMD').toUpperCase();
+  // SIL's StockAnalysis/JMSE annual DPS is already JMD even though its latest
+  // corporate-action declaration is USD. Do not FX-convert that annual JMD DPS.
+  if(String(s.ticker||'').toUpperCase()==='SIL'){
+    const annualJmd=Number(s.statisticsDividendPerShare??s.currentAnnualDps);
+    const price=Number(s.price);
+    if(Number.isFinite(annualJmd)&&annualJmd>0&&Number.isFinite(price)&&price>0){
+      s.ttmDps=annualJmd;
+      s.ttmDpsCurrency='JMD';
+      s.ttmDpsJmd=annualJmd;
+      s.currentAnnualDps=annualJmd;
+      s.currentAnnualDpsCurrency='JMD';
+      s.currentAnnualDpsJmd=annualJmd;
+      s.trailingYield=Number((annualJmd/price*100).toFixed(2));
+      s.currentDividendYield=s.trailingYield;
+      s.currentFxYield=s.trailingYield;
+      s.ttmDpsStatus='normalized-from-jmse-statistics-jmd';
+      s.dividendDataStatus='validated-fx-normalized';
+    }
+  }
   // Keep today's valuation FX separate from the event conversion. Current
   // income comparisons use this field; historical dividend records remain frozen.
   if(currency!=='JMD'){
