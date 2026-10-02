@@ -47,6 +47,19 @@ function indicatedYieldFromJmd(s){
   }
 }
 for(const s of queue){
+  // SCI declares ordinary dividends in USD even for the SCIJMD share class.
+  // JMD holders receive the JMD equivalent. JSE's raw corporate-action amount
+  // can therefore not be treated as a native-JMD DPS.
+  if(String(s.ticker||'').toUpperCase()==='SCIJMD'){
+    const annual=Number(s.currentAnnualDps),price=Number(s.price);
+    if(Number.isFinite(annual)&&annual>0&&Number.isFinite(price)&&price>0){
+      s.ttmDps=annual;
+      s.ttmDpsCurrency='JMD';
+      s.trailingYield=Number((annual/price*100).toFixed(2));
+      s.ttmDpsStatus='normalized-from-current-annual-dps-mixed-currency-history';
+      s.dividendDataStatus='validated-fx-normalized';
+    }
+  }
   const pendingForeignSa=/^sa-newer-declaration$/i.test(String(s.latestDividendDataStatus||''))
     && String(s.latestDividendDeclaredAmountStatus||'')==='pending-official-jse-declaration'
     && String(s.latestDividendOriginalCurrency||'JMD').toUpperCase()!=='JMD';
