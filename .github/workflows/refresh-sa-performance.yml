@@ -151,6 +151,8 @@ jobs:
         run: |
           cp baseline/data.js data.js
           node scripts/merge-shards.mjs
+      - name: Final dividend FX normalization
+        run: npm run refresh:dividend-fx
       - name: Update market activity history from StockAnalysis collection
         run: node scripts/update-market-activity-history.mjs
       - name: Validate merged dataset
@@ -166,6 +168,11 @@ jobs:
           const dup = d.stocks.map(s => s.ticker).filter((t, i, a) => a.indexOf(t) !== i);
           if (dup.length) throw Error(`Duplicate tickers: ${dup.join(',')}`);
 
+          const qainc=d.stocks.find(s=>s.ticker==='QAINC');
+          if(qainc){
+            if(qainc.latestDividendCurrency!=='USD'||Number(qainc.latestDividend)!==0.0073)throw Error('QAINC official USD dividend was overwritten');
+            if(!(Number(qainc.indicatedYield)>1))throw Error(`QAINC indicated yield not FX-normalized: ${qainc.indicatedYield}`);
+          }
           const core = ['TJH','CAR','NCBFG','SVL','GK','JMMBGL','KW','SEP','LASD','LASM','BIL','SJ'];
           const requiredPerformance = ['dayJmd','dayPct','w1','m1','ytd','m3','m6','y1'];
           const errors = [];
