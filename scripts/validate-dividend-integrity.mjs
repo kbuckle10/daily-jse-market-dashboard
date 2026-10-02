@@ -1,0 +1,35 @@
+import fs from 'node:fs';
+import vm from 'node:vm';
+
+const raw=fs.readFileSync('data.js','utf8');
+const m=raw.match(/window\.JSE_DASHBOARD_DATA\s*=\s*([\s\S]*);\s*$/);
+if(!m)throw new Error('Unable to parse data.js');
+const d=vm.runInNewContext(`(${m[1]})`);
+const n=v=>v==null||!Number.isFinite(Number(v))?null:Number(v);
+const errors=[],warnings=[];
+const pctDiff=(a,b)=>Math.abs(a-b);
+for(const s of d.stocks||[]){
+  const t=String(s.ticker||'').toUpperCase(),price=n(s.price),ttm=n(s.ttmDps),y=n(s.trailingYield);
+  const tc=String(s.ttmDpsCurrency||'JMD').toUpperCase(),lc=String(s.latestDividendCurrency||'JMD').toUpperCase();
+  if(price>0&&ttm!=null&&ttm>=0&&y!=null&&tc==='JMD'){
+    const calc=ttm/price*100;
+    if(pctDiff(calc,y)>0.35)errors.push(`${t}: trailingYield ${y}% disagrees with JMD TTM DPS/price ${calc.toFixed(2)}%`);
+  }
+  if(n(s.latestDividend)!=null&&!['JMD','USD','TTD'].includes(lc))warnings.push(`${t}: unsupported/latest dividend currency ${lc}`);
+  if(lc!=='JMD'&&n(s.latestDividend)!=null&&!Number.isFinite(n(s.latestDividendJmd)))warnings.push(`${t}: foreign latest dividend lacks JMD equivalent`);
+  if(String(s.yieldBasis||'')==='indicated-first-public-dividend'){
+    if(!(n(s.indicatedYield)>0))errors.push(`${t}: indicated-first-public-dividend missing indicatedYield`);
+    if(Math.abs((n(s.indicatedYield)??0)-(y??0))>0.05)errors.push(`${t}: indicatedYield and trailingYield disagree`);
+  }
+}
+const q=(d.stocks||[]).find(s=>s.ticker==='QAINC');
+if(q&&!(q.latestDividendCurrency==='USD'&&Math.abs(n(q.latestDividend)-0.0073)<1e-9&&n(q.trailingYield)>1))errors.push('QAINC: official USD declaration/normalized yield integrity failed');
+const sci=(d.stocks||[]).find(s=>s.ticker==='SCIJMD');
+if(sci){
+  if(sci.latestDividendCurrency!=='USD')errors.push(`SCIJMD: latest declaration currency must be USD, got ${sci.latestDividendCurrency}`);
+  if(!(n(sci.latestDividend)>0.004&&n(sci.latestDividend)<0.005))errors.push(`SCIJMD: latest USD dividend amount unexpected: ${sci.latestDividend}`);
+  if(!(n(sci.trailingYield)>5))errors.push(`SCIJMD: normalized yield implausibly low: ${sci.trailingYield}`);
+}
+if(warnings.length)console.warn('Dividend integrity warnings:\n- '+warnings.join('\n- '));
+if(errors.length)throw new Error('Dividend integrity failed:\n- '+errors.join('\n- '));
+console.log(`Dividend integrity passed for ${d.stocks.length} stocks${warnings.length?` with ${warnings.length} warning(s)`:''}.`);
