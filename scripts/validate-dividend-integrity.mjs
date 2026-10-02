@@ -15,8 +15,13 @@ for(const s of d.stocks||[]){
     const calc=ttm/price*100;
     if(pctDiff(calc,y)>0.35)errors.push(`${t}: trailingYield ${y}% disagrees with JMD TTM DPS/price ${calc.toFixed(2)}%`);
   }
-  if(n(s.latestDividend)!=null&&!['JMD','USD','TTD'].includes(lc))warnings.push(`${t}: unsupported/latest dividend currency ${lc}`);
-  if(lc!=='JMD'&&n(s.latestDividend)!=null&&!Number.isFinite(n(s.latestDividendJmd)))warnings.push(`${t}: foreign latest dividend lacks JMD equivalent`);
+  if(n(s.latestDividend)!=null&&!['JMD','USD','TTD','BBD'].includes(lc))warnings.push(`${t}: unsupported/latest dividend currency ${lc}`);
+  if(lc!=='JMD'&&n(s.latestDividend)!=null&&!Number.isFinite(n(s.latestDividendJmd)))errors.push(`${t}: foreign latest dividend lacks JMD equivalent`);
+  if(lc!=='JMD'&&n(s.latestDividend)!=null){
+    if(!(n(s.currentFxRate)>0))errors.push(`${t}: foreign dividend lacks current-close FX rate`);
+    if(!s.currentFxDate)errors.push(`${t}: foreign dividend lacks current-close FX date`);
+    if(!s.currentFxSource)errors.push(`${t}: foreign dividend lacks current-close FX source`);
+  }
   if(String(s.yieldBasis||'')==='indicated-first-public-dividend'){
     if(!(n(s.indicatedYield)>0))errors.push(`${t}: indicated-first-public-dividend missing indicatedYield`);
     if(Math.abs((n(s.indicatedYield)??0)-(y??0))>0.05)errors.push(`${t}: indicatedYield and trailingYield disagree`);
