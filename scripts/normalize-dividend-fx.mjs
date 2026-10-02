@@ -6,10 +6,26 @@ const ONLY_TICKER=String(process.env.TICKER||'').trim().toUpperCase();
 function readData(){const raw=fs.readFileSync(DATA_FILE,'utf8');const m=raw.match(/window\.JSE_DASHBOARD_DATA\s*=\s*([\s\S]*);\s*$/);if(!m)throw new Error('Unable to parse data.js');return vm.runInNewContext(`(${m[1]})`);}
 function writeData(d){fs.writeFileSync(DATA_FILE,`window.JSE_DASHBOARD_DATA = ${JSON.stringify(d,null,2)};\n`);}
 async function fxRate(currency,date){
-  if(currency==='JMD')return 1;
+  if(currency==='JMD')return {rate:1,source:'native JMD'};
+  // Current dividend yield compares today's JMD share price with the declared
+  // foreign-currency dividend, so use the latest BOJ USD/JMD market midpoint.
+  if(currency==='USD'){
+    try{
+      const r=await fetch('https://boj.org.jm/',{headers:{'user-agent':'Mozilla/5.0'}});
+      if(!r.ok)throw new Error(String(r.status));
+      const html=await r.text();
+      const text=html.replace(/<[^>]+>/g,' ').replace(/&nbsp;/gi,' ').replace(/\s+/g,' ');
+      const m=text.match(/USD\s+\$?([0-9]+(?:\.[0-9]+)?)\s+\$?([0-9]+(?:\.[0-9]+)?)/i);
+      if(m){
+        const buy=Number(m[1]),sell=Number(m[2]),mid=(buy+sell)/2;
+        if(Number.isFinite(mid)&&mid>0)return {rate:mid,source:'Bank of Jamaica latest USD/JMD buy-sell midpoint',buy,sell};
+      }
+      throw new Error('USD buy/sell rates not found');
+    }catch(e){console.warn(`BOJ USD/JMD: ${e.message}`);}
+  }
   const d=date&&/^\d{4}-\d{2}-\d{2}$/.test(date)?date:new Date().toISOString().slice(0,10);
   const url=`https://api.frankfurter.app/${d}?from=${currency}&to=JMD`;
-  try{const r=await fetch(url);if(!r.ok)throw new Error(String(r.status));const j=await r.json();const n=Number(j?.rates?.JMD);return Number.isFinite(n)&&n>0?n:null;}catch(e){console.warn(`FX ${currency}/JMD ${d}: ${e.message}`);return null;}
+  try{const r=await fetch(url);if(!r.ok)throw new Error(String(r.status));const j=await r.json();const n=Number(j?.rates?.JMD);return Number.isFinite(n)&&n>0?{rate:n,source:'Frankfurter historical FX'}:null;}catch(e){console.warn(`FX ${currency}/JMD ${d}: ${e.message}`);return null;}
 }
 const iso=v=>{if(!v)return null;const d=new Date(v);return Number.isNaN(d.valueOf())?null:d.toISOString().slice(0,10);};
 const data=readData();
@@ -59,8 +75,8 @@ for(const s of queue){
     s.latestDividendJmd=amount;s.latestDividendFxRate=1;s.latestDividendFxDate=null;s.latestDividendFxSource='native JMD declaration';s.latestDividendDisplayCurrency='JMD';indicatedYieldFromJmd(s);continue;
   }
   const basis=iso(s.exDate)||iso(s.recordDate)||iso(s.payDate)||new Date().toISOString().slice(0,10);
-  const rate=await fxRate(currency,basis);
-  if(rate){s.latestDividendJmd=Number((amount*rate).toFixed(6));s.latestDividendFxRate=Number(rate.toFixed(6));s.latestDividendFxDate=basis;s.latestDividendFxSource='Frankfurter historical FX (ECB/reference-rate based where supported)';s.latestDividendDisplayCurrency=amount<0.01?'JMD':currency;s.latestDividendFxStatus='converted';indicatedYieldFromJmd(s);}
+  const fx=await fxRate(currency,basis);const rate=Number(fx?.rate);
+  if(Number.isFinite(rate)&&rate>0){s.latestDividendJmd=Number((amount*rate).toFixed(6));s.latestDividendJmdEquivalent=s.latestDividendJmd;s.latestDividendFxRate=Number(rate.toFixed(6));s.latestDividendFxDate=basis;s.latestDividendFxSource=fx.source;s.latestDividendFxBuy=fx.buy??null;s.latestDividendFxSell=fx.sell??null;s.latestDividendDisplayCurrency=currency;s.latestDividendFxStatus='converted';indicatedYieldFromJmd(s);}
   else{s.latestDividendJmd=null;s.latestDividendFxRate=null;s.latestDividendFxDate=basis;s.latestDividendFxSource=null;s.latestDividendDisplayCurrency=currency;s.latestDividendFxStatus='unavailable';}
 }
 writeData(data);
