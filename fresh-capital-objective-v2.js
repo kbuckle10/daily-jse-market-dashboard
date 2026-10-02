@@ -3,7 +3,7 @@
   const STORE='dailyJseTrackedTickersV2',MODEKEY='dailyJseFreshCapitalObjectiveV1',MODES=['balanced','income','value','growth'];
   const PROPERTY=new Set(['SML','KPREIT','CPFV','138SL','SRFJMD','FIRSTROCKJMD','XFUND']);
   const $=id=>document.getElementById(id),num=v=>v==null||!Number.isFinite(Number(v))?null:Number(v),clamp=v=>Math.max(0,Math.min(100,v)),fmt=(v,d=2)=>num(v)==null?'N/A':Number(v).toFixed(d);
-  const cy=s=>num(s.currentDividendYield)??num(s.trailingYield)??0,pb=s=>num(s.calculatedPbFromJsePrice)??num(s.pb),isProperty=s=>PROPERTY.has(String(s.ticker||'').toUpperCase())||/property|real estate|reit/i.test(String(s.sector||''));
+  const cy=s=>num(s.trailingYield)??num(s.currentDividendYield)??0,pb=s=>num(s.calculatedPbFromJsePrice)??num(s.pb),isProperty=s=>PROPERTY.has(String(s.ticker||'').toUpperCase())||/property|real estate|reit/i.test(String(s.sector||''));
   const tier=s=>{const r=String(s.rating||'').toLowerCase();return r.includes('strong buy')?5:r.includes('buy')?4:r.includes('hold')?3:r.includes('watch')?2:/avoid|sell/.test(r)?1:0};
   const scoreRange=(v,rules,f=50)=>{v=num(v);if(v==null)return f;for(const [t,s] of rules)if(t(v))return s;return f};
   const tracked=()=>{let a=[];try{a=JSON.parse(localStorage.getItem(STORE)||'[]')}catch{}const set=new Set(Array.isArray(a)?a.map(String):[]);return D.stocks.filter(s=>set.has(s.ticker));};
