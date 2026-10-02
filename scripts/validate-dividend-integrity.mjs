@@ -34,6 +34,13 @@ if(sil){
   if(String(sil.ttmDpsCurrency||'').toUpperCase()!=='JMD')errors.push('SIL: annual DPS must be normalized to JMD');
   if(!(sy>3&&sy<7))errors.push(`SIL: normalized trailing yield expected in 3-7% range, got ${sy}`);
 }
+const ghl=(d.stocks||[]).find(s=>s.ticker==='GHL');
+if(ghl){
+  const gy=n(ghl.trailingYield),py=n(ghl.primaryListingDividendYield);
+  if(!(gy>6&&gy<9))errors.push(`GHL: JMSE canonical yield expected in 6-9% range, got ${gy}`);
+  if(!(py>4&&py<7))errors.push(`GHL: TTSE reference yield expected in 4-7% range, got ${py}`);
+  if(gy!=null&&py!=null&&Math.abs(gy-py)<0.25)warnings.push('GHL: JMSE and TTSE yields are unexpectedly near-identical; verify cross-listing price basis');
+}
 const q=(d.stocks||[]).find(s=>s.ticker==='QAINC');
 if(q&&!(q.latestDividendCurrency==='USD'&&Math.abs(n(q.latestDividend)-0.0073)<1e-9&&n(q.trailingYield)>1))errors.push('QAINC: official USD declaration/normalized yield integrity failed');
 const sci=(d.stocks||[]).find(s=>s.ticker==='SCIJMD');
