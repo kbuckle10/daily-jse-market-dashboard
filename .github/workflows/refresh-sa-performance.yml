@@ -11,10 +11,10 @@ on:
       - 'package.json'
       - 'package-lock.json'
   schedule:
-    - cron: '30 21 * * 1-5' # 4:30 PM Jamaica primary (UTC cron)
-    - cron: '5 22 * * 1-5'  # 5:05 PM Jamaica guarded fallback
-    - cron: '5 23 * * 1-5'  # 6:05 PM Jamaica guarded safety fallback
-    - cron: '40 22 * * 1-5' # TEMP schedule-event test: 5:40 PM Jamaica
+    # One off-peak trigger. GitHub documents that scheduled events can be delayed
+    # or dropped under scheduler load; avoid :00/:30 and use Jamaica time directly.
+    - cron: '43 16 * * 1-5'
+      timezone: 'America/Jamaica'
 
 permissions:
   contents: write
@@ -51,13 +51,9 @@ jobs:
               exit 0
             fi
           fi
-          # 4:30 PM Jamaica is the primary run. 5:05 PM and 6:05 PM are fallbacks:
-          # skip either fallback when a fresh post-4:30 PM Jamaica dataset already exists.
-          if [ "$EVENT_NAME" != "schedule" ] || [ "$EVENT_SCHEDULE" = "30 21 * * 1-5" ]; then echo "run_refresh=true" >> "$GITHUB_OUTPUT"; exit 0; fi
-          node <<'NODE' >/tmp/guard
-          const fs=require('fs'),vm=require('vm');const raw=fs.readFileSync('data.js','utf8'),m=raw.match(/window\.JSE_DASHBOARD_DATA\s*=\s*([\s\S]*);\s*$/);if(!m){console.log('RUN');process.exit()};const d=vm.runInNewContext(`(${m[1]})`),r=new Date(d.refreshedAt),n=new Date();if(Number.isNaN(r.valueOf())){console.log('RUN');process.exit()};const fmt=x=>new Intl.DateTimeFormat('en-CA',{timeZone:'America/Jamaica',year:'numeric',month:'2-digit',day:'2-digit'}).format(x);const p=new Intl.DateTimeFormat('en-US',{timeZone:'America/Jamaica',hour12:false,hour:'2-digit',minute:'2-digit'}).formatToParts(r),g=t=>Number(p.find(x=>x.type===t)?.value||0),post=g('hour')>16||(g('hour')===16&&g('minute')>=30),age=(n-r)/60000;console.log(fmt(r)===fmt(n)&&post&&age>=0&&age<=180?'SKIP':'RUN');
-          NODE
-          [ "$(tail -1 /tmp/guard)" = SKIP ] && echo "run_refresh=false" >> "$GITHUB_OUTPUT" || echo "run_refresh=true" >> "$GITHUB_OUTPUT"
+          # There is now a single weekday schedule, so every delivered schedule event
+          # is authoritative. Duplicate protection is handled by workflow concurrency.
+          echo "run_refresh=true" >> "$GITHUB_OUTPUT"
       - id: head
         if: steps.guard.outputs.run_refresh == 'true'
         run: echo "start_head=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
