@@ -27,7 +27,7 @@ function show(ticker){
 
 // Native dialog hosts the already verified standalone history page. Links remain functional as fallback.
 window.openCashFlowHistory=function(ticker){
- const url='./cashflow-history.html?v=20261008single5#'+encodeURIComponent(ticker);
+ const url='./cashflow-history.html?v=20261008single6#'+encodeURIComponent(ticker);
  let overlay=document.getElementById('cashflowHistoryOverlay');
  if(!overlay){
   overlay=document.createElement('div');overlay.id='cashflowHistoryOverlay';overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-label','Historical cash flow');
