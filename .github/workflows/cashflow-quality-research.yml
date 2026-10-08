@@ -46,6 +46,7 @@ jobs:
           node scripts/test-cashflow-history-retention.mjs
           node scripts/test-cashflow-persisted-retention.mjs
           node scripts/test-cashflow-history-store.mjs
+          node scripts/test-cashflow-committed-history.mjs
       - name: Collect five-stock historical statements (read only)
         run: node scripts/probe-cashflow-history.mjs
       - name: Validate and report historical cash flow
