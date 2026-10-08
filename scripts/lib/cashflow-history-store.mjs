@@ -2,7 +2,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {mergeHistoricalCashFlow} from './cashflow-history-retention.mjs';
-export const PILOT_CURRENCIES=Object.freeze({SEP:'JMD',TJH:'USD',NCBFG:'JMD',GK:'JMD',GHL:'TTD',CAR:'JMD',SVL:'JMD',JMMBGL:'JMD',KW:'JMD',LASD:'JMD',LASM:'JMD',BIL:'JMD',SJ:'JMD',QAINC:'JMD'});
+export const PILOT_CURRENCIES=Object.freeze({SEP:'JMD',TJH:'USD',NCBFG:'JMD',GK:'JMD',GHL:'TTD'});
 export function updateHistoryStore(previous,results,{now=new Date().toISOString()}={}){
  const old=previous&&typeof previous==='object'&&previous.stocks&&typeof previous.stocks==='object'?previous:{version:1,stocks:{}};
  const next={version:1,updatedAt:now,stocks:{...old.stocks}};
