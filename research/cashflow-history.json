@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-08T05:17:37.627Z",
+  "updatedAt": "2026-10-08T05:36:05.913Z",
   "stocks": {
     "SEP": {
       "history": {
@@ -292,6 +292,328 @@
           "freeCashFlow": 1054000000
         },
         "updatedAt": "2026-10-08T05:17:37.627Z"
+      }
+    },
+    "SVL": {
+      "history": {
+        "source": "StockAnalysis",
+        "currency": "JMD",
+        "units": "millions",
+        "annual": [
+          {
+            "period": "2021",
+            "operatingCashFlow": 2750000000,
+            "capitalExpenditures": -1851000000,
+            "freeCashFlow": 898680000
+          },
+          {
+            "period": "2022",
+            "operatingCashFlow": 3663000000,
+            "capitalExpenditures": -1497000000,
+            "freeCashFlow": 2166000000
+          },
+          {
+            "period": "2023",
+            "operatingCashFlow": 824430000,
+            "capitalExpenditures": -1008000000,
+            "freeCashFlow": -183320000
+          },
+          {
+            "period": "2024",
+            "operatingCashFlow": 1695000000,
+            "capitalExpenditures": -1049000000,
+            "freeCashFlow": 646100000
+          },
+          {
+            "period": "2025",
+            "operatingCashFlow": 2792000000,
+            "capitalExpenditures": -632420000,
+            "freeCashFlow": 2159000000
+          }
+        ],
+        "ttm": {
+          "period": "TTM",
+          "operatingCashFlow": 3456000000,
+          "capitalExpenditures": -740550000,
+          "freeCashFlow": 2716000000
+        },
+        "updatedAt": "2026-10-08T05:36:05.913Z"
+      }
+    },
+    "JMMBGL": {
+      "history": {
+        "source": "StockAnalysis",
+        "currency": "JMD",
+        "units": "millions",
+        "annual": [
+          {
+            "period": "2022",
+            "operatingCashFlow": 70641000000,
+            "capitalExpenditures": -495460000,
+            "freeCashFlow": 70146000000
+          },
+          {
+            "period": "2023",
+            "operatingCashFlow": 1758000000,
+            "capitalExpenditures": -1066000000,
+            "freeCashFlow": 692460000
+          },
+          {
+            "period": "2024",
+            "operatingCashFlow": -15030000000,
+            "capitalExpenditures": -564990000,
+            "freeCashFlow": -15595000000
+          },
+          {
+            "period": "2025",
+            "operatingCashFlow": -156520000,
+            "capitalExpenditures": -1026000000,
+            "freeCashFlow": -1183000000
+          },
+          {
+            "period": "2026",
+            "operatingCashFlow": 18240000000,
+            "capitalExpenditures": -731020000,
+            "freeCashFlow": 17509000000
+          }
+        ],
+        "ttm": {
+          "period": "TTM",
+          "operatingCashFlow": 10455000000,
+          "capitalExpenditures": -380150000,
+          "freeCashFlow": 10075000000
+        },
+        "updatedAt": "2026-10-08T05:36:05.913Z"
+      }
+    },
+    "KW": {
+      "history": {
+        "source": "StockAnalysis",
+        "currency": "JMD",
+        "units": "millions",
+        "annual": [
+          {
+            "period": "2021",
+            "operatingCashFlow": 3783000000,
+            "capitalExpenditures": -1097000000,
+            "freeCashFlow": 2686000000
+          },
+          {
+            "period": "2022",
+            "operatingCashFlow": 3819000000,
+            "capitalExpenditures": -2733000000,
+            "freeCashFlow": 1086000000
+          },
+          {
+            "period": "2023",
+            "operatingCashFlow": 3759000000,
+            "capitalExpenditures": -5771000000,
+            "freeCashFlow": -2011000000
+          },
+          {
+            "period": "2024",
+            "operatingCashFlow": 3371000000,
+            "capitalExpenditures": -2605000000,
+            "freeCashFlow": 765850000
+          },
+          {
+            "period": "2025",
+            "operatingCashFlow": 4256000000,
+            "capitalExpenditures": -2368000000,
+            "freeCashFlow": 1888000000
+          }
+        ],
+        "ttm": {
+          "period": "TTM",
+          "operatingCashFlow": 4304000000,
+          "capitalExpenditures": -2287000000,
+          "freeCashFlow": 2017000000
+        },
+        "updatedAt": "2026-10-08T05:36:05.913Z"
+      }
+    },
+    "LASD": {
+      "history": {
+        "source": "StockAnalysis",
+        "currency": "JMD",
+        "units": "millions",
+        "annual": [
+          {
+            "period": "2022",
+            "operatingCashFlow": 367110000,
+            "capitalExpenditures": -56000000,
+            "freeCashFlow": 311120000
+          },
+          {
+            "period": "2023",
+            "operatingCashFlow": 1012000000,
+            "capitalExpenditures": -247380000,
+            "freeCashFlow": 764930000
+          },
+          {
+            "period": "2024",
+            "operatingCashFlow": 401980000,
+            "capitalExpenditures": -150980000,
+            "freeCashFlow": 251000000
+          },
+          {
+            "period": "2025",
+            "operatingCashFlow": 598160000,
+            "capitalExpenditures": -506310000,
+            "freeCashFlow": 91850000
+          },
+          {
+            "period": "2026",
+            "operatingCashFlow": 1652000000,
+            "capitalExpenditures": -485310000,
+            "freeCashFlow": 1167000000
+          }
+        ],
+        "ttm": {
+          "period": "TTM",
+          "operatingCashFlow": 1667000000,
+          "capitalExpenditures": -345210000,
+          "freeCashFlow": 1321000000
+        },
+        "updatedAt": "2026-10-08T05:36:05.913Z"
+      }
+    },
+    "LASM": {
+      "history": {
+        "source": "StockAnalysis",
+        "currency": "JMD",
+        "units": "millions",
+        "annual": [
+          {
+            "period": "2022",
+            "operatingCashFlow": 1514000000,
+            "capitalExpenditures": -18760000,
+            "freeCashFlow": 1495000000
+          },
+          {
+            "period": "2023",
+            "operatingCashFlow": 1887000000,
+            "capitalExpenditures": -33430000,
+            "freeCashFlow": 1853000000
+          },
+          {
+            "period": "2024",
+            "operatingCashFlow": 3517000000,
+            "capitalExpenditures": -146790000,
+            "freeCashFlow": 3370000000
+          },
+          {
+            "period": "2025",
+            "operatingCashFlow": 1619000000,
+            "capitalExpenditures": -424720000,
+            "freeCashFlow": 1195000000
+          },
+          {
+            "period": "2026",
+            "operatingCashFlow": 1306000000,
+            "capitalExpenditures": -1041000000,
+            "freeCashFlow": 264510000
+          }
+        ],
+        "ttm": {
+          "period": "TTM",
+          "operatingCashFlow": 2696000000,
+          "capitalExpenditures": -1038000000,
+          "freeCashFlow": 1658000000
+        },
+        "updatedAt": "2026-10-08T05:36:05.913Z"
+      }
+    },
+    "BIL": {
+      "history": {
+        "source": "StockAnalysis",
+        "currency": "JMD",
+        "units": "millions",
+        "annual": [
+          {
+            "period": "2021",
+            "operatingCashFlow": 8373000000,
+            "capitalExpenditures": -468900000,
+            "freeCashFlow": 7904000000
+          },
+          {
+            "period": "2022",
+            "operatingCashFlow": 26147000000,
+            "capitalExpenditures": -175410000,
+            "freeCashFlow": 25972000000
+          },
+          {
+            "period": "2023",
+            "operatingCashFlow": 10715000000,
+            "capitalExpenditures": -27870000,
+            "freeCashFlow": 10687000000
+          },
+          {
+            "period": "2024",
+            "operatingCashFlow": -5560000000,
+            "capitalExpenditures": -43170000,
+            "freeCashFlow": -5604000000
+          },
+          {
+            "period": "2025",
+            "operatingCashFlow": 4580000000,
+            "capitalExpenditures": -86830000,
+            "freeCashFlow": 4494000000
+          }
+        ],
+        "ttm": {
+          "period": "TTM",
+          "operatingCashFlow": -5790000000,
+          "capitalExpenditures": 229670000,
+          "freeCashFlow": -5561000000
+        },
+        "updatedAt": "2026-10-08T05:36:05.913Z"
+      }
+    },
+    "SJ": {
+      "history": {
+        "source": "StockAnalysis",
+        "currency": "JMD",
+        "units": "millions",
+        "annual": [
+          {
+            "period": "2021",
+            "operatingCashFlow": 3033000000,
+            "capitalExpenditures": -509470000,
+            "freeCashFlow": 2523000000
+          },
+          {
+            "period": "2022",
+            "operatingCashFlow": -27988000000,
+            "capitalExpenditures": -928070000,
+            "freeCashFlow": -28916000000
+          },
+          {
+            "period": "2023",
+            "operatingCashFlow": -2435000000,
+            "capitalExpenditures": -591970000,
+            "freeCashFlow": -3027000000
+          },
+          {
+            "period": "2024",
+            "operatingCashFlow": -4152000000,
+            "capitalExpenditures": -727880000,
+            "freeCashFlow": -4880000000
+          },
+          {
+            "period": "2025",
+            "operatingCashFlow": -31827000000,
+            "capitalExpenditures": -936500000,
+            "freeCashFlow": -32764000000
+          }
+        ],
+        "ttm": {
+          "period": "TTM",
+          "operatingCashFlow": -18567000000,
+          "capitalExpenditures": -735140000,
+          "freeCashFlow": -19302000000
+        },
+        "updatedAt": "2026-10-08T05:36:05.913Z"
       }
     }
   }
