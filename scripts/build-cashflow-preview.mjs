@@ -22,11 +22,12 @@ fs.mkdirSync('artifacts/dashboard-preview',{recursive:true});
 for(const name of fs.readdirSync('.').filter(n=>/\.(?:html|js|css|webmanifest|png|jpg|jpeg|svg|ico|webp)$/i.test(n)&&n!=='data.js')){
  if(fs.existsSync(name))fs.copyFileSync(name,path.join('artifacts/dashboard-preview',name));
 }
+fs.writeFileSync('artifacts/dashboard-preview/data.js','window.JSE_DASHBOARD_DATA = '+JSON.stringify(data,null,2)+';\n');
 const html=fs.readFileSync('index.html','utf8');
 const requiredAssets=[...html.matchAll(/(?:src|href)=[\"'](?:\.\/)?([^\"'?#]+\.(?:js|css|png|ico|webmanifest))/gi)].map(m=>m[1]).filter(n=>!/^https?:/i.test(n));
 const missing=[...new Set(requiredAssets)].filter(n=>!fs.existsSync(path.join('artifacts/dashboard-preview',n)));
 if(missing.length)throw new Error('Missing preview assets: '+missing.join(', '));
-fs.writeFileSync('artifacts/dashboard-preview/data.js','window.JSE_DASHBOARD_DATA = '+JSON.stringify(data,null,2)+';\n');
+
 const updated=JSON.parse(fs.readFileSync('artifacts/dashboard-preview/data.js','utf8').replace(/^window\.JSE_DASHBOARD_DATA\s*=\s*/,'').replace(/;\s*$/,''));
 for(const ticker of required){
  const before=data.stocks.find(x=>x.ticker===ticker),after=updated.stocks.find(x=>x.ticker===ticker);
