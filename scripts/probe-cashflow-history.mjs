@@ -24,8 +24,10 @@ async function probe(browser,stock){
   const page=await browser.newPage();const out={...stock,url,status:'error',periods:[],metrics:{},notes:[]};
   try{
     const response=await page.goto(url,{waitUntil:'domcontentloaded',timeout:30000});
+    await page.waitForLoadState('load',{timeout:8000}).catch(()=>{});
+    await page.keyboard.press('Escape').catch(()=>{});
     out.httpStatus=response?.status()??null;
-    if(!response?.ok()){out.notes.push('HTTP response unsuccessful');return out;}
+    if(!response?.ok()){out.status='http-error';out.notes.push('HTTP response unsuccessful; access may be restricted');return out;}
     const body=await page.locator('body').innerText();
     const scale=/financials?\s+in\s+billions|in\s+billions/i.test(body)?1e9:/financials?\s+in\s+millions|in\s+millions/i.test(body)?1e6:/financials?\s+in\s+thousands|in\s+thousands/i.test(body)?1e3:1;
     const tables=page.locator('table');
@@ -43,7 +45,7 @@ async function probe(browser,stock){
         }
       }
     }
-    out.status=out.periods.length?'parsed':'no-periods';
+    out.status=out.periods.length&&Object.keys(out.metrics).length?'parsed':'no-data';
     out.annualPeriods=out.periods.filter(x=>/^20\d{2}$|(?:FY\s*)?20\d{2}/i.test(x)).length;
     if(out.annualPeriods<5)out.notes.push('Fewer than five annual periods identified; inspect source availability');
     if(!Object.keys(out.metrics).length)out.notes.push('No expected cash flow row labels found');
@@ -51,9 +53,13 @@ async function probe(browser,stock){
   return out;
 }
 const browser=await chromium.launch({headless:true});
+const context=await browser.newContext({viewport:{width:1440,height:1000},userAgent:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/151 Safari/537.36'});
 const results=[];
-try{for(const s of tickers){const r=await probe(browser,s);results.push(r);console.log(s.ticker,r.status,'annual periods',r.annualPeriods??0,'metrics',Object.keys(r.metrics).join(','));}}
+try{for(const s of tickers){const r=await probe(context,s);results.push(r);console.log(s.ticker,r.status,'annual periods',r.annualPeriods??0,'metrics',Object.keys(r.metrics).join(','));}}
 finally{await browser.close();}
 fs.mkdirSync('artifacts',{recursive:true});
 fs.writeFileSync('artifacts/cashflow-feasibility.json',JSON.stringify({generatedAt:new Date().toISOString(),results},null,2)+'\n');
+const parsed=results.filter(r=>r.status==='parsed').length;
+console.log('Coverage:',parsed,'/',results.length);
 console.log('Wrote artifacts/cashflow-feasibility.json (no production data changes)');
+if(parsed===0){console.error('No financial history collected: probe failed coverage gate');process.exitCode=1;}
