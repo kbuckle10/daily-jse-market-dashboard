@@ -25,7 +25,6 @@
 (async function(){
  const selected=decodeURIComponent(location.hash.slice(1)).toUpperCase();
  const expected={SEP:'JMD',TJH:'USD',NCBFG:'JMD',GK:'JMD',GHL:'TTD'};
- const tickers=selected?[selected]:Object.keys(store.stocks||{});
  const note=document.querySelector('header .note');
  const format=n=>(n/1e6).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
  try{
@@ -33,6 +32,7 @@
   if(!response.ok)throw Error('History file unavailable');
   const store=await response.json();
   if(store.version!==1||!store.stocks)throw Error('Invalid history store');
+  const tickers=selected?[selected]:Object.keys(store.stocks);
   for(const ticker of tickers){
    const h=store.stocks[ticker]?.history;
    if(!h||!['JMD','USD','TTD'].includes(h.currency)||(expected[ticker]&&h.currency!==expected[ticker])||!Array.isArray(h.annual)||h.annual.length<5||!h.ttm)continue;
