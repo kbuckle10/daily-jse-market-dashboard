@@ -4,21 +4,47 @@ on:
   push:
     branches: [feature/cashflow-quality-staging-20261008]
     paths:
-      - 'scripts/lib/cashflow-quality-research.mjs'
-      - 'scripts/test-cashflow-quality-research.mjs'
+      - 'scripts/lib/cashflow-*.mjs'
+      - 'scripts/test-cashflow-*.mjs'
+      - 'scripts/probe-cashflow-history.mjs'
+      - 'scripts/build-cashflow-quality-report.mjs'
       - '.github/workflows/cashflow-quality-research.yml'
 permissions:
   contents: read
 jobs:
-  test:
+  test-and-probe:
     runs-on: ubuntu-latest
+    timeout-minutes: 18
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Verify research-only quality logic
+      - name: Install Playwright dependencies
+        run: |
+          npm install --no-save --package-lock=false
+          npx playwright install --with-deps chromium
+      - name: Verify syntax and deterministic tests
         run: |
           node --check scripts/lib/cashflow-quality-research.mjs
-          node --check scripts/test-cashflow-quality-research.mjs
+          node --check scripts/lib/cashflow-history.mjs
+          node --check scripts/probe-cashflow-history.mjs
+          node --check scripts/build-cashflow-quality-report.mjs
           node scripts/test-cashflow-quality-research.mjs
+          node scripts/test-cashflow-history.mjs
+      - name: Collect five-stock historical statements (read only)
+        run: node scripts/probe-cashflow-history.mjs
+      - name: Validate and report historical cash flow
+        if: always()
+        run: |
+          if [ -f artifacts/cashflow-feasibility.json ]; then
+            node scripts/build-cashflow-quality-report.mjs
+          fi
+      - name: Upload research artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cashflow-quality-staging
+          path: artifacts/cashflow-*.json
+          if-no-files-found: warn
+          retention-days: 14
