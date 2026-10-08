@@ -25,7 +25,7 @@
 (async function(){
  const selected=decodeURIComponent(location.hash.slice(1)).toUpperCase();
  const expected={SEP:'JMD',TJH:'USD',NCBFG:'JMD',GK:'JMD',GHL:'TTD'};
- const tickers=selected&&Object.hasOwn(expected,selected)?[selected]:Object.keys(expected);
+ const tickers=selected?[selected]:Object.keys(store.stocks||{});
  const note=document.querySelector('header .note');
  const format=n=>(n/1e6).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
  try{
@@ -35,11 +35,21 @@
   if(store.version!==1||!store.stocks)throw Error('Invalid history store');
   for(const ticker of tickers){
    const h=store.stocks[ticker]?.history;
-   if(!h||h.currency!==expected[ticker]||!Array.isArray(h.annual)||h.annual.length<5||!h.ttm)continue;
+   if(!h||!['JMD','USD','TTD'].includes(h.currency)||(expected[ticker]&&h.currency!==expected[ticker])||!Array.isArray(h.annual)||h.annual.length<5||!h.ttm)continue;
    const periods=[...h.annual,h.ttm];
    if(!periods.every(p=>['operatingCashFlow','capitalExpenditures','freeCashFlow'].every(k=>Number.isFinite(p[k]))))continue;
-   const tbody=document.querySelector('section#'+ticker+' tbody');
-   if(!tbody)continue;
+   let section=document.getElementById(ticker);
+   if(!section){
+    section=document.createElement('section');section.id=ticker;section.className='stock';
+    const heading=document.createElement('h2');heading.textContent=ticker+' · '+h.currency+' millions';section.append(heading);
+    const wrap=document.createElement('div');wrap.className='scroll';
+    const table=document.createElement('table');const thead=document.createElement('thead');const header=document.createElement('tr');
+    ['Period','Operating cash flow','Capital expenditures','Free cash flow'].forEach(label=>{const th=document.createElement('th');th.textContent=label;header.append(th)});
+    thead.append(header);table.append(thead,document.createElement('tbody'));wrap.append(table);section.append(wrap);
+    document.querySelector('main > p.note:last-of-type')?.before(section);
+    if(selected&&selected!==ticker)section.hidden=true;
+   }
+   const tbody=section.querySelector('tbody');
    const rows=periods.map(p=>{
     const tr=document.createElement('tr');
     [p.period,...['operatingCashFlow','capitalExpenditures','freeCashFlow'].map(k=>format(p[k]))].forEach((value,i)=>{
