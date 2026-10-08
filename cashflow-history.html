@@ -20,4 +20,41 @@
  });
  window.scrollTo(0,0);
 })();
+</script><script>
+/* Staging-only: progressive enhancement. Existing static table is retained if fetch or validation fails. */
+(async function(){
+ const selected=decodeURIComponent(location.hash.slice(1)).toUpperCase();
+ const expected={SEP:'JMD',TJH:'USD',NCBFG:'JMD',GK:'JMD',GHL:'TTD'};
+ const tickers=selected&&Object.hasOwn(expected,selected)?[selected]:Object.keys(expected);
+ const note=document.querySelector('header .note');
+ const format=n=>(n/1e6).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+ try{
+  const response=await fetch('./research/cashflow-history.json',{cache:'no-cache'});
+  if(!response.ok)throw Error('History file unavailable');
+  const store=await response.json();
+  if(store.version!==1||!store.stocks)throw Error('Invalid history store');
+  for(const ticker of tickers){
+   const h=store.stocks[ticker]?.history;
+   if(!h||h.currency!==expected[ticker]||!Array.isArray(h.annual)||h.annual.length<5||!h.ttm)continue;
+   const periods=[...h.annual,h.ttm];
+   if(!periods.every(p=>['operatingCashFlow','capitalExpenditures','freeCashFlow'].every(k=>Number.isFinite(p[k]))))continue;
+   const tbody=document.querySelector('section#'+ticker+' tbody');
+   if(!tbody)continue;
+   const rows=periods.map(p=>{
+    const tr=document.createElement('tr');
+    [p.period,...['operatingCashFlow','capitalExpenditures','freeCashFlow'].map(k=>format(p[k]))].forEach((value,i)=>{
+     const cell=document.createElement(i===0?'th':'td');cell.textContent=String(value);tr.appendChild(cell);
+    });
+    return tr;
+   });
+   tbody.replaceChildren(...rows);
+  }
+  if(note)note.textContent='StockAnalysis historical data · FY2021–FY2025 and TTM · Reporting currency in millions · Repository snapshot '+(store.updatedAt?new Date(store.updatedAt).toLocaleDateString('en-US'):'');
+  const foot=document.querySelector('main > p.note:last-of-type');
+  if(foot)foot.textContent='Banking and insurance cash-flow figures require sector-specific interpretation. Historical data is refreshed from the validated repository snapshot; ratings and scores are unaffected.';
+ }catch(error){
+  console.warn('Historical JSON unavailable; retaining verified static cash-flow snapshot',error);
+  if(note)note.textContent+=' · Static fallback (live history unavailable)';
+ }
+})();
 </script></body></html>
