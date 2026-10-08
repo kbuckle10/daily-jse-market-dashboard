@@ -28,10 +28,12 @@ jobs:
         run: |
           node --check scripts/lib/cashflow-quality-research.mjs
           node --check scripts/lib/cashflow-history.mjs
+          node --check scripts/lib/cashflow-history-retention.mjs
           node --check scripts/probe-cashflow-history.mjs
           node --check scripts/build-cashflow-quality-report.mjs
           node scripts/test-cashflow-quality-research.mjs
           node scripts/test-cashflow-history.mjs
+          node scripts/test-cashflow-history-retention.mjs
       - name: Collect five-stock historical statements (read only)
         run: node scripts/probe-cashflow-history.mjs
       - name: Validate and report historical cash flow
