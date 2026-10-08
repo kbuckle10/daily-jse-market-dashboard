@@ -1,4 +1,4 @@
-const CACHE='jse-dashboard-shell-v5';
+const CACHE='jse-dashboard-shell-v6';
 const BASE='/daily-jse-market-dashboard/';
 const SHELL=[
   BASE,
@@ -29,6 +29,9 @@ self.addEventListener('activate',event=>{
 function isLiveDashboardAsset(url){
   return url.pathname===BASE+'data.js' ||
     url.pathname===BASE+'app.js' ||
+    url.pathname===BASE+'cashflow-history.html' ||
+    url.pathname===BASE+'cashflow-history-pilot.js' ||
+    url.pathname===BASE+'research/cashflow-history.json' ||
     url.pathname===BASE+'index.html' ||
     url.pathname===BASE;
 }
