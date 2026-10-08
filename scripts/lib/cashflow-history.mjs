@@ -20,7 +20,7 @@ export function parseCashAmount(value, multiplier=1) {
   if(!match) return null;
   const scale=({K:1e3,M:1e6,B:1e9,T:1e12})[match[2]?.toUpperCase()] ?? multiplier;
   const number=Number(match[1])*scale*(negative?-1:1);
-  return Number.isFinite(number)?number:null;
+  return Number.isFinite(number)?Number(number.toPrecision(14)):null;
 }
 export async function extractCashFlowHistory(page) {
   const body=await page.locator('body').innerText();
