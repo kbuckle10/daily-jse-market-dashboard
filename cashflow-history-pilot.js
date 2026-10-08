@@ -25,7 +25,7 @@ function show(ticker){
  dialog.append(head,note,wrap,foot);overlay.append(dialog);overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.remove()});document.body.append(overlay);close.focus();
 }
 function decorate(){
- document.querySelectorAll('#stockTableBody .ticker, #cardView .stock-card h3').forEach(el=>{
+ document.querySelectorAll('#stockTableBody .ticker, #cardView .stock-card h3, #freshCapitalSection .fresh-objective-card .fresh-title strong').forEach(el=>{
   const ticker=el.textContent.trim().toUpperCase();if(!history[ticker]||el.parentElement.querySelector('[data-cashflow-pilot="'+ticker+'"]'))return;
   const b=document.createElement('button');b.type='button';b.dataset.cashflowPilot=ticker;b.textContent='Cash Flow Trend';b.style.cssText='display:inline-block;margin:5px 0;padding:5px 8px;border:1px solid #62779a;border-radius:7px;background:#233149;color:#e7f0ff;font-size:11px;cursor:pointer';
   el.insertAdjacentElement('afterend',b);
