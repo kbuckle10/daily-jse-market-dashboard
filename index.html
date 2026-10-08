@@ -42,7 +42,7 @@ window.addEventListener('beforeinstallprompt',function(e){window.__JSE_PWA_INSTA
 </script><script>
 (function(){
   const DISMISS_KEY='jsePwaInstallDismissedUntilV1';
-  const SEVEN_DAYS=7*24*60*60*1000;
+  const DISMISS_DURATION=24*60*60*1000;
   const card=document.getElementById('jsePwaInstallCard');
   const installBtn=document.getElementById('jsePwaInstallBtn');
   const closeBtn=document.getElementById('jsePwaInstallClose');
@@ -55,7 +55,7 @@ window.addEventListener('beforeinstallprompt',function(e){window.__JSE_PWA_INSTA
     card.classList.add('show');
   };
   closeBtn&&closeBtn.addEventListener('click',()=>{
-    try{localStorage.setItem(DISMISS_KEY,String(Date.now()+SEVEN_DAYS));}catch(e){}
+    try{localStorage.setItem(DISMISS_KEY,String(Date.now()+DISMISS_DURATION));}catch(e){}
     hide();
   });
   installBtn&&installBtn.addEventListener('click',async()=>{
