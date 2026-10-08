@@ -46,6 +46,13 @@ function openHistory(ticker){
  if(!dialog.open)dialog.showModal();
 }
 
+// Capture links before performance/card scripts can intercept bubbling clicks.
+window.addEventListener('click',e=>{
+ const link=e.target.closest?.('a[data-cashflow-pilot]');
+ if(!link)return;
+ e.preventDefault();e.stopImmediatePropagation();
+ openHistory(link.dataset.cashflowPilot);
+},true);
 function decorate(){
  document.querySelectorAll('#stockTableBody .ticker, #cardView .stock-card h3, #freshCapitalSection .fresh-objective-card .fresh-title strong').forEach(el=>{
   const ticker=el.textContent.trim().toUpperCase();if(!history[ticker]||el.parentElement.querySelector('[data-cashflow-pilot="'+ticker+'"]'))return;
@@ -57,6 +64,6 @@ function decorate(){
 
 document.addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('cashflowPilotOverlay')?.remove()});
 let queued=false;const observer=new MutationObserver(()=>{if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;decorate()})});
-function init(){decorate();observer.observe(document.querySelector('#stockTableBody')||document.body,{subtree:true,childList:true});const cards=document.querySelector('#cardView');if(cards)observer.observe(cards,{subtree:true,childList:true})}
+function init(){decorate();observer.observe(document.body,{subtree:true,childList:true})}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
