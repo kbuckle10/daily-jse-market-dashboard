@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import {cashFlowQuality} from './lib/cashflow-quality-research.mjs';
+const years=[2021,2022,2023,2024,2025];
+const hist={annual:years.map((period,i)=>({period:String(period),freeCashFlow:[13.8,7.18,41.22,42.53,50.21][i]*1e6})),ttm:{freeCashFlow:64.87e6}};
+const result=cashFlowQuality(hist,{sector:'Infrastructure / Transportation'});
+assert.equal(result.status,'research-only');
+assert.equal(result.score,100);
+assert.equal(cashFlowQuality(hist,{sector:'Banking'}).score,null);
+assert.equal(cashFlowQuality({annual:[]}).status,'insufficient-history');
+assert.equal(hist.annual.length,5);
+console.log('PASS: TJH research diagnostic; financial-sector exemption; insufficient-history guard; no rating mutations');
