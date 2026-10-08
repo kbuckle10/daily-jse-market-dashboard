@@ -50,13 +50,15 @@ window.addEventListener('click',event=>{
  const link=event.target?.closest?.('[data-cashflow-pilot]');
  if(!link||!link.closest('#freshCapitalSection'))return;
  const ticker=link.getAttribute('data-cashflow-pilot');
- if(!history[ticker])return;
+ if(!history[ticker]&&!availableHistory.has(ticker))return;
  event.preventDefault();
  event.stopImmediatePropagation();
  try{window.openCashFlowHistory(ticker)}
  catch(error){console.error('Cash flow modal failed',error);window.location.assign(link.href)}
 },true);
 
+const availableHistory=new Set(Object.keys(history));
+fetch('./research/cashflow-history.json',{cache:'no-cache'}).then(r=>{if(!r.ok)throw Error('History unavailable');return r.json()}).then(store=>{for(const [ticker,item] of Object.entries(store.stocks||{})){if(item?.history?.annual?.length>=5&&item.history.ttm)availableHistory.add(ticker)}decorate()}).catch(e=>console.warn('Cash flow history index fallback:',e));
 function decorate(){
  // Remove earlier pilot controls outside Fresh Capital without touching original stock markup.
  document.querySelectorAll('[data-cashflow-pilot]').forEach(el=>{
@@ -64,7 +66,7 @@ function decorate(){
  });
  document.querySelectorAll('#freshCapitalSection .fresh-objective-card .fresh-title strong').forEach(el=>{
   const ticker=el.textContent.trim().toUpperCase();
-  if(!Object.prototype.hasOwnProperty.call(history,ticker))return;
+  if(!availableHistory.has(ticker))return;
   const title=el.closest('.fresh-title');
   if(!title||title.querySelector('[data-cashflow-pilot="'+ticker+'"]'))return;
   const link=document.createElement('a');
