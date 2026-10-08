@@ -2,6 +2,7 @@
 // Run: node scripts/probe-cashflow-history.mjs
 import { chromium } from 'playwright';
 import fs from 'node:fs';
+import { extractCashFlowHistory } from './lib/cashflow-history.mjs';
 const tickers = [{ticker:'SEP',market:'jmse'},{ticker:'TJH',market:'jmse'},{ticker:'NCBFG',market:'jmse'},{ticker:'GK',market:'jmse'},{ticker:'GHL',market:'ttse'}];
 const labels = {
   operatingCashFlow:/^(operating cash flow|cash from operating activities|net cash provided by operating activities)$/i,
@@ -28,6 +29,8 @@ async function probe(browser,stock){
     await page.keyboard.press('Escape').catch(()=>{});
     out.httpStatus=response?.status()??null;
     if(!response?.ok()){out.status='http-error';out.notes.push('HTTP response unsuccessful; access may be restricted');return out;}
+    const history=await extractCashFlowHistory(page);
+    out.history=history;
     const body=await page.locator('body').innerText();
     const scale=/financials?\s+in\s+billions|in\s+billions/i.test(body)?1e9:/financials?\s+in\s+millions|in\s+millions/i.test(body)?1e6:/financials?\s+in\s+thousands|in\s+thousands/i.test(body)?1e3:1;
     const tables=page.locator('table');
@@ -45,7 +48,7 @@ async function probe(browser,stock){
         }
       }
     }
-    out.status=out.periods.length&&Object.keys(out.metrics).length?'parsed':'no-data';
+    out.status=history.status==='captured'?'parsed':'no-data';
     out.annualPeriods=out.periods.filter(x=>/^20\d{2}$|(?:FY\s*)?20\d{2}/i.test(x)).length;
     if(out.annualPeriods<5)out.notes.push('Fewer than five annual periods identified; inspect source availability');
     if(!Object.keys(out.metrics).length)out.notes.push('No expected cash flow row labels found');
@@ -62,4 +65,4 @@ fs.writeFileSync('artifacts/cashflow-feasibility.json',JSON.stringify({generated
 const parsed=results.filter(r=>r.status==='parsed').length;
 console.log('Coverage:',parsed,'/',results.length);
 console.log('Wrote artifacts/cashflow-feasibility.json (no production data changes)');
-if(parsed===0){console.error('No financial history collected: probe failed coverage gate');process.exitCode=1;}
+if(parsed!==results.length){console.error('Incomplete financial history coverage: probe failed five-stock gate');process.exitCode=1;}
