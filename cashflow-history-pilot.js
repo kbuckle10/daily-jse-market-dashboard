@@ -63,7 +63,7 @@ function ensureHistoryDirectory(){
  const section=document.getElementById('freshCapitalSection');
  if(!section||!availableHistory.size)return;
  let button=document.getElementById('cashflowAllStocksButton');
- if(button){button.textContent='Cash Flow Trend — '+availableHistory.size+' stocks';return;}
+ if(button){const label='Cash Flow Trend — '+availableHistory.size+' stocks';if(button.textContent!==label)button.textContent=label;return;}
  button=document.createElement('button');button.id='cashflowAllStocksButton';button.type='button';
  button.textContent='Cash Flow Trend — '+availableHistory.size+' stocks';
  button.style.cssText='display:inline-block;margin:12px 0;padding:9px 14px;border:1px solid #62779a;border-radius:8px;background:#233149;color:#e7f0ff;font-size:13px;cursor:pointer';
@@ -80,7 +80,8 @@ function ensureHistoryDirectory(){
   const close=document.createElement('button');close.type='button';close.textContent='Close';close.style.cssText='margin-top:16px;padding:8px 12px;background:#263e5e;color:white;border:1px solid #526e94;border-radius:8px';close.onclick=()=>overlay.remove();
   panel.append(heading,list,close);overlay.append(panel);overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.remove()});document.body.append(overlay);
  };
- section.prepend(button);
+ const anchor=section.querySelector('.fresh-objective-card');
+ if(anchor)anchor.before(button);else section.prepend(button);
 }
 function decorate(){
  ensureHistoryDirectory();
