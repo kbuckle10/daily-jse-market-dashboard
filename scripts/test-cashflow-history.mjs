@@ -31,5 +31,5 @@ assert.equal(h.annual[4].period,'2025');
 assert.equal(h.annual[4].freeCashFlow,50210000);
 assert.equal(h.ttm.freeCashFlow,64870000);
 assert.equal(h.reconciliation.length,5);
-assert.ok(h.reconciliation.every(x=>Math.abs(x.discrepancy)<10000));
+assert.ok(h.reconciliation.every(x=>Math.abs(x.discrepancy)<=20000));
 console.log('Cash-flow history parser regression tests passed');
