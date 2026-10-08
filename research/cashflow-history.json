@@ -1,0 +1,298 @@
+{
+  "version": 1,
+  "updatedAt": "2026-10-08T05:17:37.627Z",
+  "stocks": {
+    "SEP": {
+      "history": {
+        "source": "StockAnalysis",
+        "currency": "JMD",
+        "units": "millions",
+        "annual": [
+          {
+            "period": "2021",
+            "operatingCashFlow": 2676000000,
+            "capitalExpenditures": -1655000000,
+            "debtIssued": 3136000000,
+            "debtRepaid": -4073000000,
+            "freeCashFlow": 1021000000
+          },
+          {
+            "period": "2022",
+            "operatingCashFlow": -119440000,
+            "capitalExpenditures": -2151000000,
+            "debtIssued": 5556000000,
+            "debtRepaid": -3810000000,
+            "freeCashFlow": -2271000000
+          },
+          {
+            "period": "2023",
+            "operatingCashFlow": 7690000000,
+            "capitalExpenditures": -2684000000,
+            "debtIssued": 16830000000,
+            "debtRepaid": -16469000000,
+            "freeCashFlow": 5006000000
+          },
+          {
+            "period": "2024",
+            "operatingCashFlow": 6066000000,
+            "capitalExpenditures": -3368000000,
+            "debtIssued": 25408000000,
+            "debtRepaid": -22310000000,
+            "freeCashFlow": 2698000000
+          },
+          {
+            "period": "2025",
+            "operatingCashFlow": 9321000000,
+            "capitalExpenditures": -3650000000,
+            "debtIssued": 25576000000,
+            "debtRepaid": -23601000000,
+            "freeCashFlow": 5671000000
+          }
+        ],
+        "ttm": {
+          "period": "TTM",
+          "operatingCashFlow": 11932000000,
+          "capitalExpenditures": -2398000000,
+          "freeCashFlow": 9534000000
+        },
+        "updatedAt": "2026-10-08T05:17:37.627Z"
+      }
+    },
+    "TJH": {
+      "history": {
+        "source": "StockAnalysis",
+        "currency": "USD",
+        "units": "millions",
+        "annual": [
+          {
+            "period": "2021",
+            "operatingCashFlow": 13990000,
+            "capitalExpenditures": -190000,
+            "debtRepaid": -4180000,
+            "freeCashFlow": 13800000
+          },
+          {
+            "period": "2022",
+            "operatingCashFlow": 7250000,
+            "capitalExpenditures": -70000,
+            "debtRepaid": -6630000,
+            "freeCashFlow": 7180000
+          },
+          {
+            "period": "2023",
+            "operatingCashFlow": 41670000,
+            "capitalExpenditures": -460000,
+            "debtRepaid": -7670000,
+            "freeCashFlow": 41220000
+          },
+          {
+            "period": "2024",
+            "operatingCashFlow": 43870000,
+            "capitalExpenditures": -1340000,
+            "debtRepaid": -8680000,
+            "freeCashFlow": 42530000
+          },
+          {
+            "period": "2025",
+            "operatingCashFlow": 52470000,
+            "capitalExpenditures": -2260000,
+            "debtRepaid": -9800000,
+            "freeCashFlow": 50210000
+          }
+        ],
+        "ttm": {
+          "period": "TTM",
+          "operatingCashFlow": 65690000,
+          "capitalExpenditures": -830000,
+          "freeCashFlow": 64870000
+        },
+        "updatedAt": "2026-10-08T05:17:37.627Z"
+      }
+    },
+    "NCBFG": {
+      "history": {
+        "source": "StockAnalysis",
+        "currency": "JMD",
+        "units": "millions",
+        "annual": [
+          {
+            "period": "2021",
+            "operatingCashFlow": -35590000000,
+            "capitalExpenditures": -3441000000,
+            "debtIssued": 55167000000,
+            "debtRepaid": -58702000000,
+            "shareIssuance": 2528000000,
+            "shareRepurchases": -831820000,
+            "freeCashFlow": -39031000000
+          },
+          {
+            "period": "2022",
+            "operatingCashFlow": -18864000000,
+            "capitalExpenditures": -3093000000,
+            "debtIssued": 118301000000,
+            "debtRepaid": -60490000000,
+            "shareIssuance": 463280000,
+            "freeCashFlow": -21957000000
+          },
+          {
+            "period": "2023",
+            "operatingCashFlow": 35853000000,
+            "capitalExpenditures": -3153000000,
+            "debtIssued": 43074000000,
+            "debtRepaid": -32141000000,
+            "freeCashFlow": 32700000000
+          },
+          {
+            "period": "2024",
+            "operatingCashFlow": 67953000000,
+            "capitalExpenditures": -3037000000,
+            "debtIssued": 44498000000,
+            "debtRepaid": -48534000000,
+            "shareIssuance": 2414000000,
+            "freeCashFlow": 64916000000
+          },
+          {
+            "period": "2025",
+            "operatingCashFlow": 43440000000,
+            "capitalExpenditures": -2232000000,
+            "debtIssued": 60189000000,
+            "debtRepaid": -61571000000,
+            "freeCashFlow": 41209000000
+          }
+        ],
+        "ttm": {
+          "period": "TTM",
+          "operatingCashFlow": 13998000000,
+          "capitalExpenditures": -2464000000,
+          "shareIssuance": 1182000000,
+          "freeCashFlow": 11534000000
+        },
+        "updatedAt": "2026-10-08T05:17:37.627Z"
+      }
+    },
+    "GK": {
+      "history": {
+        "source": "StockAnalysis",
+        "currency": "JMD",
+        "units": "millions",
+        "annual": [
+          {
+            "period": "2021",
+            "stockBasedCompensation": 233230000,
+            "operatingCashFlow": 17067000000,
+            "capitalExpenditures": -1722000000,
+            "debtIssued": 18548000000,
+            "debtRepaid": -18577000000,
+            "shareIssuance": 740000,
+            "shareRepurchases": -101740000,
+            "freeCashFlow": 15346000000
+          },
+          {
+            "period": "2022",
+            "stockBasedCompensation": 471060000,
+            "operatingCashFlow": -51250000,
+            "capitalExpenditures": -1930000000,
+            "debtIssued": 11698000000,
+            "debtRepaid": -12480000000,
+            "shareIssuance": 129390000,
+            "shareRepurchases": -345180000,
+            "freeCashFlow": -1981000000
+          },
+          {
+            "period": "2023",
+            "stockBasedCompensation": 417560000,
+            "operatingCashFlow": 17427000000,
+            "capitalExpenditures": -2265000000,
+            "debtIssued": 16762000000,
+            "debtRepaid": -14141000000,
+            "shareIssuance": 11160000,
+            "shareRepurchases": -331080000,
+            "freeCashFlow": 15162000000
+          },
+          {
+            "period": "2024",
+            "stockBasedCompensation": 481140000,
+            "operatingCashFlow": 18090000000,
+            "capitalExpenditures": -2755000000,
+            "debtIssued": 8223000000,
+            "debtRepaid": -10840000000,
+            "shareRepurchases": -536690000,
+            "freeCashFlow": 15335000000
+          },
+          {
+            "period": "2025",
+            "stockBasedCompensation": 494610000,
+            "operatingCashFlow": 15255000000,
+            "capitalExpenditures": -2640000000,
+            "debtIssued": 12551000000,
+            "debtRepaid": -11287000000,
+            "shareIssuance": 5480000,
+            "shareRepurchases": -376290000,
+            "freeCashFlow": 12615000000
+          }
+        ],
+        "ttm": {
+          "period": "TTM",
+          "stockBasedCompensation": 490590000,
+          "operatingCashFlow": 18330000000,
+          "capitalExpenditures": -2497000000,
+          "shareIssuance": 5480000,
+          "shareRepurchases": -354510000,
+          "freeCashFlow": 15833000000
+        },
+        "updatedAt": "2026-10-08T05:17:37.627Z"
+      }
+    },
+    "GHL": {
+      "history": {
+        "source": "StockAnalysis",
+        "currency": "TTD",
+        "units": "millions",
+        "annual": [
+          {
+            "period": "2021",
+            "operatingCashFlow": -342590000,
+            "capitalExpenditures": -57770000,
+            "debtIssued": 1067000000,
+            "freeCashFlow": -400350000
+          },
+          {
+            "period": "2022",
+            "operatingCashFlow": 281120000,
+            "capitalExpenditures": -63700000,
+            "debtIssued": 683400000,
+            "freeCashFlow": 217410000
+          },
+          {
+            "period": "2023",
+            "operatingCashFlow": -458910000,
+            "capitalExpenditures": -48390000,
+            "debtIssued": 365600000,
+            "freeCashFlow": -507300000
+          },
+          {
+            "period": "2024",
+            "operatingCashFlow": 1121000000,
+            "capitalExpenditures": -31780000,
+            "debtIssued": 549720000,
+            "freeCashFlow": 1089000000
+          },
+          {
+            "period": "2025",
+            "operatingCashFlow": -542630000,
+            "capitalExpenditures": -40540000,
+            "debtIssued": 1344000000,
+            "freeCashFlow": -583170000
+          }
+        ],
+        "ttm": {
+          "period": "TTM",
+          "operatingCashFlow": 1090000000,
+          "capitalExpenditures": -36930000,
+          "freeCashFlow": 1054000000
+        },
+        "updatedAt": "2026-10-08T05:17:37.627Z"
+      }
+    }
+  }
+}
