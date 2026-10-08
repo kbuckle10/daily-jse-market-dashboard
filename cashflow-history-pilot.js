@@ -45,17 +45,29 @@ window.openCashFlowHistory=function(ticker){
  overlay.querySelector('#cashflowHistoryFrame').src=url;
 }
 
+// Capture clicks at window level before dashboard table/card delegation can swallow them.
+window.addEventListener('click',event=>{
+ const link=event.target?.closest?.('[data-cashflow-pilot]');
+ if(!link)return;
+ const ticker=link.getAttribute('data-cashflow-pilot');
+ if(!history[ticker])return;
+ event.preventDefault();
+ event.stopImmediatePropagation();
+ try{window.openCashFlowHistory(ticker)}
+ catch(error){console.error('Cash flow modal failed',error);window.location.assign(link.href)}
+},true);
+
 function decorate(){
  document.querySelectorAll('#freshCapitalSection [data-cashflow-pilot]').forEach(el=>el.remove());
  document.querySelectorAll('#stockTableBody .ticker, #cardView .stock-card h3').forEach(el=>{
   const ticker=el.textContent.trim().toUpperCase();if(!history[ticker]||el.parentElement.querySelector('[data-cashflow-pilot="'+ticker+'"]'))return;
   const b=document.createElement('a');b.dataset.cashflowPilot=ticker;b.href='./cashflow-history.html#'+encodeURIComponent(ticker);b.textContent='Cash Flow Trend';b.style.cssText='display:inline-block;margin:5px 0;padding:5px 8px;border:1px solid #62779a;border-radius:7px;background:#233149;color:#e7f0ff;font-size:11px;cursor:pointer;text-decoration:none';
-  b.onclick=e=>{e.preventDefault();e.stopPropagation();try{window.openCashFlowHistory(ticker)}catch(err){console.error('Cash flow modal failed',err);window.location.href=b.href}};
+  
   el.insertAdjacentElement('afterend',b);
  });
 }
 
-document.addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('cashflowPilotOverlay')?.remove()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('cashflowHistoryOverlay')?.remove()});
 let queued=false;const observer=new MutationObserver(()=>{if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;decorate()})});
 function init(){decorate();observer.observe(document.body,{subtree:true,childList:true})}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
