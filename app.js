@@ -4,7 +4,7 @@ function cashFlowTrendMarkup(s){
   const h=s.cashFlowHistory;
   if(!h?.annual?.length)return '<p class="neutral">Historical cash-flow data has not yet been collected for this stock.</p>';
   const amount=v=>Number.isFinite(Number(v))&&v!=null?(Number(v)/1e6).toLocaleString('en-US',{maximumFractionDigits:2,minimumFractionDigits:2}):'N/A';
-  const annual=h.annual.filter(p=>/^20\\d{2}$/.test(String(p.period))).sort((a,b)=>Number(a.period)-Number(b.period));
+  const annual=h.annual.filter(p=>/^20\d{2}$/.test(String(p.period))).sort((a,b)=>Number(a.period)-Number(b.period));
   const rows=[...annual,...(h.ttm?[h.ttm]:[])];
   const cells=rows.map(p=>'<tr><td>'+p.period+'</td><td>'+amount(p.operatingCashFlow)+'</td><td>'+amount(p.capitalExpenditures)+'</td><td>'+amount(p.freeCashFlow)+'</td></tr>').join('');
   return '<p class="neutral">Financial statement currency: '+(h.currency||'Unknown')+' • Values in millions • Annual and TTM shown separately</p><div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;text-align:right"><thead><tr><th style="text-align:left">Period</th><th>Operating CF</th><th>CapEx</th><th>Free CF</th></tr></thead><tbody>'+cells+'</tbody></table></div><p class="neutral">Historical cash flow is informational only and does not change ratings. Missing values are shown as N/A.</p>';
