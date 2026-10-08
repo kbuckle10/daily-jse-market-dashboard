@@ -30,6 +30,8 @@ jobs:
           node --check scripts/lib/cashflow-quality-research.mjs
           node --check scripts/lib/cashflow-history.mjs
           node --check scripts/lib/cashflow-history-retention.mjs
+          node --check scripts/lib/cashflow-history-store.mjs
+          node --check scripts/update-cashflow-history-store.mjs
           node --check scripts/probe-cashflow-history.mjs
           node --check scripts/build-cashflow-quality-report.mjs
           node --check scripts/refresh-sa-cashflow.mjs
@@ -37,6 +39,7 @@ jobs:
           node scripts/test-cashflow-history.mjs
           node scripts/test-cashflow-history-retention.mjs
           node scripts/test-cashflow-persisted-retention.mjs
+          node scripts/test-cashflow-history-store.mjs
       - name: Collect five-stock historical statements (read only)
         run: node scripts/probe-cashflow-history.mjs
       - name: Validate and report historical cash flow
@@ -45,6 +48,12 @@ jobs:
           if [ -f artifacts/cashflow-feasibility.json ]; then
             node scripts/build-cashflow-quality-report.mjs
           fi
+      - name: Persist standalone history in staging workspace (no commit)
+        run: |
+          cp data.js /tmp/history-store-data-before.js
+          node scripts/update-cashflow-history-store.mjs
+          cmp data.js /tmp/history-store-data-before.js
+          test -s research/cashflow-history.json
       - name: Pilot collector integration dry run (never writes data.js)
         env:
           CASHFLOW_HISTORY_PILOT_ONLY: '1'
@@ -60,6 +69,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: cashflow-quality-staging
-          path: artifacts/cashflow-*.json
+          path: |
+            artifacts/cashflow-*.json
+            research/cashflow-history.json
           if-no-files-found: warn
           retention-days: 14
