@@ -19,8 +19,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
-          cache: npm
-      - run: npm ci
+      - name: Install isolated probe dependencies (no lockfile required)
+        run: npm install --no-save --package-lock=false
       - run: npx playwright install --with-deps chromium
       - name: Run read-only financial history probe
         run: node scripts/probe-cashflow-history.mjs
