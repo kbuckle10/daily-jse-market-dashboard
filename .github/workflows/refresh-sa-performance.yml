@@ -10,6 +10,7 @@ on:
       - 'scripts/**'
       - 'package.json'
       - 'package-lock.json'
+      - '.github/jse-refresh-request.txt'
   schedule:
     # One off-peak trigger. GitHub documents that scheduled events can be delayed
     # or dropped under scheduler load; avoid :00/:30 and use Jamaica time directly.
