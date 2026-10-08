@@ -8,6 +8,7 @@ on:
       - 'scripts/test-cashflow-*.mjs'
       - 'scripts/probe-cashflow-history.mjs'
       - 'scripts/build-cashflow-quality-report.mjs'
+      - 'scripts/refresh-sa-cashflow.mjs'
       - '.github/workflows/cashflow-quality-research.yml'
 permissions:
   contents: read
@@ -31,6 +32,7 @@ jobs:
           node --check scripts/lib/cashflow-history-retention.mjs
           node --check scripts/probe-cashflow-history.mjs
           node --check scripts/build-cashflow-quality-report.mjs
+          node --check scripts/refresh-sa-cashflow.mjs
           node scripts/test-cashflow-quality-research.mjs
           node scripts/test-cashflow-history.mjs
           node scripts/test-cashflow-history-retention.mjs
@@ -42,6 +44,16 @@ jobs:
           if [ -f artifacts/cashflow-feasibility.json ]; then
             node scripts/build-cashflow-quality-report.mjs
           fi
+      - name: Pilot collector integration dry run (never writes data.js)
+        env:
+          CASHFLOW_HISTORY_PILOT_ONLY: '1'
+          CASHFLOW_HISTORY_DRY_RUN: '1'
+          SA_CASHFLOW_CONCURRENCY: '2'
+        run: |
+          cp data.js /tmp/cashflow-data-before.js
+          node scripts/refresh-sa-cashflow.mjs
+          cmp data.js /tmp/cashflow-data-before.js
+          test -f artifacts/cashflow-collector-preview.json
       - name: Upload research artifacts
         if: always()
         uses: actions/upload-artifact@v4
