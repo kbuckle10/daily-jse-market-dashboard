@@ -1,0 +1,32 @@
+name: Cash-flow feasibility probe (isolated)
+on:
+  push:
+    branches:
+      - feature/cashflow-history-feasibility
+    paths:
+      - '.github/workflows/cashflow-feasibility.yml'
+      - 'scripts/probe-cashflow-history.mjs'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    if: github.ref == 'refs/heads/feature/cashflow-history-feasibility'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Run read-only financial history probe
+        run: node scripts/probe-cashflow-history.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cashflow-feasibility-report
+          path: artifacts/cashflow-feasibility.json
+          if-no-files-found: warn
