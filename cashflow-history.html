@@ -8,8 +8,8 @@
  if(!selected)return;
  const cards=[...document.querySelectorAll('section.stock')];
  const target=cards.find(card=>card.id===selected);
- if(!target)return;
  cards.forEach(card=>{card.hidden=card!==target;card.style.display=card===target?'':'none'});
+ if(!target)return;
  const nav=null;
  if(nav)nav.addEventListener('click',event=>{
   const a=event.target.closest('a[href^="#"]');if(!a)return;
@@ -47,8 +47,9 @@
     ['Period','Operating cash flow','Capital expenditures','Free cash flow'].forEach(label=>{const th=document.createElement('th');th.textContent=label;header.append(th)});
     thead.append(header);table.append(thead,document.createElement('tbody'));wrap.append(table);section.append(wrap);
     document.querySelector('main > p.note:last-of-type')?.before(section);
-    if(selected&&selected!==ticker)section.hidden=true;
+    if(selected){section.hidden=selected!==ticker;section.style.display=selected===ticker?'':'none';}
    }
+   if(selected){section.hidden=ticker!==selected;section.style.display=ticker===selected?'':'none';}
    const tbody=section.querySelector('tbody');
    const rows=periods.map(p=>{
     const tr=document.createElement('tr');
@@ -59,7 +60,7 @@
    });
    tbody.replaceChildren(...rows);
   }
-  if(note)note.textContent='StockAnalysis historical data · FY2021–FY2025 and TTM · Reporting currency in millions · Repository snapshot '+(store.updatedAt?new Date(store.updatedAt).toLocaleDateString('en-US'):'');
+  if(note)note.textContent='StockAnalysis historical data · five most recent fiscal years and TTM · Reporting currency in millions · Repository snapshot '+(store.updatedAt?new Date(store.updatedAt).toLocaleDateString('en-US'):'');
   const foot=document.querySelector('main > p.note:last-of-type');
   if(foot)foot.textContent='Banking and insurance cash-flow figures require sector-specific interpretation. Historical data is refreshed from the validated repository snapshot; ratings and scores are unaffected.';
  }catch(error){
