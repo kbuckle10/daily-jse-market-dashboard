@@ -26,7 +26,7 @@ function show(ticker){
 }
 
 // Native dialog hosts the already verified standalone history page. Links remain functional as fallback.
-function openHistory(ticker){
+window.openCashFlowHistory=function(ticker){
  const url='./cashflow-history.html?v=20261008single3#'+encodeURIComponent(ticker);
  let overlay=document.getElementById('cashflowHistoryOverlay');
  if(!overlay){
@@ -45,19 +45,12 @@ function openHistory(ticker){
  overlay.querySelector('#cashflowHistoryFrame').src=url;
 }
 
-// Capture links before performance/card scripts can intercept bubbling clicks.
-window.addEventListener('click',e=>{
- const link=e.target.closest?.('a[data-cashflow-pilot]');
- if(!link)return;
- e.preventDefault();e.stopImmediatePropagation();
- openHistory(link.dataset.cashflowPilot);
-},true);
 function decorate(){
  document.querySelectorAll('#freshCapitalSection [data-cashflow-pilot]').forEach(el=>el.remove());
  document.querySelectorAll('#stockTableBody .ticker, #cardView .stock-card h3').forEach(el=>{
   const ticker=el.textContent.trim().toUpperCase();if(!history[ticker]||el.parentElement.querySelector('[data-cashflow-pilot="'+ticker+'"]'))return;
   const b=document.createElement('a');b.dataset.cashflowPilot=ticker;b.href='./cashflow-history.html#'+encodeURIComponent(ticker);b.textContent='Cash Flow Trend';b.style.cssText='display:inline-block;margin:5px 0;padding:5px 8px;border:1px solid #62779a;border-radius:7px;background:#233149;color:#e7f0ff;font-size:11px;cursor:pointer;text-decoration:none';
-  b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();openHistory(ticker)},true);
+  b.onclick=e=>{e.preventDefault();e.stopPropagation();try{window.openCashFlowHistory(ticker)}catch(err){console.error('Cash flow modal failed',err);window.location.href=b.href}};
   el.insertAdjacentElement('afterend',b);
  });
 }
