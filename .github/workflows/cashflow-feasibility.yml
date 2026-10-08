@@ -11,6 +11,7 @@ on:
       - 'scripts/refresh-sa-cashflow.mjs'
       - 'app.js'
       - 'scripts/build-cashflow-preview.mjs'
+      - 'scripts/test-cashflow-preview-integration.mjs'
       - 'index.html'
   workflow_dispatch:
 permissions:
@@ -31,6 +32,7 @@ jobs:
         run: |
           node --check app.js
           node --check scripts/build-cashflow-preview.mjs
+          node --check scripts/test-cashflow-preview-integration.mjs
           node --check scripts/refresh-sa-cashflow.mjs
           node --check scripts/probe-cashflow-history.mjs
           node --check scripts/lib/cashflow-history.mjs
@@ -48,6 +50,8 @@ jobs:
 
       - name: Build isolated five-stock dashboard preview
         run: node scripts/build-cashflow-preview.mjs
+      - name: Check existing dashboard data is unchanged
+        run: node scripts/test-cashflow-preview-integration.mjs
       - uses: actions/upload-artifact@v4
         if: success()
         with:
