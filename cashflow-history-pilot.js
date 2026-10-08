@@ -45,10 +45,10 @@ window.openCashFlowHistory=function(ticker){
  overlay.querySelector('#cashflowHistoryFrame').src=url;
 }
 
-// Capture clicks at window level before dashboard table/card delegation can swallow them.
+// Handle Cash Flow Trend links in Fresh Capital only.
 window.addEventListener('click',event=>{
  const link=event.target?.closest?.('[data-cashflow-pilot]');
- if(!link)return;
+ if(!link||!link.closest('#freshCapitalSection'))return;
  const ticker=link.getAttribute('data-cashflow-pilot');
  if(!history[ticker])return;
  event.preventDefault();
@@ -58,12 +58,21 @@ window.addEventListener('click',event=>{
 },true);
 
 function decorate(){
- document.querySelectorAll('#freshCapitalSection [data-cashflow-pilot]').forEach(el=>el.remove());
- document.querySelectorAll('#stockTableBody .ticker, #cardView .stock-card h3').forEach(el=>{
-  const ticker=el.textContent.trim().toUpperCase();if(!history[ticker]||el.parentElement.querySelector('[data-cashflow-pilot="'+ticker+'"]'))return;
-  const b=document.createElement('a');b.dataset.cashflowPilot=ticker;b.href='./cashflow-history.html#'+encodeURIComponent(ticker);b.textContent='Cash Flow Trend';b.style.cssText='display:inline-block;margin:5px 0;padding:5px 8px;border:1px solid #62779a;border-radius:7px;background:#233149;color:#e7f0ff;font-size:11px;cursor:pointer;text-decoration:none';
-  
-  el.insertAdjacentElement('afterend',b);
+ // Remove earlier pilot controls outside Fresh Capital without touching original stock markup.
+ document.querySelectorAll('[data-cashflow-pilot]').forEach(el=>{
+  if(!el.closest('#freshCapitalSection'))el.remove();
+ });
+ document.querySelectorAll('#freshCapitalSection .fresh-objective-card .fresh-title strong').forEach(el=>{
+  const ticker=el.textContent.trim().toUpperCase();
+  if(!Object.prototype.hasOwnProperty.call(history,ticker))return;
+  const title=el.closest('.fresh-title');
+  if(!title||title.querySelector('[data-cashflow-pilot="'+ticker+'"]'))return;
+  const link=document.createElement('a');
+  link.dataset.cashflowPilot=ticker;
+  link.href='./cashflow-history.html#'+encodeURIComponent(ticker);
+  link.textContent='Cash Flow Trend';
+  link.style.cssText='display:inline-block;margin-top:7px;padding:6px 10px;border:1px solid #62779a;border-radius:7px;background:#233149;color:#e7f0ff;font-size:11px;cursor:pointer;text-decoration:none;width:max-content';
+  el.parentElement.appendChild(link);
  });
 }
 
