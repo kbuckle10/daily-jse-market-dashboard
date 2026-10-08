@@ -63,7 +63,7 @@ function ensureHistoryDirectory(){
  const section=document.getElementById('freshCapitalSection');
  if(!section||!availableHistory.size)return;
  let button=document.getElementById('cashflowAllStocksButton');
- if(button)return;
+ if(button){button.textContent='Cash Flow Trend — '+availableHistory.size+' stocks';return;}
  button=document.createElement('button');button.id='cashflowAllStocksButton';button.type='button';
  button.textContent='Cash Flow Trend — '+availableHistory.size+' stocks';
  button.style.cssText='display:inline-block;margin:12px 0;padding:9px 14px;border:1px solid #62779a;border-radius:8px;background:#233149;color:#e7f0ff;font-size:13px;cursor:pointer';
