@@ -10,6 +10,8 @@ on:
       - 'scripts/test-cashflow-history.mjs'
       - 'scripts/refresh-sa-cashflow.mjs'
       - 'app.js'
+      - 'scripts/build-cashflow-preview.mjs'
+      - 'index.html'
   workflow_dispatch:
 permissions:
   contents: read
@@ -28,6 +30,7 @@ jobs:
       - name: Validate JavaScript syntax
         run: |
           node --check app.js
+          node --check scripts/build-cashflow-preview.mjs
           node --check scripts/refresh-sa-cashflow.mjs
           node --check scripts/probe-cashflow-history.mjs
           node --check scripts/lib/cashflow-history.mjs
@@ -42,3 +45,12 @@ jobs:
           name: cashflow-feasibility-report
           path: artifacts/cashflow-feasibility.json
           if-no-files-found: warn
+
+      - name: Build isolated five-stock dashboard preview
+        run: node scripts/build-cashflow-preview.mjs
+      - uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: cashflow-dashboard-preview
+          path: artifacts/dashboard-preview/
+          if-no-files-found: error
