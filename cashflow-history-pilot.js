@@ -27,12 +27,11 @@ function show(ticker){
 function decorate(){
  document.querySelectorAll('#stockTableBody .ticker, #cardView .stock-card h3, #freshCapitalSection .fresh-objective-card .fresh-title strong').forEach(el=>{
   const ticker=el.textContent.trim().toUpperCase();if(!history[ticker]||el.parentElement.querySelector('[data-cashflow-pilot="'+ticker+'"]'))return;
-  const b=document.createElement('button');b.type='button';b.dataset.cashflowPilot=ticker;b.textContent='Cash Flow Trend';b.style.cssText='display:inline-block;margin:5px 0;padding:5px 8px;border:1px solid #62779a;border-radius:7px;background:#233149;color:#e7f0ff;font-size:11px;cursor:pointer';
-  b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();show(ticker)},true);
+  const b=document.createElement('a');b.dataset.cashflowPilot=ticker;b.href='./cashflow-history.html#'+encodeURIComponent(ticker);b.textContent='Cash Flow Trend';b.style.cssText='display:inline-block;margin:5px 0;padding:5px 8px;border:1px solid #62779a;border-radius:7px;background:#233149;color:#e7f0ff;font-size:11px;cursor:pointer;text-decoration:none';
   el.insertAdjacentElement('afterend',b);
  });
 }
-document.addEventListener('click',e=>{const b=e.target.closest?.('[data-cashflow-pilot]');if(b){e.preventDefault();e.stopPropagation();show(b.dataset.cashflowPilot)}},true);
+
 document.addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('cashflowPilotOverlay')?.remove()});
 let queued=false;const observer=new MutationObserver(()=>{if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;decorate()})});
 function init(){decorate();observer.observe(document.querySelector('#stockTableBody')||document.body,{subtree:true,childList:true});const cards=document.querySelector('#cardView');if(cards)observer.observe(cards,{subtree:true,childList:true})}
