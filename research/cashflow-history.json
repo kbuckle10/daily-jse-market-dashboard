@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-08T05:16:54.386Z",
+  "updatedAt": "2026-10-08T05:17:37.627Z",
   "stocks": {
     "SEP": {
       "history": {
@@ -55,7 +55,7 @@
           "capitalExpenditures": -2398000000,
           "freeCashFlow": 9534000000
         },
-        "updatedAt": "2026-10-08T05:16:54.386Z"
+        "updatedAt": "2026-10-08T05:17:37.627Z"
       }
     },
     "TJH": {
@@ -106,7 +106,7 @@
           "capitalExpenditures": -830000,
           "freeCashFlow": 64870000
         },
-        "updatedAt": "2026-10-08T05:16:54.386Z"
+        "updatedAt": "2026-10-08T05:17:37.627Z"
       }
     },
     "NCBFG": {
@@ -167,7 +167,7 @@
           "shareIssuance": 1182000000,
           "freeCashFlow": 11534000000
         },
-        "updatedAt": "2026-10-08T05:16:54.386Z"
+        "updatedAt": "2026-10-08T05:17:37.627Z"
       }
     },
     "GK": {
@@ -240,7 +240,7 @@
           "shareRepurchases": -354510000,
           "freeCashFlow": 15833000000
         },
-        "updatedAt": "2026-10-08T05:16:54.386Z"
+        "updatedAt": "2026-10-08T05:17:37.627Z"
       }
     },
     "GHL": {
@@ -291,7 +291,7 @@
           "capitalExpenditures": -36930000,
           "freeCashFlow": 1054000000
         },
-        "updatedAt": "2026-10-08T05:16:54.386Z"
+        "updatedAt": "2026-10-08T05:17:37.627Z"
       }
     }
   }
