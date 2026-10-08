@@ -27,7 +27,7 @@ function show(ticker){
 
 // Native dialog hosts the already verified standalone history page. Links remain functional as fallback.
 function openHistory(ticker){
- const url='./cashflow-history.html#'+encodeURIComponent(ticker);
+ const url='./cashflow-history.html?v=20261008single1#'+encodeURIComponent(ticker);
  if(typeof HTMLDialogElement==='undefined'){window.location.assign(url);return;}
  let dialog=document.getElementById('cashflowHistoryDialog');
  if(!dialog){
