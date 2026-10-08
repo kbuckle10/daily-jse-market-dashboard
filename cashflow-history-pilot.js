@@ -4,7 +4,7 @@ const history={"SEP":["JMD",[[2021,2676,-1655,1021],[2022,-119.44,-2151,-2271],[
 const money=n=>Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
 function show(ticker){
  const item=history[ticker];if(!item)return;
- document.getElementById('cashflowPilotOverlay')?.remove();
+ document.getElementById('cashflowHistoryOverlay')?.remove();
  const [currency,rows]=item;
  const overlay=document.createElement('div');overlay.id='cashflowPilotOverlay';overlay.setAttribute('role','presentation');
  overlay.style.cssText='position:fixed;inset:0;z-index:100000;background:rgba(0,0,0,.78);display:flex;align-items:center;justify-content:center;padding:12px';
@@ -27,23 +27,22 @@ function show(ticker){
 
 // Native dialog hosts the already verified standalone history page. Links remain functional as fallback.
 function openHistory(ticker){
- const url='./cashflow-history.html?v=20261008single2#'+encodeURIComponent(ticker);
- if(typeof HTMLDialogElement==='undefined'){window.location.assign(url);return;}
- let dialog=document.getElementById('cashflowHistoryDialog');
- if(!dialog){
-  dialog=document.createElement('dialog');dialog.id='cashflowHistoryDialog';
-  dialog.setAttribute('aria-label','Historical cash flow');
-  dialog.style.cssText='position:fixed;inset:0;margin:auto;width:min(960px,calc(100vw - 24px));height:min(760px,calc(100dvh - 24px));max-width:none;max-height:none;padding:0;border:1px solid #425b80;border-radius:16px;background:#101c2f;color:#e9f1ff;box-shadow:0 30px 90px #000b;overflow:hidden';
-  const bar=document.createElement('div');bar.style.cssText='display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;background:#14253d;border-bottom:1px solid #30445f';
-  const heading=document.createElement('strong');heading.textContent='Cash Flow History';
-  const close=document.createElement('button');close.type='button';close.textContent='✕ Close';close.style.cssText='background:#263e5e;color:white;border:1px solid #526e94;border-radius:9px;padding:8px 12px;cursor:pointer';close.addEventListener('click',()=>dialog.close());
+ const url='./cashflow-history.html?v=20261008single3#'+encodeURIComponent(ticker);
+ let overlay=document.getElementById('cashflowHistoryOverlay');
+ if(!overlay){
+  overlay=document.createElement('div');overlay.id='cashflowHistoryOverlay';overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-label','Historical cash flow');
+  overlay.style.cssText='position:fixed;inset:0;z-index:2147483647;background:rgba(1,7,18,.82);display:flex;align-items:center;justify-content:center;padding:12px';
+  const panel=document.createElement('div');panel.style.cssText='width:min(960px,100%);height:min(760px,calc(100dvh - 24px));background:#101c2f;border:1px solid #425b80;border-radius:16px;overflow:hidden;box-shadow:0 30px 90px #000b;display:flex;flex-direction:column';
+  const bar=document.createElement('div');bar.style.cssText='display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;background:#14253d;border-bottom:1px solid #30445f;color:#e9f1ff';
+  const heading=document.createElement('strong');heading.id='cashflowHistoryHeading';
+  const close=document.createElement('button');close.type='button';close.textContent='✕ Close';close.style.cssText='background:#263e5e;color:white;border:1px solid #526e94;border-radius:9px;padding:8px 12px;cursor:pointer';close.onclick=()=>overlay.remove();
   bar.append(heading,close);
-  const frame=document.createElement('iframe');frame.title='Historical cash flow details';frame.style.cssText='width:100%;height:calc(100% - 56px);border:0;background:#081221';frame.setAttribute('loading','eager');
-  dialog.append(bar,frame);dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close()});document.body.append(dialog);
+  const frame=document.createElement('iframe');frame.id='cashflowHistoryFrame';frame.title='Historical cash flow details';frame.style.cssText='width:100%;flex:1;border:0;background:#081221';
+  panel.append(bar,frame);overlay.append(panel);overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.remove()});
+  document.body.append(overlay);
  }
- dialog.querySelector('strong').textContent=ticker+' • Cash Flow History';
- dialog.querySelector('iframe').src=url;
- if(!dialog.open)dialog.showModal();
+ overlay.querySelector('#cashflowHistoryHeading').textContent=ticker+' • Cash Flow History';
+ overlay.querySelector('#cashflowHistoryFrame').src=url;
 }
 
 // Capture links before performance/card scripts can intercept bubbling clicks.
