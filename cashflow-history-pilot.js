@@ -59,7 +59,31 @@ window.addEventListener('click',event=>{
 
 const availableHistory=new Set(Object.keys(history));
 fetch('./research/cashflow-history.json',{cache:'no-cache'}).then(r=>{if(!r.ok)throw Error('History unavailable');return r.json()}).then(store=>{for(const [ticker,item] of Object.entries(store.stocks||{})){if(item?.history?.annual?.length>=5&&item.history.ttm)availableHistory.add(ticker)}decorate()}).catch(e=>console.warn('Cash flow history index fallback:',e));
+function ensureHistoryDirectory(){
+ const section=document.getElementById('freshCapitalSection');
+ if(!section||!availableHistory.size)return;
+ let button=document.getElementById('cashflowAllStocksButton');
+ if(button)return;
+ button=document.createElement('button');button.id='cashflowAllStocksButton';button.type='button';
+ button.textContent='Cash Flow Trend — '+availableHistory.size+' stocks';
+ button.style.cssText='display:inline-block;margin:12px 0;padding:9px 14px;border:1px solid #62779a;border-radius:8px;background:#233149;color:#e7f0ff;font-size:13px;cursor:pointer';
+ button.onclick=()=>{
+  document.getElementById('cashflowStockPicker')?.remove();
+  const overlay=document.createElement('div');overlay.id='cashflowStockPicker';overlay.style.cssText='position:fixed;inset:0;z-index:2147483647;background:#010712d9;display:flex;align-items:center;justify-content:center;padding:16px';
+  const panel=document.createElement('div');panel.style.cssText='background:#14253d;color:#e9f1ff;border:1px solid #425b80;border-radius:14px;padding:20px;width:min(520px,100%);max-height:80vh;overflow:auto';
+  const heading=document.createElement('h2');heading.textContent='Cash Flow Trend — available stocks';
+  const list=document.createElement('div');list.style.cssText='display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:10px';
+  for(const ticker of [...availableHistory].sort()){
+   const item=document.createElement('button');item.type='button';item.textContent=ticker;item.style.cssText='padding:10px;border:1px solid #526e94;border-radius:8px;background:#263e5e;color:white;cursor:pointer';
+   item.onclick=()=>{overlay.remove();window.openCashFlowHistory(ticker)};list.append(item);
+  }
+  const close=document.createElement('button');close.type='button';close.textContent='Close';close.style.cssText='margin-top:16px;padding:8px 12px;background:#263e5e;color:white;border:1px solid #526e94;border-radius:8px';close.onclick=()=>overlay.remove();
+  panel.append(heading,list,close);overlay.append(panel);overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.remove()});document.body.append(overlay);
+ };
+ section.prepend(button);
+}
 function decorate(){
+ ensureHistoryDirectory();
  // Remove earlier pilot controls outside Fresh Capital without touching original stock markup.
  document.querySelectorAll('[data-cashflow-pilot]').forEach(el=>{
   if(!el.closest('#freshCapitalSection'))el.remove();
