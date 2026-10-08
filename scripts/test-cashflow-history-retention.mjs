@@ -14,6 +14,7 @@ for(const [name,bad] of [
  ['duplicate year',{...history,annual:[...annual.slice(0,4),annual[3]]}],
  ['bad FCF',{...history,annual:annual.map((x,i)=>i===0?{...x,freeCashFlow:999}:x)}],
  ['missing TTM',{...history,ttm:null}],
+ ['bad TTM FCF',{...history,ttm:{...history.ttm,freeCashFlow:999}}],
  ['older source',{...history,annual:[2019,2020,2021,2022,2023].map((y,i)=>({...annual[i],period:String(y)}))}]
 ]){
  const out=mergeHistoricalCashFlow(previous,bad,{expectedCurrency:'USD'});
@@ -21,4 +22,4 @@ for(const [name,bad] of [
  assert.deepEqual(out.cashFlowHistory,previous.cashFlowHistory,name);
 }
 assert.equal(mergeHistoricalCashFlow({},null,{expectedCurrency:'USD'}).cashFlowHistoryStatus,'unavailable');
-console.log('PASS: good capture, 7 failure scenarios retain last good, no rating/score mutation');
+console.log('PASS: good capture, 8 failure scenarios retain last good, no rating/score mutation');
