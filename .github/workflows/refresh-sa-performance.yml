@@ -14,7 +14,7 @@ on:
   schedule:
     # One off-peak trigger. GitHub documents that scheduled events can be delayed
     # or dropped under scheduler load; avoid :00/:30 and use Jamaica time directly.
-    - cron: '20 23 * * 1-5'
+    - cron: '22 23 * * 1-5'
 
 permissions:
   contents: write
