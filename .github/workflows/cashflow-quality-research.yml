@@ -1,0 +1,24 @@
+name: Cash Flow Quality Research (No Production Writes)
+on:
+  workflow_dispatch:
+  push:
+    branches: [feature/cashflow-quality-staging-20261008]
+    paths:
+      - 'scripts/lib/cashflow-quality-research.mjs'
+      - 'scripts/test-cashflow-quality-research.mjs'
+      - '.github/workflows/cashflow-quality-research.yml'
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify research-only quality logic
+        run: |
+          node --check scripts/lib/cashflow-quality-research.mjs
+          node --check scripts/test-cashflow-quality-research.mjs
+          node scripts/test-cashflow-quality-research.mjs
