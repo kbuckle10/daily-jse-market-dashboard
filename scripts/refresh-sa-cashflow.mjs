@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import vm from 'node:vm';
 import { chromium } from 'playwright';
+import { extractCashFlowHistory } from './lib/cashflow-history.mjs';
 
 const DATA_FILE='data.js';
 const CONCURRENCY=Math.max(1,Math.min(8,Number(process.env.SA_CASHFLOW_CONCURRENCY||5)));
@@ -18,10 +19,18 @@ function textMetric(text,patterns,parser=parsePlain){for(const p of patterns){co
 
 async function scrapeStock(context,s){const cfg=marketConfig(s);const base=`https://stockanalysis.com/quote/${cfg.market}/${cfg.ticker}/`;console.log(`\n=== ${s.ticker} cash flow (${cfg.market.toUpperCase()}) ===`);let ok=false,period=null,operatingCashFlow=null,freeCashFlow=null,capitalExpenditures=null,cashAndEquivalents=null,freeCashFlowPerShare=null;
 const [cashResult,balanceResult,statsResult]=await Promise.all([
- (async()=>{const page=await context.newPage();try{if(await goto(page,`${base}financials/cash-flow-statement/`)){const mult=await statementMultiplier(page);return{ok:true,period:await firstPeriodLabel(page),operatingCashFlow:await tableMetric(page,/^(?:operating cash flow|cash from operating activities|net cash provided by operating activities)$/i,mult),freeCashFlow:await tableMetric(page,/^free cash flow$/i,mult),capitalExpenditures:await tableMetric(page,/^(?:capital expenditures|capital expenditure|capex)$/i,mult)};}return{ok:false};}finally{await page.close();}})(),
+ (async()=>{const page=await context.newPage();try{if(await goto(page,`${base}financials/cash-flow-statement/`)){const mult=await statementMultiplier(page);const history=await extractCashFlowHistory(page).catch(e=>({status:'error',message:e.message}));return{ok:true,history,period:await firstPeriodLabel(page),operatingCashFlow:await tableMetric(page,/^(?:operating cash flow|cash from operating activities|net cash provided by operating activities)$/i,mult),freeCashFlow:await tableMetric(page,/^free cash flow$/i,mult),capitalExpenditures:await tableMetric(page,/^(?:capital expenditures|capital expenditure|capex)$/i,mult)};}return{ok:false};}finally{await page.close();}})(),
  (async()=>{const page=await context.newPage();try{if(await goto(page,`${base}financials/balance-sheet/`)){const mult=await statementMultiplier(page);return{ok:true,cashAndEquivalents:await tableMetric(page,/^(?:cash & equivalents|cash and equivalents|cash & short-term investments|cash and short-term investments|cash, cash equivalents & short-term investments)$/i,mult)};}return{ok:false};}finally{await page.close();}})(),
  (async()=>{const page=await context.newPage();try{if(await goto(page,`${base}statistics/`)){const text=await page.locator('body').innerText().catch(()=>'');return{ok:true,freeCashFlowPerShare:textMetric(text,[/Free Cash Flow Per Share\s*(?:J\$|TT\$|US\$|\$)?\s*([+-]?[0-9.,]+)/i,/FCF Per Share\s*(?:J\$|TT\$|US\$|\$)?\s*([+-]?[0-9.,]+)/i])};}return{ok:false};}finally{await page.close();}})()
 ]);
+// Historical series is opt-in data: do not replace prior valid history with an access or parsing failure.
+if(cashResult.history?.status==='captured'){
+  const h=cashResult.history;
+  s.cashFlowHistory={source:'StockAnalysis',sourceUrl:`${base}financials/cash-flow-statement/`,currency:h.currency,units:h.units,annual:h.annual,ttm:h.ttm,updatedAt:new Date().toISOString()};
+  s.cashFlowHistoryStatus='captured';
+  const discrepancies=h.reconciliation.filter(x=>Math.abs(x.discrepancy)>Math.max(10000,Math.abs(h.annual.find(p=>p.period===x.period)?.freeCashFlow??0)*0.02));
+  if(discrepancies.length){s.cashFlowHistoryStatus='reconciliation-warning';console.warn(`${s.ticker}: cash-flow history reconciliation warning ${JSON.stringify(discrepancies)}`);}
+}else{s.cashFlowHistoryStatus=cashResult.history?.status??'unavailable';}
 ok=cashResult.ok||balanceResult.ok||statsResult.ok;period=cashResult.period??null;operatingCashFlow=cashResult.operatingCashFlow??null;freeCashFlow=cashResult.freeCashFlow??null;capitalExpenditures=cashResult.capitalExpenditures??null;cashAndEquivalents=balanceResult.cashAndEquivalents??null;freeCashFlowPerShare=statsResult.freeCashFlowPerShare??null;
 if(!ok){s.cashFlowDataStatus='scraper-error';console.warn(`${s.ticker}: cash-flow pages unavailable`);return;}
 s.operatingCashFlow=operatingCashFlow??s.operatingCashFlow??null;s.freeCashFlow=freeCashFlow??s.freeCashFlow??null;s.capitalExpenditures=capitalExpenditures??s.capitalExpenditures??null;s.cashAndEquivalents=cashAndEquivalents??s.cashAndEquivalents??null;s.freeCashFlowPerShare=freeCashFlowPerShare??s.freeCashFlowPerShare??null;s.cashFlowCurrency=cfg.currency;s.cashFlowPeriod=period??s.cashFlowPeriod??null;s.cashFlowSource=`StockAnalysis ${cfg.market.toUpperCase()}`;s.cashFlowUrl=`${base}financials/cash-flow-statement/`;s.cashFlowUpdated=new Date().toISOString();
