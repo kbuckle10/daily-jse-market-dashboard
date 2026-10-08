@@ -1,4 +1,4 @@
-name: Cash Flow Quality Research (No Production Writes)
+name: Cash Flow Quality Research (Staging History Persistence)
 on:
   workflow_dispatch:
   push:
@@ -11,13 +11,19 @@ on:
       - 'scripts/refresh-sa-cashflow.mjs'
       - '.github/workflows/cashflow-quality-research.yml'
 permissions:
-  contents: read
+  contents: write
+concurrency:
+  group: cashflow-history-staging
+  cancel-in-progress: false
 jobs:
   test-and-probe:
     runs-on: ubuntu-latest
     timeout-minutes: 18
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: feature/cashflow-quality-staging-20261008
+          persist-credentials: true
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -64,6 +70,33 @@ jobs:
           node scripts/refresh-sa-cashflow.mjs
           cmp data.js /tmp/cashflow-data-before.js
           test -f artifacts/cashflow-collector-preview.json
+      - name: Commit validated history to staging branch only
+        if: success()
+        env:
+          TARGET_BRANCH: feature/cashflow-quality-staging-20261008
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const fs=require('fs');
+          const report=JSON.parse(fs.readFileSync('artifacts/cashflow-quality-report.json','utf8'));
+          if(report.complete!==true || report.results?.length!==5 || report.results.some(x=>!x.valid))throw Error('Five-stock validation gate failed');
+          const store=JSON.parse(fs.readFileSync('research/cashflow-history.json','utf8'));
+          const tickers=['SEP','TJH','NCBFG','GK','GHL'];
+          for(const ticker of tickers){
+            const h=store.stocks?.[ticker]?.history;
+            if(!h||h.annual?.length<5||!h.ttm)throw Error('Missing persisted history: '+ticker);
+          }
+          NODE
+          cmp data.js /tmp/history-store-data-before.js
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- research/cashflow-history.json
+          if git diff --cached --quiet; then
+            echo 'History unchanged; nothing to commit.'
+            exit 0
+          fi
+          git commit -m 'data: persist validated five-stock cash-flow history [skip ci]'
+          git push origin "HEAD:refs/heads/$TARGET_BRANCH"
       - name: Upload research artifacts
         if: always()
         uses: actions/upload-artifact@v4
