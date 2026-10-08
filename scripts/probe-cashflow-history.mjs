@@ -3,7 +3,9 @@
 import { chromium } from 'playwright';
 import fs from 'node:fs';
 import { extractCashFlowHistory } from './lib/cashflow-history.mjs';
-const tickers = [{ticker:'SEP',market:'jmse'},{ticker:'TJH',market:'jmse'},{ticker:'NCBFG',market:'jmse'},{ticker:'GK',market:'jmse'},{ticker:'GHL',market:'ttse'}];
+import { CASHFLOW_EXPANSION_CANDIDATES } from './lib/cashflow-expansion-candidates.mjs';
+const pilot=[{ticker:'SEP',market:'jmse'},{ticker:'TJH',market:'jmse'},{ticker:'NCBFG',market:'jmse'},{ticker:'GK',market:'jmse'},{ticker:'GHL',market:'ttse'}];
+const tickers=process.env.CASHFLOW_EXPANSION_PROBE==='1'?CASHFLOW_EXPANSION_CANDIDATES:pilot;
 const labels = {
   operatingCashFlow:/^(operating cash flow|cash from operating activities|net cash provided by operating activities)$/i,
   capitalExpenditures:/^(capital expenditures|capital expenditure|capex)$/i,
@@ -61,8 +63,8 @@ const results=[];
 try{for(const s of tickers){const r=await probe(context,s);results.push(r);console.log(s.ticker,r.status,'annual periods',r.annualPeriods??0,'metrics',Object.keys(r.metrics).join(','));}}
 finally{await browser.close();}
 fs.mkdirSync('artifacts',{recursive:true});
-fs.writeFileSync('artifacts/cashflow-feasibility.json',JSON.stringify({generatedAt:new Date().toISOString(),results},null,2)+'\n');
+fs.writeFileSync(process.env.CASHFLOW_EXPANSION_PROBE==='1'?'artifacts/cashflow-expansion-feasibility.json':'artifacts/cashflow-feasibility.json',JSON.stringify({generatedAt:new Date().toISOString(),results},null,2)+'\n');
 const parsed=results.filter(r=>r.status==='parsed').length;
 console.log('Coverage:',parsed,'/',results.length);
 console.log('Wrote artifacts/cashflow-feasibility.json (no production data changes)');
-if(parsed!==results.length){console.error('Incomplete financial history coverage: probe failed five-stock gate');process.exitCode=1;}
+if(parsed!==results.length){console.error('Incomplete financial history coverage:',parsed,'/',results.length);if(process.env.CASHFLOW_EXPANSION_PROBE!=='1')process.exitCode=1;}
