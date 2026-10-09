@@ -8,10 +8,12 @@ All percentages calculated from existing staging records, not independently cert
 
 | Stock | Business model (provisional) | FY25 revenue growth | FY25 operating margin | FY25 FCF margin | FY25 FCF/OCF | Issuer cash-flow spot checks |
 |---|---|---:|---:|---:|---:|---|
-| TJH | asset heavy operating | 11.3% | 64.5% | 52.1% | 95.7% | 2024 only |
+| TJH | asset heavy operating | N/A — toll revenue vs broader total revenue definitions differ | 64.5%* | 52.1%* | 95.7%* | 2024 only |
 | SEP | asset heavy operating | 14.0% | 7.3% | 3.7% | 60.8% | 2024, 2025 |
 | SVL | asset light operating | 3.5% | 5.9% | 3.5% | 68.7% | 2024, 2025 |
 | JSE | asset light operating | 9.6% | 21.4% | 13.0% | 73.0% | 2024, 2025 |
+
+*TJH FY2025 ratios are arithmetic illustrations using third-party revenue and cash-flow figures, not audited or issuer-reconciled operating performance. The issuer cites approximately US$91.2m toll revenue, while the staging research series uses US$96.42m broader total revenue including other gains. **Do not interpret TJH revenue growth or revenue-based margins as comparable until definitions are reconciled.**
 
 **Interpretation limits:** SEP operating profit was restated in this research dataset to match the FY2025 consolidated-statement definition; historical and TTM definitions remain unharmonized. TJH FY2025 remains third-party research only. FCF here deducts recorded PPE/intangible purchases but does not include acquisition financing, mandatory concession cash reserves, or debt repayments. These are NOT phase scores.
 
@@ -38,7 +40,7 @@ Do not assign a phase based on one year of FCF or a high FCF margin. At least 3 
 - FCF arithmetic computed as OCF plus signed negative CapEx. Four prior small discrepancies were repaired by deriving FCF from recorded inputs, with original reported research FCF preserved in `originalResearchFreeCashFlow` and source status kept provisional.
 - Issuer cash-flow spot-check flags cover **7 of 8** FY2024–FY2025 company-years: TJH FY2024; SEP, SVL and JSE FY2024 and FY2025. This does **not** certify all metrics or older years.
 - TJH FY2025, all earlier annual periods, and TTM require issuer verification. Period alignment, operating-profit consistency and ROIC/debt metrics are unresolved.
-- Validator workflow has been committed but a successful GitHub Actions run has **not** been confirmed.
+- Validator and staging-page JavaScript smoke-test workflows have been committed, but a successful GitHub Actions run and live browser rendering have **not** been confirmed.
 
 ## Decision and next execution gate
 
