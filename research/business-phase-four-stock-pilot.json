@@ -70,12 +70,28 @@
       "classificationStatus": "research-only",
       "sourceIncome": "https://stockanalysis.com/quote/jmse/TJH/financials/",
       "sourceCashFlow": "https://stockanalysis.com/quote/jmse/TJH/financials/cash-flow-statement/",
-      "notes": "Concession infrastructure; capex alone does not capture concession economics. USD reporting basis requires verification against issuer filings. FY2024 audited OCF and PPE payments reconciled to issuer 2024 annual report. Concession-asset investment, restricted cash and maintenance obligations must be assessed separately; FY2025 issuer line items not yet independently verified.",
+      "notes": "Concession infrastructure; capex alone does not capture concession economics. USD reporting basis requires verification against issuer filings. FY2024 audited OCF and PPE payments reconciled to issuer 2024 annual report. Concession-asset investment, restricted cash and maintenance obligations must be assessed separately; FY2025 issuer line items not yet independently verified. FY2024 restricted cash funding and debt principal reduce cash flexibility despite low PPE CapEx. Illustrative bridge documented separately from FCF.",
       "businessModelCategory": "asset_heavy_operating",
       "phase": "unclassified",
       "phaseConfidence": "insufficient evidence",
       "sourceVerification": "pending",
-      "metricsInterpretation": "Research only. Operating-profit FCF conversion can exceed 100% and is not by itself a phase signal."
+      "metricsInterpretation": "Research only. Operating-profit FCF conversion can exceed 100% and is not by itself a phase signal.",
+      "infrastructureCashFlowReview": {
+        "fy2024": {
+          "currency": "USD",
+          "units": "millions",
+          "conventionalFreeCashFlow": 42.529,
+          "principalDebtRepayment": 8.572,
+          "leasePrincipalRepayment": 0.105,
+          "restrictedCashIncrease": 14.521,
+          "dividendsPaid": 15,
+          "illustrativeCashAfterDebtPrincipalAndRestrictedCash": 19.331,
+          "illustrativeCashAfterDebtRestrictedCashAndDividends": 4.331
+        },
+        "interpretation": "Illustrative cash bridge only: FCF minus debt principal, lease principal and restricted cash funding; NOT a standardized free cash flow measure. Restricted cash may be earmarked for future debt service, maintenance or concession obligations. Do not double count restricted cash and subsequent debt spending across periods.",
+        "source": "https://www.transjamhighways.com/wp-content/uploads/2025/06/TJH-2024-Annual-Report_compressed.pdf",
+        "fy2025Status": "Issuer annual report identified, audited line items not yet independently extracted; retain provisional third-party 2025 values."
+      }
     },
     "SEP": {
       "businessModel": "Asset-heavy",
