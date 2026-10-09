@@ -9,6 +9,7 @@ const sourceYears = [2024, 2025];
 const acceptedEvidenceFlags = ['reconciledToIssuer2025AnnualReport', 'reconciledToIssuer2025AuditedConsolidatedStatements', 'reconciledToIssuer2024AnnualReport'];
 const pct = (a, b) => b > 0 ? +(100 * a / b).toFixed(2) : null;
 const results = {};
+const arithmeticFailures = [];
 
 for (const ticker of expected) {
   const stock = data.stocks[ticker];
@@ -20,8 +21,8 @@ for (const ticker of expected) {
     for (const metric of metrics) assert.ok(Number.isFinite(record[metric]), ticker + ' ' + record.period + ' invalid ' + metric);
     assert.ok(record.revenue > 0, ticker + ' ' + record.period + ' revenue must be positive');
     const tolerance = 0.011; // data expressed in millions; allow 0.01m rounding, not a percentage-based mismatch
-    assert.ok(Math.abs(record.operatingCashFlow + record.capitalExpenditures - record.freeCashFlow) <= tolerance,
-      ticker + ' ' + record.period + ' FCF reconciliation failed');
+    const difference = +(record.operatingCashFlow + record.capitalExpenditures - record.freeCashFlow).toFixed(6);
+    if (Math.abs(difference) > tolerance) arithmeticFailures.push({ ticker, period: record.period, differenceMillions: difference, toleranceMillions: tolerance });
     if (record.capitalExpenditures > 0) warnings.push(record.period + ': positive CapEx; verify sign');
   }
   const ttm = stock.records.at(-1), fy = stock.records.at(-2), prior = stock.records.at(-3);
@@ -75,9 +76,14 @@ assert.equal(Object.keys(data.stocks).length, 4, 'Pilot must contain only four s
 assert.equal(data.modelFramework.categories.length, 4, 'Four analytical categories required');
 fs.mkdirSync('artifacts', {recursive:true});
 fs.writeFileSync('artifacts/business-phase-four-stock-validation.json', JSON.stringify({
-  generatedAt: new Date().toISOString(), status: 'internal-arithmetic-pass-external-source-pending',
+  generatedAt: new Date().toISOString(), status: arithmeticFailures.length ? 'arithmetic-fail-source-reconciliation-required' : 'internal-arithmetic-pass-external-source-pending',
+  arithmeticFailures,
   methodology: 'FCF=OCF+negative CapEx, with maximum 0.011 million rounding tolerance; TTM growth deliberately not calculated against fiscal-year figures. Source flags indicate issuer spot-checks only, not full audit of all five metrics.',
   stocks: results
 }, null, 2) + '\n');
-console.log('PASS: four-stock pilot structure and arithmetic; issuer source validation remains PARTIAL');
+if (arithmeticFailures.length) {
+  console.error('FAIL: ' + arithmeticFailures.length + ' source/arithmetic discrepancies; report saved to artifacts/business-phase-four-stock-validation.json');
+  for (const failure of arithmeticFailures) console.error(JSON.stringify(failure));
+  process.exitCode = 1;
+} else console.log('PASS: four-stock pilot structure and arithmetic; issuer source validation remains PARTIAL');
 for (const [ticker, result] of Object.entries(results)) console.log(ticker, JSON.stringify(result.ttm));
