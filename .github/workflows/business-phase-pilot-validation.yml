@@ -7,6 +7,7 @@ on:
       - 'research/business-phase-four-stock-pilot.json'
       - 'scripts/validate-business-phase-pilot.mjs'
       - 'business-phase-four-stock-pilot.html'
+      - 'scripts/smoke-test-business-phase-pilot.mjs'
       - '.github/workflows/business-phase-pilot-validation.yml'
 permissions:
   contents: read
@@ -23,6 +24,8 @@ jobs:
         run: node --check scripts/validate-business-phase-pilot.mjs
       - name: Reconcile pilot arithmetic and generate metrics
         run: node scripts/validate-business-phase-pilot.mjs
+      - name: Smoke test pilot page and research dataset
+        run: node scripts/smoke-test-business-phase-pilot.mjs
       - name: Assert no unsupported phase assignment
         run: |
           node --input-type=module <<'NODE'
