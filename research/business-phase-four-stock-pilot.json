@@ -59,7 +59,16 @@
           "freeCashFlow": 50.21,
           "sourceStatus": "third_party_research_not_issuer_reconciled",
           "sourceCashFlow": "https://stockanalysis.com/quote/jmse/TJH/financials/cash-flow-statement/",
-          "issuerAnnualReportListedAt": "https://www.transjamhighways.com/investor-relations/"
+          "issuerAnnualReportListedAt": "https://www.transjamhighways.com/investor-relations/",
+          "issuerRevenueCrossCheck": {
+            "issuerAnnouncementRevenueUSDMillions": 91.2,
+            "stagingRevenueUSDMillions": 96.42,
+            "differenceUSDMillions": 5.22,
+            "status": "material_mismatch_pending_audited_income_statement_reconciliation",
+            "source": "https://www.transjamhighways.com/transjamaican-highway-delivers-strong-2025-results-with-double-digit-growth-and-increased-shareholder-returns/",
+            "published": "2026-03-25",
+            "note": "Issuer announcement states approximately US$91.2m revenue; retain existing research revenue temporarily for traceability but suppress FY2025 TJH revenue-based interpretation until audited definition is reconciled."
+          }
         },
         {
           "period": "TTM",
@@ -495,6 +504,13 @@
           "diff": -0.55
         }
       ]
+    },
+    "tjh2025RevenueMismatch": {
+      "status": "blocking",
+      "issuerAnnouncementUSDMillions": 91.2,
+      "stagingUSDMillions": 96.42,
+      "deltaUSDMillions": 5.22,
+      "source": "https://www.transjamhighways.com/transjamaican-highway-delivers-strong-2025-results-with-double-digit-growth-and-increased-shareholder-returns/"
     }
   }
 }
