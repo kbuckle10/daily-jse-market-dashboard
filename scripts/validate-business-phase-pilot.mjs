@@ -7,6 +7,8 @@ const expected = ['TJH', 'SEP', 'SVL', 'JSE'];
 const metrics = ['revenue', 'operatingProfit', 'operatingCashFlow', 'capitalExpenditures', 'freeCashFlow'];
 const pct = (a, b) => b > 0 ? +(100 * a / b).toFixed(2) : null;
 const results = {};
+const warningsGlobal = [];
+
 for (const ticker of expected) {
   const stock = data.stocks[ticker];
   assert.ok(stock, 'Missing stock ' + ticker);
@@ -22,6 +24,10 @@ for (const ticker of expected) {
     if (record.capitalExpenditures > 0) warnings.push(record.period + ': positive CapEx; verify sign');
   }
   const ttm = stock.records.at(-1), fy = stock.records.at(-2), prior = stock.records.at(-3);
+  const comparableProfit = Boolean(fy.operatingProfitDefinition && fy.operatingProfitDefinition === prior.operatingProfitDefinition);
+  if (!comparableProfit) warnings.push('Operating-profit growth suppressed: FY2024 and FY2025 definitions not proven comparable');
+  if (!ttm.reconciledToIssuer2025AnnualReport && !ttm.reconciledToIssuer2025AuditedConsolidatedStatements) warnings.push('TTM income and cash flow remain provisional; metrics are research-only');
+  if (ticker === 'TJH') warnings.push('Concession rights and maintenance obligations not captured by conventional PPE CapEx');
   results[ticker] = {
     businessModel: stock.businessModelCategory,
     phase: 'unclassified',
@@ -34,7 +40,7 @@ for (const ticker of expected) {
     },
     latestFiscalYear: {
       revenueGrowthPct: pct(fy.revenue - prior.revenue, prior.revenue),
-      operatingProfitGrowthPct: pct(fy.operatingProfit - prior.operatingProfit, Math.abs(prior.operatingProfit))
+      operatingProfitGrowthPct: comparableProfit ? pct(fy.operatingProfit - prior.operatingProfit, Math.abs(prior.operatingProfit)) : null
     },
     sourceValidation: 'pending external reconciliation',
     warnings
