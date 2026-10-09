@@ -23,4 +23,6 @@ for (const [ticker, stock] of Object.entries(data.stocks)) {
 const tjh = data.stocks.TJH.records.find(x => x.period === 2025);
 assert.ok(tjh.issuerRevenueCrossCheck, 'TJH FY2025 revenue definitions must be documented');
 assert.ok(html.includes("ticker==='TJH'?'N/A"), 'TJH growth must be withheld in staging display');
+assert.ok(html.includes("ticker==='SEP'?'N/A — profit definition unharmonized'"), 'SEP TTM operating-profit ratios must be withheld');
+assert.ok(html.includes('(unverified TTM)'), 'TTM cash-flow margins must carry provisional label');
 console.log('PASS: inline JavaScript syntax, 4-stock data, 24 FCF records, source warnings and TJH revenue safeguard');
