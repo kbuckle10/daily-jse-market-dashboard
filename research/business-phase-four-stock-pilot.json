@@ -1,0 +1,251 @@
+{
+  "version": 1,
+  "asOf": "2026-10-09",
+  "scope": "staging four-stock research simulation only; no ratings changes",
+  "periods": [
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "TTM"
+  ],
+  "stocks": {
+    "TJH": {
+      "businessModel": "Asset-heavy",
+      "currency": "USD",
+      "units": "millions",
+      "records": [
+        {
+          "period": 2021,
+          "revenue": 52.76,
+          "operatingProfit": 18.68,
+          "operatingCashFlow": 13.99,
+          "capitalExpenditures": -0.19,
+          "freeCashFlow": 13.8
+        },
+        {
+          "period": 2022,
+          "revenue": 65.01,
+          "operatingProfit": 23.96,
+          "operatingCashFlow": 7.25,
+          "capitalExpenditures": -0.07,
+          "freeCashFlow": 7.18
+        },
+        {
+          "period": 2023,
+          "revenue": 75.2,
+          "operatingProfit": 45.12,
+          "operatingCashFlow": 41.67,
+          "capitalExpenditures": -0.46,
+          "freeCashFlow": 41.22
+        },
+        {
+          "period": 2024,
+          "revenue": 86.65,
+          "operatingProfit": 55.97,
+          "operatingCashFlow": 43.87,
+          "capitalExpenditures": -1.34,
+          "freeCashFlow": 42.53
+        },
+        {
+          "period": 2025,
+          "revenue": 96.42,
+          "operatingProfit": 62.2,
+          "operatingCashFlow": 52.47,
+          "capitalExpenditures": -2.26,
+          "freeCashFlow": 50.21
+        },
+        {
+          "period": "TTM",
+          "revenue": 108.89,
+          "operatingProfit": 72.18,
+          "operatingCashFlow": 65.69,
+          "capitalExpenditures": -0.83,
+          "freeCashFlow": 64.87
+        }
+      ],
+      "classificationStatus": "research-only",
+      "sourceIncome": "https://stockanalysis.com/quote/jmse/TJH/financials/",
+      "sourceCashFlow": "https://stockanalysis.com/quote/jmse/TJH/financials/cash-flow-statement/",
+      "notes": "Concession infrastructure; capex alone does not capture concession economics."
+    },
+    "SEP": {
+      "businessModel": "Asset-heavy",
+      "currency": "JMD",
+      "units": "millions",
+      "records": [
+        {
+          "period": 2021,
+          "revenue": 43883,
+          "operatingProfit": 2076,
+          "operatingCashFlow": 2676,
+          "capitalExpenditures": -1655,
+          "freeCashFlow": 1021
+        },
+        {
+          "period": 2022,
+          "revenue": 78434,
+          "operatingProfit": 4212,
+          "operatingCashFlow": -119.44,
+          "capitalExpenditures": -2151,
+          "freeCashFlow": -2271
+        },
+        {
+          "period": 2023,
+          "revenue": 112149,
+          "operatingProfit": 6817,
+          "operatingCashFlow": 7690,
+          "capitalExpenditures": -2684,
+          "freeCashFlow": 5006
+        },
+        {
+          "period": 2024,
+          "revenue": 133609,
+          "operatingProfit": 6927,
+          "operatingCashFlow": 6066,
+          "capitalExpenditures": -3368,
+          "freeCashFlow": 2698
+        },
+        {
+          "period": 2025,
+          "revenue": 152332,
+          "operatingProfit": 3237,
+          "operatingCashFlow": 9321,
+          "capitalExpenditures": -3650,
+          "freeCashFlow": 5671
+        },
+        {
+          "period": "TTM",
+          "revenue": 150086,
+          "operatingProfit": 3748,
+          "operatingCashFlow": 11932,
+          "capitalExpenditures": -2398,
+          "freeCashFlow": 9534
+        }
+      ],
+      "classificationStatus": "research-only",
+      "sourceIncome": "https://stockanalysis.com/quote/jmse/SEP/financials/",
+      "sourceCashFlow": "https://stockanalysis.com/quote/jmse/SEP/financials/cash-flow-statement/",
+      "notes": "Diversified manufacturing and distribution; asset-heavy is a pilot simplification."
+    },
+    "SVL": {
+      "businessModel": "Asset-light",
+      "currency": "JMD",
+      "units": "millions",
+      "records": [
+        {
+          "period": 2021,
+          "revenue": 43916,
+          "operatingProfit": 3244,
+          "operatingCashFlow": null,
+          "capitalExpenditures": null,
+          "freeCashFlow": null
+        },
+        {
+          "period": 2022,
+          "revenue": 50772,
+          "operatingProfit": 4206,
+          "operatingCashFlow": null,
+          "capitalExpenditures": null,
+          "freeCashFlow": null
+        },
+        {
+          "period": 2023,
+          "revenue": 50880,
+          "operatingProfit": 3143,
+          "operatingCashFlow": null,
+          "capitalExpenditures": null,
+          "freeCashFlow": null
+        },
+        {
+          "period": 2024,
+          "revenue": 52669,
+          "operatingProfit": 3094,
+          "operatingCashFlow": null,
+          "capitalExpenditures": null,
+          "freeCashFlow": null
+        },
+        {
+          "period": 2025,
+          "revenue": 54497,
+          "operatingProfit": 3228,
+          "operatingCashFlow": null,
+          "capitalExpenditures": null,
+          "freeCashFlow": null
+        },
+        {
+          "period": "TTM",
+          "revenue": 55134,
+          "operatingProfit": 3487,
+          "operatingCashFlow": null,
+          "capitalExpenditures": null,
+          "freeCashFlow": null
+        }
+      ],
+      "classificationStatus": "research-only",
+      "sourceIncome": "https://stockanalysis.com/quote/jmse/SVL/financials/",
+      "sourceCashFlow": "https://stockanalysis.com/quote/jmse/SVL/financials/cash-flow-statement/",
+      "notes": "Lottery and betting operator; validate leased and platform assets before final asset-light designation."
+    },
+    "JSE": {
+      "businessModel": "Asset-light",
+      "currency": "JMD",
+      "units": "millions",
+      "records": [
+        {
+          "period": 2021,
+          "revenue": 1870,
+          "operatingProfit": 692.19,
+          "operatingCashFlow": 443.81,
+          "capitalExpenditures": -88.15,
+          "freeCashFlow": 355.67
+        },
+        {
+          "period": 2022,
+          "revenue": 2081,
+          "operatingProfit": 739.11,
+          "operatingCashFlow": 495.92,
+          "capitalExpenditures": -119.49,
+          "freeCashFlow": 376.43
+        },
+        {
+          "period": 2023,
+          "revenue": 2090,
+          "operatingProfit": 620.16,
+          "operatingCashFlow": 330.8,
+          "capitalExpenditures": -89.45,
+          "freeCashFlow": 241.35
+        },
+        {
+          "period": 2024,
+          "revenue": 2538,
+          "operatingProfit": 723.91,
+          "operatingCashFlow": 505.98,
+          "capitalExpenditures": -45.67,
+          "freeCashFlow": 460.3
+        },
+        {
+          "period": 2025,
+          "revenue": 2781,
+          "operatingProfit": 596.49,
+          "operatingCashFlow": 494.66,
+          "capitalExpenditures": -80.22,
+          "freeCashFlow": 414.44
+        },
+        {
+          "period": "TTM",
+          "revenue": 2678,
+          "operatingProfit": 620.66,
+          "operatingCashFlow": 515.74,
+          "capitalExpenditures": -63.91,
+          "freeCashFlow": 451.83
+        }
+      ],
+      "classificationStatus": "research-only",
+      "sourceIncome": "https://stockanalysis.com/quote/jmse/JSE/financials/",
+      "sourceCashFlow": "https://stockanalysis.com/quote/jmse/JSE/financials/cash-flow-statement/",
+      "notes": "Exchange operator; operating cash flow and platform investment require separate analysis."
+    }
+  }
+}
