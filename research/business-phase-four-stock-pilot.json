@@ -172,17 +172,21 @@
           "period": 2024,
           "revenue": 52669,
           "operatingProfit": 3094,
-          "operatingCashFlow": 1695,
-          "capitalExpenditures": -1049,
-          "freeCashFlow": 646.1
+          "operatingCashFlow": 1695.066,
+          "capitalExpenditures": -1128.146,
+          "freeCashFlow": 566.92,
+          "capexDefinition": "Acquisition of property/equipment plus intangible assets",
+          "reconciledToIssuer2025AnnualReport": true
         },
         {
           "period": 2025,
           "revenue": 54497,
           "operatingProfit": 3228,
-          "operatingCashFlow": 2792,
-          "capitalExpenditures": -632.42,
-          "freeCashFlow": 2159
+          "operatingCashFlow": 2791.786,
+          "capitalExpenditures": -874.874,
+          "freeCashFlow": 1916.912,
+          "capexDefinition": "Acquisition of property/equipment plus intangible assets",
+          "reconciledToIssuer2025AnnualReport": true
         },
         {
           "period": "TTM",
@@ -196,7 +200,7 @@
       "classificationStatus": "research-only",
       "sourceIncome": "https://stockanalysis.com/quote/jmse/SVL/financials/",
       "sourceCashFlow": "https://stockanalysis.com/quote/jmse/SVL/financials/cash-flow-statement/",
-      "notes": "Lottery and betting operator; validate leased and platform assets before final asset-light designation.",
+      "notes": "Lottery and betting operator; validate leased and platform assets before final asset-light designation. FY2024-2025 FCF adjusted for intangible asset purchases. Other periods provisional.",
       "businessModelCategory": "asset_light_operating",
       "phase": "unclassified",
       "phaseConfidence": "insufficient evidence",
@@ -388,8 +392,14 @@
         "source": "https://stockanalysis.com/quote/jmse/SEP/financials/cash-flow-statement/"
       },
       "SVL": {
-        "status": "issuer 2025 annual report located; line-item reconciliation pending",
-        "source": "https://supremeventures.com/financial-reports/annual-report/annual-report-2025/"
+        "years": [
+          2024,
+          2025
+        ],
+        "status": "matched issuer consolidated cash flow; corrected FCF to include intangible acquisitions",
+        "source": "https://cdn.jamstockex.com/pd/2026/04/Supreme-Ventures-Limited-SVL-2025-Annual-Report.pdf",
+        "units": "JMD millions, converted from $000",
+        "remaining": "2021-2023 and TTM unverified; revenue and operating profit source reconciliation pending"
       }
     }
   }
