@@ -19,7 +19,7 @@ for (const ticker of expected) {
   for (const record of stock.records) {
     for (const metric of metrics) assert.ok(Number.isFinite(record[metric]), ticker + ' ' + record.period + ' invalid ' + metric);
     assert.ok(record.revenue > 0, ticker + ' ' + record.period + ' revenue must be positive');
-    const tolerance = Math.max(2, Math.abs(record.freeCashFlow) * 0.02);
+    const tolerance = 0.011; // data expressed in millions; allow 0.01m rounding, not a percentage-based mismatch
     assert.ok(Math.abs(record.operatingCashFlow + record.capitalExpenditures - record.freeCashFlow) <= tolerance,
       ticker + ' ' + record.period + ' FCF reconciliation failed');
     if (record.capitalExpenditures > 0) warnings.push(record.period + ': positive CapEx; verify sign');
@@ -31,6 +31,11 @@ for (const ticker of expected) {
     return Boolean(spotCheck?.source && spotCheck?.years?.includes(year) && acceptedEvidenceFlags.some(flag => record?.[flag] === true));
   });
   const issuerCoverage = { auditedYears, targetYears: sourceYears, complete: auditedYears.length === 2 };
+  const sourceStatus = Object.fromEntries(stock.records.map(record => [
+    String(record.period),
+    acceptedEvidenceFlags.some(flag => record[flag] === true) ? 'issuer-spot-check' : (record.sourceStatus || 'provisional')
+  ]));
+  const sourceCoverage = { verified: Object.values(sourceStatus).filter(x => x === 'issuer-spot-check').length, total: stock.records.length, byPeriod: sourceStatus };
   if (!issuerCoverage.complete) warnings.push('Issuer reconciliation incomplete for FY2024–FY2025');
   if (ticker === 'SEP' && ![fy,prior].every(x => x.operatingProfitDefinition?.includes('Audited consolidated'))) warnings.push('Seprod operating-profit definitions require review');
   const comparableProfit = Boolean(fy.operatingProfitDefinition && fy.operatingProfitDefinition === prior.operatingProfitDefinition);
@@ -49,6 +54,7 @@ for (const ticker of expected) {
   results[ticker] = {
     businessModel: stock.businessModelCategory,
     issuerCoverage,
+    sourceCoverage,
     phase: 'unclassified',
     confidence: 'insufficient evidence',
     ttm: {
@@ -70,7 +76,7 @@ assert.equal(data.modelFramework.categories.length, 4, 'Four analytical categori
 fs.mkdirSync('artifacts', {recursive:true});
 fs.writeFileSync('artifacts/business-phase-four-stock-validation.json', JSON.stringify({
   generatedAt: new Date().toISOString(), status: 'internal-arithmetic-pass-external-source-pending',
-  methodology: 'FCF=OCF+negative CapEx; TTM growth deliberately not calculated against fiscal-year figures',
+  methodology: 'FCF=OCF+negative CapEx, with maximum 0.011 million rounding tolerance; TTM growth deliberately not calculated against fiscal-year figures. Source flags indicate issuer spot-checks only, not full audit of all five metrics.',
   stocks: results
 }, null, 2) + '\n');
 console.log('PASS: four-stock pilot structure and arithmetic; issuer source validation remains PARTIAL');
