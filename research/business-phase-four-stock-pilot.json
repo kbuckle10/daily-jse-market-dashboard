@@ -56,7 +56,10 @@
           "operatingProfit": 62.2,
           "operatingCashFlow": 52.47,
           "capitalExpenditures": -2.26,
-          "freeCashFlow": 50.21
+          "freeCashFlow": 50.21,
+          "sourceStatus": "third_party_research_not_issuer_reconciled",
+          "sourceCashFlow": "https://stockanalysis.com/quote/jmse/TJH/financials/cash-flow-statement/",
+          "issuerAnnualReportListedAt": "https://www.transjamhighways.com/investor-relations/"
         },
         {
           "period": "TTM",
@@ -421,7 +424,14 @@
           "conventionalFcf": 42.529
         },
         "criticalInterpretation": "Low PPE capex does not establish asset-light economics for a toll-road concession. Assess concession rights, capitalized maintenance, debt, restricted cash, concession obligations.",
-        "remaining": "FY2025 issuer cash flow and operating profit, FY2021-2023, TTM, concession maintenance costs."
+        "remaining": "Obtain and read issuer FY2025 consolidated statement of cash flows, reconcile operating cash, PPE, concession acquisition, debt principal, restricted cash, dividends; FY2021-2023 and TTM source verification pending.",
+        "fy2025ResearchCrossCheck": {
+          "operatingCashFlow": 52.47,
+          "conventionalCapex": 2.26,
+          "conventionalFcf": 50.21,
+          "source": "https://stockanalysis.com/quote/jmse/TJH/financials/cash-flow-statement/",
+          "status": "agrees with third-party research; not independently verified against 2025 audited statement"
+        }
       },
       "SEP": {
         "years": [
