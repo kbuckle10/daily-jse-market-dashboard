@@ -13,9 +13,9 @@ const arithmeticFailures = [];
 
 for (const ticker of expected) {
   const stock = data.stocks[ticker];
+  assert.ok(stock, 'Missing stock ' + ticker);
   assert.equal(stock.phase, 'unclassified', ticker + ': research pilot must not publish a phase before source verification');
   assert.equal(stock.sourceVerification, 'pending', ticker + ': issuer source verification cannot be silently marked complete');
-  assert.ok(stock, 'Missing stock ' + ticker);
   assert.equal(stock.records.length, 6, ticker + ': requires 5 annual + TTM');
   assert.deepEqual(stock.records.map(x => String(x.period)), ['2021','2022','2023','2024','2025','TTM']);
   const warnings = [];
