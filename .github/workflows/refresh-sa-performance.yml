@@ -13,8 +13,8 @@ on:
       - '.github/jse-refresh-request.txt'
   schedule:
     # One off-peak trigger. GitHub documents that scheduled events can be delayed
-    # or dropped under scheduler load; avoid :00/:30 and use Jamaica time directly.
-    - cron: '22 23 * * 1-5'
+    # or dropped under scheduler load; avoid :00/:30; 21:43 UTC equals 16:43 Jamaica time (UTC-5 year-round).
+    - cron: '43 21 * * 1-5'
 
 permissions:
   contents: write
