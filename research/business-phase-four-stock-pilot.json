@@ -68,10 +68,12 @@
       "classificationStatus": "research-only",
       "sourceIncome": "https://stockanalysis.com/quote/jmse/TJH/financials/",
       "sourceCashFlow": "https://stockanalysis.com/quote/jmse/TJH/financials/cash-flow-statement/",
-      "notes": "Concession infrastructure; capex alone does not capture concession economics.",
+      "notes": "Concession infrastructure; capex alone does not capture concession economics. USD reporting basis requires verification against issuer filings.",
       "businessModelCategory": "asset_heavy_operating",
       "phase": "unclassified",
-      "phaseConfidence": "insufficient evidence"
+      "phaseConfidence": "insufficient evidence",
+      "sourceVerification": "pending",
+      "metricsInterpretation": "Research only. Operating-profit FCF conversion can exceed 100% and is not by itself a phase signal."
     },
     "SEP": {
       "businessModel": "Asset-heavy",
@@ -133,7 +135,9 @@
       "notes": "Diversified manufacturing and distribution; asset-heavy is a pilot simplification.",
       "businessModelCategory": "asset_heavy_operating",
       "phase": "unclassified",
-      "phaseConfidence": "insufficient evidence"
+      "phaseConfidence": "insufficient evidence",
+      "sourceVerification": "pending",
+      "metricsInterpretation": "Research only. Operating-profit FCF conversion can exceed 100% and is not by itself a phase signal."
     },
     "SVL": {
       "businessModel": "Asset-light",
@@ -195,7 +199,9 @@
       "notes": "Lottery and betting operator; validate leased and platform assets before final asset-light designation.",
       "businessModelCategory": "asset_light_operating",
       "phase": "unclassified",
-      "phaseConfidence": "insufficient evidence"
+      "phaseConfidence": "insufficient evidence",
+      "sourceVerification": "pending",
+      "metricsInterpretation": "Research only. Operating-profit FCF conversion can exceed 100% and is not by itself a phase signal."
     },
     "JSE": {
       "businessModel": "Asset-light",
@@ -257,7 +263,9 @@
       "notes": "Exchange operator; operating cash flow and platform investment require separate analysis.",
       "businessModelCategory": "asset_light_operating",
       "phase": "unclassified",
-      "phaseConfidence": "insufficient evidence"
+      "phaseConfidence": "insufficient evidence",
+      "sourceVerification": "pending",
+      "metricsInterpretation": "Research only. Operating-profit FCF conversion can exceed 100% and is not by itself a phase signal."
     }
   },
   "modelFramework": {
@@ -347,5 +355,14 @@
       "EPLY",
       "PJAM"
     ]
+  },
+  "validation": {
+    "internalArithmetic": "passed for all four stocks across six periods",
+    "externalFinancialStatementReconciliation": "pending",
+    "incomeStatementData": "provisional; annual and TTM revenue/operating profit must be cross-checked against dated source statements",
+    "cashFlowData": "provisional research snapshots; TJH SEP SVL from existing cash-flow history; JSE requires source cross-check",
+    "fiscalYearAndTTMAlignment": "pending",
+    "capitalReturnsAndROIC": "not yet collected or validated",
+    "phaseClassification": "disabled pending evidence"
   }
 }
