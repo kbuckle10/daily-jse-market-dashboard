@@ -68,7 +68,10 @@
       "classificationStatus": "research-only",
       "sourceIncome": "https://stockanalysis.com/quote/jmse/TJH/financials/",
       "sourceCashFlow": "https://stockanalysis.com/quote/jmse/TJH/financials/cash-flow-statement/",
-      "notes": "Concession infrastructure; capex alone does not capture concession economics."
+      "notes": "Concession infrastructure; capex alone does not capture concession economics.",
+      "businessModelCategory": "asset_heavy_operating",
+      "phase": "unclassified",
+      "phaseConfidence": "insufficient evidence"
     },
     "SEP": {
       "businessModel": "Asset-heavy",
@@ -127,7 +130,10 @@
       "classificationStatus": "research-only",
       "sourceIncome": "https://stockanalysis.com/quote/jmse/SEP/financials/",
       "sourceCashFlow": "https://stockanalysis.com/quote/jmse/SEP/financials/cash-flow-statement/",
-      "notes": "Diversified manufacturing and distribution; asset-heavy is a pilot simplification."
+      "notes": "Diversified manufacturing and distribution; asset-heavy is a pilot simplification.",
+      "businessModelCategory": "asset_heavy_operating",
+      "phase": "unclassified",
+      "phaseConfidence": "insufficient evidence"
     },
     "SVL": {
       "businessModel": "Asset-light",
@@ -186,7 +192,10 @@
       "classificationStatus": "research-only",
       "sourceIncome": "https://stockanalysis.com/quote/jmse/SVL/financials/",
       "sourceCashFlow": "https://stockanalysis.com/quote/jmse/SVL/financials/cash-flow-statement/",
-      "notes": "Lottery and betting operator; validate leased and platform assets before final asset-light designation."
+      "notes": "Lottery and betting operator; validate leased and platform assets before final asset-light designation.",
+      "businessModelCategory": "asset_light_operating",
+      "phase": "unclassified",
+      "phaseConfidence": "insufficient evidence"
     },
     "JSE": {
       "businessModel": "Asset-light",
@@ -245,7 +254,98 @@
       "classificationStatus": "research-only",
       "sourceIncome": "https://stockanalysis.com/quote/jmse/JSE/financials/",
       "sourceCashFlow": "https://stockanalysis.com/quote/jmse/JSE/financials/cash-flow-statement/",
-      "notes": "Exchange operator; operating cash flow and platform investment require separate analysis."
+      "notes": "Exchange operator; operating cash flow and platform investment require separate analysis.",
+      "businessModelCategory": "asset_light_operating",
+      "phase": "unclassified",
+      "phaseConfidence": "insufficient evidence"
     }
+  },
+  "modelFramework": {
+    "version": 2,
+    "categories": [
+      {
+        "id": "asset_light_operating",
+        "label": "Asset-light operating",
+        "primaryMetrics": [
+          "operatingProfit",
+          "freeCashFlow",
+          "fcfConversion",
+          "returnOnInvestedCapital"
+        ],
+        "phaseSignals": [
+          "revenueGrowth",
+          "operatingMarginTrend",
+          "capitalReturns"
+        ]
+      },
+      {
+        "id": "asset_heavy_operating",
+        "label": "Asset-heavy operating",
+        "primaryMetrics": [
+          "returnOnInvestedCapital",
+          "maintenanceCapitalExpenditures",
+          "freeCashFlow",
+          "debtServiceCoverage"
+        ],
+        "phaseSignals": [
+          "capacityGrowth",
+          "operatingProfitTrend",
+          "capitalReturns"
+        ]
+      },
+      {
+        "id": "financial_capital_intensive",
+        "label": "Financial capital-intensive",
+        "primaryMetrics": [
+          "returnOnEquity",
+          "returnOnAssets",
+          "capitalAdequacy",
+          "creditQuality",
+          "solvency",
+          "netAssetValuePerShare"
+        ],
+        "phaseSignals": [
+          "earningsGrowth",
+          "capitalBuffer",
+          "dividendsAndBuybacks"
+        ]
+      },
+      {
+        "id": "real_estate_property",
+        "label": "Real estate / property-owning",
+        "primaryMetrics": [
+          "fundsFromOperationsPerShare",
+          "adjustedFundsFromOperationsPerShare",
+          "netOperatingIncome",
+          "occupancy",
+          "loanToValue",
+          "netAssetValuePerShare"
+        ],
+        "phaseSignals": [
+          "samePropertyNOIGrowth",
+          "affoCoverage",
+          "capitalReturns"
+        ]
+      }
+    ],
+    "classificationPolicy": "Research-only; sector metrics must be validated before business phase is assigned. Developers require inventory, project margin and cash conversion rather than REIT-only FFO."
+  },
+  "provisionalJseExamples": {
+    "financial_capital_intensive": [
+      "NCBFG",
+      "SJ",
+      "JMMBGL",
+      "GHL"
+    ],
+    "real_estate_property": [
+      "KPREIT",
+      "FIRSTROCKJMD",
+      "138SL"
+    ],
+    "mixed_review": [
+      "GK",
+      "EPLY",
+      "PJAM"
+    ]
   }
 }
