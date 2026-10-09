@@ -236,17 +236,21 @@
           "period": 2024,
           "revenue": 2538,
           "operatingProfit": 723.91,
-          "operatingCashFlow": 505.98,
-          "capitalExpenditures": -45.67,
-          "freeCashFlow": 460.3
+          "operatingCashFlow": 505.975,
+          "capitalExpenditures": -136.753,
+          "freeCashFlow": 369.222,
+          "capexDefinition": "PPE acquisitions + intangible asset acquisitions",
+          "reconciledToIssuer2025AnnualReport": true
         },
         {
           "period": 2025,
           "revenue": 2781,
           "operatingProfit": 596.49,
-          "operatingCashFlow": 494.66,
-          "capitalExpenditures": -80.22,
-          "freeCashFlow": 414.44
+          "operatingCashFlow": 494.659,
+          "capitalExpenditures": -133.563,
+          "freeCashFlow": 361.096,
+          "capexDefinition": "PPE acquisitions + intangible asset acquisitions",
+          "reconciledToIssuer2025AnnualReport": true
         },
         {
           "period": "TTM",
@@ -260,7 +264,7 @@
       "classificationStatus": "research-only",
       "sourceIncome": "https://stockanalysis.com/quote/jmse/JSE/financials/",
       "sourceCashFlow": "https://stockanalysis.com/quote/jmse/JSE/financials/cash-flow-statement/",
-      "notes": "Exchange operator; operating cash flow and platform investment require separate analysis.",
+      "notes": "Exchange operator; operating cash flow and platform investment require separate analysis. 2024-2025 FCF corrected to include acquired intangible assets as well as PPE; prior-year and TTM values still provisional.",
       "businessModelCategory": "asset_light_operating",
       "phase": "unclassified",
       "phaseConfidence": "insufficient evidence",
@@ -363,6 +367,30 @@
     "cashFlowData": "provisional research snapshots; TJH SEP SVL from existing cash-flow history; JSE requires source cross-check",
     "fiscalYearAndTTMAlignment": "pending",
     "capitalReturnsAndROIC": "not yet collected or validated",
-    "phaseClassification": "disabled pending evidence"
+    "phaseClassification": "disabled pending evidence",
+    "issuerStatementSpotChecks": {
+      "JSE": {
+        "years": [
+          2024,
+          2025
+        ],
+        "status": "matched issuer consolidated statement; corrected FCF to include intangible acquisitions",
+        "source": "https://fliphtml5.com/eiops/FINAL-JSE-AR-2025---April-30C/Jamaica_Stock_Exchange_Annual_Report_2025/",
+        "units": "JMD millions (issuer report in JMD thousands)",
+        "remaining": "2021-2023 and TTM unverified; source income statement also pending"
+      },
+      "TJH": {
+        "status": "StockAnalysis cash flow matches stored pilot; issuer report not yet checked",
+        "source": "https://stockanalysis.com/quote/jmse/TJH/financials/"
+      },
+      "SEP": {
+        "status": "StockAnalysis cash flow matches stored pilot; issuer report not yet checked",
+        "source": "https://stockanalysis.com/quote/jmse/SEP/financials/cash-flow-statement/"
+      },
+      "SVL": {
+        "status": "issuer 2025 annual report located; line-item reconciliation pending",
+        "source": "https://supremeventures.com/financial-reports/annual-report/annual-report-2025/"
+      }
+    }
   }
 }
