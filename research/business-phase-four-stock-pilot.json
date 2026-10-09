@@ -115,7 +115,9 @@
           "operatingProfit": 4212,
           "operatingCashFlow": -119.44,
           "capitalExpenditures": -2151,
-          "freeCashFlow": -2271
+          "freeCashFlow": -2270.44,
+          "originalResearchFreeCashFlow": -2271,
+          "freeCashFlowBasis": "derived from provisional OCF and CapEx; original research FCF preserved; issuer reconciliation pending"
         },
         {
           "period": 2023,
@@ -177,7 +179,9 @@
           "operatingProfit": 3244,
           "operatingCashFlow": 2750,
           "capitalExpenditures": -1851,
-          "freeCashFlow": 898.68
+          "freeCashFlow": 899,
+          "originalResearchFreeCashFlow": 898.68,
+          "freeCashFlowBasis": "derived from provisional OCF and CapEx; original research FCF preserved; issuer reconciliation pending"
         },
         {
           "period": 2022,
@@ -193,7 +197,9 @@
           "operatingProfit": 3143,
           "operatingCashFlow": 824.43,
           "capitalExpenditures": -1008,
-          "freeCashFlow": -183.32
+          "freeCashFlow": -183.57,
+          "originalResearchFreeCashFlow": -183.32,
+          "freeCashFlowBasis": "derived from provisional OCF and CapEx; original research FCF preserved; issuer reconciliation pending"
         },
         {
           "period": 2024,
@@ -221,7 +227,9 @@
           "operatingProfit": 3487,
           "operatingCashFlow": 3456,
           "capitalExpenditures": -740.55,
-          "freeCashFlow": 2716
+          "freeCashFlow": 2715.45,
+          "originalResearchFreeCashFlow": 2716,
+          "freeCashFlowBasis": "derived from provisional OCF and CapEx; original research FCF preserved; issuer reconciliation pending"
         }
       ],
       "classificationStatus": "research-only",
@@ -454,6 +462,39 @@
         "units": "JMD millions, converted from $000",
         "remaining": "2021-2023 and TTM unverified; revenue and operating profit source reconciliation pending"
       }
+    },
+    "arithmeticCorrections": {
+      "method": "Compute FCF=OCF+negative CapEx for provisional source snapshots; preserve original research FCF and differences; no claim of issuer verification",
+      "changes": [
+        {
+          "ticker": "SEP",
+          "period": 2022,
+          "old": -2271,
+          "new": -2270.44,
+          "diff": 0.56
+        },
+        {
+          "ticker": "SVL",
+          "period": 2021,
+          "old": 898.68,
+          "new": 899,
+          "diff": 0.32
+        },
+        {
+          "ticker": "SVL",
+          "period": 2023,
+          "old": -183.32,
+          "new": -183.57,
+          "diff": -0.25
+        },
+        {
+          "ticker": "SVL",
+          "period": "TTM",
+          "old": 2716,
+          "new": 2715.45,
+          "diff": -0.55
+        }
+      ]
     }
   }
 }
