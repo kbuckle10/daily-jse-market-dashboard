@@ -1,0 +1,43 @@
+name: Business Phase Pilot Validation (Staging Only)
+on:
+  workflow_dispatch:
+  push:
+    branches: [feature/cashflow-quality-staging-20261008]
+    paths:
+      - 'research/business-phase-four-stock-pilot.json'
+      - 'scripts/validate-business-phase-pilot.mjs'
+      - 'business-phase-four-stock-pilot.html'
+      - '.github/workflows/business-phase-pilot-validation.yml'
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check validator syntax
+        run: node --check scripts/validate-business-phase-pilot.mjs
+      - name: Reconcile pilot arithmetic and generate metrics
+        run: node scripts/validate-business-phase-pilot.mjs
+      - name: Assert no unsupported phase assignment
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import assert from 'node:assert/strict';
+          const data=JSON.parse(fs.readFileSync('research/business-phase-four-stock-pilot.json','utf8'));
+          for(const [ticker,stock] of Object.entries(data.stocks)){
+            assert.equal(stock.phase,'unclassified',ticker+' phase must remain unclassified');
+            assert.equal(stock.sourceVerification,'pending',ticker+' external verification cannot be silently claimed complete');
+          }
+          console.log('PASS: no premature phase classification or source-verification claims');
+          NODE
+      - name: Upload staging-only validation report
+        uses: actions/upload-artifact@v4
+        with:
+          name: business-phase-pilot-validation
+          path: artifacts/business-phase-four-stock-validation.json
+          retention-days: 14
