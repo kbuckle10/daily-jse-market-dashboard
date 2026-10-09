@@ -138,49 +138,49 @@
           "period": 2021,
           "revenue": 43916,
           "operatingProfit": 3244,
-          "operatingCashFlow": null,
-          "capitalExpenditures": null,
-          "freeCashFlow": null
+          "operatingCashFlow": 2750,
+          "capitalExpenditures": -1851,
+          "freeCashFlow": 898.68
         },
         {
           "period": 2022,
           "revenue": 50772,
           "operatingProfit": 4206,
-          "operatingCashFlow": null,
-          "capitalExpenditures": null,
-          "freeCashFlow": null
+          "operatingCashFlow": 3663,
+          "capitalExpenditures": -1497,
+          "freeCashFlow": 2166
         },
         {
           "period": 2023,
           "revenue": 50880,
           "operatingProfit": 3143,
-          "operatingCashFlow": null,
-          "capitalExpenditures": null,
-          "freeCashFlow": null
+          "operatingCashFlow": 824.43,
+          "capitalExpenditures": -1008,
+          "freeCashFlow": -183.32
         },
         {
           "period": 2024,
           "revenue": 52669,
           "operatingProfit": 3094,
-          "operatingCashFlow": null,
-          "capitalExpenditures": null,
-          "freeCashFlow": null
+          "operatingCashFlow": 1695,
+          "capitalExpenditures": -1049,
+          "freeCashFlow": 646.1
         },
         {
           "period": 2025,
           "revenue": 54497,
           "operatingProfit": 3228,
-          "operatingCashFlow": null,
-          "capitalExpenditures": null,
-          "freeCashFlow": null
+          "operatingCashFlow": 2792,
+          "capitalExpenditures": -632.42,
+          "freeCashFlow": 2159
         },
         {
           "period": "TTM",
           "revenue": 55134,
           "operatingProfit": 3487,
-          "operatingCashFlow": null,
-          "capitalExpenditures": null,
-          "freeCashFlow": null
+          "operatingCashFlow": 3456,
+          "capitalExpenditures": -740.55,
+          "freeCashFlow": 2716
         }
       ],
       "classificationStatus": "research-only",
