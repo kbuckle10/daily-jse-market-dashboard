@@ -5,6 +5,8 @@ const path = 'research/business-phase-four-stock-pilot.json';
 const data = JSON.parse(fs.readFileSync(path, 'utf8'));
 const expected = ['TJH', 'SEP', 'SVL', 'JSE'];
 const metrics = ['revenue', 'operatingProfit', 'operatingCashFlow', 'capitalExpenditures', 'freeCashFlow'];
+const sourceYears = [2024, 2025];
+const acceptedEvidenceFlags = ['reconciledToIssuer2025AnnualReport', 'reconciledToIssuer2025AuditedConsolidatedStatements', 'reconciledToIssuer2024AnnualReport'];
 const pct = (a, b) => b > 0 ? +(100 * a / b).toFixed(2) : null;
 const results = {};
 
@@ -24,17 +26,26 @@ for (const ticker of expected) {
   }
   const ttm = stock.records.at(-1), fy = stock.records.at(-2), prior = stock.records.at(-3);
   const spotCheck = data.validation?.issuerStatementSpotChecks?.[ticker];
-  const auditedYears = [2024, 2025].filter(year => {
+  const auditedYears = sourceYears.filter(year => {
     const record = stock.records.find(x => x.period === year);
-    return Boolean(spotCheck?.years?.includes(year) && (record?.reconciledToIssuer2025AnnualReport || record?.reconciledToIssuer2025AuditedConsolidatedStatements || record?.reconciledToIssuer2024AnnualReport));
+    return Boolean(spotCheck?.source && spotCheck?.years?.includes(year) && acceptedEvidenceFlags.some(flag => record?.[flag] === true));
   });
-  const issuerCoverage = { auditedYears, targetYears: [2024, 2025], complete: auditedYears.length === 2 };
+  const issuerCoverage = { auditedYears, targetYears: sourceYears, complete: auditedYears.length === 2 };
   if (!issuerCoverage.complete) warnings.push('Issuer reconciliation incomplete for FY2024–FY2025');
   if (ticker === 'SEP' && ![fy,prior].every(x => x.operatingProfitDefinition?.includes('Audited consolidated'))) warnings.push('Seprod operating-profit definitions require review');
   const comparableProfit = Boolean(fy.operatingProfitDefinition && fy.operatingProfitDefinition === prior.operatingProfitDefinition);
   if (!comparableProfit) warnings.push('Operating-profit growth suppressed: FY2024 and FY2025 definitions not proven comparable');
   if (!ttm.reconciledToIssuer2025AnnualReport && !ttm.reconciledToIssuer2025AuditedConsolidatedStatements) warnings.push('TTM income and cash flow remain provisional; metrics are research-only');
-  if (ticker === 'TJH') warnings.push('Concession rights and maintenance obligations not captured by conventional PPE CapEx');
+  if (ticker === 'TJH') {
+    warnings.push('Concession rights and maintenance obligations not captured by conventional PPE CapEx');
+    assert.equal(fy.sourceStatus, 'third_party_research_not_issuer_reconciled', 'TJH FY2025 must not be presented as issuer audited until source reconciliation');
+    const bridge = stock.infrastructureCashFlowReview?.fy2024;
+    if (bridge) {
+      const expected = bridge.conventionalFreeCashFlow - bridge.principalDebtRepayment - bridge.leasePrincipalRepayment - bridge.restrictedCashIncrease;
+      assert.ok(Math.abs(expected - bridge.illustrativeCashAfterDebtPrincipalAndRestrictedCash) < 0.001, 'TJH restricted cash bridge arithmetic');
+      assert.ok(Math.abs(expected - bridge.dividendsPaid - bridge.illustrativeCashAfterDebtRestrictedCashAndDividends) < 0.001, 'TJH dividend bridge arithmetic');
+    }
+  }
   results[ticker] = {
     businessModel: stock.businessModelCategory,
     issuerCoverage,
