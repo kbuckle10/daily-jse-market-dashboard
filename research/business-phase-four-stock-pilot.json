@@ -64,10 +64,18 @@
             "issuerAnnouncementRevenueUSDMillions": 91.2,
             "stagingRevenueUSDMillions": 96.42,
             "differenceUSDMillions": 5.22,
-            "status": "material_mismatch_pending_audited_income_statement_reconciliation",
+            "status": "definition_difference_identified_total_including_other_gains_vs_toll_revenue",
             "source": "https://www.transjamhighways.com/transjamaican-highway-delivers-strong-2025-results-with-double-digit-growth-and-increased-shareholder-returns/",
             "published": "2026-03-25",
-            "note": "Issuer announcement states approximately US$91.2m revenue; retain existing research revenue temporarily for traceability but suppress FY2025 TJH revenue-based interpretation until audited definition is reconciled."
+            "note": "Issuer announcement states approximately US$91.2m revenue; retain existing research revenue temporarily for traceability but suppress FY2025 TJH revenue-based interpretation until audited definition is reconciled.",
+            "issuerTollRevenueUSDMillions": 91.2,
+            "saTotalRevenueUSDMillions": 96.42,
+            "otherGainsUSDMillionsApprox": 5.26,
+            "interpretation": "Issuer announcement and annual report cite toll revenue, while SA reports broader total revenue inclusive of other gains. 91.16+5.26=96.42. Verify consolidated audited statement classification before adopting as comparable operating revenue.",
+            "evidence": [
+              "https://cdnc.heyzine.com/files/uploaded/v3/e587baaec8ac1f1557e6351a1fd37b4e23e3b0b2.pdf",
+              "https://sa.marketscreener.com/quote/stock/TRANSJAMAICAN-HIGHWAY-LIM-137177522/finances-ratios/"
+            ]
           }
         },
         {
@@ -506,11 +514,11 @@
       ]
     },
     "tjh2025RevenueMismatch": {
-      "status": "blocking",
-      "issuerAnnouncementUSDMillions": 91.2,
-      "stagingUSDMillions": 96.42,
-      "deltaUSDMillions": 5.22,
-      "source": "https://www.transjamhighways.com/transjamaican-highway-delivers-strong-2025-results-with-double-digit-growth-and-increased-shareholder-returns/"
+      "status": "definition_difference_identified_reconciliation_pending",
+      "issuerTollRevenueUSDMillions": 91.2,
+      "saTotalRevenueUSDMillions": 96.42,
+      "otherGainsUSDMillionsApprox": 5.26,
+      "action": "Compare like-for-like toll revenue growth separately from total revenue; avoid interpreting other gains as recurring toll revenue"
     }
   }
 }
