@@ -44,9 +44,11 @@
           "period": 2024,
           "revenue": 86.65,
           "operatingProfit": 55.97,
-          "operatingCashFlow": 43.87,
-          "capitalExpenditures": -1.34,
-          "freeCashFlow": 42.53
+          "operatingCashFlow": 43.867,
+          "capitalExpenditures": -1.338,
+          "freeCashFlow": 42.529,
+          "capexDefinition": "Cash payments for property and equipment; concession-related investment and maintenance require separate analysis",
+          "reconciledToIssuer2024AnnualReport": true
         },
         {
           "period": 2025,
@@ -68,7 +70,7 @@
       "classificationStatus": "research-only",
       "sourceIncome": "https://stockanalysis.com/quote/jmse/TJH/financials/",
       "sourceCashFlow": "https://stockanalysis.com/quote/jmse/TJH/financials/cash-flow-statement/",
-      "notes": "Concession infrastructure; capex alone does not capture concession economics. USD reporting basis requires verification against issuer filings.",
+      "notes": "Concession infrastructure; capex alone does not capture concession economics. USD reporting basis requires verification against issuer filings. FY2024 audited OCF and PPE payments reconciled to issuer 2024 annual report. Concession-asset investment, restricted cash and maintenance obligations must be assessed separately; FY2025 issuer line items not yet independently verified.",
       "businessModelCategory": "asset_heavy_operating",
       "phase": "unclassified",
       "phaseConfidence": "insufficient evidence",
@@ -390,8 +392,20 @@
         "remaining": "2021-2023 and TTM unverified; source income statement also pending"
       },
       "TJH": {
-        "status": "StockAnalysis cash flow matches stored pilot; issuer report not yet checked",
-        "source": "https://stockanalysis.com/quote/jmse/TJH/financials/"
+        "years": [
+          2024
+        ],
+        "status": "FY2024 issuer audited cash flow reconciled; FY2025 cash flow remains third-party provisional",
+        "source": "https://www.transjamhighways.com/wp-content/uploads/2025/06/TJH-2024-Annual-Report_compressed.pdf",
+        "issuer2025ReportIndex": "https://www.transjamhighways.com/investor-relations/",
+        "units": "USD millions, converted from USD thousands",
+        "fy2024": {
+          "operatingCashFlow": 43.867,
+          "ppeCashPayments": 1.338,
+          "conventionalFcf": 42.529
+        },
+        "criticalInterpretation": "Low PPE capex does not establish asset-light economics for a toll-road concession. Assess concession rights, capitalized maintenance, debt, restricted cash, concession obligations.",
+        "remaining": "FY2025 issuer cash flow and operating profit, FY2021-2023, TTM, concession maintenance costs."
       },
       "SEP": {
         "years": [
