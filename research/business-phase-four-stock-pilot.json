@@ -107,18 +107,24 @@
         {
           "period": 2024,
           "revenue": 133609,
-          "operatingProfit": 6927,
-          "operatingCashFlow": 6066,
-          "capitalExpenditures": -3368,
-          "freeCashFlow": 2698
+          "operatingProfit": 8985.769,
+          "operatingCashFlow": 6066.112,
+          "capitalExpenditures": -3367.647,
+          "freeCashFlow": 2698.465,
+          "reconciledToIssuer2025AuditedConsolidatedStatements": true,
+          "capexDefinition": "PPE and intangible purchases; excludes business combinations",
+          "operatingProfitDefinition": "Audited consolidated operating profit including finance/other operating income and fair-value gains, where applicable"
         },
         {
           "period": 2025,
           "revenue": 152332,
-          "operatingProfit": 3237,
-          "operatingCashFlow": 9321,
-          "capitalExpenditures": -3650,
-          "freeCashFlow": 5671
+          "operatingProfit": 11065.6,
+          "operatingCashFlow": 9321.297,
+          "capitalExpenditures": -3657.16,
+          "freeCashFlow": 5664.137,
+          "reconciledToIssuer2025AuditedConsolidatedStatements": true,
+          "capexDefinition": "PPE and intangible purchases; excludes business combinations",
+          "operatingProfitDefinition": "Audited consolidated operating profit including finance/other operating income and fair-value gains, where applicable"
         },
         {
           "period": "TTM",
@@ -132,7 +138,7 @@
       "classificationStatus": "research-only",
       "sourceIncome": "https://stockanalysis.com/quote/jmse/SEP/financials/",
       "sourceCashFlow": "https://stockanalysis.com/quote/jmse/SEP/financials/cash-flow-statement/",
-      "notes": "Diversified manufacturing and distribution; asset-heavy is a pilot simplification.",
+      "notes": "Diversified manufacturing and distribution; asset-heavy is a pilot simplification. FY2024-2025 operating profit replaced with audited consolidated values; prior years and TTM operating profit not yet definition-harmonized.",
       "businessModelCategory": "asset_heavy_operating",
       "phase": "unclassified",
       "phaseConfidence": "insufficient evidence",
@@ -388,8 +394,15 @@
         "source": "https://stockanalysis.com/quote/jmse/TJH/financials/"
       },
       "SEP": {
-        "status": "StockAnalysis cash flow matches stored pilot; issuer report not yet checked",
-        "source": "https://stockanalysis.com/quote/jmse/SEP/financials/cash-flow-statement/"
+        "years": [
+          2024,
+          2025
+        ],
+        "status": "reconciled revenue, operating profit, operating cash flow, PPE and intangible purchases to FY2025 audited consolidated financial statements",
+        "source": "https://abeng.org/seprod-limited-sep-2025-audited-financial-statements-9357acb",
+        "officialIssuerReports": "https://www.seprod.com/investor-relations/",
+        "units": "JMD millions converted from $000",
+        "warning": "Prior pilot operating profit materially differed from audited consolidated definition. FY2021-2023 and TTM operating-profit comparability must be rechecked; FCF excludes business acquisitions."
       },
       "SVL": {
         "years": [
