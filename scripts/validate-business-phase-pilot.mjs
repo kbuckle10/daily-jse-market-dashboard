@@ -7,7 +7,6 @@ const expected = ['TJH', 'SEP', 'SVL', 'JSE'];
 const metrics = ['revenue', 'operatingProfit', 'operatingCashFlow', 'capitalExpenditures', 'freeCashFlow'];
 const pct = (a, b) => b > 0 ? +(100 * a / b).toFixed(2) : null;
 const results = {};
-const warningsGlobal = [];
 
 for (const ticker of expected) {
   const stock = data.stocks[ticker];
@@ -24,12 +23,21 @@ for (const ticker of expected) {
     if (record.capitalExpenditures > 0) warnings.push(record.period + ': positive CapEx; verify sign');
   }
   const ttm = stock.records.at(-1), fy = stock.records.at(-2), prior = stock.records.at(-3);
+  const spotCheck = data.validation?.issuerStatementSpotChecks?.[ticker];
+  const auditedYears = [2024, 2025].filter(year => {
+    const record = stock.records.find(x => x.period === year);
+    return Boolean(spotCheck?.years?.includes(year) && (record?.reconciledToIssuer2025AnnualReport || record?.reconciledToIssuer2025AuditedConsolidatedStatements || record?.reconciledToIssuer2024AnnualReport));
+  });
+  const issuerCoverage = { auditedYears, targetYears: [2024, 2025], complete: auditedYears.length === 2 };
+  if (!issuerCoverage.complete) warnings.push('Issuer reconciliation incomplete for FY2024–FY2025');
+  if (ticker === 'SEP' && ![fy,prior].every(x => x.operatingProfitDefinition?.includes('Audited consolidated'))) warnings.push('Seprod operating-profit definitions require review');
   const comparableProfit = Boolean(fy.operatingProfitDefinition && fy.operatingProfitDefinition === prior.operatingProfitDefinition);
   if (!comparableProfit) warnings.push('Operating-profit growth suppressed: FY2024 and FY2025 definitions not proven comparable');
   if (!ttm.reconciledToIssuer2025AnnualReport && !ttm.reconciledToIssuer2025AuditedConsolidatedStatements) warnings.push('TTM income and cash flow remain provisional; metrics are research-only');
   if (ticker === 'TJH') warnings.push('Concession rights and maintenance obligations not captured by conventional PPE CapEx');
   results[ticker] = {
     businessModel: stock.businessModelCategory,
+    issuerCoverage,
     phase: 'unclassified',
     confidence: 'insufficient evidence',
     ttm: {
@@ -42,7 +50,7 @@ for (const ticker of expected) {
       revenueGrowthPct: pct(fy.revenue - prior.revenue, prior.revenue),
       operatingProfitGrowthPct: comparableProfit ? pct(fy.operatingProfit - prior.operatingProfit, Math.abs(prior.operatingProfit)) : null
     },
-    sourceValidation: 'pending external reconciliation',
+    sourceValidation: issuerCoverage.complete ? 'FY2024–2025 issuer cash-flow spot checks only; earlier periods and TTM pending' : 'FY2024–2025 issuer cash-flow spot checks incomplete',
     warnings
   };
 }
@@ -54,5 +62,5 @@ fs.writeFileSync('artifacts/business-phase-four-stock-validation.json', JSON.str
   methodology: 'FCF=OCF+negative CapEx; TTM growth deliberately not calculated against fiscal-year figures',
   stocks: results
 }, null, 2) + '\n');
-console.log('PASS: four-stock pilot structure, arithmetic and derived metrics; external source validation PENDING');
+console.log('PASS: four-stock pilot structure and arithmetic; issuer source validation remains PARTIAL');
 for (const [ticker, result] of Object.entries(results)) console.log(ticker, JSON.stringify(result.ttm));
