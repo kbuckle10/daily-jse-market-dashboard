@@ -13,6 +13,8 @@ const arithmeticFailures = [];
 
 for (const ticker of expected) {
   const stock = data.stocks[ticker];
+  assert.equal(stock.phase, 'unclassified', ticker + ': research pilot must not publish a phase before source verification');
+  assert.equal(stock.sourceVerification, 'pending', ticker + ': issuer source verification cannot be silently marked complete');
   assert.ok(stock, 'Missing stock ' + ticker);
   assert.equal(stock.records.length, 6, ticker + ': requires 5 annual + TTM');
   assert.deepEqual(stock.records.map(x => String(x.period)), ['2021','2022','2023','2024','2025','TTM']);
@@ -32,6 +34,8 @@ for (const ticker of expected) {
     return Boolean(spotCheck?.source && spotCheck?.years?.includes(year) && acceptedEvidenceFlags.some(flag => record?.[flag] === true));
   });
   const issuerCoverage = { auditedYears, targetYears: sourceYears, complete: auditedYears.length === 2 };
+  const issuerEvidenceCount = auditedYears.length;
+  assert.ok(issuerEvidenceCount <= 2, 'Invalid issuer evidence count');
   const sourceStatus = Object.fromEntries(stock.records.map(record => [
     String(record.period),
     acceptedEvidenceFlags.some(flag => record[flag] === true) ? 'issuer-spot-check' : (record.sourceStatus || 'provisional')
@@ -74,6 +78,7 @@ for (const ticker of expected) {
 }
 assert.equal(Object.keys(data.stocks).length, 4, 'Pilot must contain only four stocks');
 assert.equal(data.modelFramework.categories.length, 4, 'Four analytical categories required');
+assert.equal(data.validation.phaseClassification, 'pending', 'Pilot classification must remain pending until verified');
 fs.mkdirSync('artifacts', {recursive:true});
 fs.writeFileSync('artifacts/business-phase-four-stock-validation.json', JSON.stringify({
   generatedAt: new Date().toISOString(), status: arithmeticFailures.length ? 'arithmetic-fail-source-reconciliation-required' : 'internal-arithmetic-pass-external-source-pending',
