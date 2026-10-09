@@ -78,7 +78,7 @@ for (const ticker of expected) {
 }
 assert.equal(Object.keys(data.stocks).length, 4, 'Pilot must contain only four stocks');
 assert.equal(data.modelFramework.categories.length, 4, 'Four analytical categories required');
-assert.equal(data.validation.phaseClassification, 'pending', 'Pilot classification must remain pending until verified');
+assert.equal(data.validation.phaseClassification, 'disabled pending evidence', 'Pilot classification must remain disabled until verified');
 fs.mkdirSync('artifacts', {recursive:true});
 fs.writeFileSync('artifacts/business-phase-four-stock-validation.json', JSON.stringify({
   generatedAt: new Date().toISOString(), status: arithmeticFailures.length ? 'arithmetic-fail-source-reconciliation-required' : 'internal-arithmetic-pass-external-source-pending',
