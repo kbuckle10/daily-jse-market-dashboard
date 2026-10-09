@@ -41,7 +41,18 @@ for (const ticker of expected) {
     acceptedEvidenceFlags.some(flag => record[flag] === true) ? 'issuer-spot-check' : (record.sourceStatus || 'provisional')
   ]));
   const sourceCoverage = { verified: Object.values(sourceStatus).filter(x => x === 'issuer-spot-check').length, total: stock.records.length, byPeriod: sourceStatus };
+  const annual = stock.records.filter(x => typeof x.period === 'number');
+  const historicalQuality = {
+    annualPeriods: annual.length,
+    positiveFcfYears: annual.filter(x => x.freeCashFlow > 0).length,
+    positiveOcfYears: annual.filter(x => x.operatingCashFlow > 0).length,
+    annualFcfMarginsPct: Object.fromEntries(annual.map(x => [String(x.period), pct(x.freeCashFlow, x.revenue)])),
+    fiveYearFcfSumMillions: +annual.reduce((sum, x) => sum + x.freeCashFlow, 0).toFixed(3),
+    fiveYearOcfSumMillions: +annual.reduce((sum, x) => sum + x.operatingCashFlow, 0).toFixed(3),
+    dataStatus: 'mixed issuer spot checks and provisional research; not an investment score'
+  };
   if (!issuerCoverage.complete) warnings.push('Issuer reconciliation incomplete for FY2024–FY2025');
+  if (annual.length !== 5) warnings.push('Five annual records required for historical trend');
   if (ticker === 'SEP' && ![fy,prior].every(x => x.operatingProfitDefinition?.includes('Audited consolidated'))) warnings.push('Seprod operating-profit definitions require review');
   const comparableProfit = Boolean(fy.operatingProfitDefinition && fy.operatingProfitDefinition === prior.operatingProfitDefinition);
   if (!comparableProfit) warnings.push('Operating-profit growth suppressed: FY2024 and FY2025 definitions not proven comparable');
@@ -60,6 +71,7 @@ for (const ticker of expected) {
     businessModel: stock.businessModelCategory,
     issuerCoverage,
     sourceCoverage,
+    historicalQuality,
     phase: 'unclassified',
     confidence: 'insufficient evidence',
     ttm: {
