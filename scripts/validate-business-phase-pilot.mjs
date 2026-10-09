@@ -60,6 +60,11 @@ for (const ticker of expected) {
   if (ticker === 'TJH') {
     warnings.push('Concession rights and maintenance obligations not captured by conventional PPE CapEx');
     assert.equal(fy.sourceStatus, 'third_party_research_not_issuer_reconciled', 'TJH FY2025 must not be presented as issuer audited until source reconciliation');
+    const revenueCheck = fy.issuerRevenueCrossCheck;
+    assert.ok(revenueCheck, 'TJH FY2025 issuer revenue comparison required');
+    assert.equal(revenueCheck.status, 'material_mismatch_pending_audited_income_statement_reconciliation');
+    assert.ok(Math.abs(revenueCheck.stagingRevenueUSDMillions - revenueCheck.issuerAnnouncementRevenueUSDMillions) > 1, 'TJH revenue mismatch must remain flagged until reconciled');
+    warnings.push('BLOCKER: TJH FY2025 research revenue differs materially from issuer announcement; suppress revenue-based phase interpretation');
     const bridge = stock.infrastructureCashFlowReview?.fy2024;
     if (bridge) {
       const expected = bridge.conventionalFreeCashFlow - bridge.principalDebtRepayment - bridge.leasePrincipalRepayment - bridge.restrictedCashIncrease;
@@ -81,7 +86,7 @@ for (const ticker of expected) {
       fcfMarginPct: pct(ttm.freeCashFlow, ttm.revenue)
     },
     latestFiscalYear: {
-      revenueGrowthPct: pct(fy.revenue - prior.revenue, prior.revenue),
+      revenueGrowthPct: ticker === 'TJH' ? null : pct(fy.revenue - prior.revenue, prior.revenue),
       operatingProfitGrowthPct: comparableProfit ? pct(fy.operatingProfit - prior.operatingProfit, Math.abs(prior.operatingProfit)) : null
     },
     sourceValidation: issuerCoverage.complete ? 'FY2024–2025 issuer cash-flow spot checks only; earlier periods and TTM pending' : 'FY2024–2025 issuer cash-flow spot checks incomplete',
