@@ -62,9 +62,9 @@ for (const ticker of expected) {
     assert.equal(fy.sourceStatus, 'third_party_research_not_issuer_reconciled', 'TJH FY2025 must not be presented as issuer audited until source reconciliation');
     const revenueCheck = fy.issuerRevenueCrossCheck;
     assert.ok(revenueCheck, 'TJH FY2025 issuer revenue comparison required');
-    assert.equal(revenueCheck.status, 'material_mismatch_pending_audited_income_statement_reconciliation');
-    assert.ok(Math.abs(revenueCheck.stagingRevenueUSDMillions - revenueCheck.issuerAnnouncementRevenueUSDMillions) > 1, 'TJH revenue mismatch must remain flagged until reconciled');
-    warnings.push('BLOCKER: TJH FY2025 research revenue differs materially from issuer announcement; suppress revenue-based phase interpretation');
+    assert.equal(revenueCheck.status, 'definition_difference_identified_total_including_other_gains_vs_toll_revenue');
+    assert.ok(Math.abs(revenueCheck.saTotalRevenueUSDMillions - revenueCheck.issuerTollRevenueUSDMillions - revenueCheck.otherGainsUSDMillionsApprox) < 0.1, 'TJH revenue definition bridge must reconcile within announcement rounding');
+    warnings.push('TJH FY2025 SA total revenue includes other gains beyond toll revenue; use consistent definition before comparing growth');
     const bridge = stock.infrastructureCashFlowReview?.fy2024;
     if (bridge) {
       const expected = bridge.conventionalFreeCashFlow - bridge.principalDebtRepayment - bridge.leasePrincipalRepayment - bridge.restrictedCashIncrease;
