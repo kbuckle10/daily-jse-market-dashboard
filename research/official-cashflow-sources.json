@@ -45,5 +45,19 @@
       "url": "https://wigtonenergy.com/wp-content/uploads/2025/08/WIGTON-ENERGY-LIMITED-ANNUAL-REPORT-2024-2025.pdf",
       "scale": "thousands"
     }
+  ],
+  "SGJ": [
+    {
+      "year": 2025,
+      "url": "https://jm.scotiabank.com/content/dam/scotiabank/international/jamaica/documents/SGJ_2025_Annual_Report.pdf",
+      "scale": "thousands"
+    }
+  ],
+  "CPJ": [
+    {
+      "year": 2024,
+      "url": "https://cdn.jamstockex.com/pd/2025/07/Caribbean-Producers-Jamaica-Limited-CPJ-Annual-Report-Period-Ended-December-2024.pdf",
+      "scale": "ones"
+    }
   ]
 }
