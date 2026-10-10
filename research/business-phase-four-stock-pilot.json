@@ -147,9 +147,11 @@
           "period": 2023,
           "revenue": 112149,
           "operatingProfit": 6817,
-          "operatingCashFlow": 7690,
-          "capitalExpenditures": -2684,
-          "freeCashFlow": 5006
+          "operatingCashFlow": 7690.234,
+          "capitalExpenditures": -2684.326,
+          "freeCashFlow": 5005.908,
+          "reconciledToIssuer2023AnnualReport": true,
+          "issuerCashFlowPage": "64"
         },
         {
           "period": 2024,
