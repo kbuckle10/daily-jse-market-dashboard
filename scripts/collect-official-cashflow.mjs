@@ -39,13 +39,13 @@ const lines=[];
 const amount=(s,scale)=>{if(!s)return null;let t=s.replace(/,/g,'').trim();const neg=t.startsWith('(')&&t.endsWith(')');t=t.replace(/[()]/g,'');const n=Number(t);return Number.isFinite(n)?n*scale*(neg?-1:1):null};
 function extract(text,label,scale){
  const pages=text.split(/\f/);
- const cashPages=pages.filter(p=>/statement[s]? of cash flows|cash flow[s]? statement|cash flows from operating activities/i.test(p));
+ const cashPages=pages.filter(p=>/statement[s]? of cash flows|cash flow[s]? statement/i.test(p)&&!/notes to the financial statements/i.test(p.slice(0,500)));
  const candidates=[];
  for(const page of cashPages){
   const rows=page.split(/\r?\n/);
   for(let i=0;i<rows.length;i++){
    if(!label.test(rows[i]))continue;
-   const row=rows[i].replace(/^.*?(?=\s{2,}[-(\d])/, '').trim();
+   const row=rows[i].replace(/^.*?\s{3,}(?=[(\-\d])/, '').trim();
    const values=(row.match(/\(?-?\d[\d,]*(?:\.\d+)?\)?/g)||[]).map(v=>amount(v,scale)).filter(Number.isFinite);
    if(values.length)candidates.push({value:values[0],row:rows[i].trim(),pageContext:page.slice(0,300)});
   }
@@ -70,12 +70,12 @@ for(const [ticker,entries] of Object.entries(sources)){
    fs.unlinkSync(file);
    const scale=entry.scale==='thousands'?1000:entry.scale==='millions'?1000000:1;
    const ocf=extract(text,/net cash (?:generated from|provided by|from|used in) operating activities|net cash from operating activities|net cash provided by operating activities/i,scale);
-   const cap=extract(text,/purchase[s]? of (?:property|plant)|acquisition of property,? plant|capital expenditure/i,scale);
+   const cap=extract(text,/purchase[s]? of (?:property|plant|equipment|intangible)|acquisition[s]? of (?:property|plant|equipment)|additions to property|capital expenditure/i,scale);
    if(!Number.isFinite(ocf.value)||!Number.isFinite(cap.value)){
     lines.push({ticker,year:entry.year,status:'review-needed',operatingCandidates:ocf.candidates,capexCandidates:cap.candidates,url:entry.url});
     continue;
    }
-   const operatingCashFlow=ocf.value;
+   const operatingCashFlow=/used in operating activities/i.test(ocf.candidates[0]?.row||'')?-Math.abs(ocf.value):ocf.value;
    const capex=cap.value;
    // Asset purchases are cash outflows; financial statements may display them as positive numbers.
    const capitalExpenditures=-Math.abs(capex);
