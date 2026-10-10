@@ -1,29 +1,19 @@
 {
-  "runAt": "2026-10-10T18:40:44.697Z",
-  "configuredTickers": 6,
+  "runAt": "2026-10-10T19:23:13.412Z",
+  "configuredTickers": 8,
   "discovered": [
-    {
-      "ticker": "KW",
-      "status": "discovery-failed",
-      "reason": "Discovery HTTP 403"
-    },
     {
       "ticker": "SEP",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "SGJ",
+      "ticker": "KW",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
     {
       "ticker": "TJH",
-      "status": "discovery-failed",
-      "reason": "Discovery HTTP 403"
-    },
-    {
-      "ticker": "CPJ",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -34,16 +24,6 @@
     },
     {
       "ticker": "CAR",
-      "status": "discovery-failed",
-      "reason": "Discovery HTTP 403"
-    },
-    {
-      "ticker": "SJ",
-      "status": "discovery-failed",
-      "reason": "Discovery HTTP 403"
-    },
-    {
-      "ticker": "NCBFG",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -88,6 +68,16 @@
       "reason": "Discovery HTTP 403"
     },
     {
+      "ticker": "SJ",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "NCBFG",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
       "ticker": "BRG",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
@@ -128,12 +118,12 @@
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "LASD",
+      "ticker": "LASM",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "LASM",
+      "ticker": "LASD",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -153,12 +143,12 @@
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "MPCCEL",
+      "ticker": "PAL",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "PAL",
+      "ticker": "MPCCEL",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -198,12 +188,12 @@
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "SELECTMD",
+      "ticker": "TROPICAL",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "TROPICAL",
+      "ticker": "SELECTMD",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -365,6 +355,38 @@
       "status": "failed",
       "reason": "HTTP 404",
       "url": "https://wigtonenergy.com/wp-content/uploads/2025/08/WIGTON-ENERGY-LIMITED-ANNUAL-REPORT-2024-2025.pdf"
+    },
+    {
+      "ticker": "SGJ",
+      "year": 2025,
+      "status": "review-needed",
+      "operatingCandidates": [],
+      "capexCandidates": [
+        {
+          "value": 909176000,
+          "row": "Increase in retirement benefits asseUobligations, net               ( 909,176)      ( 1,981,826)      Purchase of property and equipment                               29           ( 1,789,615)            1,199,582)",
+          "pageContext": "                                                                                                          13                                                                                                                       14\n    SCOTIA GROUP JAMAICA LIMITED                                      ",
+          "isConsolidated": true,
+          "isStandalone": false
+        }
+      ],
+      "url": "https://jm.scotiabank.com/content/dam/scotiabank/international/jamaica/documents/SGJ_2025_Annual_Report.pdf"
+    },
+    {
+      "ticker": "CPJ",
+      "year": 2024,
+      "status": "review-needed",
+      "operatingCandidates": [
+        {
+          "value": 3038252,
+          "row": "Net cash provided by operating activities                       3,038,252    10,224,451           1,583,478         8,188,861",
+          "pageContext": "60   Caribbean Producers (Jamaica) Limited • Dec. 2024 Annual Report • Audited Financial Statements\n\n\n                                                                                                                                                 10\n           CARIBBEAN PRODUCERS (JAMAICA)    LIMITE",
+          "isConsolidated": false,
+          "isStandalone": false
+        }
+      ],
+      "capexCandidates": [],
+      "url": "https://cdn.jamstockex.com/pd/2025/07/Caribbean-Producers-Jamaica-Limited-CPJ-Annual-Report-Period-Ended-December-2024.pdf"
     }
   ]
 }
