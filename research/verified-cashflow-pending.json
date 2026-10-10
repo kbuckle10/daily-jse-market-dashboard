@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "notes": "Verified consolidated audited SGJ cash-flow values; two annual periods only, not yet eligible for dashboard minimum of three years. All amounts JMD (absolute currency units). For banks, operating cash flow is sensitive to movements in deposits and loans.",
+  "stocks": {
+    "SGJ": {
+      "source": "Scotia Group Jamaica 2025 audited financial statements",
+      "sourceUrl": "https://jm.scotiabank.com/content/dam/scotiabank/international/jamaica/documents/Scotia_Group_Financials_2025.pdf",
+      "sourcePages": [
+        14,
+        15
+      ],
+      "currency": "JMD",
+      "statement": "consolidated",
+      "annual": [
+        {
+          "period": "2024",
+          "operatingCashFlow": -39609550000,
+          "capitalExpenditures": -1199582000,
+          "freeCashFlow": -40809132000
+        },
+        {
+          "period": "2025",
+          "operatingCashFlow": 10660628000,
+          "capitalExpenditures": -1789615000,
+          "freeCashFlow": 8871013000
+        }
+      ]
+    }
+  }
+}
