@@ -212,11 +212,17 @@
           "period": 2023,
           "revenue": 50880,
           "operatingProfit": 3143,
-          "operatingCashFlow": 824.43,
-          "capitalExpenditures": -1008,
-          "freeCashFlow": -183.57,
-          "originalResearchFreeCashFlow": -183.32,
-          "freeCashFlowBasis": "derived from provisional OCF and CapEx; original research FCF preserved; issuer reconciliation pending"
+          "operatingCashFlow": 824.425,
+          "capitalExpenditures": -1329.951,
+          "freeCashFlow": -505.526,
+          "originalResearchFreeCashFlow": -183.57,
+          "freeCashFlowBasis": "Restated FY2023 consolidated OCF less PPE and intangible purchases, SVL FY2024 annual report p.88 and restatement note 43 p.179; JMD millions",
+          "originalResearchOperatingCashFlow": 824.43,
+          "originalResearchCapitalExpenditures": -1008,
+          "cashCapitalExpenditurePPE": 1007.747,
+          "cashCapitalExpenditureIntangibles": 322.204,
+          "reconciledToIssuer2024Restated2023Comparative": true,
+          "issuerCashFlowSource": "https://fliphtml5.com/idqgz/mafc/25_1750_SVG_Synergy_Vision_Legacy_Annual_Report_2024_Flip_Proof/"
         },
         {
           "period": 2024,
