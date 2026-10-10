@@ -69,5 +69,15 @@
       "statement": "group",
       "notes": "December 2024 is a six-month period; June 2024 comparative is twelve months. Do not label December 2024 as full-year cash flow."
     }
+  ],
+  "CAR": [
+    {
+      "year": 2025,
+      "url": "https://cdn.jamstockex.com/pd/2026/04/Carreras-Limited-Annual-Report-2025.pdf",
+      "scale": "unknown",
+      "status": "requires-unit-and-period-verification",
+      "instrumentUrl": "https://www.jamstockex.com/trading/instruments/?instrument=39",
+      "annualReportsUrl": "https://www.jamstockex.com/?tag=CAR&category_name=annual-reports"
+    }
   ]
 }
