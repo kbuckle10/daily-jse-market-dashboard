@@ -7,6 +7,7 @@ on:
       - 'research/business-phase-four-stock-pilot.json'
       - 'scripts/validate-business-phase-pilot.mjs'
       - 'business-phase-four-stock-pilot.html'
+      - 'index.html'
       - 'scripts/smoke-test-business-phase-pilot.mjs'
       - 'scripts/check-business-phase-release-readiness.mjs'
       - '.github/workflows/business-phase-pilot-validation.yml'
