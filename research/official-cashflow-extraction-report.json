@@ -1,14 +1,14 @@
 {
-  "runAt": "2026-10-10T14:44:05.681Z",
+  "runAt": "2026-10-10T14:50:57.757Z",
   "configuredTickers": 3,
   "discovered": [
     {
-      "ticker": "KW",
+      "ticker": "SEP",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "SEP",
+      "ticker": "KW",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -28,16 +28,6 @@
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "SJ",
-      "status": "discovery-failed",
-      "reason": "Discovery HTTP 403"
-    },
-    {
-      "ticker": "NCBFG",
-      "status": "discovery-failed",
-      "reason": "Discovery HTTP 403"
-    },
-    {
       "ticker": "GENAC",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
@@ -53,7 +43,17 @@
       "reason": "Discovery HTTP 403"
     },
     {
+      "ticker": "SJ",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
       "ticker": "MASSY",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "NCBFG",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -88,17 +88,17 @@
       "reason": "Discovery HTTP 403"
     },
     {
+      "ticker": "ASBH",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
       "ticker": "BRG",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
     {
       "ticker": "CCC",
-      "status": "discovery-failed",
-      "reason": "Discovery HTTP 403"
-    },
-    {
-      "ticker": "ASBH",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -113,12 +113,12 @@
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "GHL",
+      "ticker": "FIRSTROCKJMD",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "FIRSTROCKJMD",
+      "ticker": "GHL",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -133,17 +133,22 @@
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "LASD",
-      "status": "discovery-failed",
-      "reason": "Discovery HTTP 403"
-    },
-    {
       "ticker": "LASM",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
     {
       "ticker": "MTL",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "LASD",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "KPREIT",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -173,22 +178,17 @@
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "KPREIT",
-      "status": "discovery-failed",
-      "reason": "Discovery HTTP 403"
-    },
-    {
       "ticker": "PROVEN",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "QWI",
+      "ticker": "PULS",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "PULS",
+      "ticker": "QWI",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -228,12 +228,12 @@
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "SML",
+      "ticker": "WISYNCO",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "WISYNCO",
+      "ticker": "SML",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -263,15 +263,34 @@
     {
       "ticker": "GK",
       "year": 2024,
-      "status": "failed",
-      "reason": "Cash-flow statement rows not reliably identified",
+      "status": "review-needed",
+      "operatingCandidates": [
+        {
+          "value": 3483650000,
+          "row": "Net cash generated from operating activities                                         3,483,650    1,426,428",
+          "pageContext": "                                                                                                          Page 107\nGraceKennedy Limited\nNotes to the Financial Statements\n31 December 2024\n(expressed in Jamaican dollars unless otherwise indicated)\n\n23.   Non-Controlling Interests (Continued)\n      Sum"
+        },
+        {
+          "value": 18089716000,
+          "row": "Net cash provided by operating activities                                      18,089,716     17,427,013         4,750,430        5,147,029",
+          "pageContext": "                                                                                                                                              Page 118\n  GraceKennedy Limited\n  Notes to the Financial Statements\n  31 December 2024\n  (expressed in Jamaican dollars unless otherwise indicated)\n\n  33.    "
+        }
+      ],
+      "capexCandidates": [],
       "url": "https://gracekennedy.com/wp-content/uploads/2025/04/GK_AnnualReport_2024.pdf"
     },
     {
       "ticker": "PJX",
       "year": 2025,
-      "status": "failed",
-      "reason": "Cash-flow statement rows not reliably identified",
+      "status": "review-needed",
+      "operatingCandidates": [
+        {
+          "value": 1961447,
+          "row": "Net cash used in operating activities                                      1,961,447     (948,137)",
+          "pageContext": "Portland JSX Limited\nStatement of cash flows\nYear ended February 28, 2025\n(Expressed in United States dollars unless otherwise stated)\n\n\n\n\n                                                                               2025          2024\n                                                               "
+        }
+      ],
+      "capexCandidates": [],
       "url": "https://cdn.jamstockex.com/pd/2025/06/2025-PJX-Annual-Report.pdf"
     },
     {
