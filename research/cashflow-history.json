@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-10T15:04:04.199Z",
+  "updatedAt": "2026-10-10T19:03:09.839Z",
   "stocks": {
     "SEP": {
       "history": {
@@ -674,6 +674,48 @@
         ],
         "ttm": null,
         "updatedAt": "2026-10-10T15:04:04.195Z"
+      }
+    },
+    "JP": {
+      "history": {
+        "source": "StockAnalysis",
+        "sourceUrl": "https://stockanalysis.com/quote/jmse/JP/financials/cash-flow-statement/",
+        "currency": "JMD",
+        "units": "millions",
+        "annual": [
+          {
+            "period": "2021",
+            "operatingCashFlow": 5042000000,
+            "capitalExpenditures": -1754000000,
+            "freeCashFlow": 3288000000
+          },
+          {
+            "period": "2022",
+            "operatingCashFlow": 3854000000,
+            "capitalExpenditures": -3387000000,
+            "freeCashFlow": 466270000
+          },
+          {
+            "period": "2023",
+            "operatingCashFlow": 553850000,
+            "capitalExpenditures": -1807000000,
+            "freeCashFlow": -1253000000
+          },
+          {
+            "period": "2024",
+            "operatingCashFlow": -207710000,
+            "capitalExpenditures": -1900000,
+            "freeCashFlow": -209610000
+          },
+          {
+            "period": "2025",
+            "operatingCashFlow": -93660000,
+            "capitalExpenditures": -4290000,
+            "freeCashFlow": -97950000
+          }
+        ],
+        "ttm": null,
+        "updatedAt": "2026-10-10T19:03:09.837Z"
       }
     }
   }
