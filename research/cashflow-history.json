@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-10T21:51:41.340Z",
+  "updatedAt": "2026-10-10T22:04:32.672Z",
   "stocks": {
     "SEP": {
       "history": {
@@ -1860,6 +1860,148 @@
         },
         "updatedAt": "2026-10-10T21:51:41.335Z",
         "sourceUrl": "https://stockanalysis.com/quote/ttse/MASSY/financials/cash-flow-statement/"
+      }
+    },
+    "FIRSTROCKJMD": {
+      "history": {
+        "source": "StockAnalysis",
+        "currency": "USD",
+        "units": "millions",
+        "annual": [
+          {
+            "period": "2025",
+            "periodEnding": "Dec 31, 2025",
+            "operatingCashFlow": -5840000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": -6300000,
+            "investingCashFlow": -1850000,
+            "method": "real_estate_operating_and_investing"
+          },
+          {
+            "period": "2024",
+            "periodEnding": "Dec 31, 2024",
+            "operatingCashFlow": -2800000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": -13080000,
+            "investingCashFlow": -2510000,
+            "method": "real_estate_operating_and_investing"
+          },
+          {
+            "period": "2023",
+            "periodEnding": "Dec 31, 2023",
+            "operatingCashFlow": -7060000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": -3110000,
+            "investingCashFlow": 4440000,
+            "method": "real_estate_operating_and_investing"
+          },
+          {
+            "period": "2022",
+            "periodEnding": "Dec 31, 2022",
+            "operatingCashFlow": -3290000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": -10870000,
+            "investingCashFlow": -4730000,
+            "method": "real_estate_operating_and_investing"
+          },
+          {
+            "period": "2021",
+            "periodEnding": "Dec 31, 2021",
+            "operatingCashFlow": -320000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": -11580000,
+            "investingCashFlow": -4500000,
+            "method": "real_estate_operating_and_investing"
+          }
+        ],
+        "ttm": {
+          "period": "TTM",
+          "periodEnding": "Jun 30, 2026",
+          "operatingCashFlow": -4060000,
+          "capitalExpenditures": null,
+          "freeCashFlow": null,
+          "realEstateAcquisitions": -7000000,
+          "investingCashFlow": -6710000,
+          "method": "real_estate_operating_and_investing"
+        },
+        "updatedAt": "2026-10-10T22:04:32.667Z",
+        "sourceUrl": "https://stockanalysis.com/quote/jmse/FIRSTROCKJMD/financials/cash-flow-statement/"
+      }
+    },
+    "KPREIT": {
+      "history": {
+        "source": "StockAnalysis",
+        "currency": "USD",
+        "units": "millions",
+        "annual": [
+          {
+            "period": "2025",
+            "periodEnding": "Dec 31, 2025",
+            "operatingCashFlow": 4540000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": -10320000,
+            "investingCashFlow": -8720000,
+            "method": "real_estate_operating_and_investing"
+          },
+          {
+            "period": "2024",
+            "periodEnding": "Dec 31, 2024",
+            "operatingCashFlow": 2520000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": -14090000,
+            "investingCashFlow": -9160000,
+            "method": "real_estate_operating_and_investing"
+          },
+          {
+            "period": "2023",
+            "periodEnding": "Dec 31, 2023",
+            "operatingCashFlow": 2480000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": -15540000,
+            "investingCashFlow": -12840000,
+            "method": "real_estate_operating_and_investing"
+          },
+          {
+            "period": "2022",
+            "periodEnding": "Dec 31, 2022",
+            "operatingCashFlow": 1690000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": -1600000,
+            "investingCashFlow": -1180000,
+            "method": "real_estate_operating_and_investing"
+          },
+          {
+            "period": "2021",
+            "periodEnding": "Dec 31, 2021",
+            "operatingCashFlow": 2120000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": -5510000,
+            "investingCashFlow": -6880000,
+            "method": "real_estate_operating_and_investing"
+          }
+        ],
+        "ttm": {
+          "period": "TTM",
+          "periodEnding": "Jun 30, 2026",
+          "operatingCashFlow": 4530000,
+          "capitalExpenditures": null,
+          "freeCashFlow": null,
+          "realEstateAcquisitions": -5640000,
+          "investingCashFlow": -4560000,
+          "method": "real_estate_operating_and_investing"
+        },
+        "updatedAt": "2026-10-10T22:04:32.672Z",
+        "sourceUrl": "https://stockanalysis.com/quote/jmse/KPREIT/financials/cash-flow-statement/"
       }
     }
   }
