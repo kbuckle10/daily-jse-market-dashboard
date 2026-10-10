@@ -1,5 +1,5 @@
 {
-  "runAt": "2026-10-10T14:35:57.400Z",
+  "runAt": "2026-10-10T14:39:20.822Z",
   "universe": 54,
   "coverage": 12,
   "updated": [],
@@ -14,11 +14,11 @@
       "reason": "HTTP 403 (source denied access)"
     },
     {
-      "ticker": "SJ",
+      "ticker": "NCBFG",
       "reason": "HTTP 403 (source denied access)"
     },
     {
-      "ticker": "NCBFG",
+      "ticker": "SJ",
       "reason": "HTTP 403 (source denied access)"
     },
     {

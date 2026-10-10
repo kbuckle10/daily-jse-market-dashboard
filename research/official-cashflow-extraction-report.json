@@ -1,5 +1,13 @@
 {
-  "runAt": "2026-10-10T14:35:53.650Z",
-  "configuredTickers": 0,
-  "results": []
+  "runAt": "2026-10-10T14:39:17.686Z",
+  "configuredTickers": 1,
+  "results": [
+    {
+      "ticker": "GK",
+      "year": 2024,
+      "status": "failed",
+      "reason": "Cash-flow statement rows not reliably identified",
+      "url": "https://gracekennedy.com/wp-content/uploads/2025/04/GK_AnnualReport_2024.pdf"
+    }
+  ]
 }
