@@ -1,19 +1,14 @@
 {
-  "runAt": "2026-10-10T19:38:18.468Z",
-  "configuredTickers": 8,
+  "runAt": "2026-10-10T19:54:56.750Z",
+  "configuredTickers": 9,
   "discovered": [
-    {
-      "ticker": "KW",
-      "status": "discovery-failed",
-      "reason": "Discovery HTTP 403"
-    },
     {
       "ticker": "SEP",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "NCBFG",
+      "ticker": "KW",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -68,22 +63,22 @@
       "reason": "Discovery HTTP 403"
     },
     {
+      "ticker": "SJ",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "NCBFG",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
       "ticker": "BRG",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
     {
       "ticker": "CPFV",
-      "status": "discovery-failed",
-      "reason": "Discovery HTTP 403"
-    },
-    {
-      "ticker": "CAR",
-      "status": "discovery-failed",
-      "reason": "Discovery HTTP 403"
-    },
-    {
-      "ticker": "SJ",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -118,12 +113,12 @@
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "LASM",
+      "ticker": "LASD",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "LASD",
+      "ticker": "LASM",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -133,12 +128,12 @@
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "MJE",
+      "ticker": "MGL",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "MGL",
+      "ticker": "MJE",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -208,12 +203,12 @@
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "SML",
+      "ticker": "SIL",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "SIL",
+      "ticker": "SML",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -353,24 +348,23 @@
       "ticker": "WIG",
       "year": 2025,
       "status": "failed",
-      "reason": "Not a PDF",
+      "reason": "HTTP 404",
       "url": "https://wigtonenergy.com/wp-content/uploads/2025/08/WIGTON-ENERGY-LIMITED-ANNUAL-REPORT-2024-2025.pdf"
     },
     {
       "ticker": "SGJ",
       "year": 2025,
-      "status": "review-needed",
-      "operatingCandidates": [],
-      "capexCandidates": [
-        {
-          "value": 909176000,
-          "row": "Increase in retirement benefits asseUobligations, net               ( 909,176)      ( 1,981,826)      Purchase of property and equipment                               29           ( 1,789,615)            1,199,582)",
-          "pageContext": "                                                                                                          13                                                                                                                       14\n    SCOTIA GROUP JAMAICA LIMITED                                      ",
-          "isConsolidated": true,
-          "isStandalone": false
-        }
-      ],
-      "url": "https://jm.scotiabank.com/content/dam/scotiabank/international/jamaica/documents/SGJ_2025_Annual_Report.pdf"
+      "status": "extracted",
+      "url": "https://jm.scotiabank.com/content/dam/scotiabank/international/jamaica/documents/Scotia_Group_Financials_2025.pdf"
+    },
+    {
+      "ticker": "SGJ",
+      "year": "2025",
+      "status": "candidate-needs-review",
+      "period": "2025",
+      "operatingCashFlow": -299280000,
+      "capitalExpenditures": -29000,
+      "freeCashFlow": -299309000
     },
     {
       "ticker": "CPJ",
@@ -387,6 +381,14 @@
       ],
       "capexCandidates": [],
       "url": "https://cdn.jamstockex.com/pd/2025/07/Caribbean-Producers-Jamaica-Limited-CPJ-Annual-Report-Period-Ended-December-2024.pdf"
+    },
+    {
+      "ticker": "CAR",
+      "year": 2025,
+      "status": "review-needed",
+      "operatingCandidates": [],
+      "capexCandidates": [],
+      "url": "https://cdn.jamstockex.com/pd/2026/04/Carreras-Limited-Annual-Report-2025.pdf"
     }
   ]
 }
