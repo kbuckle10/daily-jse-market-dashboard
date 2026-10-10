@@ -36,9 +36,16 @@
           "period": 2023,
           "revenue": 75.2,
           "operatingProfit": 45.12,
-          "operatingCashFlow": 41.67,
-          "capitalExpenditures": -0.46,
-          "freeCashFlow": 41.22
+          "operatingCashFlow": 41.673,
+          "capitalExpenditures": -0.455,
+          "freeCashFlow": 41.218,
+          "originalResearchOperatingCashFlow": 41.67,
+          "originalResearchCapitalExpenditures": -0.46,
+          "originalResearchFreeCashFlow": 41.22,
+          "reconciledToIssuer2024AnnualReport2023Comparative": true,
+          "issuerCashFlowSource": "https://www.transjamhighways.com/wp-content/uploads/2025/06/TJH-2024-Annual-Report_compressed.pdf",
+          "issuerCashFlowPage": "Consolidated statement of cash flows, printed page 9",
+          "freeCashFlowBasis": "FY2023 consolidated operating cash flow less cash purchases of property and equipment; issuer FY2024 audited comparative, USD millions"
         },
         {
           "period": 2024,
