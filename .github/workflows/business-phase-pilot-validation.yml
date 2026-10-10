@@ -8,6 +8,8 @@ on:
       - 'scripts/validate-business-phase-pilot.mjs'
       - 'business-phase-four-stock-pilot.html'
       - 'index.html'
+      - 'research/business-phase-evidence-workbook.csv'
+      - 'scripts/validate-business-phase-evidence.mjs'
       - 'scripts/smoke-test-business-phase-pilot.mjs'
       - 'scripts/browser-test-business-phase-pilot.mjs'
       - 'scripts/check-business-phase-release-readiness.mjs'
@@ -29,6 +31,8 @@ jobs:
         run: node scripts/validate-business-phase-pilot.mjs
       - name: Smoke test pilot page and research dataset
         run: node scripts/smoke-test-business-phase-pilot.mjs
+      - name: Validate issuer audit evidence workbook
+        run: node scripts/validate-business-phase-evidence.mjs
       - name: Assess evidence-based release readiness
         run: node scripts/check-business-phase-release-readiness.mjs
       - name: Assert no unsupported phase assignment
