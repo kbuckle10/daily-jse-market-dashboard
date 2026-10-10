@@ -52,12 +52,15 @@
       "QAINC"
     ]
   ],
-  "notes": "Work queue, not verified coverage. Publish only validated data.",
+  "notes": "Work queue, not verified coverage. Publish only validated data. JP 2021–2025 JMD annual cash flow manually verified against StockAnalysis on 2026-10-10; no TTM claimed.",
   "verifiedInBatch1": [
     "CCC"
   ],
   "sourceRegisteredInBatch1": [
     "CCC",
     "WIG"
+  ],
+  "verifiedInBatch2": [
+    "JP"
   ]
 }
