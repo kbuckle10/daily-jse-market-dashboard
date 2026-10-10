@@ -62,7 +62,7 @@ const WATCHLIST_KEY='dailyJseTrackedTickersV2';
 function watched(){try{const list=JSON.parse(localStorage.getItem(WATCHLIST_KEY)||'[]');return new Set(Array.isArray(list)?list.map(x=>String(x).toUpperCase()):[])}catch{return new Set()}}
 function watchedHistory(){const tracked=watched();return [...availableHistory].filter(t=>tracked.has(t)).sort()}
 
-fetch('./research/cashflow-history.json',{cache:'no-cache'}).then(r=>{if(!r.ok)throw Error('History unavailable');return r.json()}).then(store=>{for(const [ticker,item] of Object.entries(store.stocks||{})){if(item?.history?.annual?.length>=5&&item.history.ttm)availableHistory.add(ticker)}decorate()}).catch(e=>console.warn('Cash flow history index fallback:',e));
+fetch('./research/cashflow-history.json',{cache:'no-cache'}).then(r=>{if(!r.ok)throw Error('History unavailable');return r.json()}).then(store=>{for(const [ticker,item] of Object.entries(store.stocks||{})){if(item?.history?.annual?.length>=3)availableHistory.add(ticker)}decorate()}).catch(e=>console.warn('Cash flow history index fallback:',e));
 function ensureHistoryDirectory(){
  const section=document.getElementById('freshCapitalSection');
  if(!section)return;
