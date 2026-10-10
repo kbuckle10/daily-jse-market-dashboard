@@ -94,8 +94,9 @@ function draw(section,periods,currency){
  render(panel.querySelector('[aria-pressed=true]')?.dataset.key||'freeCashFlow');
 }
 function fromTable(section){const rows=[...section.querySelectorAll('tbody tr')].map(tr=>[...tr.children].map(x=>x.textContent.trim())).filter(r=>/^20\d{2}$/.test(r[0]));if(rows.length<5)return;const periods=rows.map(r=>({period:r[0],operatingCashFlow:Number(r[1].replace(/,/g,'')),capitalExpenditures:Number(r[2].replace(/,/g,'')),freeCashFlow:Number(r[3].replace(/,/g,''))}));const currency=section.querySelector('h2')?.textContent.match(/(JMD|USD|TTD)/)?.[1]||'JMD';draw(section,periods,currency)}
-let pending=false;function update(){if(pending)return;pending=true;requestAnimationFrame(()=>{pending=false;document.querySelectorAll('section.stock').forEach(fromTable)})}
-const sections=[...document.querySelectorAll('section.stock')];sections.forEach(section=>{const tbody=section.querySelector('tbody');if(tbody)new MutationObserver(update).observe(tbody,{childList:true,subtree:true,characterData:true})});
+let pending=false;function update(){if(pending)return;pending=true;requestAnimationFrame(()=>{pending=false;attach();document.querySelectorAll('section.stock').forEach(fromTable)})}
+const observed=new WeakSet();function attach(){document.querySelectorAll('section.stock').forEach(section=>{const tbody=section.querySelector('tbody');if(tbody&&!observed.has(tbody)){observed.add(tbody);new MutationObserver(update).observe(tbody,{childList:true,subtree:true,characterData:true})}})}
+new MutationObserver(()=>{attach();update()}).observe(document.querySelector('main'),{childList:true});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',update);else update();
 })();
 </script></body></html>
