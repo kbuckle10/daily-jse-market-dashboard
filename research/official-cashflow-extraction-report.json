@@ -1,14 +1,14 @@
 {
-  "runAt": "2026-10-10T14:55:39.113Z",
+  "runAt": "2026-10-10T14:57:03.370Z",
   "configuredTickers": 3,
   "discovered": [
     {
-      "ticker": "SEP",
+      "ticker": "KW",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "KW",
+      "ticker": "SEP",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -19,6 +19,11 @@
     },
     {
       "ticker": "TJH",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "NCBFG",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -39,11 +44,6 @@
     },
     {
       "ticker": "SALF",
-      "status": "discovery-failed",
-      "reason": "Discovery HTTP 403"
-    },
-    {
-      "ticker": "NCBFG",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -133,12 +133,12 @@
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "KPREIT",
+      "ticker": "LASD",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "LASD",
+      "ticker": "KPREIT",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -208,12 +208,12 @@
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "TROPICAL",
+      "ticker": "SELECTMD",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "SELECTMD",
+      "ticker": "TROPICAL",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -224,6 +224,11 @@
     },
     {
       "ticker": "WIPT",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "WISYNCO",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -251,11 +256,6 @@
       "ticker": "QAINC",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
-    },
-    {
-      "ticker": "WISYNCO",
-      "status": "discovery-failed",
-      "reason": "Discovery HTTP 403"
     }
   ],
   "pendingPdfCandidates": [],
@@ -276,7 +276,9 @@
         {
           "value": 1961447,
           "row": "Net cash used in operating activities                                      1,961,447     (948,137)",
-          "pageContext": "Portland JSX Limited\nStatement of cash flows\nYear ended February 28, 2025\n(Expressed in United States dollars unless otherwise stated)\n\n\n\n\n                                                                               2025          2024\n                                                               "
+          "pageContext": "Portland JSX Limited\nStatement of cash flows\nYear ended February 28, 2025\n(Expressed in United States dollars unless otherwise stated)\n\n\n\n\n                                                                               2025          2024\n                                                               ",
+          "isConsolidated": false,
+          "isStandalone": false
         }
       ],
       "capexCandidates": [],
