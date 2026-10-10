@@ -26,5 +26,24 @@
       "url": "https://wisynco.com/wp-content/uploads/2025/11/Wisynco-Annual-Report-2025.pdf",
       "scale": "thousands"
     }
+  ],
+  "CCC": [
+    {
+      "year": 2025,
+      "url": "https://caribcement.com/wp-content/uploads/2026/04/Carib-Cement-Annual-Report-2025.pdf",
+      "scale": "thousands"
+    },
+    {
+      "year": 2024,
+      "url": "https://cdn.jamstockex.com/pd/2025/05/CCC-Caribbean-Cement-Company-Limited-Annual-Report-2024.pdf",
+      "scale": "thousands"
+    }
+  ],
+  "WIG": [
+    {
+      "year": 2025,
+      "url": "https://wigtonenergy.com/wp-content/uploads/2025/08/WIGTON-ENERGY-LIMITED-ANNUAL-REPORT-2024-2025.pdf",
+      "scale": "thousands"
+    }
   ]
 }
