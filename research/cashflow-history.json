@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-10T22:15:53.143Z",
+  "updatedAt": "2026-10-10T22:22:18.108Z",
   "stocks": {
     "SEP": {
       "history": {
@@ -2919,6 +2919,95 @@
         "ttm": null,
         "updatedAt": "2026-10-10T22:15:53.143Z",
         "sourceUrl": "https://stockanalysis.com/quote/jmse/QAINC/financials/cash-flow-statement/"
+      }
+    },
+    "SRFJMD": {
+      "history": {
+        "source": "StockAnalysis",
+        "currency": "JMD",
+        "units": "millions",
+        "annual": [
+          {
+            "period": "FY 2025",
+            "periodEnding": "Aug 31, 2025",
+            "operatingCashFlow": -982250000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": -624890000,
+            "leveredFreeCashFlow": null,
+            "unleveredFreeCashFlow": null,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2024",
+            "periodEnding": "Aug 31, 2024",
+            "operatingCashFlow": -1595000000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": 1194000000,
+            "leveredFreeCashFlow": null,
+            "unleveredFreeCashFlow": null,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2023",
+            "periodEnding": "Aug 31, 2023",
+            "operatingCashFlow": -182480000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": -990990000,
+            "leveredFreeCashFlow": null,
+            "unleveredFreeCashFlow": null,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2022",
+            "periodEnding": "Aug 31, 2022",
+            "operatingCashFlow": 1147000000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": -3383000000,
+            "leveredFreeCashFlow": null,
+            "unleveredFreeCashFlow": null,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2021",
+            "periodEnding": "Aug 31, 2021",
+            "operatingCashFlow": 8520000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": 179270000,
+            "leveredFreeCashFlow": null,
+            "unleveredFreeCashFlow": null,
+            "method": "operating_and_investing_disclosed"
+          }
+        ],
+        "ttm": {
+          "period": "TTM",
+          "periodEnding": "May 31, 2026",
+          "operatingCashFlow": -855010000,
+          "capitalExpenditures": null,
+          "freeCashFlow": null,
+          "realEstateAcquisitions": null,
+          "realEstateSales": null,
+          "investingCashFlow": -237420000,
+          "leveredFreeCashFlow": null,
+          "unleveredFreeCashFlow": null,
+          "method": "operating_and_investing_disclosed"
+        },
+        "updatedAt": "2026-10-10T22:22:18.104Z",
+        "sourceUrl": "https://stockanalysis.com/quote/jmse/SRFJMD/financials/cash-flow-statement/"
       }
     }
   }
