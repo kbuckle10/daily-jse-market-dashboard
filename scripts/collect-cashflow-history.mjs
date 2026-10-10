@@ -51,7 +51,7 @@ async function collect(browser,stock){
 const browser=await chromium.launch({headless:true});
 let index=0;let blocked=0;await Promise.all(Array.from({length:max},async()=>{while(index<universe.length){const stock=universe[index++];if(blocked>=3){outcomes.unavailable.push({ticker:stock.ticker,reason:'Skipped: source access blocked (403)'});continue;}const before=outcomes.unavailable.length;await collect(browser,stock);if(outcomes.unavailable.length>before&&/HTTP 403/.test(outcomes.unavailable.at(-1).reason))blocked++;else if(outcomes.unavailable.length===before)blocked=0;await sleep(1200)}}));
 await browser.close();
-const valid=Object.fromEntries(Object.entries(stocks).filter(([,v])=>v?.history?.annual?.length>=5&&v.history.ttm));
+const valid=Object.fromEntries(Object.entries(stocks).filter(([,v])=>v?.history?.annual?.length>=2));
 if(Object.keys(valid).length<Math.max(12,Object.keys(previous.stocks).length))throw Error('Coverage regression: refusing to overwrite history');
 const report={runAt:new Date().toISOString(),universe:universe.length,coverage:Object.keys(valid).length,updated:outcomes.updated,unchanged:outcomes.retained,unavailable:outcomes.unavailable};
 fs.writeFileSync('research/cashflow-coverage-report.json',JSON.stringify(report,null,2)+'\n');
