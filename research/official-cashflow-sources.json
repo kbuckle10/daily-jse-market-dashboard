@@ -49,15 +49,25 @@
   "SGJ": [
     {
       "year": 2025,
-      "url": "https://jm.scotiabank.com/content/dam/scotiabank/international/jamaica/documents/SGJ_2025_Annual_Report.pdf",
-      "scale": "thousands"
+      "url": "https://jm.scotiabank.com/content/dam/scotiabank/international/jamaica/documents/Scotia_Group_Financials_2025.pdf",
+      "scale": "thousands",
+      "statement": "consolidated",
+      "sourcePages": [
+        14,
+        15
+      ],
+      "includesComparativeYear": 2024
     }
   ],
   "CPJ": [
     {
       "year": 2024,
       "url": "https://cdn.jamstockex.com/pd/2025/07/Caribbean-Producers-Jamaica-Limited-CPJ-Annual-Report-Period-Ended-December-2024.pdf",
-      "scale": "ones"
+      "scale": "ones",
+      "currency": "USD",
+      "periodType": "six-month transitional",
+      "statement": "group",
+      "notes": "December 2024 is a six-month period; June 2024 comparative is twelve months. Do not label December 2024 as full-year cash flow."
     }
   ]
 }
