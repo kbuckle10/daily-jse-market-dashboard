@@ -1,0 +1,63 @@
+{
+  "batchSize": 12,
+  "initialUncovered": 41,
+  "batches": [
+    [
+      "SGJ",
+      "CPJ",
+      "GENAC",
+      "CAR",
+      "SALF",
+      "MASSY",
+      "SCIJMD",
+      "JBG",
+      "WIG",
+      "138SL",
+      "ASBH",
+      "CCC"
+    ],
+    [
+      "BRG",
+      "CPFV",
+      "EPLY",
+      "FIRSTROCKJMD",
+      "ENERGY",
+      "JP",
+      "KPREIT",
+      "MTL",
+      "MGL",
+      "MJE",
+      "MPCCEL",
+      "PAL"
+    ],
+    [
+      "PJAM",
+      "PJX",
+      "PROVEN",
+      "PULS",
+      "QWI",
+      "RJR",
+      "XFUND",
+      "SELECTF",
+      "SELECTMD",
+      "TROPICAL",
+      "VMIL",
+      "WIPT"
+    ],
+    [
+      "JSE",
+      "SML",
+      "SIL",
+      "SRFJMD",
+      "QAINC"
+    ]
+  ],
+  "notes": "Work queue, not verified coverage. Publish only validated data.",
+  "verifiedInBatch1": [
+    "CCC"
+  ],
+  "sourceRegisteredInBatch1": [
+    "CCC",
+    "WIG"
+  ]
+}
