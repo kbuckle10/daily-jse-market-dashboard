@@ -54,31 +54,26 @@ function sourceLinks(s){
  const sa=s.sa||'https://stockanalysis.com/quote/jmse/'+encodeURIComponent(s.ticker)+'/';
  return '<a class="source-link source-external jse" href="'+jse+'" target="_blank" rel="noopener noreferrer" aria-label="Open '+s.ticker+' on JSE in new tab">JSE ↗</a><a class="source-link source-external sa" href="'+sa+'" target="_blank" rel="noopener noreferrer" aria-label="Open '+s.ticker+' on StockAnalysis in new tab">SA ↗</a>';
 }
-// Desktop Chrome: links sometimes receive mouseup without a synthesized click.
-// Activate once on the first matching pointerup/mouseup; native keyboard/touch links remain intact.
+// Desktop Chrome source links: activate a completed left-button gesture on its
+// original link, even if card reflow changes the release event's target.
 (()=>{
- let pressed=null,opened=null,openedAt=0;
- const link=e=>e.target.closest?.('a.source-external');
- const down=e=>{if(e.button===0)pressed=link(e)||null;};
+ let pressed=null, startX=0,startY=0,opened=null,openedAt=0;
+ const link=e=>e.target?.closest?.('a.source-external');
+ document.addEventListener('pointerdown',e=>{
+   if(e.pointerType!=='mouse'||e.button!==0)return;
+   pressed=link(e)||null;startX=e.clientX;startY=e.clientY;
+ },true);
  const release=e=>{
-   if(e.button!==0)return;
-   const a=link(e);
-   if(!a||a!==pressed)return;
-   pressed=null;
+   if(e.button!==0||!pressed)return;
+   const a=pressed;pressed=null;
+   // Ignore drag gestures and releases on a different stock's source button.
+   if(Math.hypot(e.clientX-startX,e.clientY-startY)>24||!a.isConnected)return;
+   const released=link(e);
+   if(released&&released!==a)return;
    if(!/^https:\/\//i.test(a.href))return;
    const tab=window.open(a.href,'_blank');
    if(tab){try{tab.opener=null;}catch(_){}opened=a;openedAt=performance.now();e.preventDefault();}
  };
- document.addEventListener('pointerdown',e=>{
-   if(e.pointerType!=='mouse')return;
-   down(e);
-   // Card layouts may shift between press/release. Capture the pointer on the
-   // original link so the release still reaches that link in Chrome.
-   const a=link(e);
-   if(a?.closest('#cardView')&&e.button===0){
-     try{a.setPointerCapture(e.pointerId);}catch(_){}
-   }
- },true);
  document.addEventListener('pointerup',e=>{if(e.pointerType==='mouse')release(e);},true);
  document.addEventListener('mouseup',e=>{if(pressed)release(e);},true);
  document.addEventListener('pointercancel',()=>{pressed=null;},true);
