@@ -54,6 +54,36 @@ function sourceLinks(s){
  const sa=s.sa||'https://stockanalysis.com/quote/jmse/'+encodeURIComponent(s.ticker)+'/';
  return '<a class="source-link source-external jse" href="'+jse+'" target="_blank" rel="noopener noreferrer" aria-label="Open '+s.ticker+' on JSE in new tab">JSE ↗</a><a class="source-link source-external sa" href="'+sa+'" target="_blank" rel="noopener noreferrer" aria-label="Open '+s.ticker+' on StockAnalysis in new tab">SA ↗</a>';
 }
+// Chrome desktop fallback: some dashboard interactions suppress the synthetic click
+// following a genuine mouse press/release. Open external sources on trusted pointerup.
+// Only activate after matching pointerdown/up on the same anchor; leave keyboard and
+// non-mouse clicks to native <a target="_blank"> behavior.
+(()=>{
+ let down=null;
+ document.addEventListener('pointerdown',e=>{
+   down=(e.pointerType==='mouse'&&e.button===0)?e.target.closest?.('a.source-external'):null;
+ },true);
+ document.addEventListener('pointerup',e=>{
+   const a=e.target.closest?.('a.source-external');
+   if(e.pointerType!=='mouse'||e.button!==0||!a||a!==down)return;
+   down=null;
+   if(!/^https:\/\//i.test(a.href))return;
+   // A user-initiated pointerup retains browser user activation for new tabs.
+   const tab=window.open(a.href,'_blank');
+   if(tab){try{tab.opener=null;}catch(_){}e.preventDefault();}
+ },true);
+ document.addEventListener('pointercancel',()=>{down=null;},true);
+ // Suppress the subsequent native click only if pointerup already opened a tab.
+ let skipHref=null;
+ document.addEventListener('pointerup',e=>{
+   const a=e.target.closest?.('a.source-external');
+   if(e.pointerType==='mouse'&&a)skipHref=a.href;
+ },true);
+ document.addEventListener('click',e=>{
+   const a=e.target.closest?.('a.source-external');
+   if(a&&skipHref===a.href){e.preventDefault();skipHref=null;}
+ },true);
+})();
 function stockRow(s){return `<tr><td><div class="ticker-wrap"><div style="display:flex;gap:4px">${sourceLinks(s)}</div><div><div class="ticker">${s.ticker}</div><div class="company">${s.company}</div></div></div></td><td><strong>${money(s.price)}</strong><br><small>${s.priceDate}</small></td><td>${day(s)}</td><td>${pct(s.w1)}</td><td>${pct(s.m1)}</td><td>${periodPct(s,'ytd')}</td><td>${periodPct(s,'m3')}</td><td>${periodPct(s,'m6')}</td><td>${periodPct(s,'y1')}</td><td>${money(s.ttmDps)}</td><td>${grossYieldDisplay(s)}</td><td>${taxDisplay(s)}</td><td>${netYieldDisplay(s)}</td><td class="coverage-table-cell" data-coverage-cell>${coverageCell(s)}</td><td><strong>${latestDividendLink(s)}</strong><br><small>${s.dividendStatus||''}</small></td><td>${dividendDates(s)}</td><td><span class="rating ${s.ratingClass}">${s.rating}</span><br><small>${s.reason}</small></td><td>${buyZoneText(s)}</td></tr>`;}
 function stockCard(s){return `<article class="stock-card"><div class="card-top"><div><h3>${s.ticker}</h3><div class="company">${s.company}</div></div><span class="rating ${s.ratingClass}">${s.rating}</span></div><div class="price">${money(s.price)}</div><div>${day(s)} <span class="neutral">• ${s.priceDate}</span></div>${[['1 Week','w1'],['1 Month','m1'],['YTD','ytd'],['3 Months','m3'],['6 Months','m6'],['12 Months','y1']].map(([l,k])=>`<div class="metric-row"><span>${l}</span><strong>${periodPct(s,k)}</strong></div>`).join('')}${s.sinceListing!=null?`<div class="metric-row"><span>Since Listing</span><strong>${pct(s.sinceListing)}</strong></div>`:''}<div class="metric-row"><span>Gross yield</span><strong>${grossYieldDisplay(s)}</strong></div><div class="metric-row"><span>Dividend tax</span><strong>${taxDisplay(s)}</strong></div><div class="metric-row"><span>Net yield</span><strong>${netYieldDisplay(s)}</strong></div><div class="metric-row"><span>Latest dividend</span><strong>${latestDividendLink(s)}</strong></div><div class="metric-row"><span>Target buy zone</span><div>${buyZoneText(s)}</div></div><p class="rank-reason">${s.reason}</p><div class="card-links">${sourceLinks(s)}</div></article>`;}
 function ensureTaxHeaders(){const row=document.querySelector('#tableView thead tr');if(!row||row.querySelector('[data-tax-col]'))return;const th=[...row.querySelectorAll('th')].find(x=>/Current Yield/i.test(x.textContent));if(!th)return;th.textContent='Gross Yield';const tax=document.createElement('th');tax.dataset.taxCol='1';tax.textContent='Tax';const net=document.createElement('th');net.dataset.taxCol='1';net.textContent='Net Yield';th.after(tax,net);} function render(){ensureTaxHeaders();const d=filteredStocks();tableBody.innerHTML=d.map(stockRow).join('')||'<tr><td colspan="16" class="neutral">No tickers selected.</td></tr>';cardView.innerHTML=d.map(stockCard).join('')||'<div class="panel">No tickers selected.</div>';document.querySelectorAll('.filter-tile').forEach(b=>b.classList.toggle('active',b.dataset.filter===state.filter));}
