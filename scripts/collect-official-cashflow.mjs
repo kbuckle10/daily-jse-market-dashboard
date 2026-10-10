@@ -43,16 +43,20 @@ function extract(text,label,scale){
  const candidates=[];
  for(const page of cashPages){
   const rows=page.split(/\r?\n/);
+  const context=rows.slice(0,25).join(' ');
+  const isConsolidated=/consolidated/i.test(context);
+  const isStandalone=/company only|separate financial|parent company/i.test(context);
   for(let i=0;i<rows.length;i++){
    if(!label.test(rows[i]))continue;
    const row=rows[i].replace(/^.*?\s{3,}(?=[(\-\d])/, '').trim();
    const values=(row.match(/\(?-?\d[\d,]*(?:\.\d+)?\)?/g)||[]).map(v=>amount(v,scale)).filter(Number.isFinite);
-   if(values.length)candidates.push({value:values[0],row:rows[i].trim(),pageContext:page.slice(0,300)});
+   if(values.length)candidates.push({value:values[0],row:rows[i].trim(),pageContext:page.slice(0,300),isConsolidated,isStandalone});
   }
  }
  // Reject ambiguous values rather than silently selecting a figure from a note.
- if(candidates.length!==1)return {value:null,candidates:candidates.slice(0,8)};
- return {value:candidates[0].value,candidates};
+ const preferred=candidates.filter(x=>x.isConsolidated&&!x.isStandalone);
+ const selected=preferred.length===1?preferred[0]:candidates.length===1?candidates[0]:null;
+ return {value:selected?.value??null,candidates:candidates.slice(0,8)};
 }
 
 for(const [ticker,entries] of Object.entries(sources)){
