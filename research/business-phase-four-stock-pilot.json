@@ -1,0 +1,539 @@
+{
+  "version": 1,
+  "asOf": "2026-10-09",
+  "scope": "staging four-stock research simulation only; no ratings changes",
+  "periods": [
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "TTM"
+  ],
+  "stocks": {
+    "TJH": {
+      "businessModel": "Asset-heavy",
+      "currency": "USD",
+      "units": "millions",
+      "records": [
+        {
+          "period": 2021,
+          "revenue": 52.76,
+          "operatingProfit": 18.68,
+          "operatingCashFlow": 13.99,
+          "capitalExpenditures": -0.19,
+          "freeCashFlow": 13.8
+        },
+        {
+          "period": 2022,
+          "revenue": 65.01,
+          "operatingProfit": 23.96,
+          "operatingCashFlow": 7.25,
+          "capitalExpenditures": -0.07,
+          "freeCashFlow": 7.18
+        },
+        {
+          "period": 2023,
+          "revenue": 75.2,
+          "operatingProfit": 45.12,
+          "operatingCashFlow": 41.673,
+          "capitalExpenditures": -0.455,
+          "freeCashFlow": 41.218,
+          "originalResearchOperatingCashFlow": 41.67,
+          "originalResearchCapitalExpenditures": -0.46,
+          "originalResearchFreeCashFlow": 41.22,
+          "reconciledToIssuer2024AnnualReport2023Comparative": true,
+          "issuerCashFlowSource": "https://www.transjamhighways.com/wp-content/uploads/2025/06/TJH-2024-Annual-Report_compressed.pdf",
+          "issuerCashFlowPage": "Consolidated statement of cash flows, printed page 9",
+          "freeCashFlowBasis": "FY2023 consolidated operating cash flow less cash purchases of property and equipment; issuer FY2024 audited comparative, USD millions"
+        },
+        {
+          "period": 2024,
+          "revenue": 86.65,
+          "operatingProfit": 55.97,
+          "operatingCashFlow": 43.867,
+          "capitalExpenditures": -1.338,
+          "freeCashFlow": 42.529,
+          "capexDefinition": "Cash payments for property and equipment; concession-related investment and maintenance require separate analysis",
+          "reconciledToIssuer2024AnnualReport": true
+        },
+        {
+          "period": 2025,
+          "revenue": 96.42,
+          "operatingProfit": 62.2,
+          "operatingCashFlow": 52.47,
+          "capitalExpenditures": -2.26,
+          "freeCashFlow": 50.21,
+          "sourceStatus": "third_party_research_not_issuer_reconciled",
+          "sourceCashFlow": "https://stockanalysis.com/quote/jmse/TJH/financials/cash-flow-statement/",
+          "issuerAnnualReportListedAt": "https://www.transjamhighways.com/investor-relations/",
+          "issuerRevenueCrossCheck": {
+            "issuerAnnouncementRevenueUSDMillions": 91.2,
+            "stagingRevenueUSDMillions": 96.42,
+            "differenceUSDMillions": 5.22,
+            "status": "definition_difference_identified_total_including_other_gains_vs_toll_revenue",
+            "source": "https://www.transjamhighways.com/transjamaican-highway-delivers-strong-2025-results-with-double-digit-growth-and-increased-shareholder-returns/",
+            "published": "2026-03-25",
+            "note": "Issuer announcement states approximately US$91.2m revenue; retain existing research revenue temporarily for traceability but suppress FY2025 TJH revenue-based interpretation until audited definition is reconciled.",
+            "issuerTollRevenueUSDMillions": 91.2,
+            "saTotalRevenueUSDMillions": 96.42,
+            "otherGainsUSDMillionsApprox": 5.26,
+            "interpretation": "Issuer announcement and annual report cite toll revenue, while SA reports broader total revenue inclusive of other gains. 91.16+5.26=96.42. Verify consolidated audited statement classification before adopting as comparable operating revenue.",
+            "evidence": [
+              "https://cdnc.heyzine.com/files/uploaded/v3/e587baaec8ac1f1557e6351a1fd37b4e23e3b0b2.pdf",
+              "https://sa.marketscreener.com/quote/stock/TRANSJAMAICAN-HIGHWAY-LIM-137177522/finances-ratios/"
+            ]
+          }
+        },
+        {
+          "period": "TTM",
+          "revenue": 108.89,
+          "operatingProfit": 72.18,
+          "operatingCashFlow": 65.69,
+          "capitalExpenditures": -0.83,
+          "freeCashFlow": 64.87
+        }
+      ],
+      "classificationStatus": "research-only",
+      "sourceIncome": "https://stockanalysis.com/quote/jmse/TJH/financials/",
+      "sourceCashFlow": "https://stockanalysis.com/quote/jmse/TJH/financials/cash-flow-statement/",
+      "notes": "Concession infrastructure; capex alone does not capture concession economics. USD reporting basis requires verification against issuer filings. FY2024 audited OCF and PPE payments reconciled to issuer 2024 annual report. Concession-asset investment, restricted cash and maintenance obligations must be assessed separately; FY2025 issuer line items not yet independently verified. FY2024 restricted cash funding and debt principal reduce cash flexibility despite low PPE CapEx. Illustrative bridge documented separately from FCF.",
+      "businessModelCategory": "asset_heavy_operating",
+      "phase": "unclassified",
+      "phaseConfidence": "insufficient evidence",
+      "sourceVerification": "pending",
+      "metricsInterpretation": "Research only. Operating-profit FCF conversion can exceed 100% and is not by itself a phase signal.",
+      "infrastructureCashFlowReview": {
+        "fy2024": {
+          "currency": "USD",
+          "units": "millions",
+          "conventionalFreeCashFlow": 42.529,
+          "principalDebtRepayment": 8.572,
+          "leasePrincipalRepayment": 0.105,
+          "restrictedCashIncrease": 14.521,
+          "dividendsPaid": 15,
+          "illustrativeCashAfterDebtPrincipalAndRestrictedCash": 19.331,
+          "illustrativeCashAfterDebtRestrictedCashAndDividends": 4.331
+        },
+        "interpretation": "Illustrative cash bridge only: FCF minus debt principal, lease principal and restricted cash funding; NOT a standardized free cash flow measure. Restricted cash may be earmarked for future debt service, maintenance or concession obligations. Do not double count restricted cash and subsequent debt spending across periods.",
+        "source": "https://www.transjamhighways.com/wp-content/uploads/2025/06/TJH-2024-Annual-Report_compressed.pdf",
+        "fy2025Status": "Issuer annual report identified, audited line items not yet independently extracted; retain provisional third-party 2025 values."
+      }
+    },
+    "SEP": {
+      "businessModel": "Asset-heavy",
+      "currency": "JMD",
+      "units": "millions",
+      "records": [
+        {
+          "period": 2021,
+          "revenue": 43883,
+          "operatingProfit": 2076,
+          "operatingCashFlow": 2676,
+          "capitalExpenditures": -1655,
+          "freeCashFlow": 1021
+        },
+        {
+          "period": 2022,
+          "revenue": 78434,
+          "operatingProfit": 4212,
+          "operatingCashFlow": -119.44,
+          "capitalExpenditures": -2151,
+          "freeCashFlow": -2270.44,
+          "originalResearchFreeCashFlow": -2271,
+          "freeCashFlowBasis": "derived from provisional OCF and CapEx; original research FCF preserved; issuer reconciliation pending"
+        },
+        {
+          "period": 2023,
+          "revenue": 112149,
+          "operatingProfit": 6817,
+          "operatingCashFlow": 7690.234,
+          "capitalExpenditures": -2684.326,
+          "freeCashFlow": 5005.908,
+          "reconciledToIssuer2023AnnualReport": true,
+          "issuerCashFlowPage": "64"
+        },
+        {
+          "period": 2024,
+          "revenue": 133609,
+          "operatingProfit": 8985.769,
+          "operatingCashFlow": 6066.112,
+          "capitalExpenditures": -3367.647,
+          "freeCashFlow": 2698.465,
+          "reconciledToIssuer2025AuditedConsolidatedStatements": true,
+          "capexDefinition": "PPE and intangible purchases; excludes business combinations",
+          "operatingProfitDefinition": "Audited consolidated operating profit including finance/other operating income and fair-value gains, where applicable"
+        },
+        {
+          "period": 2025,
+          "revenue": 152332,
+          "operatingProfit": 11065.6,
+          "operatingCashFlow": 9321.297,
+          "capitalExpenditures": -3657.16,
+          "freeCashFlow": 5664.137,
+          "reconciledToIssuer2025AuditedConsolidatedStatements": true,
+          "capexDefinition": "PPE and intangible purchases; excludes business combinations",
+          "operatingProfitDefinition": "Audited consolidated operating profit including finance/other operating income and fair-value gains, where applicable"
+        },
+        {
+          "period": "TTM",
+          "revenue": 150086,
+          "operatingProfit": 3748,
+          "operatingCashFlow": 11932,
+          "capitalExpenditures": -2398,
+          "freeCashFlow": 9534
+        }
+      ],
+      "classificationStatus": "research-only",
+      "sourceIncome": "https://stockanalysis.com/quote/jmse/SEP/financials/",
+      "sourceCashFlow": "https://stockanalysis.com/quote/jmse/SEP/financials/cash-flow-statement/",
+      "notes": "Diversified manufacturing and distribution; asset-heavy is a pilot simplification. FY2024-2025 operating profit replaced with audited consolidated values; prior years and TTM operating profit not yet definition-harmonized.",
+      "businessModelCategory": "asset_heavy_operating",
+      "phase": "unclassified",
+      "phaseConfidence": "insufficient evidence",
+      "sourceVerification": "pending",
+      "metricsInterpretation": "Research only. Operating-profit FCF conversion can exceed 100% and is not by itself a phase signal."
+    },
+    "SVL": {
+      "businessModel": "Asset-light",
+      "currency": "JMD",
+      "units": "millions",
+      "records": [
+        {
+          "period": 2021,
+          "revenue": 43916,
+          "operatingProfit": 3244,
+          "operatingCashFlow": 2750,
+          "capitalExpenditures": -1851,
+          "freeCashFlow": 899,
+          "originalResearchFreeCashFlow": 898.68,
+          "freeCashFlowBasis": "derived from provisional OCF and CapEx; original research FCF preserved; issuer reconciliation pending"
+        },
+        {
+          "period": 2022,
+          "revenue": 50772,
+          "operatingProfit": 4206,
+          "operatingCashFlow": 3663,
+          "capitalExpenditures": -1497,
+          "freeCashFlow": 2166
+        },
+        {
+          "period": 2023,
+          "revenue": 50880,
+          "operatingProfit": 3143,
+          "operatingCashFlow": 824.425,
+          "capitalExpenditures": -1329.951,
+          "freeCashFlow": -505.526,
+          "originalResearchFreeCashFlow": -183.57,
+          "freeCashFlowBasis": "Restated FY2023 consolidated OCF less PPE and intangible purchases, SVL FY2024 annual report p.88 and restatement note 43 p.179; JMD millions",
+          "originalResearchOperatingCashFlow": 824.43,
+          "originalResearchCapitalExpenditures": -1008,
+          "cashCapitalExpenditurePPE": 1007.747,
+          "cashCapitalExpenditureIntangibles": 322.204,
+          "reconciledToIssuer2024Restated2023Comparative": true,
+          "issuerCashFlowSource": "https://fliphtml5.com/idqgz/mafc/25_1750_SVG_Synergy_Vision_Legacy_Annual_Report_2024_Flip_Proof/"
+        },
+        {
+          "period": 2024,
+          "revenue": 52669,
+          "operatingProfit": 3094,
+          "operatingCashFlow": 1695.066,
+          "capitalExpenditures": -1128.146,
+          "freeCashFlow": 566.92,
+          "capexDefinition": "Acquisition of property/equipment plus intangible assets",
+          "reconciledToIssuer2025AnnualReport": true
+        },
+        {
+          "period": 2025,
+          "revenue": 54497,
+          "operatingProfit": 3228,
+          "operatingCashFlow": 2791.786,
+          "capitalExpenditures": -874.874,
+          "freeCashFlow": 1916.912,
+          "capexDefinition": "Acquisition of property/equipment plus intangible assets",
+          "reconciledToIssuer2025AnnualReport": true
+        },
+        {
+          "period": "TTM",
+          "revenue": 55134,
+          "operatingProfit": 3487,
+          "operatingCashFlow": 3456,
+          "capitalExpenditures": -740.55,
+          "freeCashFlow": 2715.45,
+          "originalResearchFreeCashFlow": 2716,
+          "freeCashFlowBasis": "derived from provisional OCF and CapEx; original research FCF preserved; issuer reconciliation pending"
+        }
+      ],
+      "classificationStatus": "research-only",
+      "sourceIncome": "https://stockanalysis.com/quote/jmse/SVL/financials/",
+      "sourceCashFlow": "https://stockanalysis.com/quote/jmse/SVL/financials/cash-flow-statement/",
+      "notes": "Lottery and betting operator; validate leased and platform assets before final asset-light designation. FY2024-2025 FCF adjusted for intangible asset purchases. Other periods provisional.",
+      "businessModelCategory": "asset_light_operating",
+      "phase": "unclassified",
+      "phaseConfidence": "insufficient evidence",
+      "sourceVerification": "pending",
+      "metricsInterpretation": "Research only. Operating-profit FCF conversion can exceed 100% and is not by itself a phase signal."
+    },
+    "JSE": {
+      "businessModel": "Asset-light",
+      "currency": "JMD",
+      "units": "millions",
+      "records": [
+        {
+          "period": 2021,
+          "revenue": 1870,
+          "operatingProfit": 692.19,
+          "operatingCashFlow": 443.81,
+          "capitalExpenditures": -88.15,
+          "freeCashFlow": 355.67
+        },
+        {
+          "period": 2022,
+          "revenue": 2081,
+          "operatingProfit": 739.11,
+          "operatingCashFlow": 495.92,
+          "capitalExpenditures": -119.49,
+          "freeCashFlow": 376.43
+        },
+        {
+          "period": 2023,
+          "revenue": 2090,
+          "operatingProfit": 620.16,
+          "operatingCashFlow": 330.8,
+          "capitalExpenditures": -89.45,
+          "freeCashFlow": 241.35
+        },
+        {
+          "period": 2024,
+          "revenue": 2538,
+          "operatingProfit": 723.91,
+          "operatingCashFlow": 505.975,
+          "capitalExpenditures": -136.753,
+          "freeCashFlow": 369.222,
+          "capexDefinition": "PPE acquisitions + intangible asset acquisitions",
+          "reconciledToIssuer2025AnnualReport": true
+        },
+        {
+          "period": 2025,
+          "revenue": 2781,
+          "operatingProfit": 596.49,
+          "operatingCashFlow": 494.659,
+          "capitalExpenditures": -133.563,
+          "freeCashFlow": 361.096,
+          "capexDefinition": "PPE acquisitions + intangible asset acquisitions",
+          "reconciledToIssuer2025AnnualReport": true
+        },
+        {
+          "period": "TTM",
+          "revenue": 2678,
+          "operatingProfit": 620.66,
+          "operatingCashFlow": 515.74,
+          "capitalExpenditures": -63.91,
+          "freeCashFlow": 451.83
+        }
+      ],
+      "classificationStatus": "research-only",
+      "sourceIncome": "https://stockanalysis.com/quote/jmse/JSE/financials/",
+      "sourceCashFlow": "https://stockanalysis.com/quote/jmse/JSE/financials/cash-flow-statement/",
+      "notes": "Exchange operator; operating cash flow and platform investment require separate analysis. 2024-2025 FCF corrected to include acquired intangible assets as well as PPE; prior-year and TTM values still provisional.",
+      "businessModelCategory": "asset_light_operating",
+      "phase": "unclassified",
+      "phaseConfidence": "insufficient evidence",
+      "sourceVerification": "pending",
+      "metricsInterpretation": "Research only. Operating-profit FCF conversion can exceed 100% and is not by itself a phase signal."
+    }
+  },
+  "modelFramework": {
+    "version": 2,
+    "categories": [
+      {
+        "id": "asset_light_operating",
+        "label": "Asset-light operating",
+        "primaryMetrics": [
+          "operatingProfit",
+          "freeCashFlow",
+          "fcfConversion",
+          "returnOnInvestedCapital"
+        ],
+        "phaseSignals": [
+          "revenueGrowth",
+          "operatingMarginTrend",
+          "capitalReturns"
+        ]
+      },
+      {
+        "id": "asset_heavy_operating",
+        "label": "Asset-heavy operating",
+        "primaryMetrics": [
+          "returnOnInvestedCapital",
+          "maintenanceCapitalExpenditures",
+          "freeCashFlow",
+          "debtServiceCoverage"
+        ],
+        "phaseSignals": [
+          "capacityGrowth",
+          "operatingProfitTrend",
+          "capitalReturns"
+        ]
+      },
+      {
+        "id": "financial_capital_intensive",
+        "label": "Financial capital-intensive",
+        "primaryMetrics": [
+          "returnOnEquity",
+          "returnOnAssets",
+          "capitalAdequacy",
+          "creditQuality",
+          "solvency",
+          "netAssetValuePerShare"
+        ],
+        "phaseSignals": [
+          "earningsGrowth",
+          "capitalBuffer",
+          "dividendsAndBuybacks"
+        ]
+      },
+      {
+        "id": "real_estate_property",
+        "label": "Real estate / property-owning",
+        "primaryMetrics": [
+          "fundsFromOperationsPerShare",
+          "adjustedFundsFromOperationsPerShare",
+          "netOperatingIncome",
+          "occupancy",
+          "loanToValue",
+          "netAssetValuePerShare"
+        ],
+        "phaseSignals": [
+          "samePropertyNOIGrowth",
+          "affoCoverage",
+          "capitalReturns"
+        ]
+      }
+    ],
+    "classificationPolicy": "Research-only; sector metrics must be validated before business phase is assigned. Developers require inventory, project margin and cash conversion rather than REIT-only FFO."
+  },
+  "provisionalJseExamples": {
+    "financial_capital_intensive": [
+      "NCBFG",
+      "SJ",
+      "JMMBGL",
+      "GHL"
+    ],
+    "real_estate_property": [
+      "KPREIT",
+      "FIRSTROCKJMD",
+      "138SL"
+    ],
+    "mixed_review": [
+      "GK",
+      "EPLY",
+      "PJAM"
+    ]
+  },
+  "validation": {
+    "internalArithmetic": "passed for all four stocks across six periods",
+    "externalFinancialStatementReconciliation": "pending",
+    "incomeStatementData": "provisional; annual and TTM revenue/operating profit must be cross-checked against dated source statements",
+    "cashFlowData": "provisional research snapshots; TJH SEP SVL from existing cash-flow history; JSE requires source cross-check",
+    "fiscalYearAndTTMAlignment": "pending",
+    "capitalReturnsAndROIC": "not yet collected or validated",
+    "phaseClassification": "disabled pending evidence",
+    "issuerStatementSpotChecks": {
+      "JSE": {
+        "years": [
+          2024,
+          2025
+        ],
+        "status": "matched issuer consolidated statement; corrected FCF to include intangible acquisitions",
+        "source": "https://fliphtml5.com/eiops/FINAL-JSE-AR-2025---April-30C/Jamaica_Stock_Exchange_Annual_Report_2025/",
+        "units": "JMD millions (issuer report in JMD thousands)",
+        "remaining": "2021-2023 and TTM unverified; source income statement also pending"
+      },
+      "TJH": {
+        "years": [
+          2024
+        ],
+        "status": "FY2024 issuer audited cash flow reconciled; FY2025 cash flow remains third-party provisional",
+        "source": "https://www.transjamhighways.com/wp-content/uploads/2025/06/TJH-2024-Annual-Report_compressed.pdf",
+        "issuer2025ReportIndex": "https://www.transjamhighways.com/investor-relations/",
+        "units": "USD millions, converted from USD thousands",
+        "fy2024": {
+          "operatingCashFlow": 43.867,
+          "ppeCashPayments": 1.338,
+          "conventionalFcf": 42.529
+        },
+        "criticalInterpretation": "Low PPE capex does not establish asset-light economics for a toll-road concession. Assess concession rights, capitalized maintenance, debt, restricted cash, concession obligations.",
+        "remaining": "Obtain and read issuer FY2025 consolidated statement of cash flows, reconcile operating cash, PPE, concession acquisition, debt principal, restricted cash, dividends; FY2021-2023 and TTM source verification pending.",
+        "fy2025ResearchCrossCheck": {
+          "operatingCashFlow": 52.47,
+          "conventionalCapex": 2.26,
+          "conventionalFcf": 50.21,
+          "source": "https://stockanalysis.com/quote/jmse/TJH/financials/cash-flow-statement/",
+          "status": "agrees with third-party research; not independently verified against 2025 audited statement"
+        }
+      },
+      "SEP": {
+        "years": [
+          2024,
+          2025
+        ],
+        "status": "reconciled revenue, operating profit, operating cash flow, PPE and intangible purchases to FY2025 audited consolidated financial statements",
+        "source": "https://abeng.org/seprod-limited-sep-2025-audited-financial-statements-9357acb",
+        "officialIssuerReports": "https://www.seprod.com/investor-relations/",
+        "units": "JMD millions converted from $000",
+        "warning": "Prior pilot operating profit materially differed from audited consolidated definition. FY2021-2023 and TTM operating-profit comparability must be rechecked; FCF excludes business acquisitions."
+      },
+      "SVL": {
+        "years": [
+          2024,
+          2025
+        ],
+        "status": "matched issuer consolidated cash flow; corrected FCF to include intangible acquisitions",
+        "source": "https://cdn.jamstockex.com/pd/2026/04/Supreme-Ventures-Limited-SVL-2025-Annual-Report.pdf",
+        "units": "JMD millions, converted from $000",
+        "remaining": "2021-2023 and TTM unverified; revenue and operating profit source reconciliation pending"
+      }
+    },
+    "arithmeticCorrections": {
+      "method": "Compute FCF=OCF+negative CapEx for provisional source snapshots; preserve original research FCF and differences; no claim of issuer verification",
+      "changes": [
+        {
+          "ticker": "SEP",
+          "period": 2022,
+          "old": -2271,
+          "new": -2270.44,
+          "diff": 0.56
+        },
+        {
+          "ticker": "SVL",
+          "period": 2021,
+          "old": 898.68,
+          "new": 899,
+          "diff": 0.32
+        },
+        {
+          "ticker": "SVL",
+          "period": 2023,
+          "old": -183.32,
+          "new": -183.57,
+          "diff": -0.25
+        },
+        {
+          "ticker": "SVL",
+          "period": "TTM",
+          "old": 2716,
+          "new": 2715.45,
+          "diff": -0.55
+        }
+      ]
+    },
+    "tjh2025RevenueMismatch": {
+      "status": "definition_difference_identified_reconciliation_pending",
+      "issuerTollRevenueUSDMillions": 91.2,
+      "saTotalRevenueUSDMillions": 96.42,
+      "otherGainsUSDMillionsApprox": 5.26,
+      "action": "Compare like-for-like toll revenue growth separately from total revenue; avoid interpreting other gains as recurring toll revenue"
+    }
+  }
+}
