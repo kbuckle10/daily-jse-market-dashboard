@@ -59,7 +59,7 @@ function sourceLinks(s){
 // Only activate after matching pointerdown/up on the same anchor; leave keyboard and
 // non-mouse clicks to native <a target="_blank"> behavior.
 (()=>{
- let down=null;
+ let down=null,skipHref=null;
  document.addEventListener('pointerdown',e=>{
    down=(e.pointerType==='mouse'&&e.button===0)?e.target.closest?.('a.source-external'):null;
  },true);
@@ -70,15 +70,10 @@ function sourceLinks(s){
    if(!/^https:\/\//i.test(a.href))return;
    // A user-initiated pointerup retains browser user activation for new tabs.
    const tab=window.open(a.href,'_blank');
-   if(tab){try{tab.opener=null;}catch(_){}e.preventDefault();}
+   if(tab){try{tab.opener=null;}catch(_){}skipHref=a.href;e.preventDefault();}
  },true);
  document.addEventListener('pointercancel',()=>{down=null;},true);
  // Suppress the subsequent native click only if pointerup already opened a tab.
- let skipHref=null;
- document.addEventListener('pointerup',e=>{
-   const a=e.target.closest?.('a.source-external');
-   if(e.pointerType==='mouse'&&a)skipHref=a.href;
- },true);
  document.addEventListener('click',e=>{
    const a=e.target.closest?.('a.source-external');
    if(a&&skipHref===a.href){e.preventDefault();skipHref=null;}
