@@ -38,14 +38,23 @@ const stocks={...prior.stocks};
 const lines=[];
 const amount=(s,scale)=>{if(!s)return null;let t=s.replace(/,/g,'').trim();const neg=t.startsWith('(')&&t.endsWith(')');t=t.replace(/[()]/g,'');const n=Number(t);return Number.isFinite(n)?n*scale*(neg?-1:1):null};
 function extract(text,label,scale){
- const rows=text.split(/\r?\n/);
- for(let i=0;i<rows.length;i++){
-  if(!label.test(rows[i]))continue;
-  const values=(rows[i].match(/\(?-?\d[\d,]*(?:\.\d+)?\)?/g)||[]).map(v=>amount(v,scale)).filter(Number.isFinite);
-  if(values.length)return values[0];
+ const pages=text.split(/\f/);
+ const cashPages=pages.filter(p=>/statement[s]? of cash flows|cash flow[s]? statement|cash flows from operating activities/i.test(p));
+ const candidates=[];
+ for(const page of cashPages){
+  const rows=page.split(/\r?\n/);
+  for(let i=0;i<rows.length;i++){
+   if(!label.test(rows[i]))continue;
+   const row=rows[i].replace(/^.*?(?=\s{2,}[-(\d])/, '').trim();
+   const values=(row.match(/\(?-?\d[\d,]*(?:\.\d+)?\)?/g)||[]).map(v=>amount(v,scale)).filter(Number.isFinite);
+   if(values.length)candidates.push({value:values[0],row:rows[i].trim(),pageContext:page.slice(0,300)});
+  }
  }
- return null;
+ // Reject ambiguous values rather than silently selecting a figure from a note.
+ if(candidates.length!==1)return {value:null,candidates:candidates.slice(0,8)};
+ return {value:candidates[0].value,candidates};
 }
+
 for(const [ticker,entries] of Object.entries(sources)){
  const annual=[];
  for(const entry of entries){
@@ -60,9 +69,14 @@ for(const [ticker,entries] of Object.entries(sources)){
    const text=execFileSync('pdftotext',['-layout',file,'-'],{encoding:'utf8',maxBuffer:20*1024*1024});
    fs.unlinkSync(file);
    const scale=entry.scale==='thousands'?1000:entry.scale==='millions'?1000000:1;
-   const operatingCashFlow=extract(text,/net cash (?:generated from|provided by|from) operating activities|net cash from operating activities/i,scale);
-   const capex=extract(text,/purchase of (?:property|plant)|acquisition of property,? plant|capital expenditure/i,scale);
-   if(!Number.isFinite(operatingCashFlow)||!Number.isFinite(capex))throw Error('Cash-flow statement rows not reliably identified');
+   const ocf=extract(text,/net cash (?:generated from|provided by|from|used in) operating activities|net cash from operating activities|net cash provided by operating activities/i,scale);
+   const cap=extract(text,/purchase[s]? of (?:property|plant)|acquisition of property,? plant|capital expenditure/i,scale);
+   if(!Number.isFinite(ocf.value)||!Number.isFinite(cap.value)){
+    lines.push({ticker,year:entry.year,status:'review-needed',operatingCandidates:ocf.candidates,capexCandidates:cap.candidates,url:entry.url});
+    continue;
+   }
+   const operatingCashFlow=ocf.value;
+   const capex=cap.value;
    // Asset purchases are cash outflows; financial statements may display them as positive numbers.
    const capitalExpenditures=-Math.abs(capex);
    annual.push({period:String(entry.year),operatingCashFlow,capitalExpenditures,freeCashFlow:operatingCashFlow+capitalExpenditures});
