@@ -5,9 +5,9 @@ const output='research/cashflow-history.json';
 const sourceFile='research/official-cashflow-sources.json';
 const sources=fs.existsSync(sourceFile)?JSON.parse(fs.readFileSync(sourceFile,'utf8')):{};
 const pending=[];
-const universe=vm.runInNewContext('('+fs.readFileSync('data.js','utf8').match(/window\\.JSE_DASHBOARD_DATA\\s*=\\s*([\\s\\S]*);\\s*$/)[1]+')').stocks;
+const universe=vm.runInNewContext('('+fs.readFileSync('data.js','utf8').match(/window\.JSE_DASHBOARD_DATA\s*=\s*([\s\S]*);\s*$/)[1]+')').stocks;
 const discovered=[];
-const strip=s=>String(s||'').replace(/<[^>]*>/g,' ').replace(/&amp;/g,'&').replace(/\\s+/g,' ').trim();
+const strip=s=>String(s||'').replace(/<[^>]*>/g,' ').replace(/&amp;/g,'&').replace(/\s+/g,' ').trim();
 async function discover(stock){
  const ticker=String(stock.ticker).toUpperCase();
  if(sources[ticker]?.length)return;
@@ -22,10 +22,10 @@ async function discover(stock){
    discovered.push({ticker,title,url:link,source:'Jamaica Stock Exchange search',status:'report-page-needs-PDF-resolution'});
    try{
     const html=await (await fetch(link,{signal:AbortSignal.timeout(12000)})).text();
-    const pdfs=[...html.matchAll(/(?:https?:)?\\/\\/[^\\s"'<>]+?\\.pdf(?:\\?[^\\s"'<>]*)?/ig)].map(m=>m[0].replace(/&amp;/g,'&'));
+    const pdfs=[...html.matchAll(new RegExp('https?:\\/\\/[^\\s"\\x27<>]+?\\.pdf(?:\\?[^\\s"\\x27<>]*)?','ig'))].map(m=>m[0].replace(/&amp;/g,'&'));
     for(const pdf of pdfs.slice(0,5)){
-     if(!/jamstockex\\.com/i.test(pdf))continue;
-     const y=title.match(/20\\d{2}/)?.[0]||pdf.match(/20\\d{2}/)?.[0];
+      if(!/jamstockex\.com/i.test(pdf))continue;
+      const y=title.match(/20\d{2}/)?.[0]||pdf.match(/20\d{2}/)?.[0];
      if(y)pending.push({ticker,year:Number(y),url:pdf,scale:'unknown',status:'requires-unit-verification'});
     }
    }catch(e){discovered.push({ticker,status:'page-resolution-failed',reason:e.message})}
