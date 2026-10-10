@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-10T21:35:32.647Z",
+  "updatedAt": "2026-10-10T21:51:41.340Z",
   "stocks": {
     "SEP": {
       "history": {
@@ -1807,6 +1807,59 @@
         },
         "updatedAt": "2026-10-10T21:35:32.647Z",
         "sourceUrl": "https://stockanalysis.com/quote/jmse/JSE/financials/cash-flow-statement/"
+      }
+    },
+    "MASSY": {
+      "history": {
+        "source": "StockAnalysis",
+        "currency": "TTD",
+        "units": "millions",
+        "annual": [
+          {
+            "period": "2025",
+            "periodEnding": "Sep 30, 2025",
+            "operatingCashFlow": 1670000000,
+            "capitalExpenditures": -838150000,
+            "freeCashFlow": 831520000
+          },
+          {
+            "period": "2024",
+            "periodEnding": "Sep 30, 2024",
+            "operatingCashFlow": 1349000000,
+            "capitalExpenditures": -705740000,
+            "freeCashFlow": 643220000
+          },
+          {
+            "period": "2023",
+            "periodEnding": "Sep 30, 2023",
+            "operatingCashFlow": 1018000000,
+            "capitalExpenditures": -518070000,
+            "freeCashFlow": 500320000
+          },
+          {
+            "period": "2022",
+            "periodEnding": "Sep 30, 2022",
+            "operatingCashFlow": 681110000,
+            "capitalExpenditures": -700840000,
+            "freeCashFlow": -19730000
+          },
+          {
+            "period": "2021",
+            "periodEnding": "Sep 30, 2021",
+            "operatingCashFlow": 414040000,
+            "capitalExpenditures": -423780000,
+            "freeCashFlow": -9740000
+          }
+        ],
+        "ttm": {
+          "period": "TTM",
+          "periodEnding": "Jun 30, 2026",
+          "operatingCashFlow": 1579000000,
+          "capitalExpenditures": -838150000,
+          "freeCashFlow": 740760000
+        },
+        "updatedAt": "2026-10-10T21:51:41.335Z",
+        "sourceUrl": "https://stockanalysis.com/quote/ttse/MASSY/financials/cash-flow-statement/"
       }
     }
   }
