@@ -1,14 +1,19 @@
 {
-  "runAt": "2026-10-10T19:23:13.412Z",
+  "runAt": "2026-10-10T19:38:18.468Z",
   "configuredTickers": 8,
   "discovered": [
+    {
+      "ticker": "KW",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
     {
       "ticker": "SEP",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "KW",
+      "ticker": "NCBFG",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -19,11 +24,6 @@
     },
     {
       "ticker": "GENAC",
-      "status": "discovery-failed",
-      "reason": "Discovery HTTP 403"
-    },
-    {
-      "ticker": "CAR",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -68,22 +68,22 @@
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "SJ",
-      "status": "discovery-failed",
-      "reason": "Discovery HTTP 403"
-    },
-    {
-      "ticker": "NCBFG",
-      "status": "discovery-failed",
-      "reason": "Discovery HTTP 403"
-    },
-    {
       "ticker": "BRG",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
     {
       "ticker": "CPFV",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "CAR",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "SJ",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -133,22 +133,22 @@
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "MGL",
-      "status": "discovery-failed",
-      "reason": "Discovery HTTP 403"
-    },
-    {
       "ticker": "MJE",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "PAL",
+      "ticker": "MGL",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
     {
       "ticker": "MPCCEL",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "PAL",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -188,12 +188,12 @@
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "TROPICAL",
+      "ticker": "SELECTMD",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "SELECTMD",
+      "ticker": "TROPICAL",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -353,7 +353,7 @@
       "ticker": "WIG",
       "year": 2025,
       "status": "failed",
-      "reason": "HTTP 404",
+      "reason": "Not a PDF",
       "url": "https://wigtonenergy.com/wp-content/uploads/2025/08/WIGTON-ENERGY-LIMITED-ANNUAL-REPORT-2024-2025.pdf"
     },
     {
