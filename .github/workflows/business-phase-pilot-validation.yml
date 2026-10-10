@@ -8,6 +8,7 @@ on:
       - 'scripts/validate-business-phase-pilot.mjs'
       - 'business-phase-four-stock-pilot.html'
       - 'scripts/smoke-test-business-phase-pilot.mjs'
+      - 'scripts/check-business-phase-release-readiness.mjs'
       - '.github/workflows/business-phase-pilot-validation.yml'
 permissions:
   contents: read
@@ -26,6 +27,8 @@ jobs:
         run: node scripts/validate-business-phase-pilot.mjs
       - name: Smoke test pilot page and research dataset
         run: node scripts/smoke-test-business-phase-pilot.mjs
+      - name: Assess evidence-based release readiness
+        run: node scripts/check-business-phase-release-readiness.mjs
       - name: Assert no unsupported phase assignment
         run: |
           node --input-type=module <<'NODE'
@@ -42,5 +45,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: business-phase-pilot-validation
-          path: artifacts/business-phase-four-stock-validation.json
+          path: |
+            artifacts/business-phase-four-stock-validation.json
+            artifacts/business-phase-release-readiness.json
           retention-days: 14
