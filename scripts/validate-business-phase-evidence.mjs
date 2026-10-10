@@ -16,6 +16,12 @@ for(const row of rows){
  if(status==='PARTIAL'){
    assert.ok(row[15].trim(),'Partial rows must include a source URL: '+key);
    for(const col of [3,6])assert.ok(row[col].trim(),'Partial rows must include OCF and FCF: '+key);
+   const [ocf,ppe,intang,fcf]=[3,4,5,6].map(col=>row[col].trim()===''?null:Number(row[col]));
+   assert.ok(Number.isFinite(ocf)&&Number.isFinite(fcf),'Partial OCF and FCF must be numeric: '+key);
+   if(ppe!==null&&intang!==null){
+     assert.ok(Number.isFinite(ppe)&&Number.isFinite(intang),'Invalid partial CapEx: '+key);
+     assert.ok(Math.abs(ocf-ppe-intang-fcf)<0.011,'Partial issuer FCF arithmetic mismatch: '+key);
+   }
  }
  if(status==='VERIFIED'){
    for(const col of [3,6,15,16,18])assert.ok(row[col].trim(),'Verified rows require OCF, FCF, issuer URL, page and reviewer: '+key);
