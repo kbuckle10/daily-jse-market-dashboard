@@ -1,6 +1,6 @@
 {
-  "runAt": "2026-10-10T14:57:03.370Z",
-  "configuredTickers": 3,
+  "runAt": "2026-10-10T18:40:44.697Z",
+  "configuredTickers": 6,
   "discovered": [
     {
       "ticker": "KW",
@@ -23,11 +23,6 @@
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "NCBFG",
-      "status": "discovery-failed",
-      "reason": "Discovery HTTP 403"
-    },
-    {
       "ticker": "CPJ",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
@@ -43,17 +38,22 @@
       "reason": "Discovery HTTP 403"
     },
     {
+      "ticker": "SJ",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "NCBFG",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
       "ticker": "SALF",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
     {
       "ticker": "MASSY",
-      "status": "discovery-failed",
-      "reason": "Discovery HTTP 403"
-    },
-    {
-      "ticker": "SJ",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -78,11 +78,6 @@
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "WIG",
-      "status": "discovery-failed",
-      "reason": "Discovery HTTP 403"
-    },
-    {
       "ticker": "138SL",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
@@ -94,11 +89,6 @@
     },
     {
       "ticker": "BRG",
-      "status": "discovery-failed",
-      "reason": "Discovery HTTP 403"
-    },
-    {
-      "ticker": "CCC",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -133,12 +123,12 @@
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "LASD",
+      "ticker": "KPREIT",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "KPREIT",
+      "ticker": "LASD",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -228,11 +218,6 @@
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "WISYNCO",
-      "status": "discovery-failed",
-      "reason": "Discovery HTTP 403"
-    },
-    {
       "ticker": "SML",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
@@ -290,6 +275,96 @@
       "status": "failed",
       "reason": "HTTP 403",
       "url": "https://www.jamstockex.com/wp-content/uploads/2024/04/JSE-Annual-Report-2023.pdf"
+    },
+    {
+      "ticker": "WISYNCO",
+      "year": 2025,
+      "status": "review-needed",
+      "operatingCandidates": [],
+      "capexCandidates": [
+        {
+          "value": 11000,
+          "row": "Purchase of property, plant and equipment                      11    (3,440,682) 0    (8,838,306)",
+          "pageContext": "                                                                    Wisynco Group Limited\n                                                                    Consolidated Statement of Cash Flows\n                                                                    Year ended 30 June 2025\n             ",
+          "isConsolidated": true,
+          "isStandalone": false
+        },
+        {
+          "value": 11000,
+          "row": "Purchase of property, plant and equipment                       11   (3,440,682)     (8,838,306)",
+          "pageContext": "                                                                    Wisynco Group Limited\n                                                                    Company Statement of Cash Flows\n                                                                    Year ended 30 June 2025\n                  ",
+          "isConsolidated": false,
+          "isStandalone": false
+        }
+      ],
+      "url": "https://wisynco.com/wp-content/uploads/2025/11/Wisynco-Annual-Report-2025.pdf"
+    },
+    {
+      "ticker": "CCC",
+      "year": 2025,
+      "status": "review-needed",
+      "operatingCandidates": [],
+      "capexCandidates": [
+        {
+          "value": 13000,
+          "row": "Acquisition of property, machinery and equipment .................................................                                 13           (4,571,653)        (5,764,088)",
+          "pageContext": "CARIBBEAN CEMENT COMPANY LIMITED\nGroup Statement of Cash Flows\n(Thousands of Jamaica Dollars)\n\n                                                                                                                                                   Year ended December 31\n                                   ",
+          "isConsolidated": true,
+          "isStandalone": false
+        },
+        {
+          "value": 13000,
+          "row": "Acquisition of property, machinery and equipment ......................................................                            13          (4,571,653)        (5,764,088)",
+          "pageContext": "CARIBBEAN CEMENT COMPANY LIMITED\nCompany Statement of Cash Flows\n(Thousands of Jamaica Dollars)\n\n                                                                                                                                                  Year ended December 31,\n                                 ",
+          "isConsolidated": false,
+          "isStandalone": false
+        },
+        {
+          "value": 134362000,
+          "row": "Capital expenditures ................................................................                    —               —           134,362     4,437,291      4,571,653",
+          "pageContext": "CARIBBEAN CEMENT COMPANY LIMITED\nNotes to the Group and Company Financial Statements\nAs of and for the year ended December 31, 2025\n(Thousands of Jamaica Dollars)\n\n13) PROPERTY, MACHINERY AND EQUIPMENT, NET - CONTINUED\n\nAs of December 31, 2025, property, machinery and equipment, net and the changes ",
+          "isConsolidated": false,
+          "isStandalone": false
+        }
+      ],
+      "url": "https://caribcement.com/wp-content/uploads/2026/04/Carib-Cement-Annual-Report-2025.pdf"
+    },
+    {
+      "ticker": "CCC",
+      "year": 2024,
+      "status": "review-needed",
+      "operatingCandidates": [],
+      "capexCandidates": [
+        {
+          "value": 4000,
+          "row": "Acquisition of property, machinery and equipment .................................................                              4(iv), 13        (5,764,088)      (1,748,297)",
+          "pageContext": "CARIBBEAN CEMENT COMPANY LIMITED\nGroup Statement of Cash Flows\n(Thousands of Jamaica Dollars)\n\n                                                                                                                                                Year ended December 31\n                                      ",
+          "isConsolidated": true,
+          "isStandalone": false
+        },
+        {
+          "value": -5764088000,
+          "row": "Acquisition of property, machinery and equipment ...................................................... 4(iv), 13                                (5,764,088)        (1,748,297)",
+          "pageContext": "CARIBBEAN CEMENT COMPANY LIMITED\nCompany Statement of Cash Flows\n(Thousands of Jamaica Dollars)\n\n                                                                                                                                                  Year ended December 31,\n                                 ",
+          "isConsolidated": false,
+          "isStandalone": false
+        },
+        {
+          "value": 295515000,
+          "row": "Capital expenditure ..................................................................                —                —         295,515      5,493,751       5,789,266",
+          "pageContext": "                     CARIBBEAN CEMENT COMPANY LIMITED\n\n\n\n\n87\n                     Notes to the Group and Company Financial Statements\n                     As of and for the year ended December 31, 2024\n                     (Thousands of Jamaica Dollars)\n\n                     13) PROPERTY, MACHINERY ",
+          "isConsolidated": false,
+          "isStandalone": false
+        }
+      ],
+      "url": "https://cdn.jamstockex.com/pd/2025/05/CCC-Caribbean-Cement-Company-Limited-Annual-Report-2024.pdf"
+    },
+    {
+      "ticker": "WIG",
+      "year": 2025,
+      "status": "failed",
+      "reason": "HTTP 404",
+      "url": "https://wigtonenergy.com/wp-content/uploads/2025/08/WIGTON-ENERGY-LIMITED-ANNUAL-REPORT-2024-2025.pdf"
     }
   ]
 }
