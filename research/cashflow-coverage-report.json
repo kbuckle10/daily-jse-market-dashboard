@@ -1,0 +1,225 @@
+{
+  "runAt": "2026-10-10T14:24:08.113Z",
+  "universe": 54,
+  "coverage": 12,
+  "updated": [],
+  "unchanged": [],
+  "unavailable": [
+    {
+      "ticker": "NCBFG",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "SJ",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "KW",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "SEP",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "SGJ",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "TJH",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "GK",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "CPJ",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "GENAC",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "CAR",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "SALF",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "MASSY",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "JMMBGL",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "BIL",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "SCIJMD",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "JBG",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "138SL",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "WIG",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "ASBH",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "BRG",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "CCC",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "EPLY",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "CPFV",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "FIRSTROCKJMD",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "ENERGY",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "GHL",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "JP",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "KPREIT",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "LASD",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "LASM",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "MTL",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "MGL",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "MJE",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "MPCCEL",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "PAL",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "PJAM",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "PJX",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "PROVEN",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "PULS",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "QWI",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "RJR",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "XFUND",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "SELECTF",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "SELECTMD",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "TROPICAL",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "VMIL",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "WIPT",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "WISYNCO",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "JSE",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "SML",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "SIL",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "SVL",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "SRFJMD",
+      "reason": "HTTP 403"
+    },
+    {
+      "ticker": "QAINC",
+      "reason": "HTTP 403"
+    }
+  ]
+}
