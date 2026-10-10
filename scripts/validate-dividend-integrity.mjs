@@ -38,7 +38,10 @@ const ghl=(d.stocks||[]).find(s=>s.ticker==='GHL');
 if(ghl){
   const gy=n(ghl.trailingYield),py=n(ghl.primaryListingDividendYield);
   if(!(gy>6&&gy<9))errors.push(`GHL: JMSE canonical yield expected in 6-9% range, got ${gy}`);
-  if(!(py>4&&py<7))errors.push(`GHL: TTSE reference yield expected in 4-7% range, got ${py}`);
+  // Primary-listing yield is market-driven: validate against the TTSE source metric, not a fixed band.
+  const referenceYield=n(ghl.statisticsDividendYield);
+  if(py==null||py<0||py>100)errors.push(`GHL: invalid TTSE reference yield ${py}`);
+  if(referenceYield!=null&&py!=null&&pctDiff(referenceYield,py)>0.35)errors.push(`GHL: TTSE reference yield ${py}% disagrees with StockAnalysis TTSE statistics ${referenceYield}%`);
   if(gy!=null&&py!=null&&Math.abs(gy-py)<0.25)warnings.push('GHL: JMSE and TTSE yields are unexpectedly near-identical; verify cross-listing price basis');
 }
 const q=(d.stocks||[]).find(s=>s.ticker==='QAINC');
