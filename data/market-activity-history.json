@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-10T12:50:23.373Z",
+  "updatedAt": "2026-10-10T14:28:18.857Z",
   "tickers": {
     "SEP": [
       {
@@ -655,7 +655,7 @@
         "valueTraded": 0,
         "trades": 0,
         "sharesOutstanding": 3900000000,
-        "floatShares": 761110000
+        "floatShares": 782930000
       }
     ],
     "SGJ": [
