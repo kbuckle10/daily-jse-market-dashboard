@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-10T22:04:32.672Z",
+  "updatedAt": "2026-10-10T22:12:12.970Z",
   "stocks": {
     "SEP": {
       "history": {
@@ -2002,6 +2002,795 @@
         },
         "updatedAt": "2026-10-10T22:04:32.672Z",
         "sourceUrl": "https://stockanalysis.com/quote/jmse/KPREIT/financials/cash-flow-statement/"
+      }
+    },
+    "SCIJMD": {
+      "history": {
+        "source": "StockAnalysis",
+        "currency": "JMD",
+        "units": "millions",
+        "annual": [
+          {
+            "period": "FY 2026",
+            "periodEnding": "Jun 30, 2026",
+            "operatingCashFlow": -18960000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": 5630000,
+            "unleveredFreeCashFlow": 14730000,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2025",
+            "periodEnding": "Jun 30, 2025",
+            "operatingCashFlow": -22600000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": -3140000,
+            "unleveredFreeCashFlow": 5250000,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2024",
+            "periodEnding": "Jun 30, 2024",
+            "operatingCashFlow": -29580000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": 9310000,
+            "unleveredFreeCashFlow": 15740000,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2023",
+            "periodEnding": "Jun 30, 2023",
+            "operatingCashFlow": -26160000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": 1600000,
+            "unleveredFreeCashFlow": 5320000,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2022",
+            "periodEnding": "Jun 30, 2022",
+            "operatingCashFlow": -1730000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": 5130000,
+            "unleveredFreeCashFlow": 6530000,
+            "method": "operating_and_investing_disclosed"
+          }
+        ],
+        "ttm": null,
+        "updatedAt": "2026-10-10T22:12:12.966Z",
+        "sourceUrl": "https://stockanalysis.com/quote/jmse/SCIJMD/financials/cash-flow-statement/"
+      }
+    },
+    "138SL": {
+      "history": {
+        "source": "StockAnalysis",
+        "currency": "JMD",
+        "units": "millions",
+        "annual": [
+          {
+            "period": "FY 2025",
+            "periodEnding": "Sep 30, 2025",
+            "operatingCashFlow": 618920000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": 221640000,
+            "unleveredFreeCashFlow": 406930000,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2024",
+            "periodEnding": "Sep 30, 2024",
+            "operatingCashFlow": 533250000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": 110480000,
+            "unleveredFreeCashFlow": 317850000,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2023",
+            "periodEnding": "Sep 30, 2023",
+            "operatingCashFlow": 600240000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": 329080000,
+            "unleveredFreeCashFlow": 554620000,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2022",
+            "periodEnding": "Sep 30, 2022",
+            "operatingCashFlow": 505010000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": 24310000,
+            "unleveredFreeCashFlow": 251480000,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2021",
+            "periodEnding": "Sep 30, 2021",
+            "operatingCashFlow": 141370000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": -27900000,
+            "unleveredFreeCashFlow": 123480000,
+            "method": "operating_and_investing_disclosed"
+          }
+        ],
+        "ttm": {
+          "period": "TTM",
+          "periodEnding": "Jun 30, 2026",
+          "operatingCashFlow": 628230000,
+          "capitalExpenditures": null,
+          "freeCashFlow": null,
+          "realEstateAcquisitions": null,
+          "realEstateSales": null,
+          "investingCashFlow": null,
+          "leveredFreeCashFlow": 971510000,
+          "unleveredFreeCashFlow": 1141000000,
+          "method": "operating_and_investing_disclosed"
+        },
+        "updatedAt": "2026-10-10T22:12:12.970Z",
+        "sourceUrl": "https://stockanalysis.com/quote/jmse/138SL/financials/cash-flow-statement/"
+      }
+    },
+    "MJE": {
+      "history": {
+        "source": "StockAnalysis",
+        "currency": "JMD",
+        "units": "millions",
+        "annual": [
+          {
+            "period": "FY 2025",
+            "periodEnding": "Dec 31, 2025",
+            "operatingCashFlow": -3010000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": -20850000,
+            "unleveredFreeCashFlow": -18230000,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2024",
+            "periodEnding": "Dec 31, 2024",
+            "operatingCashFlow": -29780000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": -39010000,
+            "unleveredFreeCashFlow": -35490000,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2023",
+            "periodEnding": "Dec 31, 2023",
+            "operatingCashFlow": 15220000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": 20260000,
+            "unleveredFreeCashFlow": 22870000,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2022",
+            "periodEnding": "Dec 31, 2022",
+            "operatingCashFlow": 520000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": 28650000,
+            "unleveredFreeCashFlow": 29690000,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2021",
+            "periodEnding": "Dec 31, 2021",
+            "operatingCashFlow": -6140000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": 11570000,
+            "unleveredFreeCashFlow": 12440000,
+            "method": "operating_and_investing_disclosed"
+          }
+        ],
+        "ttm": {
+          "period": "TTM",
+          "periodEnding": "Jun 30, 2026",
+          "operatingCashFlow": -3020000,
+          "capitalExpenditures": null,
+          "freeCashFlow": null,
+          "realEstateAcquisitions": null,
+          "realEstateSales": null,
+          "investingCashFlow": null,
+          "leveredFreeCashFlow": -8310000,
+          "unleveredFreeCashFlow": -5390000,
+          "method": "operating_and_investing_disclosed"
+        },
+        "updatedAt": "2026-10-10T22:12:12.970Z",
+        "sourceUrl": "https://stockanalysis.com/quote/jmse/MJE/financials/cash-flow-statement/"
+      }
+    },
+    "MPCCEL": {
+      "history": {
+        "source": "StockAnalysis",
+        "currency": "JMD",
+        "units": "millions",
+        "annual": [
+          {
+            "period": "FY 2025",
+            "periodEnding": "Dec 31, 2025",
+            "operatingCashFlow": 4510000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": 4650000,
+            "unleveredFreeCashFlow": 4650000,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2024",
+            "periodEnding": "Dec 31, 2024",
+            "operatingCashFlow": 640000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": -7310000,
+            "unleveredFreeCashFlow": -7310000,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2023",
+            "periodEnding": "Dec 31, 2023",
+            "operatingCashFlow": -160000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": 1060000,
+            "unleveredFreeCashFlow": 1060000,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2022",
+            "periodEnding": "Dec 31, 2022",
+            "operatingCashFlow": -150000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": -1330000,
+            "unleveredFreeCashFlow": -1330000,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2021",
+            "periodEnding": "Dec 31, 2021",
+            "operatingCashFlow": -10180000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": 760000,
+            "unleveredFreeCashFlow": 760000,
+            "method": "operating_and_investing_disclosed"
+          }
+        ],
+        "ttm": {
+          "period": "TTM",
+          "periodEnding": "Jun 30, 2026",
+          "operatingCashFlow": -400000,
+          "capitalExpenditures": null,
+          "freeCashFlow": null,
+          "realEstateAcquisitions": null,
+          "realEstateSales": null,
+          "investingCashFlow": null,
+          "leveredFreeCashFlow": -1690000,
+          "unleveredFreeCashFlow": -1690000,
+          "method": "operating_and_investing_disclosed"
+        },
+        "updatedAt": "2026-10-10T22:12:12.970Z",
+        "sourceUrl": "https://stockanalysis.com/quote/jmse/MPCCEL/financials/cash-flow-statement/"
+      }
+    },
+    "PJAM": {
+      "history": {
+        "source": "StockAnalysis",
+        "currency": "JMD",
+        "units": "millions",
+        "annual": [
+          {
+            "period": "FY 2025",
+            "periodEnding": "Dec 31, 2025",
+            "operatingCashFlow": 8193000000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": 5086000000,
+            "unleveredFreeCashFlow": 6138000000,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2024",
+            "periodEnding": "Dec 31, 2024",
+            "operatingCashFlow": 6322000000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": 981630000,
+            "unleveredFreeCashFlow": 2012000000,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2023",
+            "periodEnding": "Dec 31, 2023",
+            "operatingCashFlow": 4057000000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": 1722000000,
+            "unleveredFreeCashFlow": 2582000000,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2022",
+            "periodEnding": "Dec 31, 2022",
+            "operatingCashFlow": 1561000000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": -2042000000,
+            "unleveredFreeCashFlow": -1404000000,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2021",
+            "periodEnding": "Dec 31, 2021",
+            "operatingCashFlow": 1138000000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": 3057000000,
+            "unleveredFreeCashFlow": 3626000000,
+            "method": "operating_and_investing_disclosed"
+          }
+        ],
+        "ttm": {
+          "period": "TTM",
+          "periodEnding": "Jun 30, 2026",
+          "operatingCashFlow": 7189000000,
+          "capitalExpenditures": null,
+          "freeCashFlow": null,
+          "realEstateAcquisitions": null,
+          "realEstateSales": null,
+          "investingCashFlow": null,
+          "leveredFreeCashFlow": 5952000000,
+          "unleveredFreeCashFlow": 7063000000,
+          "method": "operating_and_investing_disclosed"
+        },
+        "updatedAt": "2026-10-10T22:12:12.970Z",
+        "sourceUrl": "https://stockanalysis.com/quote/jmse/PJAM/financials/cash-flow-statement/"
+      }
+    },
+    "PJX": {
+      "history": {
+        "source": "StockAnalysis",
+        "currency": "JMD",
+        "units": "millions",
+        "annual": [
+          {
+            "period": "FY 2025",
+            "periodEnding": "Feb 28, 2025",
+            "operatingCashFlow": 1960000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": -2160000,
+            "unleveredFreeCashFlow": -1970000,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2024",
+            "periodEnding": "Feb 29, 2024",
+            "operatingCashFlow": -950000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": -630000,
+            "unleveredFreeCashFlow": -400000,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2023",
+            "periodEnding": "Feb 28, 2023",
+            "operatingCashFlow": -6120000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": -4830000,
+            "unleveredFreeCashFlow": -4520000,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2022",
+            "periodEnding": "Feb 28, 2022",
+            "operatingCashFlow": 4010000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": 2440000,
+            "unleveredFreeCashFlow": 2720000,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2021",
+            "periodEnding": "Feb 28, 2021",
+            "operatingCashFlow": -520000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": 1380000,
+            "unleveredFreeCashFlow": 1600000,
+            "method": "operating_and_investing_disclosed"
+          }
+        ],
+        "ttm": {
+          "period": "TTM",
+          "periodEnding": "Nov 30, 2025",
+          "operatingCashFlow": 2010000,
+          "capitalExpenditures": null,
+          "freeCashFlow": null,
+          "realEstateAcquisitions": null,
+          "realEstateSales": null,
+          "investingCashFlow": null,
+          "leveredFreeCashFlow": -4580000,
+          "unleveredFreeCashFlow": -4390000,
+          "method": "operating_and_investing_disclosed"
+        },
+        "updatedAt": "2026-10-10T22:12:12.970Z",
+        "sourceUrl": "https://stockanalysis.com/quote/jmse/PJX/financials/cash-flow-statement/"
+      }
+    },
+    "QWI": {
+      "history": {
+        "source": "StockAnalysis",
+        "currency": "JMD",
+        "units": "millions",
+        "annual": [
+          {
+            "period": "FY 2025",
+            "periodEnding": "Sep 30, 2025",
+            "operatingCashFlow": 65150000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": -35620000,
+            "unleveredFreeCashFlow": -15850000,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2024",
+            "periodEnding": "Sep 30, 2024",
+            "operatingCashFlow": -56940000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": 129970000,
+            "unleveredFreeCashFlow": 149680000,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2023",
+            "periodEnding": "Sep 30, 2023",
+            "operatingCashFlow": 31730000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": 108630000,
+            "unleveredFreeCashFlow": 129900000,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2022",
+            "periodEnding": "Sep 30, 2022",
+            "operatingCashFlow": 152380000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": -91600000,
+            "unleveredFreeCashFlow": -73820000,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2021",
+            "periodEnding": "Sep 30, 2021",
+            "operatingCashFlow": -215250000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": 266740000,
+            "unleveredFreeCashFlow": 285310000,
+            "method": "operating_and_investing_disclosed"
+          }
+        ],
+        "ttm": {
+          "period": "TTM",
+          "periodEnding": "Jun 30, 2026",
+          "operatingCashFlow": 267240000,
+          "capitalExpenditures": null,
+          "freeCashFlow": null,
+          "realEstateAcquisitions": null,
+          "realEstateSales": null,
+          "investingCashFlow": null,
+          "leveredFreeCashFlow": 240490000,
+          "unleveredFreeCashFlow": 261630000,
+          "method": "operating_and_investing_disclosed"
+        },
+        "updatedAt": "2026-10-10T22:12:12.970Z",
+        "sourceUrl": "https://stockanalysis.com/quote/jmse/QWI/financials/cash-flow-statement/"
+      }
+    },
+    "SML": {
+      "history": {
+        "source": "StockAnalysis",
+        "currency": "JMD",
+        "units": "millions",
+        "annual": [
+          {
+            "period": "FY 2025",
+            "periodEnding": "Dec 31, 2025",
+            "operatingCashFlow": 633480000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": 581780000,
+            "unleveredFreeCashFlow": 666230000,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2024",
+            "periodEnding": "Dec 31, 2024",
+            "operatingCashFlow": 161200000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": 77100000,
+            "unleveredFreeCashFlow": 122260000,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2023",
+            "periodEnding": "Dec 31, 2023",
+            "operatingCashFlow": 516880000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": 307250000,
+            "unleveredFreeCashFlow": 354170000,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2022",
+            "periodEnding": "Dec 31, 2022",
+            "operatingCashFlow": 407220000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": 328930000,
+            "unleveredFreeCashFlow": 368100000,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2021",
+            "periodEnding": "Dec 31, 2021",
+            "operatingCashFlow": 327780000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": 174170000,
+            "unleveredFreeCashFlow": 209410000,
+            "method": "operating_and_investing_disclosed"
+          }
+        ],
+        "ttm": {
+          "period": "TTM",
+          "periodEnding": "Jun 30, 2026",
+          "operatingCashFlow": 443430000,
+          "capitalExpenditures": null,
+          "freeCashFlow": null,
+          "realEstateAcquisitions": null,
+          "realEstateSales": null,
+          "investingCashFlow": null,
+          "leveredFreeCashFlow": 417520000,
+          "unleveredFreeCashFlow": 545390000,
+          "method": "operating_and_investing_disclosed"
+        },
+        "updatedAt": "2026-10-10T22:12:12.970Z",
+        "sourceUrl": "https://stockanalysis.com/quote/jmse/SML/financials/cash-flow-statement/"
+      }
+    },
+    "SIL": {
+      "history": {
+        "source": "StockAnalysis",
+        "currency": "JMD",
+        "units": "millions",
+        "annual": [
+          {
+            "period": "FY 2025",
+            "periodEnding": "Dec 31, 2025",
+            "operatingCashFlow": 56380000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": 45450000,
+            "unleveredFreeCashFlow": 55080000,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2024",
+            "periodEnding": "Dec 31, 2024",
+            "operatingCashFlow": 29890000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": -58740000,
+            "unleveredFreeCashFlow": -42060000,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2023",
+            "periodEnding": "Dec 31, 2023",
+            "operatingCashFlow": 56160000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": 18640000,
+            "unleveredFreeCashFlow": 40570000,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2022",
+            "periodEnding": "Dec 31, 2022",
+            "operatingCashFlow": 73880000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": -1280000,
+            "unleveredFreeCashFlow": 9010000,
+            "method": "operating_and_investing_disclosed"
+          },
+          {
+            "period": "FY 2021",
+            "periodEnding": "Dec 31, 2021",
+            "operatingCashFlow": -30440000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": 65900000,
+            "unleveredFreeCashFlow": 95250000,
+            "method": "operating_and_investing_disclosed"
+          }
+        ],
+        "ttm": {
+          "period": "TTM",
+          "periodEnding": "Jun 30, 2026",
+          "operatingCashFlow": 47390000,
+          "capitalExpenditures": null,
+          "freeCashFlow": null,
+          "realEstateAcquisitions": null,
+          "realEstateSales": null,
+          "investingCashFlow": null,
+          "leveredFreeCashFlow": 2060000,
+          "unleveredFreeCashFlow": 10640000,
+          "method": "operating_and_investing_disclosed"
+        },
+        "updatedAt": "2026-10-10T22:12:12.970Z",
+        "sourceUrl": "https://stockanalysis.com/quote/jmse/SIL/financials/cash-flow-statement/"
       }
     }
   }
