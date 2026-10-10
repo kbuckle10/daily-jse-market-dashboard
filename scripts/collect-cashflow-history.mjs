@@ -20,8 +20,8 @@ async function collect(browser,stock){
  const url='https://stockanalysis.com/quote/'+market+'/'+encodeURIComponent(ticker)+'/financials/cash-flow-statement/';
  const page=await browser.newPage({viewport:{width:1400,height:900}});
  try{
-  const response=await page.goto(url,{waitUntil:'domcontentloaded',timeout:40000});
-  if(!response?.ok())throw Error('HTTP '+response?.status());
+  const response=await page.goto(url,{waitUntil:'domcontentloaded',timeout:25000});
+  if(!response?.ok())throw Error('HTTP '+response?.status()+' (source denied access)');
   const result=await page.evaluate(()=>({body:document.body.innerText.slice(0,3000),tables:[...document.querySelectorAll('table')].map(t=>({headers:[...t.querySelectorAll('thead tr')].map(tr=>[...tr.querySelectorAll('th,td')].map(c=>c.innerText.trim())),rows:[...t.querySelectorAll('tbody tr')].map(tr=>[...tr.querySelectorAll('th,td')].map(c=>c.innerText.trim()))}))}));
   const scale=/financials?\s+in\s+billions/i.test(result.body)?1e9:/financials?\s+in\s+millions/i.test(result.body)?1e6:/financials?\s+in\s+thousands/i.test(result.body)?1e3:1;
   let best=null;
@@ -49,7 +49,7 @@ async function collect(browser,stock){
  }catch(e){outcomes.unavailable.push({ticker,reason:e.message});console.warn(ticker+' retained prior data: '+e.message)}finally{await page.close()}
 }
 const browser=await chromium.launch({headless:true});
-let index=0;await Promise.all(Array.from({length:max},async()=>{while(index<universe.length){const stock=universe[index++];await collect(browser,stock);await sleep(350)}}));
+let index=0;let blocked=0;await Promise.all(Array.from({length:max},async()=>{while(index<universe.length){const stock=universe[index++];if(blocked>=3){outcomes.unavailable.push({ticker:stock.ticker,reason:'Skipped: source access blocked (403)'});continue;}const before=outcomes.unavailable.length;await collect(browser,stock);if(outcomes.unavailable.length>before&&/HTTP 403/.test(outcomes.unavailable.at(-1).reason))blocked++;else if(outcomes.unavailable.length===before)blocked=0;await sleep(1200)}}));
 await browser.close();
 const valid=Object.fromEntries(Object.entries(stocks).filter(([,v])=>v?.history?.annual?.length>=5&&v.history.ttm));
 if(Object.keys(valid).length<Math.max(12,Object.keys(previous.stocks).length))throw Error('Coverage regression: refusing to overwrite history');
