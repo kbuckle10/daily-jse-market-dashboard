@@ -19,3 +19,9 @@
 6. Record printed source page and reviewer before marking any workbook row VERIFIED.
 
 **No audited 2023 numerical series or FY2025 TJH audited cash-flow numbers have been entered based only on a source listing.**
+
+## Follow-up source access check (October 2026)
+
+- **SEP FY2023:** Direct issuer PDF resolves, but extracted text skips the financial-statement pages (the 2023 annual report TOC lists consolidated cash flow at printed page 65). The consolidated OCF and cash CapEx values remain unverified; do not substitute third-party data. Source: https://www.seprod.com/wp-content/uploads/2024/06/SeprodAnnualReport_WorkingFile-min.pdf
+- **JSE FY2023:** The previously recorded 2023 annual-report PDF URL returned HTTP 403 through the web reader. No issuer FY2023 cash-flow numbers were verified. The 2025 annual report does show 2024–2025 consolidated OCF and PPE/intangible purchases but cannot independently establish FY2023. Source: https://fliphtml5.com/eiops/FINAL-JSE-AR-2025---April-30C/Jamaica_Stock_Exchange_Annual_Report_2025/
+- **Audit integrity:** Keep both FY2023 records PENDING until original issuer statements can be read and reconciled. No changes to production or phase approval.
