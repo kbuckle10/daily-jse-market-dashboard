@@ -40,16 +40,9 @@ for(const [ticker,entries] of Object.entries(sources)){
    lines.push({ticker,year:entry.year,status:'extracted',url:entry.url});
   }catch(e){lines.push({ticker,year:entry.year,status:'failed',reason:e.message,url:entry.url})}
  }
- const merged=new Map((stocks[ticker]?.history?.annual||[]).map(x=>[String(x.period),x]));
- for(const record of annual)merged.set(record.period,record);
- const all=[...merged.values()].sort((a,b)=>Number(a.period)-Number(b.period)).slice(-5);
- if(all.length>=5){
-  const old=stocks[ticker]?.history;
-  stocks[ticker]={history:{...old,source:'Official annual reports / StockAnalysis',annual:all,updatedAt:new Date().toISOString()}};
- }
+ // Extraction candidates require statement-level validation before production use.
+ for(const record of annual)lines.push({ticker,year:record.period,status:'candidate-needs-review',...record});
 }
-if(Object.keys(sources).length){
- fs.writeFileSync(output,JSON.stringify({...prior,updatedAt:new Date().toISOString(),stocks},null,2)+'\n');
-}
+// Do not modify production cash-flow history with unreviewed PDF text matches.
 fs.writeFileSync('research/official-cashflow-extraction-report.json',JSON.stringify({runAt:new Date().toISOString(),configuredTickers:Object.keys(sources).length,results:lines},null,2)+'\n');
 console.log('OFFICIAL REPORTS '+JSON.stringify({configuredTickers:Object.keys(sources).length,extracted:lines.filter(x=>x.status==='extracted').length,failed:lines.filter(x=>x.status==='failed').length}));
