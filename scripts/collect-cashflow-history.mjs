@@ -28,16 +28,16 @@ async function collect(browser,stock){
   for(const table of result.tables){
    const headers=table.headers.find(h=>h.some(x=>/20\d{2}|TTM/i.test(x)))||table.headers.at(-1)||[];
    const periods=headers.slice(1).map(x=>{const m=x.match(/20\d{2}|TTM/i);return m?m[0].toUpperCase():null});
-   if(periods.filter(p=>p&&p!=='TTM').length<5)continue;
+   if(periods.filter(p=>p&&p!=='TTM').length<3)continue;
    const rows={};
    for(const row of table.rows){const key=keyFor(norm(row[0]));if(key)rows[key]=row.slice(1).map(x=>{const v=numeric(x);return v===null?null:v*scale})}
    if(!rows.operatingCashFlow||!rows.capitalExpenditures)continue;
    const annual=[],ttms=[];
    periods.forEach((period,i)=>{if(!period)return;const ocf=rows.operatingCashFlow[i],capex=rows.capitalExpenditures[i],fcf=rows.freeCashFlow?.[i]??(ocf!==null&&capex!==null?ocf+capex:null);if(![ocf,capex,fcf].every(Number.isFinite))return;const record={period,operatingCashFlow:ocf,capitalExpenditures:capex,freeCashFlow:fcf};if(period==='TTM')ttms.push(record);else annual.push(record)});
    annual.sort((a,b)=>Number(a.period)-Number(b.period));
-   if(annual.length>=5){best={annual:annual.slice(-5),ttm:ttms[0]||null};break}
+   if(annual.length>=3){best={annual:annual.slice(-5),ttm:ttms[0]||null};break}
   }
-  if(!best)throw Error('Insufficient five-year cash flow data');
+  if(!best)throw Error('Insufficient three-year cash flow data');
   const prior=stocks[ticker]?.history;
   const next={source:'StockAnalysis',sourceUrl:url,currency,units:'millions',annual:best.annual,ttm:best.ttm||prior?.ttm||null};
   if(prior&&JSON.stringify(prior.annual)===JSON.stringify(next.annual)&&JSON.stringify(prior.ttm)===JSON.stringify(next.ttm)){
@@ -52,8 +52,8 @@ const browser=await chromium.launch({headless:true});
 let index=0;let blocked=0;await Promise.all(Array.from({length:max},async()=>{while(index<universe.length){const stock=universe[index++];if(blocked>=3){outcomes.unavailable.push({ticker:stock.ticker,reason:'Skipped: source access blocked (403)'});continue;}const before=outcomes.unavailable.length;await collect(browser,stock);if(outcomes.unavailable.length>before&&/HTTP 403/.test(outcomes.unavailable.at(-1).reason))blocked++;else if(outcomes.unavailable.length===before)blocked=0;await sleep(1200)}}));
 await browser.close();
 const valid=Object.fromEntries(Object.entries(stocks).filter(([,v])=>v?.history?.annual?.length>=2));
-if(Object.keys(valid).length<Math.max(12,Object.keys(previous.stocks).length))throw Error('Coverage regression: refusing to overwrite history');
-const report={runAt:new Date().toISOString(),universe:universe.length,coverage:Object.keys(valid).length,updated:outcomes.updated,unchanged:outcomes.retained,unavailable:outcomes.unavailable};
+if(Object.keys(valid).length<Object.keys(previous.stocks).length)throw Error('Coverage regression: refusing to overwrite history');
+const report={runAt:new Date().toISOString(),universe:universe.length,coverage:Object.keys(valid).length,coveragePercent:Number((100*Object.keys(valid).length/universe.length).toFixed(1)),minimumAnnualYears:3,sourceBlocked:outcomes.unavailable.some(x=>/HTTP 403|source access blocked/i.test(x.reason)),updated:outcomes.updated,unchanged:outcomes.retained,unavailable:outcomes.unavailable};
 fs.writeFileSync('research/cashflow-coverage-report.json',JSON.stringify(report,null,2)+'\n');
 if(outcomes.updated.length)fs.writeFileSync(OUTPUT,JSON.stringify({version:1,updatedAt:report.runAt,stocks:valid},null,2)+'\n');
 console.log('COVERAGE SUMMARY '+JSON.stringify({universe:report.universe,coverage:report.coverage,updated:report.updated.length,unchanged:report.unchanged.length,unavailable:report.unavailable.length}));
