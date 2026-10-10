@@ -1,5 +1,5 @@
 {
-  "runAt": "2026-10-10T14:50:57.757Z",
+  "runAt": "2026-10-10T14:55:39.113Z",
   "configuredTickers": 3,
   "discovered": [
     {
@@ -43,7 +43,7 @@
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "SJ",
+      "ticker": "NCBFG",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -53,7 +53,7 @@
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "NCBFG",
+      "ticker": "SJ",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -133,12 +133,7 @@
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "LASM",
-      "status": "discovery-failed",
-      "reason": "Discovery HTTP 403"
-    },
-    {
-      "ticker": "MTL",
+      "ticker": "KPREIT",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -148,7 +143,12 @@
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "KPREIT",
+      "ticker": "LASM",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "MTL",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -208,12 +208,12 @@
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "SELECTMD",
+      "ticker": "TROPICAL",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "TROPICAL",
+      "ticker": "SELECTMD",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -224,11 +224,6 @@
     },
     {
       "ticker": "WIPT",
-      "status": "discovery-failed",
-      "reason": "Discovery HTTP 403"
-    },
-    {
-      "ticker": "WISYNCO",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -256,6 +251,11 @@
       "ticker": "QAINC",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "WISYNCO",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
     }
   ],
   "pendingPdfCandidates": [],
@@ -264,18 +264,7 @@
       "ticker": "GK",
       "year": 2024,
       "status": "review-needed",
-      "operatingCandidates": [
-        {
-          "value": 3483650000,
-          "row": "Net cash generated from operating activities                                         3,483,650    1,426,428",
-          "pageContext": "                                                                                                          Page 107\nGraceKennedy Limited\nNotes to the Financial Statements\n31 December 2024\n(expressed in Jamaican dollars unless otherwise indicated)\n\n23.   Non-Controlling Interests (Continued)\n      Sum"
-        },
-        {
-          "value": 18089716000,
-          "row": "Net cash provided by operating activities                                      18,089,716     17,427,013         4,750,430        5,147,029",
-          "pageContext": "                                                                                                                                              Page 118\n  GraceKennedy Limited\n  Notes to the Financial Statements\n  31 December 2024\n  (expressed in Jamaican dollars unless otherwise indicated)\n\n  33.    "
-        }
-      ],
+      "operatingCandidates": [],
       "capexCandidates": [],
       "url": "https://gracekennedy.com/wp-content/uploads/2025/04/GK_AnnualReport_2024.pdf"
     },
