@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-10T15:01:29.248Z",
+  "updatedAt": "2026-10-10T15:04:04.199Z",
   "stocks": {
     "SEP": {
       "history": {
@@ -644,6 +644,36 @@
         ],
         "ttm": null,
         "updatedAt": "2026-10-10T15:01:29.243Z"
+      }
+    },
+    "CCC": {
+      "history": {
+        "source": "Caribbean Cement annual reports FY2024 and FY2025, Group Statement of Cash Flows",
+        "sourceUrl": "https://caribcement.com/wp-content/uploads/2026/04/Carib-Cement-Annual-Report-2025.pdf",
+        "currency": "JMD",
+        "units": "ones",
+        "annual": [
+          {
+            "period": "2023",
+            "operatingCashFlow": 7508025000,
+            "capitalExpenditures": -1748297000,
+            "freeCashFlow": 5759728000
+          },
+          {
+            "period": "2024",
+            "operatingCashFlow": 11995129000,
+            "capitalExpenditures": -5764088000,
+            "freeCashFlow": 6231041000
+          },
+          {
+            "period": "2025",
+            "operatingCashFlow": 9336027000,
+            "capitalExpenditures": -4571653000,
+            "freeCashFlow": 4764374000
+          }
+        ],
+        "ttm": null,
+        "updatedAt": "2026-10-10T15:04:04.195Z"
       }
     }
   }
