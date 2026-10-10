@@ -54,20 +54,35 @@ function sourceLinks(s){
  const sa=s.sa||'https://stockanalysis.com/quote/jmse/'+encodeURIComponent(s.ticker)+'/';
  return '<a class="source-link source-external jse" href="'+jse+'" target="_blank" rel="noopener noreferrer" aria-label="Open '+s.ticker+' on JSE in new tab">JSE ↗</a><a class="source-link source-external sa" href="'+sa+'" target="_blank" rel="noopener noreferrer" aria-label="Open '+s.ticker+' on StockAnalysis in new tab">SA ↗</a>';
 }
-// Desktop Chrome source links: activate a completed left-button gesture on its
-// original link, even if card reflow changes the release event's target.
+// Source links in cards can lose the synthesized click when grid positions shift.
+// Activate the card link on the original trusted mouse press, before a reflow or
+// mouse-release retarget can interfere. Table links retain the existing release fallback.
 (()=>{
- let pressed=null, startX=0,startY=0,opened=null,openedAt=0;
+ let pressed=null,startX=0,startY=0,opened=null,openedAt=0;
  const link=e=>e.target?.closest?.('a.source-external');
+ const open=e=>{
+   const a=link(e);
+   if(!a||!/^https:\/\//i.test(a.href))return false;
+   const tab=window.open(a.href,'_blank');
+   if(!tab)return false;
+   try{tab.opener=null;}catch(_){}
+   opened=a;openedAt=performance.now();e.preventDefault();
+   return true;
+ };
  document.addEventListener('pointerdown',e=>{
    if(e.pointerType!=='mouse'||e.button!==0)return;
-   pressed=link(e)||null;startX=e.clientX;startY=e.clientY;
+   const a=link(e);
+   if(a?.closest('#cardView')){
+     pressed=null;
+     open(e);
+   }else{
+     pressed=a||null;startX=e.clientX;startY=e.clientY;
+   }
  },true);
  const release=e=>{
    if(e.button!==0||!pressed)return;
    const a=pressed;pressed=null;
-   // Ignore drag gestures and releases on a different stock's source button.
-   if(Math.hypot(e.clientX-startX,e.clientY-startY)>24||!a.isConnected)return;
+   if(!a.isConnected||Math.hypot(e.clientX-startX,e.clientY-startY)>24)return;
    const released=link(e);
    if(released&&released!==a)return;
    if(!/^https:\/\//i.test(a.href))return;
@@ -79,7 +94,7 @@ function sourceLinks(s){
  document.addEventListener('pointercancel',()=>{pressed=null;},true);
  document.addEventListener('click',e=>{
    const a=link(e);
-   if(a&&a===opened&&performance.now()-openedAt<900){e.preventDefault();opened=null;}
+   if(a&&a===opened&&performance.now()-openedAt<1200){e.preventDefault();opened=null;}
  },true);
 })();
 function stockRow(s){return `<tr><td><div class="ticker-wrap"><div style="display:flex;gap:4px">${sourceLinks(s)}</div><div><div class="ticker">${s.ticker}</div><div class="company">${s.company}</div></div></div></td><td><strong>${money(s.price)}</strong><br><small>${s.priceDate}</small></td><td>${day(s)}</td><td>${pct(s.w1)}</td><td>${pct(s.m1)}</td><td>${periodPct(s,'ytd')}</td><td>${periodPct(s,'m3')}</td><td>${periodPct(s,'m6')}</td><td>${periodPct(s,'y1')}</td><td>${money(s.ttmDps)}</td><td>${grossYieldDisplay(s)}</td><td>${taxDisplay(s)}</td><td>${netYieldDisplay(s)}</td><td class="coverage-table-cell" data-coverage-cell>${coverageCell(s)}</td><td><strong>${latestDividendLink(s)}</strong><br><small>${s.dividendStatus||''}</small></td><td>${dividendDates(s)}</td><td><span class="rating ${s.ratingClass}">${s.rating}</span><br><small>${s.reason}</small></td><td>${buyZoneText(s)}</td></tr>`;}
