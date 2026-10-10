@@ -30,6 +30,10 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - name: Install PDF text extraction
         run: sudo apt-get update -qq && sudo apt-get install -y poppler-utils
+      - name: Validate collector JavaScript syntax
+        run: |
+          node --check scripts/collect-official-cashflow.mjs
+          node --check scripts/collect-cashflow-history.mjs
       - name: Collect official annual-report cash flows
         run: node scripts/collect-official-cashflow.mjs
       - name: Collect five-year history for Main Market universe
