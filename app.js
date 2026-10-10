@@ -61,8 +61,8 @@ document.addEventListener('click',function(event){
  if(!link)return;
  const url=link.href;
  if(!/^https:\/\//i.test(url))return;
- const opened=window.open(url,'_blank','noopener,noreferrer');
- if(opened){event.preventDefault();event.stopPropagation();}
+ const opened=window.open('about:blank','_blank');
+ if(opened){opened.opener=null;opened.location.replace(url);event.preventDefault();event.stopPropagation();}
  // When window.open is blocked, retain the native target=_blank anchor fallback.
 },true);
 function stockRow(s){return `<tr><td><div class="ticker-wrap"><div style="display:flex;gap:4px">${sourceLinks(s)}</div><div><div class="ticker">${s.ticker}</div><div class="company">${s.company}</div></div></div></td><td><strong>${money(s.price)}</strong><br><small>${s.priceDate}</small></td><td>${day(s)}</td><td>${pct(s.w1)}</td><td>${pct(s.m1)}</td><td>${periodPct(s,'ytd')}</td><td>${periodPct(s,'m3')}</td><td>${periodPct(s,'m6')}</td><td>${periodPct(s,'y1')}</td><td>${money(s.ttmDps)}</td><td>${grossYieldDisplay(s)}</td><td>${taxDisplay(s)}</td><td>${netYieldDisplay(s)}</td><td class="coverage-table-cell" data-coverage-cell>${coverageCell(s)}</td><td><strong>${latestDividendLink(s)}</strong><br><small>${s.dividendStatus||''}</small></td><td>${dividendDates(s)}</td><td><span class="rating ${s.ratingClass}">${s.rating}</span><br><small>${s.reason}</small></td><td>${buyZoneText(s)}</td></tr>`;}
