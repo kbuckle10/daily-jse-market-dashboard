@@ -4,6 +4,7 @@ import {execFileSync} from 'node:child_process';
 const output='research/cashflow-history.json';
 const sourceFile='research/official-cashflow-sources.json';
 const sources=fs.existsSync(sourceFile)?JSON.parse(fs.readFileSync(sourceFile,'utf8')):{};
+const pending=[];
 const universe=vm.runInNewContext('('+fs.readFileSync('data.js','utf8').match(/window\\.JSE_DASHBOARD_DATA\\s*=\\s*([\\s\\S]*);\\s*$/)[1]+')').stocks;
 const discovered=[];
 const strip=s=>String(s||'').replace(/<[^>]*>/g,' ').replace(/&amp;/g,'&').replace(/\\s+/g,' ').trim();
@@ -19,6 +20,15 @@ async function discover(stock){
    const title=strip(item.title);const link=String(item.url||'');
    if(!/annual report|audited financial/i.test(title)||!new RegExp('(^|[^A-Z0-9])'+ticker+'([^A-Z0-9]|$)','i').test(title+' '+link))continue;
    discovered.push({ticker,title,url:link,source:'Jamaica Stock Exchange search',status:'report-page-needs-PDF-resolution'});
+   try{
+    const html=await (await fetch(link,{signal:AbortSignal.timeout(12000)})).text();
+    const pdfs=[...html.matchAll(/(?:https?:)?\\/\\/[^\\s"'<>]+?\\.pdf(?:\\?[^\\s"'<>]*)?/ig)].map(m=>m[0].replace(/&amp;/g,'&'));
+    for(const pdf of pdfs.slice(0,5)){
+     if(!/jamstockex\\.com/i.test(pdf))continue;
+     const y=title.match(/20\\d{2}/)?.[0]||pdf.match(/20\\d{2}/)?.[0];
+     if(y)pending.push({ticker,year:Number(y),url:pdf,scale:'unknown',status:'requires-unit-verification'});
+    }
+   }catch(e){discovered.push({ticker,status:'page-resolution-failed',reason:e.message})}
   }
  }catch(e){discovered.push({ticker,status:'discovery-failed',reason:e.message})}
 }
@@ -63,5 +73,5 @@ for(const [ticker,entries] of Object.entries(sources)){
  for(const record of annual)lines.push({ticker,year:record.period,status:'candidate-needs-review',...record});
 }
 // Do not modify production cash-flow history with unreviewed PDF text matches.
-fs.writeFileSync('research/official-cashflow-extraction-report.json',JSON.stringify({runAt:new Date().toISOString(),configuredTickers:Object.keys(sources).length,discovered,results:lines},null,2)+'\n');
+fs.writeFileSync('research/official-cashflow-extraction-report.json',JSON.stringify({runAt:new Date().toISOString(),configuredTickers:Object.keys(sources).length,discovered,pendingPdfCandidates:pending,results:lines},null,2)+'\n');
 console.log('OFFICIAL REPORTS '+JSON.stringify({configuredTickers:Object.keys(sources).length,discovered:discovered.filter(x=>x.url).length,extracted:lines.filter(x=>x.status==='extracted').length,failed:lines.filter(x=>x.status==='failed').length}));
