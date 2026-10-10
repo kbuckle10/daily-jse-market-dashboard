@@ -13,6 +13,10 @@ for(const row of rows){
  const key=row[0]+'-'+row[1];assert.ok(!seen.has(key),'Duplicate '+key);seen.add(key);
  const status=row[17];
  assert.ok(['PENDING','PARTIAL','VERIFIED'].includes(status),'Unsupported evidence status');
+ if(status==='PARTIAL'){
+   assert.ok(row[15].trim(),'Partial rows must include a source URL: '+key);
+   for(const col of [3,6])assert.ok(row[col].trim(),'Partial rows must include OCF and FCF: '+key);
+ }
  if(status==='VERIFIED'){
    for(const col of [3,6,15,16,18])assert.ok(row[col].trim(),'Verified rows require OCF, FCF, issuer URL, page and reviewer: '+key);
    const ocf=Number(row[3]),fcf=Number(row[6]),ppe=Number(row[4]||0),intang=Number(row[5]||0);
@@ -20,4 +24,4 @@ for(const row of rows){
    assert.ok(Math.abs(ocf-ppe-intang-fcf)<0.011,'FCF mismatch: '+key);
  }
 }
-console.log('PASS: 12 auditable stock-year rows; verified evidence requires audited amounts, arithmetic, issuer citation and reviewer');
+console.log('PASS: 12 auditable stock-year rows; partial rows have source and OCF/FCF; verified evidence requires audited amounts, arithmetic, issuer citation and reviewer');
