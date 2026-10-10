@@ -1,6 +1,264 @@
 {
-  "runAt": "2026-10-10T14:39:17.686Z",
-  "configuredTickers": 1,
+  "runAt": "2026-10-10T14:44:05.681Z",
+  "configuredTickers": 3,
+  "discovered": [
+    {
+      "ticker": "KW",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "SEP",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "SGJ",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "TJH",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "CPJ",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "SJ",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "NCBFG",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "GENAC",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "CAR",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "SALF",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "MASSY",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "BIL",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "JMMBGL",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "SCIJMD",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "JBG",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "WIG",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "138SL",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "BRG",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "CCC",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "ASBH",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "CPFV",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "EPLY",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "GHL",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "FIRSTROCKJMD",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "ENERGY",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "JP",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "LASD",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "LASM",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "MTL",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "MGL",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "MJE",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "MPCCEL",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "PAL",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "PJAM",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "KPREIT",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "PROVEN",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "QWI",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "PULS",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "RJR",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "XFUND",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "SELECTF",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "SELECTMD",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "TROPICAL",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "VMIL",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "WIPT",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "SML",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "WISYNCO",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "SIL",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "SVL",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "SRFJMD",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "QAINC",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    }
+  ],
+  "pendingPdfCandidates": [],
   "results": [
     {
       "ticker": "GK",
@@ -8,6 +266,20 @@
       "status": "failed",
       "reason": "Cash-flow statement rows not reliably identified",
       "url": "https://gracekennedy.com/wp-content/uploads/2025/04/GK_AnnualReport_2024.pdf"
+    },
+    {
+      "ticker": "PJX",
+      "year": 2025,
+      "status": "failed",
+      "reason": "Cash-flow statement rows not reliably identified",
+      "url": "https://cdn.jamstockex.com/pd/2025/06/2025-PJX-Annual-Report.pdf"
+    },
+    {
+      "ticker": "JSE",
+      "year": 2023,
+      "status": "failed",
+      "reason": "HTTP 403",
+      "url": "https://www.jamstockex.com/wp-content/uploads/2024/04/JSE-Annual-Report-2023.pdf"
     }
   ]
 }
