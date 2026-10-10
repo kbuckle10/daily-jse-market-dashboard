@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-10T03:07:25.251Z",
+  "updatedAt": "2026-10-10T12:50:23.373Z",
   "tickers": {
     "SEP": [
       {
@@ -1475,7 +1475,7 @@
         "valueTraded": 0,
         "trades": 0,
         "sharesOutstanding": 1180000000,
-        "floatShares": 315410000
+        "floatShares": 324680000
       }
     ],
     "CAR": [
