@@ -54,29 +54,28 @@ function sourceLinks(s){
  const sa=s.sa||'https://stockanalysis.com/quote/jmse/'+encodeURIComponent(s.ticker)+'/';
  return '<a class="source-link source-external jse" href="'+jse+'" target="_blank" rel="noopener noreferrer" aria-label="Open '+s.ticker+' on JSE in new tab">JSE ↗</a><a class="source-link source-external sa" href="'+sa+'" target="_blank" rel="noopener noreferrer" aria-label="Open '+s.ticker+' on StockAnalysis in new tab">SA ↗</a>';
 }
-// Chrome desktop fallback: some dashboard interactions suppress the synthetic click
-// following a genuine mouse press/release. Open external sources on trusted pointerup.
-// Only activate after matching pointerdown/up on the same anchor; leave keyboard and
-// non-mouse clicks to native <a target="_blank"> behavior.
+// Desktop Chrome: links sometimes receive mouseup without a synthesized click.
+// Activate once on the first matching pointerup/mouseup; native keyboard/touch links remain intact.
 (()=>{
- let down=null,skipHref=null;
- document.addEventListener('pointerdown',e=>{
-   down=(e.pointerType==='mouse'&&e.button===0)?e.target.closest?.('a.source-external'):null;
- },true);
- document.addEventListener('pointerup',e=>{
-   const a=e.target.closest?.('a.source-external');
-   if(e.pointerType!=='mouse'||e.button!==0||!a||a!==down)return;
-   down=null;
+ let pressed=null,opened=null,openedAt=0;
+ const link=e=>e.target.closest?.('a.source-external');
+ const down=e=>{if(e.button===0)pressed=link(e)||null;};
+ const release=e=>{
+   if(e.button!==0)return;
+   const a=link(e);
+   if(!a||a!==pressed)return;
+   pressed=null;
    if(!/^https:\/\//i.test(a.href))return;
-   // A user-initiated pointerup retains browser user activation for new tabs.
    const tab=window.open(a.href,'_blank');
-   if(tab){try{tab.opener=null;}catch(_){}skipHref=a.href;e.preventDefault();}
- },true);
- document.addEventListener('pointercancel',()=>{down=null;},true);
- // Suppress the subsequent native click only if pointerup already opened a tab.
+   if(tab){try{tab.opener=null;}catch(_){}opened=a;openedAt=performance.now();e.preventDefault();}
+ };
+ document.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse')down(e);},true);
+ document.addEventListener('pointerup',e=>{if(e.pointerType==='mouse')release(e);},true);
+ document.addEventListener('mouseup',e=>{if(pressed)release(e);},true);
+ document.addEventListener('pointercancel',()=>{pressed=null;},true);
  document.addEventListener('click',e=>{
-   const a=e.target.closest?.('a.source-external');
-   if(a&&skipHref===a.href){e.preventDefault();skipHref=null;}
+   const a=link(e);
+   if(a&&a===opened&&performance.now()-openedAt<900){e.preventDefault();opened=null;}
  },true);
 })();
 function stockRow(s){return `<tr><td><div class="ticker-wrap"><div style="display:flex;gap:4px">${sourceLinks(s)}</div><div><div class="ticker">${s.ticker}</div><div class="company">${s.company}</div></div></div></td><td><strong>${money(s.price)}</strong><br><small>${s.priceDate}</small></td><td>${day(s)}</td><td>${pct(s.w1)}</td><td>${pct(s.m1)}</td><td>${periodPct(s,'ytd')}</td><td>${periodPct(s,'m3')}</td><td>${periodPct(s,'m6')}</td><td>${periodPct(s,'y1')}</td><td>${money(s.ttmDps)}</td><td>${grossYieldDisplay(s)}</td><td>${taxDisplay(s)}</td><td>${netYieldDisplay(s)}</td><td class="coverage-table-cell" data-coverage-cell>${coverageCell(s)}</td><td><strong>${latestDividendLink(s)}</strong><br><small>${s.dividendStatus||''}</small></td><td>${dividendDates(s)}</td><td><span class="rating ${s.ratingClass}">${s.rating}</span><br><small>${s.reason}</small></td><td>${buyZoneText(s)}</td></tr>`;}
