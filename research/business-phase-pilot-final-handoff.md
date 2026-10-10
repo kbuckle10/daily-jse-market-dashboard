@@ -38,3 +38,15 @@ The staging workflow runs `scripts/validate-business-phase-pilot.mjs` and `scrip
 ## Final recommendation
 
 **Close the four-stock research implementation as delivered. HOLD production promotion and HOLD automated phase labels.** Keep this handoff as the acceptance record. Reopen only when new issuer evidence and a confirmed successful CI/browser test justify phase publication. This is a deliberate evidence-based finish, not an incomplete production rollout.
+
+## Closure update — 9 October 2026
+
+**Research pilot implementation is closed.** No further incremental UI or validator changes are required for the pilot. The staging research preview and its link from the staging homepage are delivered. Business Phase scoring, phase labels and production promotion remain explicitly **HOLD** pending independent audited reconciliation and governance approval.
+
+Evidence workbook: `research/business-phase-evidence-workbook.csv`; automated checks: `scripts/validate-business-phase-evidence.mjs`, `scripts/validate-business-phase-pilot.mjs`, `scripts/smoke-test-business-phase-pilot.mjs`, `scripts/browser-test-business-phase-pilot.mjs`, and `scripts/check-business-phase-release-readiness.mjs`.
+
+Since the initial handoff, issuer FY2023 cash-flow spot-checks have been added for TJH, SEP and restated SVL. **JSE FY2023 and TJH FY2025 remain unresolved.** Seven FY2024–2025 spot checks plus three FY2023 issuer checks do not constitute complete issuer verification, consistent operating-profit definitions, audited ROIC, leverage, TTM alignment or approved phase classification. SVL FY2023 FCF has been corrected to J$-505.526m to include PPE and intangible purchases; TJH FY2023 FCF US$41.218m; SEP FY2023 FCF J$5,005.908m. All amounts in millions, each within its own currency.
+
+Desktop/mobile browser screenshots were supplied and visually reviewed; a later automated Chromium DOM test and revised table scrolling were committed, but their latest CI outcomes have **not** been independently verified. Do not infer a passing latest workflow from earlier screenshots.
+
+**Acceptance:** research-only four-stock staging implementation delivered; production ratings, Fresh Capital, dividend collector and allocation untouched. **Release:** not authorized; do not merge this branch into main as a financial-scoring feature. Resume only when the two missing cash-flow reconciliations and governance evidence are available, not for cosmetic refinements.
