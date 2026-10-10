@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-10T14:03:35.419Z",
+  "updatedAt": "2026-10-10T15:01:29.248Z",
   "stocks": {
     "SEP": {
       "history": {
@@ -614,6 +614,36 @@
           "freeCashFlow": -19302000000
         },
         "updatedAt": "2026-10-08T05:36:05.913Z"
+      }
+    },
+    "WISYNCO": {
+      "history": {
+        "source": "Wisynco Group 2025 annual report, consolidated cash flow statement",
+        "sourceUrl": "https://wisynco.com/wp-content/uploads/2025/11/Wisynco-Annual-Report-2025.pdf",
+        "currency": "JMD",
+        "units": "millions",
+        "annual": [
+          {
+            "period": "2023",
+            "operatingCashFlow": 4360914000,
+            "capitalExpenditures": -2371688000,
+            "freeCashFlow": 1989226000
+          },
+          {
+            "period": "2024",
+            "operatingCashFlow": 8010698000,
+            "capitalExpenditures": -8838306000,
+            "freeCashFlow": -827608000
+          },
+          {
+            "period": "2025",
+            "operatingCashFlow": 4994660000,
+            "capitalExpenditures": -3440682000,
+            "freeCashFlow": 1553978000
+          }
+        ],
+        "ttm": null,
+        "updatedAt": "2026-10-10T15:01:29.243Z"
       }
     }
   }
