@@ -47,8 +47,8 @@ jobs:
           python3 -m http.server 8765 --bind 127.0.0.1 >/tmp/business-phase-preview-http.log 2>&1 &
           npx --yes playwright@1.56.1 install chromium
           mkdir -p artifacts/preview
-          npx --yes playwright@1.56.1 screenshot --browser chromium --viewport-size "1365,900" --wait-for-timeout 2000 http://127.0.0.1:8765/business-phase-four-stock-pilot.html artifacts/preview/desktop.png
-          npx --yes playwright@1.56.1 screenshot --browser chromium --viewport-size "390,844" --wait-for-timeout 2000 http://127.0.0.1:8765/business-phase-four-stock-pilot.html artifacts/preview/mobile.png
+          npx --yes playwright@1.56.1 screenshot --browser chromium --viewport-size "1365,900" --full-page --wait-for-timeout 2000 http://127.0.0.1:8765/business-phase-four-stock-pilot.html artifacts/preview/desktop.png
+          npx --yes playwright@1.56.1 screenshot --browser chromium --viewport-size "390,844" --full-page --wait-for-timeout 2000 http://127.0.0.1:8765/business-phase-four-stock-pilot.html artifacts/preview/mobile.png
       - name: Upload staging browser screenshots
         uses: actions/upload-artifact@v4
         with:
