@@ -69,7 +69,16 @@ function sourceLinks(s){
    const tab=window.open(a.href,'_blank');
    if(tab){try{tab.opener=null;}catch(_){}opened=a;openedAt=performance.now();e.preventDefault();}
  };
- document.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse')down(e);},true);
+ document.addEventListener('pointerdown',e=>{
+   if(e.pointerType!=='mouse')return;
+   down(e);
+   // Card layouts may shift between press/release. Capture the pointer on the
+   // original link so the release still reaches that link in Chrome.
+   const a=link(e);
+   if(a?.closest('#cardView')&&e.button===0){
+     try{a.setPointerCapture(e.pointerId);}catch(_){}
+   }
+ },true);
  document.addEventListener('pointerup',e=>{if(e.pointerType==='mouse')release(e);},true);
  document.addEventListener('mouseup',e=>{if(pressed)release(e);},true);
  document.addEventListener('pointercancel',()=>{pressed=null;},true);
