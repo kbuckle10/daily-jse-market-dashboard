@@ -14,7 +14,7 @@ try {
     assert.equal(await page.locator('#businessPhaseResearchPreview a').getAttribute('href'),'business-phase-four-stock-pilot.html');
     await page.locator('#businessPhaseResearchPreview a').click();
     await page.waitForURL('**/business-phase-four-stock-pilot.html');
-    await page.waitForFunction(()=>document.querySelectorAll('#cards .card').length===4,{timeout:15000});
+    await page.waitForFunction(()=>document.querySelectorAll('#cards .card').length===4,null,{timeout:15000});
     const body=await page.locator('body').innerText();
     for(const ticker of ['TJH','SEP','SVL','JSE']) assert.ok(body.includes(ticker),'Missing '+ticker);
     assert.ok(body.includes('Not classified'),'Phase status missing');
