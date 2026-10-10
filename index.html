@@ -78,4 +78,11 @@ window.addEventListener('beforeinstallprompt',function(e){window.__JSE_PWA_INSTA
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(maybeShow,1200));
   else setTimeout(maybeShow,1200);
 })();
+</script><script>
+// Keep native anchor navigation intact even when dashboard widgets listen for clicks.
+document.addEventListener('click',function(event){
+  const link=event.target.closest?.('#cardView a.source-external, #stockTableBody a.source-external');
+  if(!link)return;
+  event.stopImmediatePropagation();
+},true);
 </script><script src="cashflow-history-pilot.js?v=20261010three-year2" defer></script></body></html>
