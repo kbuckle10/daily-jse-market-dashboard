@@ -1,0 +1,23 @@
+name: Test Price Performance links
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'app.js'
+      - 'index.html'
+      - 'styles.css'
+      - 'tests/price-performance-links.cjs'
+      - '.github/workflows/test-price-performance-links.yml'
+  workflow_dispatch:
+jobs:
+  mobile-chrome-links:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save playwright
+      - run: npx playwright install --with-deps chromium
+      - run: node tests/price-performance-links.cjs
