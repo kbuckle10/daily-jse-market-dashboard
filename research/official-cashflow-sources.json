@@ -19,5 +19,12 @@
       "url": "https://www.jamstockex.com/wp-content/uploads/2024/04/JSE-Annual-Report-2023.pdf",
       "scale": "ones"
     }
+  ],
+  "WISYNCO": [
+    {
+      "year": 2025,
+      "url": "https://wisynco.com/wp-content/uploads/2025/11/Wisynco-Annual-Report-2025.pdf",
+      "scale": "thousands"
+    }
   ]
 }
