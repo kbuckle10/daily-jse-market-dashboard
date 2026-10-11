@@ -4314,6 +4314,57 @@
         "updatedAt": "2026-10-10T22:22:18.104Z",
         "sourceUrl": "https://stockanalysis.com/quote/jmse/SRFJMD/financials/cash-flow-statement/"
       }
+    },
+    "SELECTMD": {
+      "history": {
+        "source": "Company Annual Report",
+        "sourceUrl": "https://www.sagicor.com/en-jm/sagicor-select-funds-2025--annual-report",
+        "currency": "JMD",
+        "units": "millions",
+        "annual": [
+          {
+            "period": "FY 2025",
+            "periodEnding": "Dec 31, 2025",
+            "operatingCashFlow": 132126000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": null,
+            "unleveredFreeCashFlow": null,
+            "method": "fund_operating_cash_flow"
+          },
+          {
+            "period": "FY 2024",
+            "periodEnding": "Dec 31, 2024",
+            "operatingCashFlow": 116606000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": null,
+            "unleveredFreeCashFlow": null,
+            "method": "fund_operating_cash_flow"
+          },
+          {
+            "period": "FY 2023",
+            "periodEnding": "Dec 31, 2023",
+            "operatingCashFlow": 112944000,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": null,
+            "leveredFreeCashFlow": null,
+            "unleveredFreeCashFlow": null,
+            "method": "fund_operating_cash_flow"
+          }
+        ],
+        "updatedAt": "2026-10-11T02:48:48.409Z",
+        "note": "SELECTMD class-specific audited operating cash flow; no conventional FCF disclosed. FY2025/FY2024: 2025 report p.73; FY2023: 2024 report p.68."
+      }
     }
   }
 }
