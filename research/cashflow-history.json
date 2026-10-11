@@ -4365,6 +4365,93 @@
         "updatedAt": "2026-10-11T02:48:48.409Z",
         "note": "SELECTMD class-specific audited operating cash flow; no conventional FCF disclosed. FY2025/FY2024: 2025 report p.73; FY2023: 2024 report p.68."
       }
+    },
+    "XFUND": {
+      "history": {
+        "source": "Company Annual Report",
+        "sourceUrl": "https://www.sagicor.com/en-jm/sagicor-real-estate-x-fund-2025-annual-report",
+        "currency": "JMD",
+        "units": "millions",
+        "annual": [
+          {
+            "period": "FY 2025",
+            "periodEnding": "Dec 31, 2025",
+            "operatingCashFlow": 922592000,
+            "capitalExpenditures": -769509000,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": 3151969000,
+            "leveredFreeCashFlow": null,
+            "unleveredFreeCashFlow": null,
+            "method": "real_estate_fund"
+          },
+          {
+            "period": "FY 2024",
+            "periodEnding": "Dec 31, 2024",
+            "operatingCashFlow": -753337000,
+            "capitalExpenditures": -156607000,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": -13367000,
+            "leveredFreeCashFlow": null,
+            "unleveredFreeCashFlow": null,
+            "method": "real_estate_fund"
+          },
+          {
+            "period": "FY 2023",
+            "periodEnding": "Dec 31, 2023",
+            "operatingCashFlow": 1783423000,
+            "capitalExpenditures": -161918000,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": -1039019000,
+            "leveredFreeCashFlow": null,
+            "unleveredFreeCashFlow": null,
+            "method": "real_estate_fund"
+          }
+        ],
+        "note": "2025 annual report and 2023 audited statements; FCF not asserted due to property-fund accounting."
+      }
+    },
+    "CPFV": {
+      "history": {
+        "source": "Company Annual Report",
+        "sourceUrl": "https://bse.com.bb/wp-content/uploads/2025/12/Eppley-Caribbean-Property-Fund-Annual-Report-2025.pdf",
+        "currency": "BBD",
+        "units": "millions",
+        "annual": [
+          {
+            "period": "FY 2025",
+            "periodEnding": "Sep 30, 2025",
+            "operatingCashFlow": -4118657,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": -3125855,
+            "leveredFreeCashFlow": null,
+            "unleveredFreeCashFlow": null,
+            "method": "real_estate_fund"
+          },
+          {
+            "period": "FY 2024",
+            "periodEnding": "Sep 30, 2024",
+            "operatingCashFlow": -1966534,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": 2157019,
+            "leveredFreeCashFlow": null,
+            "unleveredFreeCashFlow": null,
+            "method": "real_estate_fund"
+          }
+        ],
+        "note": "Value Fund only, BBD. Investment property additions are included in operating cash flow. No conventional FCF calculated."
+      }
     }
   }
 }
