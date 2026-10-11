@@ -112,7 +112,7 @@ function fromTable(section){
  if(rows.length<3)return;
  const first=section.dataset.firstMetric||'capitalExpenditures',second=section.dataset.secondMetric||'freeCashFlow';
  const parse=v=>!v||v==='N/A'?null:Number(v.replace(/,/g,''));
- const periods=rows.map(r=>({period:r[0],operatingCashFlow:parse(r[1]),[first]:parse(r[2]),[second]:parse(r[3])})).sort((a,b)=>Number(a.period.match(/20\\d{2}/)?.[0]||0)-Number(b.period.match(/20\\d{2}/)?.[0]||0));
+ const periods=rows.map(r=>({period:r[0],operatingCashFlow:parse(r[1]),[first]:parse(r[2]),[second]:parse(r[3])})).sort((a,b)=>Number(a.period.match(/20\d{2}/)?.[0]||0)-Number(b.period.match(/20\d{2}/)?.[0]||0));
  const currency=section.querySelector('h2')?.textContent.match(/(JMD|USD|TTD)/)?.[1]||'JMD';
  draw(section,periods,currency);
 }
