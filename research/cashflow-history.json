@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-10T22:27:45.933Z",
+  "updatedAt": "2026-10-11T14:56:39.020Z",
   "stocks": {
     "SEP": {
       "history": {
@@ -4466,11 +4466,11 @@
             "operatingCashFlow": -61560000,
             "capitalExpenditures": -6730000,
             "freeCashFlow": -68290000,
-            "investingCashFlow": -5870000,
             "realEstateAcquisitions": null,
             "realEstateSales": null,
-            "leveredFreeCashFlow": null,
-            "unleveredFreeCashFlow": null,
+            "investingCashFlow": -5870000,
+            "leveredFreeCashFlow": -90920000,
+            "unleveredFreeCashFlow": -74710000,
             "method": "conventional_fcf"
           },
           {
@@ -4479,11 +4479,24 @@
             "operatingCashFlow": -45150000,
             "capitalExpenditures": -4380000,
             "freeCashFlow": -49530000,
-            "investingCashFlow": -1560000,
             "realEstateAcquisitions": null,
             "realEstateSales": null,
+            "investingCashFlow": -1560000,
             "leveredFreeCashFlow": null,
             "unleveredFreeCashFlow": null,
+            "method": "conventional_fcf"
+          },
+          {
+            "period": "FY 2025",
+            "periodEnding": "Mar 31, 2025",
+            "operatingCashFlow": -45150000,
+            "capitalExpenditures": -120000,
+            "freeCashFlow": -45270000,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": -1560000,
+            "leveredFreeCashFlow": 76540000,
+            "unleveredFreeCashFlow": 91350000,
             "method": "conventional_fcf"
           },
           {
@@ -4492,11 +4505,11 @@
             "operatingCashFlow": 9670000,
             "capitalExpenditures": -880000,
             "freeCashFlow": 8790000,
-            "investingCashFlow": -10470000,
             "realEstateAcquisitions": null,
             "realEstateSales": null,
-            "leveredFreeCashFlow": null,
-            "unleveredFreeCashFlow": null,
+            "investingCashFlow": -10470000,
+            "leveredFreeCashFlow": 20890000,
+            "unleveredFreeCashFlow": 34850000,
             "method": "conventional_fcf"
           },
           {
@@ -4505,16 +4518,17 @@
             "operatingCashFlow": -146030000,
             "capitalExpenditures": -2400000,
             "freeCashFlow": -148420000,
-            "investingCashFlow": -6950000,
             "realEstateAcquisitions": null,
             "realEstateSales": null,
-            "leveredFreeCashFlow": null,
-            "unleveredFreeCashFlow": null,
+            "investingCashFlow": -6950000,
+            "leveredFreeCashFlow": -393770000,
+            "unleveredFreeCashFlow": -383750000,
             "method": "conventional_fcf"
           }
         ],
         "note": "PROVENJA is the JMSE JMD-priced listing. Financial statement is USD. FY2025 ending June 2025 selected over duplicate FY2025 ending March 2025; fiscal-year transition.",
-        "updatedAt": "2026-10-11T02:55:29.769Z"
+        "updatedAt": "2026-10-11T14:56:39.020Z",
+        "ttm": null
       }
     }
   }
