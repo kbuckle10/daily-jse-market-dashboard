@@ -37,7 +37,7 @@
   const tickers=selected?[selected]:Object.keys(store.stocks);
   for(const ticker of tickers){
    const h=store.stocks[ticker]?.history;
-   if(!h||!['JMD','USD','TTD'].includes(h.currency)||(expected[ticker]&&h.currency!==expected[ticker])||!Array.isArray(h.annual)||h.annual.length<3)continue;
+   if(!h||!['JMD','USD','TTD','BBD'].includes(h.currency)||(expected[ticker]&&h.currency!==expected[ticker])||!Array.isArray(h.annual)||h.annual.length<2)continue;
    const flexible=h.annual.some(p=>p.method==='operating_and_investing_disclosed'||p.method==='real_estate_operating_and_investing');
    const periods=[...h.annual,...(h.ttm?[h.ttm]:[])];
    const available=['investingCashFlow','leveredFreeCashFlow','unleveredFreeCashFlow','freeCashFlow'].find(k=>periods.filter(p=>Number.isFinite(p[k])).length>=3);
