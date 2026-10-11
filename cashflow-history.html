@@ -107,7 +107,7 @@ function draw(section,periods,currency){
  render(panel.querySelector('[aria-pressed=true]')?.dataset.key||section.dataset.secondMetric||'operatingCashFlow');
 }
 function fromTable(section){
- const rows=[...section.querySelectorAll('tbody tr')].map(tr=>[...tr.children].map(x=>x.textContent.trim())).filter(r=>/^(?:FY\\s*)?20\\d{2}$/.test(r[0]));
+ const rows=[...section.querySelectorAll('tbody tr')].map(tr=>[...tr.children].map(x=>x.textContent.trim())).filter(r=>/^(?:FY\s*)?20\d{2}$/.test(r[0]));
  if(rows.length<3)return;
  const first=section.dataset.firstMetric||'capitalExpenditures',second=section.dataset.secondMetric||'freeCashFlow';
  const parse=v=>!v||v==='N/A'?null:Number(v.replace(/,/g,''));
