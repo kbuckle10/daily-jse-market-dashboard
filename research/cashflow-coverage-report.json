@@ -1,27 +1,27 @@
 {
-  "runAt": "2026-10-10T19:55:00.089Z",
+  "runAt": "2026-10-12T21:36:36.295Z",
   "universe": 54,
-  "coverage": 15,
-  "coveragePercent": 27.8,
+  "coverage": 54,
+  "coveragePercent": 100,
   "minimumAnnualYears": 3,
   "sourceBlocked": true,
   "updated": [],
   "unchanged": [],
   "unavailable": [
     {
-      "ticker": "KW",
-      "reason": "HTTP 403 (source denied access)"
-    },
-    {
       "ticker": "SEP",
       "reason": "HTTP 403 (source denied access)"
     },
     {
-      "ticker": "SJ",
+      "ticker": "KW",
       "reason": "HTTP 403 (source denied access)"
     },
     {
       "ticker": "NCBFG",
+      "reason": "HTTP 403 (source denied access)"
+    },
+    {
+      "ticker": "SJ",
       "reason": "HTTP 403 (source denied access)"
     },
     {
