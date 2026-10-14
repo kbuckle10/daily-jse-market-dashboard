@@ -37,7 +37,10 @@ if(sil){
 const ghl=(d.stocks||[]).find(s=>s.ticker==='GHL');
 if(ghl){
   const gy=n(ghl.trailingYield),py=n(ghl.primaryListingDividendYield);
-  if(!(gy>6&&gy<9))errors.push(`GHL: JMSE canonical yield expected in 6-9% range, got ${gy}`);
+  if(gy==null||gy<0||gy>100)errors.push(`GHL: invalid JMSE canonical yield ${gy}`);
+  // Cross-listed yields change with market prices and FX. A historical 6–9% band
+  // must not block publication when the arithmetic and source checks pass.
+  if(gy!=null&&(gy<6||gy>9))warnings.push(`GHL: JMSE yield ${gy}% outside historical 6-9% review band; verify listing/FX basis`);
   // Primary-listing yield is market-driven: validate against the TTSE source metric, not a fixed band.
   const referenceYield=n(ghl.statisticsDividendYield);
   if(py==null||py<0||py>100)errors.push(`GHL: invalid TTSE reference yield ${py}`);
