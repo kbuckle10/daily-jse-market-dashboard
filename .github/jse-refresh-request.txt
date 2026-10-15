@@ -1,3 +1,4 @@
 JSE daily refresh request
-Requested: 2026-10-07 Jamaica trading session
-Reason: Test ChatGPT fallback trigger after verifying no October 7 collector run.
+Requested: 2026-10-15 Jamaica trading session
+Reason: Verify ChatGPT GitHub MCP trigger-file recovery mechanism.
+Workflow: .github/workflows/refresh-sa-performance.yml
