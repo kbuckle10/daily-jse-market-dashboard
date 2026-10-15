@@ -5,16 +5,20 @@ const output='research/cashflow-history.json';
 const sourceFile='research/official-cashflow-sources.json';
 const sources=fs.existsSync(sourceFile)?JSON.parse(fs.readFileSync(sourceFile,'utf8')):{};
 const pending=[];
+// The JSE site sometimes rejects automated REST discovery (HTTP 403). Record that
+// separately from missing annual reports; never imply missing financial statements.
+const discoveryStatus={};
 const universe=vm.runInNewContext('('+fs.readFileSync('data.js','utf8').match(/window\.JSE_DASHBOARD_DATA\s*=\s*([\s\S]*);\s*$/)[1]+')').stocks;
 const discovered=[];
 const strip=s=>String(s||'').replace(/<[^>]*>/g,' ').replace(/&amp;/g,'&').replace(/\s+/g,' ').trim();
 async function discover(stock){
  const ticker=String(stock.ticker).toUpperCase();
- if(sources[ticker]?.length)return;
+ if(sources[ticker]?.length){discoveryStatus[ticker]='configured';return;}
  try{
   const api='https://www.jamstockex.com/wp-json/wp/v2/search?search='+encodeURIComponent(ticker+' annual report')+'&per_page=30';
   const res=await fetch(api,{signal:AbortSignal.timeout(14000)});
   if(!res.ok)throw Error('Discovery HTTP '+res.status);
+  discoveryStatus[ticker]='searched';
   const items=await res.json();
   for(const item of items){
    const title=strip(item.title);const link=String(item.url||'');
@@ -30,7 +34,7 @@ async function discover(stock){
     }
    }catch(e){discovered.push({ticker,status:'page-resolution-failed',reason:e.message})}
   }
- }catch(e){discovered.push({ticker,status:'discovery-failed',reason:e.message})}
+ }catch(e){discoveryStatus[ticker]=/403/.test(e.message)?'blocked-403':'discovery-failed';discovered.push({ticker,status:'discovery-failed',reason:e.message})}
 }
 let next=0;await Promise.all(Array.from({length:3},async()=>{while(next<universe.length)await discover(universe[next++])}));
 const prior=JSON.parse(fs.readFileSync(output,'utf8'));
@@ -91,5 +95,5 @@ for(const [ticker,entries] of Object.entries(sources)){
  for(const record of annual)lines.push({ticker,year:record.period,status:'candidate-needs-review',...record});
 }
 // Do not modify production cash-flow history with unreviewed PDF text matches.
-fs.writeFileSync('research/official-cashflow-extraction-report.json',JSON.stringify({runAt:new Date().toISOString(),configuredTickers:Object.keys(sources).length,discovered,pendingPdfCandidates:pending,results:lines},null,2)+'\n');
+fs.writeFileSync('research/official-cashflow-extraction-report.json',JSON.stringify({runAt:new Date().toISOString(),configuredTickers:Object.keys(sources).length,discoveryStatus,discovered,pendingPdfCandidates:pending,results:lines},null,2)+'\n');
 console.log('OFFICIAL REPORTS '+JSON.stringify({configuredTickers:Object.keys(sources).length,discovered:discovered.filter(x=>x.url).length,extracted:lines.filter(x=>x.status==='extracted').length,failed:lines.filter(x=>x.status==='failed').length}));
