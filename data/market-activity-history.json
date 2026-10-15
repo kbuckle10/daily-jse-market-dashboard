@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-15T23:14:57.624Z",
+  "updatedAt": "2026-10-15T23:56:48.957Z",
   "tickers": {
     "SEP": [
       {
@@ -794,7 +794,7 @@
       },
       {
         "date": "2026-10-15",
-        "close": 42.2,
+        "close": 40.24,
         "volume": 23746,
         "valueTraded": 0,
         "trades": 0,
@@ -994,7 +994,7 @@
       },
       {
         "date": "2026-10-15",
-        "close": 70.06,
+        "close": 71.5,
         "volume": 28837,
         "valueTraded": 0,
         "trades": 0,
@@ -2985,7 +2985,7 @@
       },
       {
         "date": "2026-10-15",
-        "close": 10.31,
+        "close": 10.27,
         "volume": 113785,
         "valueTraded": 0,
         "trades": 0,
