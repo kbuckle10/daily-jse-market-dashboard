@@ -1,0 +1,95 @@
+name: JSE Collector Watchdog
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Check status only (do not dispatch a recovery run)'
+        type: boolean
+        required: true
+        default: true
+  schedule:
+    # Jamaica is UTC-5 year-round: 18:15 and 18:45 local, weekdays.
+    - cron: '15 23 * * 1-5'
+    - cron: '45 23 * * 1-5'
+
+permissions:
+  actions: write
+  contents: read
+
+concurrency:
+  group: jse-collector-watchdog
+  cancel-in-progress: false
+
+jobs:
+  check-and-recover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Inspect collector and conditionally dispatch recovery
+        uses: actions/github-script@v7
+        env:
+          DRY_RUN: ${{ inputs.dry_run || 'false' }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const workflow_id = 'refresh-sa-performance.yml';
+            const now = new Date();
+            const parts = new Intl.DateTimeFormat('en-CA', {
+              timeZone: 'America/Jamaica', year: 'numeric', month: '2-digit',
+              day: '2-digit', weekday: 'short', hour: '2-digit', hourCycle: 'h23'
+            }).formatToParts(now);
+            const part = (type) => parts.find(p => p.type === type)?.value;
+            const jamaicaDate = `${part('year')}-${part('month')}-${part('day')}`;
+            const weekday = part('weekday');
+            const midnightUTC = Date.parse(`${jamaicaDate}T05:00:00Z`);
+            const dryRun = process.env.DRY_RUN === 'true';
+            const report = (message) => {
+              core.info(message);
+              core.summary.addRaw(message + '\n');
+            };
+            report(`Jamaica date: ${jamaicaDate}; dry run: ${dryRun}`);
+            if (['Sat', 'Sun'].includes(weekday)) {
+              report('Weekend in Jamaica: no action.');
+              await core.summary.write();
+              return;
+            }
+
+            // Fail closed on API errors. Never dispatch without a reliable run listing.
+            const runs = await github.paginate(github.rest.actions.listWorkflowRuns, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id,
+              per_page: 100,
+              created: `>=${jamaicaDate}`
+            });
+            const todaysRuns = runs.filter(r => Date.parse(r.created_at) >= midnightUTC);
+            const details = todaysRuns.map(r =>
+              `#${r.run_number} (${r.event}, ${r.status}, ${r.conclusion ?? 'pending'}): ${r.html_url}`
+            );
+            report(details.length ? details.join('\n') : 'No collector run found for today.');
+
+            // Any run, including failed/cancelled, requires manual review rather than a blind retry.
+            if (todaysRuns.length > 0) {
+              report('SKIP: Collector already has a run today; no duplicate dispatched.');
+            } else if (dryRun) {
+              report('DRY RUN: Collector is absent; dispatch would be requested in live mode.');
+            } else {
+              // Recheck immediately before dispatch to reduce duplicate risk.
+              const latest = await github.paginate(github.rest.actions.listWorkflowRuns, {
+                owner: context.repo.owner, repo: context.repo.repo,
+                workflow_id, per_page: 100, created: `>=${jamaicaDate}`
+              });
+              if (latest.some(r => Date.parse(r.created_at) >= midnightUTC)) {
+                report('SKIP: A collector run appeared on the second check.');
+              } else {
+                await github.rest.actions.createWorkflowDispatch({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  workflow_id,
+                  ref: 'main'
+                });
+                report('RECOVERY REQUESTED: workflow_dispatch accepted by GitHub (HTTP 204). Check collector workflow for actual run/completion.');
+              }
+            }
+            await core.summary.write();
