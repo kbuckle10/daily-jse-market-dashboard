@@ -1,5 +1,5 @@
 {
-  "runAt": "2026-10-15T22:59:26.028Z",
+  "runAt": "2026-10-19T19:05:52.615Z",
   "configuredTickers": 9,
   "discoveryStatus": {
     "SEP": "blocked-403",
@@ -11,10 +11,10 @@
     "GENAC": "blocked-403",
     "CAR": "configured",
     "SALF": "blocked-403",
-    "MASSY": "blocked-403",
     "SJ": "blocked-403",
-    "BIL": "blocked-403",
+    "MASSY": "blocked-403",
     "NCBFG": "blocked-403",
+    "BIL": "blocked-403",
     "JMMBGL": "blocked-403",
     "WIG": "configured",
     "SCIJMD": "blocked-403",
@@ -23,39 +23,39 @@
     "CCC": "configured",
     "ASBH": "blocked-403",
     "BRG": "blocked-403",
-    "EPLY": "blocked-403",
     "CPFV": "blocked-403",
+    "EPLY": "blocked-403",
     "FIRSTROCKJMD": "blocked-403",
     "GHL": "blocked-403",
-    "ENERGY": "blocked-403",
     "JP": "blocked-403",
+    "ENERGY": "blocked-403",
     "KPREIT": "blocked-403",
     "LASD": "blocked-403",
     "LASM": "blocked-403",
     "MTL": "blocked-403",
     "MGL": "blocked-403",
     "MJE": "blocked-403",
-    "MPCCEL": "blocked-403",
-    "PJX": "configured",
     "PAL": "blocked-403",
+    "PJX": "configured",
+    "MPCCEL": "blocked-403",
     "PJAM": "blocked-403",
     "PROVEN": "blocked-403",
-    "PULS": "blocked-403",
     "QWI": "blocked-403",
     "RJR": "blocked-403",
     "XFUND": "blocked-403",
     "SELECTF": "blocked-403",
-    "TROPICAL": "blocked-403",
     "SELECTMD": "blocked-403",
+    "TROPICAL": "blocked-403",
+    "VMIL": "blocked-403",
     "WISYNCO": "configured",
     "JSE": "configured",
-    "VMIL": "blocked-403",
     "WIPT": "blocked-403",
     "SML": "blocked-403",
     "SIL": "blocked-403",
     "SVL": "blocked-403",
+    "SRFJMD": "blocked-403",
     "QAINC": "blocked-403",
-    "SRFJMD": "blocked-403"
+    "PULS": "blocked-403"
   },
   "discovered": [
     {
@@ -84,22 +84,22 @@
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "MASSY",
-      "status": "discovery-failed",
-      "reason": "Discovery HTTP 403"
-    },
-    {
       "ticker": "SJ",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "BIL",
+      "ticker": "MASSY",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
     {
       "ticker": "NCBFG",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "BIL",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -134,12 +134,12 @@
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "EPLY",
+      "ticker": "CPFV",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "CPFV",
+      "ticker": "EPLY",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -154,12 +154,12 @@
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "ENERGY",
+      "ticker": "JP",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "JP",
+      "ticker": "ENERGY",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -194,12 +194,12 @@
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "MPCCEL",
+      "ticker": "PAL",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "PAL",
+      "ticker": "MPCCEL",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -210,11 +210,6 @@
     },
     {
       "ticker": "PROVEN",
-      "status": "discovery-failed",
-      "reason": "Discovery HTTP 403"
-    },
-    {
-      "ticker": "PULS",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -239,12 +234,12 @@
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "TROPICAL",
+      "ticker": "SELECTMD",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "SELECTMD",
+      "ticker": "TROPICAL",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -274,12 +269,17 @@
       "reason": "Discovery HTTP 403"
     },
     {
+      "ticker": "SRFJMD",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
       "ticker": "QAINC",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "SRFJMD",
+      "ticker": "PULS",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     }
@@ -404,7 +404,7 @@
       "ticker": "WIG",
       "year": 2025,
       "status": "failed",
-      "reason": "Not a PDF",
+      "reason": "HTTP 404",
       "url": "https://wigtonenergy.com/wp-content/uploads/2025/08/WIGTON-ENERGY-LIMITED-ANNUAL-REPORT-2024-2025.pdf"
     },
     {
