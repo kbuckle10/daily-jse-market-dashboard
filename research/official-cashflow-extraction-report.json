@@ -1,5 +1,5 @@
 {
-  "runAt": "2026-10-19T19:05:52.615Z",
+  "runAt": "2026-10-20T00:07:11.841Z",
   "configuredTickers": 9,
   "discoveryStatus": {
     "SEP": "blocked-403",
@@ -11,35 +11,34 @@
     "GENAC": "blocked-403",
     "CAR": "configured",
     "SALF": "blocked-403",
-    "SJ": "blocked-403",
-    "MASSY": "blocked-403",
     "NCBFG": "blocked-403",
-    "BIL": "blocked-403",
+    "MASSY": "blocked-403",
     "JMMBGL": "blocked-403",
-    "WIG": "configured",
+    "BIL": "blocked-403",
     "SCIJMD": "blocked-403",
+    "WIG": "configured",
     "JBG": "blocked-403",
     "138SL": "blocked-403",
-    "CCC": "configured",
     "ASBH": "blocked-403",
-    "BRG": "blocked-403",
+    "CCC": "configured",
     "CPFV": "blocked-403",
+    "BRG": "blocked-403",
     "EPLY": "blocked-403",
     "FIRSTROCKJMD": "blocked-403",
-    "GHL": "blocked-403",
+    "SJ": "blocked-403",
     "JP": "blocked-403",
+    "GHL": "blocked-403",
     "ENERGY": "blocked-403",
     "KPREIT": "blocked-403",
-    "LASD": "blocked-403",
-    "LASM": "blocked-403",
     "MTL": "blocked-403",
     "MGL": "blocked-403",
     "MJE": "blocked-403",
-    "PAL": "blocked-403",
-    "PJX": "configured",
     "MPCCEL": "blocked-403",
+    "PAL": "blocked-403",
     "PJAM": "blocked-403",
+    "PJX": "configured",
     "PROVEN": "blocked-403",
+    "PULS": "blocked-403",
     "QWI": "blocked-403",
     "RJR": "blocked-403",
     "XFUND": "blocked-403",
@@ -47,15 +46,16 @@
     "SELECTMD": "blocked-403",
     "TROPICAL": "blocked-403",
     "VMIL": "blocked-403",
+    "WIPT": "blocked-403",
     "WISYNCO": "configured",
     "JSE": "configured",
-    "WIPT": "blocked-403",
     "SML": "blocked-403",
     "SIL": "blocked-403",
     "SVL": "blocked-403",
     "SRFJMD": "blocked-403",
     "QAINC": "blocked-403",
-    "PULS": "blocked-403"
+    "LASM": "blocked-403",
+    "LASD": "blocked-403"
   },
   "discovered": [
     {
@@ -84,7 +84,7 @@
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "SJ",
+      "ticker": "NCBFG",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -94,17 +94,12 @@
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "NCBFG",
+      "ticker": "JMMBGL",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
     {
       "ticker": "BIL",
-      "status": "discovery-failed",
-      "reason": "Discovery HTTP 403"
-    },
-    {
-      "ticker": "JMMBGL",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -129,12 +124,12 @@
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "BRG",
+      "ticker": "CPFV",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "CPFV",
+      "ticker": "BRG",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -149,12 +144,17 @@
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "GHL",
+      "ticker": "SJ",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
     {
       "ticker": "JP",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "GHL",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -165,16 +165,6 @@
     },
     {
       "ticker": "KPREIT",
-      "status": "discovery-failed",
-      "reason": "Discovery HTTP 403"
-    },
-    {
-      "ticker": "LASD",
-      "status": "discovery-failed",
-      "reason": "Discovery HTTP 403"
-    },
-    {
-      "ticker": "LASM",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -194,12 +184,12 @@
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "PAL",
+      "ticker": "MPCCEL",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "MPCCEL",
+      "ticker": "PAL",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -210,6 +200,11 @@
     },
     {
       "ticker": "PROVEN",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "PULS",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     },
@@ -279,7 +274,12 @@
       "reason": "Discovery HTTP 403"
     },
     {
-      "ticker": "PULS",
+      "ticker": "LASM",
+      "status": "discovery-failed",
+      "reason": "Discovery HTTP 403"
+    },
+    {
+      "ticker": "LASD",
       "status": "discovery-failed",
       "reason": "Discovery HTTP 403"
     }

@@ -1,8 +1,8 @@
 {
-  "runAt": "2026-10-19T19:05:55.851Z",
+  "runAt": "2026-10-20T00:07:15.038Z",
   "universe": 54,
-  "coverage": 54,
-  "coveragePercent": 100,
+  "coverage": 53,
+  "coveragePercent": 98.1,
   "minimumAnnualYears": 3,
   "sourceBlocked": true,
   "updated": [],
@@ -17,11 +17,11 @@
       "reason": "HTTP 403 (source denied access)"
     },
     {
-      "ticker": "NCBFG",
+      "ticker": "SJ",
       "reason": "HTTP 403 (source denied access)"
     },
     {
-      "ticker": "SJ",
+      "ticker": "NCBFG",
       "reason": "HTTP 403 (source denied access)"
     },
     {
