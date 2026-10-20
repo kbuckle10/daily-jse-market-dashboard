@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-16T23:57:27.456Z",
+  "updatedAt": "2026-10-20T00:11:59.122Z",
   "tickers": {
     "SEP": [
       {
@@ -1253,7 +1253,7 @@
         "valueTraded": 0,
         "trades": 0,
         "sharesOutstanding": 12500000000,
-        "floatShares": 11800000000
+        "floatShares": 11580000000
       }
     ],
     "CPJ": [
@@ -1671,7 +1671,7 @@
         "valueTraded": 0,
         "trades": 0,
         "sharesOutstanding": 986430000,
-        "floatShares": 845380000
+        "floatShares": 829190000
       }
     ],
     "GENAC": [
@@ -5917,6 +5917,15 @@
         "trades": 0,
         "sharesOutstanding": 67500000,
         "floatShares": 19000000
+      },
+      {
+        "date": "2026-10-15",
+        "close": 7.5,
+        "volume": 20,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 67500000,
+        "floatShares": 19000000
       }
     ],
     "MGL": [
@@ -6334,7 +6343,7 @@
         "valueTraded": 0,
         "trades": 0,
         "sharesOutstanding": 1200000000,
-        "floatShares": 375780000
+        "floatShares": 384780000
       }
     ],
     "PJAM": [
@@ -6543,7 +6552,7 @@
         "valueTraded": 0,
         "trades": 0,
         "sharesOutstanding": 1630000000,
-        "floatShares": 1010000000
+        "floatShares": 880500000
       }
     ],
     "PJX": [
@@ -7572,7 +7581,7 @@
         "valueTraded": 0,
         "trades": 0,
         "sharesOutstanding": 5100000000,
-        "floatShares": 3330000000
+        "floatShares": 3080000000
       }
     ],
     "SELECTMD": [
@@ -8199,7 +8208,7 @@
         "valueTraded": 0,
         "trades": 0,
         "sharesOutstanding": 1500000000,
-        "floatShares": 273130000
+        "floatShares": 274280000
       }
     ],
     "WIPT": [
@@ -8990,7 +8999,7 @@
         "valueTraded": 0,
         "trades": 0,
         "sharesOutstanding": 757830000,
-        "floatShares": 529809999.99999994
+        "floatShares": 501560000
       }
     ],
     "SVL": [
@@ -9199,7 +9208,7 @@
         "valueTraded": 0,
         "trades": 0,
         "sharesOutstanding": 2630000000,
-        "floatShares": 1190000000
+        "floatShares": 1160000000
       }
     ],
     "SRFJMD": [
