@@ -39,7 +39,7 @@ async function collect(browser,stock){
   }
   if(!best)throw Error('Insufficient three-year cash flow data');
   const prior=stocks[ticker]?.history;
-  const next={source:'StockAnalysis',sourceUrl:url,currency,units:'millions',annual:best.annual,ttm:best.ttm||prior?.ttm||null};
+  const next={source:'StockAnalysis',sourceUrl:url,currency,units:'actual',annual:best.annual,ttm:best.ttm||prior?.ttm||null};
   if(prior&&JSON.stringify(prior.annual)===JSON.stringify(next.annual)&&JSON.stringify(prior.ttm)===JSON.stringify(next.ttm)){
     outcomes.retained.push(ticker);console.log(ticker+' unchanged');
   }else{
@@ -51,9 +51,12 @@ async function collect(browser,stock){
 const browser=await chromium.launch({headless:true});
 let index=0;let blocked=0;await Promise.all(Array.from({length:max},async()=>{while(index<universe.length){const stock=universe[index++];if(blocked>=3){outcomes.unavailable.push({ticker:stock.ticker,reason:'Skipped: source access blocked (403)'});continue;}const before=outcomes.unavailable.length;await collect(browser,stock);if(outcomes.unavailable.length>before&&/HTTP 403/.test(outcomes.unavailable.at(-1).reason))blocked++;else if(outcomes.unavailable.length===before)blocked=0;await sleep(1200)}}));
 await browser.close();
-const valid=Object.fromEntries(Object.entries(stocks).filter(([,v])=>v?.history?.annual?.length>=2));
-if(Object.keys(valid).length<Object.keys(previous.stocks).length)throw Error('Coverage regression: refusing to overwrite history');
-const report={runAt:new Date().toISOString(),universe:universe.length,coverage:Object.keys(valid).length,coveragePercent:Number((100*Object.keys(valid).length/universe.length).toFixed(1)),minimumAnnualYears:3,sourceBlocked:outcomes.unavailable.some(x=>/HTTP 403|source access blocked/i.test(x.reason)),updated:outcomes.updated,unchanged:outcomes.retained,unavailable:outcomes.unavailable};
+const valid=stocks; // Preserve incomplete histories; do not discard existing research records.
+const validYearCount=h=>new Set((h?.annual||[]).filter(r=>typeof r.operatingCashFlow==='number'&&Number.isFinite(r.operatingCashFlow)).map(r=>String(r.periodEnding||r.period||'').match(/20\d{2}/)?.[0]).filter(Boolean)).size;
+const isCovered=v=>Boolean(v?.history?.source&&v.history.currency&&v.history.units&&validYearCount(v.history)>=3);
+if(Object.keys(previous.stocks).some(t=>!Object.hasOwn(valid,t)))throw Error('Coverage regression: refusing to drop prior stock history');
+const coverage=universe.filter(s=>isCovered(valid[s.ticker])).length;
+const report={runAt:new Date().toISOString(),universe:universe.length,coverage,coveragePercent:Number((100*coverage/universe.length).toFixed(1)),minimumAnnualYears:3,sourceBlocked:outcomes.unavailable.some(x=>/HTTP 403|source access blocked/i.test(x.reason)),updated:outcomes.updated,unchanged:outcomes.retained,unavailable:outcomes.unavailable};
 fs.writeFileSync('research/cashflow-coverage-report.json',JSON.stringify(report,null,2)+'\n');
 if(outcomes.updated.length)fs.writeFileSync(OUTPUT,JSON.stringify({version:1,updatedAt:report.runAt,stocks:valid},null,2)+'\n');
 console.log('COVERAGE SUMMARY '+JSON.stringify({universe:report.universe,coverage:report.coverage,updated:report.updated.length,unchanged:report.unchanged.length,unavailable:report.unavailable.length}));
