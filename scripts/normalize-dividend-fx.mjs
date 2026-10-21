@@ -185,5 +185,14 @@ for(const s of queue){
   if(Number.isFinite(rate)&&rate>0){s.latestDividendJmd=Number((amount*rate).toFixed(6));s.latestDividendJmdEquivalent=s.latestDividendJmd;s.latestDividendFxRate=Number(rate.toFixed(6));s.latestDividendFxDate=fx.rateDate||basis;s.latestDividendFxSource=fx.source;s.latestDividendFxBuy=fx.buy??null;s.latestDividendFxSell=fx.sell??null;s.latestDividendDisplayCurrency=currency;s.latestDividendFxStatus='converted';indicatedYieldFromJmd(s);}
   else{s.latestDividendJmd=null;s.latestDividendFxRate=null;s.latestDividendFxDate=basis;s.latestDividendFxSource=null;s.latestDividendDisplayCurrency=currency;s.latestDividendFxStatus='unavailable';}
 }
+// Canonical display/analysis yield is trailingYield for every ticker.
+// Do not let a stale source-specific currentDividendYield leak into narratives.
+for(const stock of queue){
+  const canonical=Number(stock.trailingYield);
+  if(Number.isFinite(canonical)&&canonical>=0&&canonical<=100){
+    stock.currentDividendYield=canonical;
+    stock.canonicalYieldBasis='trailingYield';
+  }
+}
 writeData(data);
 console.log(`Dividend FX${ONLY_TICKER?` (${ONLY_TICKER})`:''}: processed ${queue.length} ticker(s).`);
