@@ -1,4 +1,5 @@
 JSE daily refresh request
-Requested: 2026-10-15 Jamaica trading session
-Reason: Verify ChatGPT GitHub MCP trigger-file recovery mechanism.
+Requested: 2026-10-20 Jamaica trading session
+Reason: User-requested end-to-end verification after Ubuntu runner, GHL FX, and all-ticker yield consistency fixes.
+Request ID: 20261020-2140-jamaica-yield-validation
 Workflow: .github/workflows/refresh-sa-performance.yml
