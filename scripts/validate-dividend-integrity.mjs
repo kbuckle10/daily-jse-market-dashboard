@@ -42,6 +42,17 @@ if(ghl){
   // must not block publication when the arithmetic and source checks pass.
   if(gy!=null&&(gy<6||gy>9))warnings.push(`GHL: JMSE yield ${gy}% outside historical 6-9% review band; verify listing/FX basis`);
   // Primary-listing yield is market-driven: validate against the TTSE source metric, not a fixed band.
+  // The Jamaican-listed share is priced in JMD. Convert official TTD TTM DPS
+  // at the current valuation FX rate once, then divide by the JMSE JMD price.
+  const jmdPrice=n(ghl.price),ttdTtm=n(ghl.ttmDps),fx=n(ghl.currentFxRate);
+  if(String(ghl.ttmDpsCurrency||'').toUpperCase()!=='TTD'||!(ttdTtm>0)||!(jmdPrice>0)||!(fx>0)){
+    errors.push('GHL: missing JMSE JMD price, official TTD TTM DPS, or valuation FX rate');
+  }else{
+    const expected=ttdTtm*fx/jmdPrice*100;
+    if(gy==null||pctDiff(expected,gy)>0.05)errors.push(`GHL: JMSE yield ${gy}% disagrees with TTD TTM DPS × current TTD/JMD FX / JMSE JMD price (${expected.toFixed(2)}%)`);
+    if(String(ghl.yieldMarket||'')!=='JMSE'||String(ghl.yieldPriceCurrency||'')!=='JMD')errors.push('GHL: canonical yield must use JMSE JMD price');
+    if(!ghl.currentFxDate||!ghl.currentFxSource)errors.push('GHL: valuation FX date/source missing');
+  }
   const referenceYield=n(ghl.statisticsDividendYield);
   if(py==null||py<0||py>100)errors.push(`GHL: invalid TTSE reference yield ${py}`);
   if(referenceYield!=null&&py!=null&&pctDiff(referenceYield,py)>0.35)warnings.push(`GHL: TTSE dividend-page yield ${py}% differs from StockAnalysis TTSE statistics ${referenceYield}%; review source timing, dividend basis and price date`);
