@@ -155,6 +155,23 @@ for(const s of queue){
       }
     }
   }
+  // GHL is valued as the JMSE-listed JMD security. TTSE yield is reference only.
+  // Use the official trailing TTD dividends and current valuation FX exactly once.
+  if(String(s.ticker||'').toUpperCase()==='GHL'){
+    const price=Number(s.price),ttm=Number(s.ttmDps),rate=Number(s.currentFxRate);
+    if(String(s.ttmDpsCurrency||'').toUpperCase()==='TTD'&&ttm>0&&price>0&&rate>0){
+      s.ttmDpsJmd=Number((ttm*rate).toFixed(6));
+      s.currentAnnualDpsJmd=s.ttmDpsJmd;
+      s.trailingYield=Number((s.ttmDpsJmd/price*100).toFixed(2));
+      s.currentDividendYield=s.trailingYield;
+      s.currentFxYield=s.trailingYield;
+      s.yieldMarket='JMSE';
+      s.yieldPriceCurrency='JMD';
+      s.yieldDividendCurrency='JMD';
+      s.yieldBasis='jmse-price-official-ttd-ttm-current-fx';
+      s.dividendDataStatus='validated-jmse-yield-ttd-fx-normalized';
+    }
+  }
   const amount=Number(s.latestDividend);
   s.latestDividendOriginalAmount=Number.isFinite(amount)?amount:null;
   s.latestDividendOriginalCurrency=currency;
