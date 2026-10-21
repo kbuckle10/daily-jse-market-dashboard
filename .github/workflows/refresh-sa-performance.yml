@@ -29,7 +29,7 @@ env:
 jobs:
   prepare:
     if: github.actor != 'github-actions[bot]'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     outputs:
       run_refresh: ${{ steps.guard.outputs.run_refresh }}
       start_head: ${{ steps.head.outputs.start_head }}
@@ -89,7 +89,7 @@ jobs:
       fail-fast: false
       matrix:
         shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v5
@@ -138,7 +138,7 @@ jobs:
   merge-publish:
     needs: [prepare, collect]
     if: needs.prepare.outputs.run_refresh == 'true' && needs.collect.result == 'success'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v5
         with:
