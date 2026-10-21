@@ -26,6 +26,8 @@ for(const s of d.stocks||[]){
     if(!(n(s.indicatedYield)>0))errors.push(`${t}: indicated-first-public-dividend missing indicatedYield`);
     if(Math.abs((n(s.indicatedYield)??0)-(y??0))>0.05)errors.push(`${t}: indicatedYield and trailingYield disagree`);
   }
+  const displayed=n(s.currentDividendYield);
+  if(y!=null&&displayed!=null&&pctDiff(y,displayed)>0.01)errors.push(`${t}: currentDividendYield ${displayed}% differs from canonical trailingYield ${y}%`);
   if(y!=null&&y>100)errors.push(`${t}: implausible trailing yield ${y}% (possible currency/double-FX error)`);
 }
 const sil=(d.stocks||[]).find(s=>s.ticker==='SIL');
