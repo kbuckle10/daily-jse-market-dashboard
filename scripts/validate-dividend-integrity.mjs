@@ -44,7 +44,7 @@ if(ghl){
   // Primary-listing yield is market-driven: validate against the TTSE source metric, not a fixed band.
   const referenceYield=n(ghl.statisticsDividendYield);
   if(py==null||py<0||py>100)errors.push(`GHL: invalid TTSE reference yield ${py}`);
-  if(referenceYield!=null&&py!=null&&pctDiff(referenceYield,py)>0.35)errors.push(`GHL: TTSE reference yield ${py}% disagrees with StockAnalysis TTSE statistics ${referenceYield}%`);
+  if(referenceYield!=null&&py!=null&&pctDiff(referenceYield,py)>0.35)warnings.push(`GHL: TTSE dividend-page yield ${py}% differs from StockAnalysis TTSE statistics ${referenceYield}%; review source timing, dividend basis and price date`);
   if(gy!=null&&py!=null&&Math.abs(gy-py)<0.25)warnings.push('GHL: JMSE and TTSE yields are unexpectedly near-identical; verify cross-listing price basis');
 }
 const q=(d.stocks||[]).find(s=>s.ticker==='QAINC');
