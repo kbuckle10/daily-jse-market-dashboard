@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-21T02:54:38.087Z",
+  "updatedAt": "2026-10-22T00:16:58.100Z",
   "tickers": {
     "SEP": [
       {
@@ -214,6 +214,15 @@
         "date": "2026-10-20",
         "close": 79.54,
         "volume": 1224,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 910890000,
+        "floatShares": 207810000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 79.06,
+        "volume": 25055,
         "valueTraded": 0,
         "trades": 0,
         "sharesOutstanding": 910890000,
@@ -436,6 +445,15 @@
         "trades": 0,
         "sharesOutstanding": 1390000000,
         "floatShares": 213980000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 33.44,
+        "volume": 79349,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 1390000000,
+        "floatShares": 213980000
       }
     ],
     "NCBFG": [
@@ -650,6 +668,15 @@
         "date": "2026-10-20",
         "close": 71.06,
         "volume": 30886,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 2420000000,
+        "floatShares": 1070000000.0000001
+      },
+      {
+        "date": "2026-10-21",
+        "close": 71.59,
+        "volume": 14848,
         "valueTraded": 0,
         "trades": 0,
         "sharesOutstanding": 2420000000,
@@ -872,6 +899,15 @@
         "trades": 0,
         "sharesOutstanding": 3900000000,
         "floatShares": 782930000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 42.27,
+        "volume": 9109,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 3900000000,
+        "floatShares": 782930000
       }
     ],
     "SGJ": [
@@ -1086,6 +1122,15 @@
         "date": "2026-10-20",
         "close": 70.5,
         "volume": 11228,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 3110000000,
+        "floatShares": 832800000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 71.5,
+        "volume": 16600,
         "valueTraded": 0,
         "trades": 0,
         "sharesOutstanding": 3110000000,
@@ -1308,6 +1353,15 @@
         "trades": 0,
         "sharesOutstanding": 12500000000,
         "floatShares": 11580000000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 9.32,
+        "volume": 1662134,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 12500000000,
+        "floatShares": 11580000000
       }
     ],
     "CPJ": [
@@ -1522,6 +1576,15 @@
         "date": "2026-10-20",
         "close": 6.32,
         "volume": 40521,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 1100000000,
+        "floatShares": 173560000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 6.91,
+        "volume": 10279,
         "valueTraded": 0,
         "trades": 0,
         "sharesOutstanding": 1100000000,
@@ -1744,6 +1807,15 @@
         "trades": 0,
         "sharesOutstanding": 986430000,
         "floatShares": 829190000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 83.7,
+        "volume": 70562,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 986430000,
+        "floatShares": 829190000
       }
     ],
     "GENAC": [
@@ -1958,6 +2030,15 @@
         "date": "2026-10-20",
         "close": 7.74,
         "volume": 5000,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 1180000000,
+        "floatShares": 315340000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 7.97,
+        "volume": 1230,
         "valueTraded": 0,
         "trades": 0,
         "sharesOutstanding": 1180000000,
@@ -2180,6 +2261,15 @@
         "trades": 0,
         "sharesOutstanding": 4850000000,
         "floatShares": 2210000000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 28.92,
+        "volume": 169109,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 4850000000,
+        "floatShares": 2210000000
       }
     ],
     "SALF": [
@@ -2384,7 +2474,7 @@
       {
         "date": "2026-10-20",
         "close": 3.33,
-        "volume": 8612,
+        "volume": 27,
         "valueTraded": 0,
         "trades": 0,
         "sharesOutstanding": 1040000000,
@@ -2607,6 +2697,15 @@
         "trades": 0,
         "sharesOutstanding": null,
         "floatShares": null
+      },
+      {
+        "date": "2026-10-21",
+        "close": 74.69,
+        "volume": 14101,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": null,
+        "floatShares": null
       }
     ],
     "BIL": [
@@ -2821,6 +2920,15 @@
         "date": "2026-10-20",
         "close": 74.24,
         "volume": 2346,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 1200000000,
+        "floatShares": 251960000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 74.14,
+        "volume": 967,
         "valueTraded": 0,
         "trades": 0,
         "sharesOutstanding": 1200000000,
@@ -3043,6 +3151,15 @@
         "trades": 0,
         "sharesOutstanding": 1950000000,
         "floatShares": 1070000000.0000001
+      },
+      {
+        "date": "2026-10-21",
+        "close": 17.46,
+        "volume": 58115,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 1950000000,
+        "floatShares": 1070000000.0000001
       }
     ],
     "SCIJMD": [
@@ -3257,6 +3374,15 @@
         "date": "2026-10-20",
         "close": 9.68,
         "volume": 103261,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 570150000,
+        "floatShares": 0
+      },
+      {
+        "date": "2026-10-21",
+        "close": 10.09,
+        "volume": 12567,
         "valueTraded": 0,
         "trades": 0,
         "sharesOutstanding": 570150000,
@@ -3479,6 +3605,15 @@
         "trades": 0,
         "sharesOutstanding": 1000000000,
         "floatShares": 811970000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 14.11,
+        "volume": 84028,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 1000000000,
+        "floatShares": 811970000
       }
     ],
     "WIG": [
@@ -3693,6 +3828,15 @@
         "date": "2026-10-20",
         "close": 1.04,
         "volume": 746059,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 11000000000,
+        "floatShares": 10090000000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 1.03,
+        "volume": 899524,
         "valueTraded": 0,
         "trades": 0,
         "sharesOutstanding": 11000000000,
@@ -3915,6 +4059,15 @@
         "trades": 0,
         "sharesOutstanding": 536860000,
         "floatShares": 454910000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 3.12,
+        "volume": 603,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 536860000,
+        "floatShares": 454910000
       }
     ],
     "BRG": [
@@ -4129,6 +4282,15 @@
         "date": "2026-10-20",
         "close": 5.6,
         "volume": 5011,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 214320000,
+        "floatShares": 82660000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 5.6,
+        "volume": 551,
         "valueTraded": 0,
         "trades": 0,
         "sharesOutstanding": 214320000,
@@ -4351,6 +4513,15 @@
         "trades": 0,
         "sharesOutstanding": 851140000,
         "floatShares": 178350000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 113.18,
+        "volume": 18311,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 851140000,
+        "floatShares": 178350000
       }
     ],
     "EPLY": [
@@ -4564,7 +4735,7 @@
       {
         "date": "2026-10-20",
         "close": 32.83,
-        "volume": 844,
+        "volume": 0,
         "valueTraded": 0,
         "trades": 0,
         "sharesOutstanding": 192470000,
@@ -4782,7 +4953,7 @@
       {
         "date": "2026-10-20",
         "close": 8.92,
-        "volume": 29,
+        "volume": 27,
         "valueTraded": 0,
         "trades": 0,
         "sharesOutstanding": 286030000,
@@ -5005,6 +5176,15 @@
         "trades": 0,
         "sharesOutstanding": 231990000,
         "floatShares": 58360000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 377.94,
+        "volume": 196,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 231990000,
+        "floatShares": 58360000
       }
     ],
     "ENERGY": [
@@ -5223,6 +5403,15 @@
         "trades": 0,
         "sharesOutstanding": 1320000000,
         "floatShares": 139780000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 0.98,
+        "volume": 2912,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 1320000000,
+        "floatShares": 139780000
       }
     ],
     "JP": [
@@ -5419,6 +5608,15 @@
         "date": "2026-10-20",
         "close": 19.5,
         "volume": 6275,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 1040000000,
+        "floatShares": 469860000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 20,
+        "volume": 27012,
         "valueTraded": 0,
         "trades": 0,
         "sharesOutstanding": 1040000000,
@@ -5636,7 +5834,7 @@
       {
         "date": "2026-10-20",
         "close": 11.98,
-        "volume": 527,
+        "volume": 0,
         "valueTraded": 0,
         "trades": 0,
         "sharesOutstanding": 884000000,
@@ -5859,6 +6057,15 @@
         "trades": 0,
         "sharesOutstanding": 3530000000,
         "floatShares": 722640000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 3.44,
+        "volume": 142506,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 3530000000,
+        "floatShares": 722640000
       }
     ],
     "LASM": [
@@ -6077,6 +6284,15 @@
         "trades": 0,
         "sharesOutstanding": 4150000000.0000005,
         "floatShares": 781990000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 7.53,
+        "volume": 32134,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 4150000000.0000005,
+        "floatShares": 781990000
       }
     ],
     "MTL": [
@@ -6183,6 +6399,15 @@
         "date": "2026-10-20",
         "close": 9.65,
         "volume": 201,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 67500000,
+        "floatShares": 19000000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 10.6,
+        "volume": 488,
         "valueTraded": 0,
         "trades": 0,
         "sharesOutstanding": 67500000,
@@ -6405,6 +6630,15 @@
         "trades": 0,
         "sharesOutstanding": 1200000000,
         "floatShares": 71280000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 5.04,
+        "volume": 24686,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 1200000000,
+        "floatShares": 71280000
       }
     ],
     "MJE": [
@@ -6623,6 +6857,15 @@
         "trades": 0,
         "sharesOutstanding": 1200000000,
         "floatShares": 384780000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 7.47,
+        "volume": 4323,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 1200000000,
+        "floatShares": 384780000
       }
     ],
     "PJAM": [
@@ -6837,6 +7080,15 @@
         "date": "2026-10-20",
         "close": 43.53,
         "volume": 664,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 1630000000,
+        "floatShares": 880500000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 45.88,
+        "volume": 109819,
         "valueTraded": 0,
         "trades": 0,
         "sharesOutstanding": 1630000000,
@@ -7079,6 +7331,15 @@
         "trades": 0,
         "sharesOutstanding": null,
         "floatShares": null
+      },
+      {
+        "date": "2026-10-21",
+        "close": 9.32,
+        "volume": 604,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": null,
+        "floatShares": null
       }
     ],
     "QWI": [
@@ -7297,6 +7558,15 @@
         "trades": 0,
         "sharesOutstanding": 1370000000,
         "floatShares": 573800000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 0.77,
+        "volume": 46064350,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 1370000000,
+        "floatShares": 573800000
       }
     ],
     "RJR": [
@@ -7475,6 +7745,15 @@
         "date": "2026-10-20",
         "close": 1.13,
         "volume": 1,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 3000000000,
+        "floatShares": 2120000000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 1.14,
+        "volume": 1649,
         "valueTraded": 0,
         "trades": 0,
         "sharesOutstanding": 3000000000,
@@ -7697,6 +7976,15 @@
         "trades": 0,
         "sharesOutstanding": null,
         "floatShares": null
+      },
+      {
+        "date": "2026-10-21",
+        "close": 9.49,
+        "volume": 913,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": null,
+        "floatShares": null
       }
     ],
     "SELECTF": [
@@ -7911,6 +8199,15 @@
         "date": "2026-10-20",
         "close": 0.46,
         "volume": 1384170,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 5100000000,
+        "floatShares": 3080000000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 0.45,
+        "volume": 329126,
         "valueTraded": 0,
         "trades": 0,
         "sharesOutstanding": 5100000000,
@@ -8133,6 +8430,15 @@
         "trades": 0,
         "sharesOutstanding": null,
         "floatShares": null
+      },
+      {
+        "date": "2026-10-21",
+        "close": 0.88,
+        "volume": 202549,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": null,
+        "floatShares": null
       }
     ],
     "TROPICAL": [
@@ -8347,6 +8653,15 @@
         "date": "2026-10-20",
         "close": 1.32,
         "volume": 34086,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 1730000000,
+        "floatShares": 670930000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 1.32,
+        "volume": 37632,
         "valueTraded": 0,
         "trades": 0,
         "sharesOutstanding": 1730000000,
@@ -8569,6 +8884,15 @@
         "trades": 0,
         "sharesOutstanding": 1500000000,
         "floatShares": 274280000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 1.81,
+        "volume": 35174,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 1500000000,
+        "floatShares": 274280000
       }
     ],
     "WIPT": [
@@ -8764,7 +9088,7 @@
       {
         "date": "2026-10-20",
         "close": 9.05,
-        "volume": 5385,
+        "volume": 27,
         "valueTraded": 0,
         "trades": 0,
         "sharesOutstanding": 11180000000,
@@ -8987,6 +9311,15 @@
         "trades": 0,
         "sharesOutstanding": 3770000000,
         "floatShares": 669530000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 20.62,
+        "volume": 50846,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 3770000000,
+        "floatShares": 669530000
       }
     ],
     "JSE": [
@@ -9205,6 +9538,15 @@
         "trades": 0,
         "sharesOutstanding": 701250000,
         "floatShares": 652020000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 9.3,
+        "volume": 136457,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 701250000,
+        "floatShares": 652020000
       }
     ],
     "SML": [
@@ -9392,6 +9734,15 @@
         "date": "2026-10-20",
         "close": 7.14,
         "volume": 3057,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 757830000,
+        "floatShares": 501560000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 7,
+        "volume": 31014,
         "valueTraded": 0,
         "trades": 0,
         "sharesOutstanding": 757830000,
@@ -9614,6 +9965,15 @@
         "trades": 0,
         "sharesOutstanding": 2630000000,
         "floatShares": 1160000000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 18.09,
+        "volume": 77901,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 2630000000,
+        "floatShares": 1160000000
       }
     ],
     "SRFJMD": [
@@ -9805,6 +10165,15 @@
         "trades": 0,
         "sharesOutstanding": 347230000,
         "floatShares": 291340000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 7.52,
+        "volume": 8268,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 347230000,
+        "floatShares": 291340000
       }
     ],
     "ASBH": [
@@ -9992,6 +10361,15 @@
         "date": "2026-10-20",
         "close": 16.37,
         "volume": 348220,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 1500000000,
+        "floatShares": 44100000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 16.28,
+        "volume": 38705,
         "valueTraded": 0,
         "trades": 0,
         "sharesOutstanding": 1500000000,
@@ -10196,6 +10574,15 @@
         "trades": 0,
         "sharesOutstanding": null,
         "floatShares": null
+      },
+      {
+        "date": "2026-10-21",
+        "close": 39.74,
+        "volume": 5560,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": null,
+        "floatShares": null
       }
     ],
     "MPCCEL": [
@@ -10275,6 +10662,15 @@
         "date": "2026-10-20",
         "close": 24.96,
         "volume": 1521,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 36940000,
+        "floatShares": 31670000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 27,
+        "volume": 295,
         "valueTraded": 0,
         "trades": 0,
         "sharesOutstanding": 36940000,
@@ -10439,6 +10835,15 @@
         "date": "2026-10-20",
         "close": 0.49,
         "volume": 6264,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 862220000,
+        "floatShares": 173160000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 0.49,
+        "volume": 8384,
         "valueTraded": 0,
         "trades": 0,
         "sharesOutstanding": 862220000,
@@ -10612,6 +11017,15 @@
         "date": "2026-10-20",
         "close": 1.01,
         "volume": 100,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 6520000000,
+        "floatShares": 608250000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 1.01,
+        "volume": 139,
         "valueTraded": 0,
         "trades": 0,
         "sharesOutstanding": 6520000000,
@@ -10816,6 +11230,15 @@
         "trades": 0,
         "sharesOutstanding": 436630000,
         "floatShares": 372080000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 3.2,
+        "volume": 57,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 436630000,
+        "floatShares": 372080000
       }
     ],
     "QAINC": [
@@ -10967,6 +11390,15 @@
         "date": "2026-10-20",
         "close": 22.37,
         "volume": 10159,
+        "valueTraded": 0,
+        "trades": 0,
+        "sharesOutstanding": 295650000,
+        "floatShares": 189700000
+      },
+      {
+        "date": "2026-10-21",
+        "close": 22.32,
+        "volume": 1398,
         "valueTraded": 0,
         "trades": 0,
         "sharesOutstanding": 295650000,
