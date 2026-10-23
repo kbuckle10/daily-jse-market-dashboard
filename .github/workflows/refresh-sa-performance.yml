@@ -186,12 +186,12 @@ jobs:
           for (const ticker of core) {
             const s = d.stocks.find(x => x.ticker === ticker);
             if (!s) { errors.push(`${ticker}: missing stock record`); continue; }
-            if (!Number.isFinite(Number(s.price))) errors.push(`${ticker}: price`);
+            if (s.price == null || s.price === '' || !Number.isFinite(Number(s.price)) || Number(s.price) <= 0) errors.push(`${ticker}: price`);
             if (!['JSE','SA'].includes(s.source)) errors.push(`${ticker}: source=${s.source ?? 'missing'}`);
             if (!s.priceDate) errors.push(`${ticker}: priceDate`);
             if (!s.performanceSource) errors.push(`${ticker}: performanceSource`);
             for (const field of requiredPerformance) {
-              if (!Number.isFinite(Number(s[field]))) errors.push(`${ticker}: ${field}`);
+              if (s[field] == null || s[field] === '' || !Number.isFinite(Number(s[field]))) errors.push(`${ticker}: ${field}`);
             }
           }
           if (errors.length) throw Error(`Core 12-stock validation failed: ${errors.join(', ')}`);
