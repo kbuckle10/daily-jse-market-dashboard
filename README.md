@@ -20,6 +20,7 @@ The dashboard uses a configurable watchlist rather than a fixed ticker list, so 
 - Price vs Book Value valuation lens with sector-aware P/B relevance
 - Financial/cash-flow metrics including payout ratio, free cash flow and related coverage metrics where available
 - Dividend Investor Ranking / Fresh Capital analysis
+- Per-stock **Why this rating?** decision matrix in Investor Ranking, table and stock cards, with entry-price diagnostics and missing-data flags
 - Six-lens expert scorecard: Valuation, Quality, Growth, Financial Strength, Dividend and Momentum
 - Overall Expert Score using weighted available lenses
 - Dividend Income vs Bank Savings interactive comparison
@@ -65,21 +66,22 @@ When a lens cannot be calculated because its underlying metrics are unavailable,
 
 The score provides analytical context and does not replace the primary Buy / Hold / Avoid rating, valuation signal or target buy zone.
 
+## Rating decision matrix
+
+Open **Why this rating? · Decision matrix** on a stock card or in Investor Ranking (or **Why rating?** in the table). The modal shows the current primary rating, share price versus preferred buy range, estimated fair-value upside, existing research score, financial metric checks and missing data. It flags mismatches between the primary and alternative book-adjusted ratings, and potentially stale written commentary.
+
+**Interpretation:** A high research score can coexist with a HOLD when the current share price is above the preferred buy ceiling. An estimated fair value is not an automatic buy trigger or guaranteed future price. Matrix thresholds are illustrative supporting evidence, not a complete reverse-engineering of the underlying rating engine. The metric-availability percentage is **not** an independently audited data-confidence score. The matrix does not overwrite primary ratings, allocation rules or source data.
+
+The decision matrix is designed to be additive and mobile responsive, preserving existing card, ranking, table, navigation and cash-flow-trend controls.
+
 ## Suggested allocation
 
-Only Buy-class stocks are eligible for Suggested New-Money Allocation. Hold, Watch and Avoid-rated stocks receive 0% new-money allocation.
+Allocation eligibility varies by the **selected Fresh Capital objective**:
 
-For eligible stocks, the dashboard currently uses:
+- **Balanced:** only primary Buy-class stocks are eligible.
+- **Income, Value and Growth:** qualifying Hold/Watch stocks may be included if the objective-specific criteria pass; Avoid/Sell stocks are excluded.
 
-`allocation weight = Overall Expert Score × entry-price multiplier`
-
-Entry-price multipliers:
-
-- Below target buy zone: 1.10×
-- In target buy zone: 1.00×
-- Above target buy zone: 0.80×
-
-Eligible weights are normalized to 100% across the applicable tracked/focused stocks.
+The active objective's score determines relative target weights among eligible stocks. The interface separately considers market activity and liquidity for staged deployment. These objective-specific allocations should **not** be confused with an unconditional primary BUY recommendation.
 
 ## Market Activity and liquidity
 
@@ -116,13 +118,11 @@ Generated dashboard values are stored in `data.js`, separated from presentation 
 
 The production GitHub Actions workflow is **Refresh Daily JSE Main Market**. The dashboard is deployed through GitHub Pages.
 
-The weekday production schedule is maintained in UTC for GitHub Actions reliability:
+The main collection workflow currently schedules **21:07 UTC / 4:07 PM Jamaica time, Monday–Friday** (GitHub Actions cron: `7 21 * * 1-5`). GitHub scheduled runs can be delayed or skipped by the platform. The separate watchdog workflow provides additional recovery logic; consult its workflow file for its live schedule instead of assuming the former 4:30/5:05/6:05 timetable.
 
-- **21:30 UTC / 4:30 PM Jamaica** — primary refresh
-- **22:05 UTC / 5:05 PM Jamaica** — guarded fallback
-- **23:05 UTC / 6:05 PM Jamaica** — guarded safety fallback
+The workflow uses ten parallel collection shards, merged output validation, concurrent-run protection and a stale-publish guard. Core-stock validation now explicitly rejects missing or blank price/performance fields instead of allowing JavaScript's `Number(null) === 0` conversion to pass them.
 
-Fallback runs check whether a sufficiently fresh same-day Jamaica refresh has already been published and skip unnecessary duplicate collection. The workflow also uses concurrency and stale-publish protections so an older collector run does not overwrite newer repository/data changes.
+**Limitations:** individual source commands in collection shards may still fail without stopping that shard; an overall successful workflow therefore does not certify that every field was refreshed. Independently reconcile financial statements, currencies, dividend records and source timestamps before treating all values as verified. Full forensic-accounting audit gates are planned, not currently deployed.
 
 Collector logic should be fixed at the source when a metric is wrong rather than patching individual ticker values in the UI.
 
