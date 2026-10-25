@@ -83,6 +83,10 @@ Allocation eligibility varies by the **selected Fresh Capital objective**:
 
 The active objective's score determines relative target weights among eligible stocks. The interface separately considers market activity and liquidity for staged deployment. These objective-specific allocations should **not** be confused with an unconditional primary BUY recommendation.
 
+## Long-run performance field
+
+The dashboard displays **History return (from YYYY-MM-DD)** as its single long-run price-performance field, for *every stock with usable historical observations*. It is calculated as `(latest retrieved historical close / earliest retrieved historical close - 1) × 100`, with the first retrieved trading date shown in the label. This is **not necessarily since IPO or JSE listing**: history may be incomplete, and the latest retrieved history close may differ from the most recent official JSE quote. It excludes cash dividends and should not be described as a total return. No substitute history percentage is shown under missing 3M, 6M, 1Y or YTD periods. Existing stored `sinceListing` and `listingHistoryDate` keys remain as legacy internal fields for compatibility; the public label reflects their actual meaning. The long-term return should only be renamed to **Since Listing** once verified original trading history and corporate-action adjustments exist for each stock.
+
 ## Market Activity and liquidity
 
 Market Activity is used as an execution and position-sizing modifier rather than as a replacement for company fundamentals.
