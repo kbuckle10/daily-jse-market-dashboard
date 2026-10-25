@@ -6,6 +6,8 @@ on:
       - 'app.js'
       - 'index.html'
       - 'styles.css'
+      - 'decision-matrix.js'
+      - 'tests/performance-table-layout.cjs'
       - 'tests/price-performance-links.cjs'
       - '.github/workflows/test-price-performance-links.yml'
   workflow_dispatch:
@@ -20,4 +22,5 @@ jobs:
           node-version: '22'
       - run: npm install --no-save playwright
       - run: npx playwright install --with-deps chromium
+      - run: node tests/performance-table-layout.cjs
       - run: node tests/price-performance-links.cjs
