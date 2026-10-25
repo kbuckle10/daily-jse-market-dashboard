@@ -55,7 +55,7 @@ function evaluate(s){
 }
 const css=document.createElement('style');css.textContent=`
 .jse-decision-button{margin:7px 0;padding:6px 10px;border:1px solid var(--border,#64748b);background:var(--surface2,#1e293b);color:var(--text,#fff);border-radius:9px;font:inherit;font-size:12px;cursor:pointer}
-.fresh-objective-card>.jse-decision-button{display:block!important;width:100%!important;max-width:100%!important;min-width:0!important;box-sizing:border-box!important;white-space:normal!important;overflow-wrap:normal!important;word-break:normal!important;align-self:stretch!important;grid-column:1/-1!important;flex-basis:100%!important;text-align:center!important;line-height:1.35!important;min-height:42px!important}.stock-card>.jse-decision-button{display:block;width:100%;box-sizing:border-box;min-height:40px;text-align:center;white-space:normal;word-break:normal}.jse-decision-button:hover,.jse-decision-button:focus-visible{outline:2px solid var(--accent,#22c55e);outline-offset:2px}
+.fresh-objective-card>.jse-decision-button{display:block!important;width:100%!important;max-width:100%!important;min-width:0!important;box-sizing:border-box!important;white-space:normal!important;overflow-wrap:normal!important;word-break:normal!important;align-self:stretch!important;grid-column:1/-1!important;flex-basis:100%!important;text-align:center!important;line-height:1.35!important;min-height:42px!important}.stock-card>.jse-decision-button{display:block;width:100%;box-sizing:border-box;min-height:40px;text-align:center;white-space:normal;word-break:normal}.jse-decision-table-button{display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;font-size:11px;padding:4px 8px;max-width:100%;margin:5px 0 0}.jse-decision-button:hover,.jse-decision-button:focus-visible{outline:2px solid var(--accent,#22c55e);outline-offset:2px}
 .jse-decision-dialog{border:1px solid var(--border,#555);border-radius:16px;color:var(--text,#fff);background:var(--surface,#17202d);width:min(850px,95vw);max-height:88vh;overflow:auto;padding:18px;box-shadow:0 20px 80px #0008}
 .jse-decision-dialog::backdrop{background:#000a}.jse-d-head{display:flex;justify-content:space-between;gap:12px;align-items:center}.jse-d-head button{cursor:pointer;border:1px solid var(--border,#666);background:transparent;color:inherit;border-radius:8px;padding:7px 12px}
 .jse-d-intro{line-height:1.6;margin:10px 0}.jse-d-table{width:100%;border-collapse:collapse;font-size:12px}.jse-d-table th,.jse-d-table td{padding:9px 7px;border-bottom:1px solid var(--border,#64748b);text-align:left;vertical-align:top}.jse-d-table th{position:sticky;top:0;background:var(--surface,#17202d)}.jse-d-table td:nth-child(3){font-weight:700}
@@ -102,12 +102,13 @@ function mount(){
  document.querySelectorAll('#stockTableBody tr').forEach(row=>{
  if(row.querySelector('[data-decision-ticker]'))return;
  const ticker=row.querySelector('.ticker')?.textContent?.trim().toUpperCase();if(!byTicker.has(ticker))return;
- const cell=row.querySelector('td:last-child');if(!cell)return;
- const b=document.createElement('button');b.type='button';b.className='jse-decision-button';b.dataset.decisionTicker=ticker;b.textContent='Why rating?';b.addEventListener('click',e=>{e.stopPropagation();open(ticker)});cell.appendChild(b);
+ const cell=row.querySelector('td:first-child');if(!cell)return;
+ const b=document.createElement('button');b.type='button';b.className='jse-decision-button jse-decision-table-button';b.dataset.decisionTicker=ticker;b.textContent='ⓘ Why rating?';b.addEventListener('click',e=>{e.stopPropagation();open(ticker)});cell.appendChild(b);
  });
 }
 let timer;const schedule=()=>{clearTimeout(timer);timer=setTimeout(mount,90)};mount();
 for(const selector of ['#rankingList','#cardView','#stockTableBody']){const el=document.querySelector(selector);if(el)new MutationObserver(schedule).observe(el,{childList:true})}
 document.addEventListener('jse:framework-updated',schedule);document.addEventListener('click',e=>{if(e.target.closest?.('[data-fresh-objective],#sortSelect,[data-filter]'))schedule()});
+const viewButton=document.getElementById('tableViewBtn');if(viewButton)viewButton.addEventListener('click',()=>{const table=document.getElementById('tableView');if(table)table.scrollLeft=0;});
 window.JSE_DECISION_MATRIX={evaluate,open,mount};
 })();
