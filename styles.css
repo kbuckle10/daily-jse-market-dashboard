@@ -13,7 +13,7 @@
   #tableView > table th,#tableView > table td {box-sizing:border-box;min-width:0;max-width:none;vertical-align:middle;}
   #tableView > table th:nth-child(1),#tableView > table td:nth-child(1){width:280px!important;}
   #tableView > table th:nth-child(2),#tableView > table td:nth-child(2){width:150px!important;}
-  #tableView > table th:nth-child(16),#tableView > table td:nth-child(16){width:390px!important;white-space:normal;overflow-wrap:break-word;}
+  #tableView > table th:nth-child(17),#tableView > table td:nth-child(17){width:390px!important;white-space:normal;overflow-wrap:break-word;}
   #tableView > table th:last-child,#tableView > table td:last-child{width:210px!important;white-space:normal;}
   #tableView .ticker-wrap {min-width:0;max-width:100%;}
   #tableView .ticker-wrap .company {overflow-wrap:anywhere;white-space:normal;}
