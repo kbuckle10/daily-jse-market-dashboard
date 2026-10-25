@@ -3,8 +3,11 @@ const path=require('path');
 (async()=>{
  const browser=await chromium.launch({headless:true});
  const page=await browser.newPage({viewport:{width:1440,height:900},serviceWorkers:'block'});
+ await page.addInitScript(()=>localStorage.setItem('dailyJseTrackedTickersV2',JSON.stringify(['GK','CCC','TJH','LASM'])));
  await page.goto('file://'+path.resolve(__dirname,'../index.html'),{waitUntil:'load'});
- await page.locator('#stockTableBody tr .ticker').first().waitFor({timeout:20000});
+ await page.locator('#stockTableBody tr .ticker').first().waitFor({state:'attached',timeout:20000});
+ await page.locator('#tableViewBtn').click();
+ await page.locator('#stockTableBody tr .ticker').first().waitFor({state:'visible',timeout:5000});
  const result=await page.evaluate(()=>{
  const shell=document.getElementById('tableView'),head=[...shell.querySelectorAll('thead th')],rows=[...shell.querySelectorAll('tbody tr')].filter(r=>r.querySelector('.ticker'));
  const count=head.length;const tolerance=2;
