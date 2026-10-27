@@ -15,8 +15,9 @@ for(const c of upstreamData.companies){
  if(current&&current.source!=='StockAnalysis'){kept++;continue;}
  const annual=c.periods.filter(p=>p.period!=='TTM').map(convert);
  const ttm=c.periods.find(p=>p.period==='TTM');
- if(annual.length<2)continue;
- const next={source:'StockAnalysis',currency:c.currency,units:'millions',annual,ttm:ttm?convert(ttm):null,sourceUrl:c.url};
+ const validAnnualYears=new Set(annual.filter(p=>typeof p.operatingCashFlow==='number'&&Number.isFinite(p.operatingCashFlow)).map(p=>String(p.periodEnding||p.period||'').match(/20\d{2}/)?.[0]).filter(Boolean)).size;
+ if(validAnnualYears<3||!c.currency||!c.url)continue;
+ const next={source:'StockAnalysis',currency:c.currency,units:'actual',annual,ttm:ttm?convert(ttm):null,sourceUrl:c.url};
  const previous=current?{source:current.source,currency:current.currency,units:current.units,annual:current.annual,ttm:current.ttm,sourceUrl:current.sourceUrl}:null;
  if(JSON.stringify(next)===JSON.stringify(previous))continue;
  daily.stocks[c.ticker]={...(daily.stocks[c.ticker]||{}),history:{...(current||{}),...next,updatedAt:new Date().toISOString()}};
