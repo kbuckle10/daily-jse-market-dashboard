@@ -17,6 +17,10 @@ const norm=s=>String(s||'').trim().toLowerCase().replace(/\s+/g,' ');
 const keyFor=s=>/^operating cash flow$|^cash from operating activities$|^net cash provided by operating activities$/i.test(s)?'operatingCashFlow':/^capital expenditures?$|^capex$/i.test(s)?'capitalExpenditures':/^free cash flow$/i.test(s)?'freeCashFlow':null;
 async function collect(browser,stock){
  const ticker=String(stock.ticker||'').toUpperCase(),ttse=ticker==='GHL',market=ttse?'ttse':'jmse',currency=ttse?'TTD':'JMD';
+ const authoritative=stocks[ticker]?.history;
+ if(authoritative?.source&&authoritative.source!=='StockAnalysis'){
+  outcomes.retained.push(ticker);console.log(ticker+' retained audited company annual report');return;
+ }
  const url='https://stockanalysis.com/quote/'+market+'/'+encodeURIComponent(ticker)+'/financials/cash-flow-statement/';
  const page=await browser.newPage({viewport:{width:1400,height:900}});
  try{
@@ -53,10 +57,13 @@ let index=0;let blocked=0;await Promise.all(Array.from({length:max},async()=>{wh
 await browser.close();
 const valid=stocks; // Preserve incomplete histories; do not discard existing research records.
 const validYearCount=h=>new Set((h?.annual||[]).filter(r=>typeof r.operatingCashFlow==='number'&&Number.isFinite(r.operatingCashFlow)).map(r=>String(r.periodEnding||r.period||'').match(/20\d{2}/)?.[0]).filter(Boolean)).size;
-const isCovered=v=>Boolean(v?.history?.source&&v.history.currency&&v.history.units&&validYearCount(v.history)>=3);
+const isCovered=v=>Boolean(v?.history?.source&&v.history.sourceUrl&&v.history.currency&&v.history.units==='actual'&&validYearCount(v.history)>=3);
 if(Object.keys(previous.stocks).some(t=>!Object.hasOwn(valid,t)))throw Error('Coverage regression: refusing to drop prior stock history');
 const coverage=universe.filter(s=>isCovered(valid[s.ticker])).length;
-const report={runAt:new Date().toISOString(),universe:universe.length,coverage,coveragePercent:Number((100*coverage/universe.length).toFixed(1)),minimumAnnualYears:3,sourceBlocked:outcomes.unavailable.some(x=>/HTTP 403|source access blocked/i.test(x.reason)),updated:outcomes.updated,unchanged:outcomes.retained,unavailable:outcomes.unavailable};
+let priorReport={};try{priorReport=JSON.parse(fs.readFileSync('research/cashflow-coverage-report.json','utf8'))}catch{}
+const newlyCovered=universe.filter(s=>!isCovered(previous.stocks[s.ticker])&&isCovered(valid[s.ticker])).map(s=>s.ticker);
+const pendingNew=[...new Set([...(priorReport.newlyCoveredSinceLastBatchReport||[]),...newlyCovered])].sort();
+const report={runAt:new Date().toISOString(),universe:universe.length,coverage,coveragePercent:Number((100*coverage/universe.length).toFixed(1)),minimumAnnualYears:3,coverageDefinition:'At least 3 distinct annual fiscal years with numeric operating cash flow, source URL, currency and actual units',uncovered:universe.filter(s=>!isCovered(valid[s.ticker])).map(s=>s.ticker),newlyCoveredThisRun:newlyCovered,newlyCoveredSinceLastBatchReport:pendingNew,cumulativeNewlyCoveredSinceLastBatchReport:pendingNew.length,lastBatchReportAt:priorReport.lastBatchReportAt||null,sourceBlocked:outcomes.unavailable.some(x=>/HTTP 403|source access blocked/i.test(x.reason)),updated:outcomes.updated,unchanged:outcomes.retained,unavailable:outcomes.unavailable};
 fs.writeFileSync('research/cashflow-coverage-report.json',JSON.stringify(report,null,2)+'\n');
 if(outcomes.updated.length)fs.writeFileSync(OUTPUT,JSON.stringify({version:1,updatedAt:report.runAt,stocks:valid},null,2)+'\n');
 console.log('COVERAGE SUMMARY '+JSON.stringify({universe:report.universe,coverage:report.coverage,updated:report.updated.length,unchanged:report.unchanged.length,unavailable:report.unavailable.length}));
