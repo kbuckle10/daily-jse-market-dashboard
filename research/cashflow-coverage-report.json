@@ -1,8 +1,8 @@
 {
   "runAt": "2026-10-20T00:07:15.038Z",
   "universe": 54,
-  "coverage": 53,
-  "coveragePercent": 98.1,
+  "coverage": 54,
+  "coveragePercent": 100,
   "minimumAnnualYears": 3,
   "sourceBlocked": true,
   "updated": [],
@@ -224,5 +224,26 @@
       "ticker": "QAINC",
       "reason": "Skipped: source access blocked (403)"
     }
-  ]
+  ],
+  "coverageDefinition": "At least 3 distinct annual fiscal years with numeric operating cash flow, source URL, currency and actual units",
+  "coverageCheckedAt": "2026-10-27T00:01:23.996Z",
+  "uncovered": [],
+  "newlyCoveredThisRun": [],
+  "newlyCoveredSinceLastBatchReport": [
+    "CPFV"
+  ],
+  "cumulativeNewlyCoveredSinceLastBatchReport": 1,
+  "lastBatchReportAt": null,
+  "auditedBackfill": {
+    "ticker": "CPFV",
+    "fiscalYear": 2023,
+    "periodEnding": "2023-09-30",
+    "operatingCashFlow": 2056117,
+    "investingCashFlow": -7831450,
+    "currency": "BBD",
+    "units": "actual",
+    "sourceUrl": "https://bse.com.bb/wp-content/uploads/2024/06/Eppley-Caribbean-Property-Fund-Annual-Report-2023.pdf",
+    "dataCommit": "5e886bd4b1d31077f23479a265540a8e0c6e3795",
+    "verifiedAt": "2026-10-27T00:01:23.996Z"
+  }
 }
