@@ -1,12 +1,12 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-11T14:56:39.020Z",
+  "updatedAt": "2026-10-27T00:00:38.036Z",
   "stocks": {
     "SEP": {
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -95,7 +95,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "USD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -184,7 +184,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -273,7 +273,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -362,7 +362,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "TTD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -451,7 +451,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -540,7 +540,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2026",
@@ -629,7 +629,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -718,7 +718,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2026",
@@ -807,7 +807,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2026",
@@ -896,7 +896,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -985,7 +985,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -1075,7 +1075,7 @@
         "source": "StockAnalysis",
         "sourceUrl": "https://stockanalysis.com/quote/jmse/WISYNCO/financials/cash-flow-statement/",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2026",
@@ -1152,7 +1152,7 @@
         "source": "StockAnalysis",
         "sourceUrl": "https://stockanalysis.com/quote/jmse/CCC/financials/cash-flow-statement/",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -1241,7 +1241,7 @@
         "source": "StockAnalysis",
         "sourceUrl": "https://stockanalysis.com/quote/jmse/JP/financials/cash-flow-statement/",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -1329,7 +1329,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -1418,7 +1418,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -1507,7 +1507,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "USD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -1596,7 +1596,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -1685,7 +1685,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -1774,7 +1774,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2026",
@@ -1863,7 +1863,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2026",
@@ -1952,7 +1952,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -2028,7 +2028,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -2117,7 +2117,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -2206,7 +2206,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2026",
@@ -2257,7 +2257,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2026",
@@ -2334,7 +2334,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -2423,7 +2423,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -2512,7 +2512,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -2601,7 +2601,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2026",
@@ -2690,7 +2690,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -2779,7 +2779,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -2868,7 +2868,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -2944,7 +2944,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -3033,7 +3033,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "TTD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -3122,7 +3122,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "USD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -3211,7 +3211,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "USD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -3300,7 +3300,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2026",
@@ -3377,7 +3377,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -3466,7 +3466,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -3555,7 +3555,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -3644,7 +3644,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -3733,7 +3733,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -3822,7 +3822,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -3911,7 +3911,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -4000,7 +4000,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -4089,7 +4089,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -4166,7 +4166,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2026",
@@ -4230,7 +4230,7 @@
       "history": {
         "source": "StockAnalysis",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -4320,7 +4320,7 @@
         "source": "Company Annual Report",
         "sourceUrl": "https://www.sagicor.com/en-jm/sagicor-select-funds-2025--annual-report",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -4371,7 +4371,7 @@
         "source": "Company Annual Report",
         "sourceUrl": "https://www.sagicor.com/en-jm/sagicor-real-estate-x-fund-2025-annual-report",
         "currency": "JMD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -4421,7 +4421,7 @@
         "source": "Company Annual Report",
         "sourceUrl": "https://bse.com.bb/wp-content/uploads/2025/12/Eppley-Caribbean-Property-Fund-Annual-Report-2025.pdf",
         "currency": "BBD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2025",
@@ -4448,9 +4448,26 @@
             "leveredFreeCashFlow": null,
             "unleveredFreeCashFlow": null,
             "method": "real_estate_fund"
+          },
+          {
+            "period": "FY 2023",
+            "periodEnding": "2023-09-30",
+            "operatingCashFlow": 2056117,
+            "capitalExpenditures": null,
+            "freeCashFlow": null,
+            "realEstateAcquisitions": null,
+            "realEstateSales": null,
+            "investingCashFlow": -7831450,
+            "leveredFreeCashFlow": null,
+            "unleveredFreeCashFlow": null,
+            "method": "real_estate_fund",
+            "source": "Audited Company Annual Report",
+            "sourceUrl": "https://bse.com.bb/wp-content/uploads/2024/06/Eppley-Caribbean-Property-Fund-Annual-Report-2023.pdf",
+            "comparativeSourceUrl": "https://jamstockex.s3.amazonaws.com/wp-content/uploads/2024/12/ECPF-2024-Annual-Report.pdf"
           }
         ],
-        "note": "Value Fund only, BBD. Investment property additions are included in operating cash flow. No conventional FCF calculated."
+        "note": "Value Fund only; all cash-flow figures are actual BBD (not BBD millions). FY2023 OCF and investing cash flow verified against the audited 2023 Value Fund consolidated cash-flow statement; the FY2024 annual report also contains FY2023 comparative figures. Investment-property additions are classified within operating cash flow; conventional capex and FCF intentionally null.",
+        "updatedAt": "2026-10-27T00:00:38.036Z"
       }
     },
     "PROVEN": {
@@ -4458,7 +4475,7 @@
         "source": "StockAnalysis",
         "sourceUrl": "https://stockanalysis.com/quote/jmse/PROVENJA/financials/cash-flow-statement/",
         "currency": "USD",
-        "units": "millions",
+        "units": "actual",
         "annual": [
           {
             "period": "FY 2026",
