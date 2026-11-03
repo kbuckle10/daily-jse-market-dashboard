@@ -9,9 +9,10 @@ on:
         required: true
         default: true
   schedule:
-    # Jamaica is UTC-5 year-round: 18:15 and 18:45 local, weekdays.
+    # Jamaica is UTC-5 year-round: 17:00, 17:30 and 18:15 local, weekdays.
+    - cron: '0 22 * * 1-5'
+    - cron: '30 22 * * 1-5'
     - cron: '15 23 * * 1-5'
-    - cron: '45 23 * * 1-5'
 
 permissions:
   actions: write
