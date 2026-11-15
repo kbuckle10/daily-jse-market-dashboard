@@ -15,7 +15,7 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   deploy:
@@ -31,10 +31,25 @@ jobs:
           ref: main
       - name: Configure Pages
         uses: actions/configure-pages@v5
+      - name: Stage static site
+        run: |
+          mkdir -p _site
+          tar -cf - \
+            --exclude='./.git' \
+            --exclude='./.github' \
+            --exclude='./node_modules' \
+            --exclude='./_site' \
+            --exclude='./.DS_Store' \
+            . | tar -xf - -C _site
+          test -s _site/index.html
+          test -s _site/data.js
+          echo "Staged dashboard and market data:"
+          ls -lh _site/index.html _site/data.js
       - name: Upload static site
+        id: upload
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
