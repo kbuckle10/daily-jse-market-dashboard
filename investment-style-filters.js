@@ -35,5 +35,19 @@
   function ensureControls(){const tm=document.querySelector('.ticker-manager .ticker-search-wrap');if(tm&&!document.querySelector('[data-style-filter-kind="watch"]'))tm.insertAdjacentElement('afterend',makeBar('watch'));const tb=document.querySelector('.toolbar');if(tb&&!document.querySelector('[data-style-filter-kind="main"]'))tb.insertAdjacentElement('beforebegin',makeBar('main'))}
   let scheduled=false;function schedule(delay=0){if(scheduled)return;scheduled=true;setTimeout(()=>{scheduled=false;ensureControls();applyFilters()},delay)}
   document.addEventListener('click',e=>{if(e.target.closest('.filter-tile,#tableViewBtn,#cardViewBtn,#showAllTickersBtn,[data-ticker],#resetTrackedBtn,[data-fresh-objective]')){schedule(40);setTimeout(()=>{normalizeRatings();fixInvestorBadges()},340)}});document.addEventListener('input',e=>{if(e.target.matches('#tickerSearch'))schedule(30)});document.addEventListener('change',e=>{if(e.target.matches('#sortSelect,#watchlistStatusFilter'))schedule(30)});window.addEventListener('storage',()=>schedule(30));window.addEventListener('jse-focus-change',()=>schedule(0));
+  // The main app rebuilds card/table markup via innerHTML on sort, watchlist,
+  // and filter changes. Reapply the active investment-style selection to new nodes.
+  // Observe child additions only: class updates in applyFilters must not loop.
+  const watchRenderedLists=()=>{
+    const observer=new MutationObserver(records=>{
+      if(records.some(r=>r.addedNodes.length||r.removedNodes.length))schedule(0);
+    });
+    ['stockTableBody','cardView','tickerSearchResults'].forEach(id=>{
+      const root=document.getElementById(id);
+      if(root)observer.observe(root,{childList:true});
+    });
+  };
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',watchRenderedLists);
+  else watchRenderedLists();
   ensureStyles();ensureControls();schedule(0);setTimeout(()=>{normalizeRatings();fixInvestorBadges()},360);window.addEventListener('load',()=>schedule(0));
 })();
