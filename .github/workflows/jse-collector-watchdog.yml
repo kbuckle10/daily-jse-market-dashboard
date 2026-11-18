@@ -9,10 +9,12 @@ on:
         required: true
         default: true
   schedule:
-    # Jamaica is UTC-5 year-round: 17:00, 17:30 and 18:15 local, weekdays.
-    - cron: '0 22 * * 1-5'
-    - cron: '30 22 * * 1-5'
-    - cron: '15 23 * * 1-5'
+    # Jamaica UTC-5 year-round. Stagger checks after the primary and fallback collector slots.
+    # Off-peak minute offsets reduce contention with top-of-hour GitHub schedules.
+    - cron: '11 22 * * 1-5'  # 5:11 PM
+    - cron: '47 22 * * 1-5'  # 5:47 PM
+    - cron: '23 23 * * 1-5'  # 6:23 PM
+    - cron: '11 0 * * 2-6'   # 7:11 PM on previous Jamaica day
 
 permissions:
   actions: write
