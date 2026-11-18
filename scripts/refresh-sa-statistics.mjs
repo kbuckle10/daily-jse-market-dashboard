@@ -31,6 +31,19 @@ const fields=[
  ['statisticsDividendPerShare',['Dividend Per Share']],['statisticsDividendYield',['Dividend Yield'],parsePct],['dividendGrowth',['Dividend Growth (YoY)'],parsePct],['yearsDividendGrowth',['Years of Dividend Growth']],['payoutRatio',['Payout Ratio'],parsePct],['buybackYield',['Buyback Yield'],parsePct],['shareholderYield',['Shareholder Yield'],parsePct],['earningsYield',['Earnings Yield'],parsePct],['fcfYield',['FCF Yield'],parsePct],['altmanZScore',['Altman Z-Score']],['piotroskiFScore',['Piotroski F-Score']]
 ];
 for(const [key,labels,parser] of fields)setNum(s,key,map,labels,parser||parsePlain);
+const scrapedBvps=Number(s.bookValuePerShare);
+const referencePb=Number(s.pb);
+const impliedBvps=Number(s.price)>0&&referencePb>0?Number(s.price)/referencePb:null;
+if(scrapedBvps>0&&impliedBvps>0&&(scrapedBvps/impliedBvps>3||impliedBvps/scrapedBvps>3)){
+  console.warn(`REJECTED implausible BVPS ${s.ticker}: scraped=${scrapedBvps}, price/PB=${impliedBvps.toFixed(2)}`);
+  s.bookValuePerShare=Number(impliedBvps.toFixed(2));
+  s.bookValueSource='Cross-checked JSE price / StockAnalysis P/B';
+}
+if(s.ticker==='SCIJMD'){
+  s.bookValuePerShare=22.56;
+  s.bookValueSource='SCI September 2026 quarterly results (JMD/share)';
+}
+
 if(s.price!=null&&s.bookValuePerShare!=null&&Number(s.bookValuePerShare)>0){s.calculatedPbFromJsePrice=Number((Number(s.price)/Number(s.bookValuePerShare)).toFixed(4));s.bookDiscountPct=Number(((Number(s.bookValuePerShare)-Number(s.price))/Number(s.bookValuePerShare)*100).toFixed(2));}
 // Keep paid trailing-12-month DPS (ttmDps) separate from the current annual dividend rate.
 // StockAnalysis Dividend Per Share reflects the current annual dividend amount and can include
