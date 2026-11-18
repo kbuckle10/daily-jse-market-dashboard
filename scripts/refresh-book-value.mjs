@@ -60,9 +60,19 @@ function ratingFromScore(score){
 const data=readData();
 for(const s of data.stocks){
   const price=n(s.price);
-  const directBvps=n(s.statisticsBookValuePerShare ?? s.bookValuePerShare);
   const reportedPb=n(s.pb);
-  const calculatedPb=(price!=null&&price>0&&directBvps!=null&&directBvps>0)?price/directBvps:null;
+  const rawBvps=n(s.statisticsBookValuePerShare ?? s.bookValuePerShare);
+  // The issuer's September 2026 quarterly book value per ordinary share is
+  // J$22.56 (Mayberry analysis of SCI September 2026 financial results).
+  // StockAnalysis JMSE statistics independently reports a ~J$22 BVPS and
+  // ~0.55x P/B; a scraped J$2,211.25 is a unit/parsing anomaly, not a discount.
+  const officialBvps=s.ticker==='SCIJMD'?22.56:null;
+  const impliedBvps=(price>0&&reportedPb>0)?price/reportedPb:null;
+  const inconsistent=rawBvps>0&&impliedBvps>0&&
+    (rawBvps/impliedBvps>3 || impliedBvps/rawBvps>3);
+  if(inconsistent)console.warn(`BVPS mismatch ${s.ticker}: scraped=${rawBvps}, price/PB=${impliedBvps.toFixed(2)}; rejecting inconsistent value`);
+  const directBvps=officialBvps ?? (inconsistent?impliedBvps:rawBvps);
+  const calculatedPb=(price>0&&directBvps>0)?price/directBvps:null;
   const pb=calculatedPb ?? reportedPb;
   const cls=sectorClass(s.sector);
   const sig=labelForPb(pb);
@@ -72,7 +82,7 @@ for(const s of data.stocks){
 
   if(directBvps!=null&&directBvps>0){
     s.bookValuePerShare=Number(directBvps.toFixed(2));
-    s.bookValueSource=s.statisticsSource==='StockAnalysis'?'StockAnalysis Statistics':'Existing direct BVPS';
+    s.bookValueSource=officialBvps!=null?'SCI September 2026 issuer results (Mayberry, JMD/share)':inconsistent?'Derived from JSE price / StockAnalysis reported P/B (BVPS mismatch rejected)':s.statisticsSource==='StockAnalysis'?'StockAnalysis Statistics':'Existing direct BVPS';
   } else if(price!=null&&price>0&&reportedPb!=null&&reportedPb>0){
     s.bookValuePerShare=Number((price/reportedPb).toFixed(2));
     s.bookValueSource='Derived from price / reported P/B';
@@ -92,7 +102,8 @@ for(const s of data.stocks){
   const valuationPb=n(s.calculatedPbFromJsePrice) ?? reportedPb;
   const adj=adjustment(valuationPb,cls);
   s.bookValueScoreAdjustment=adj;
-  const baseScore=Number.isFinite(n(s.score))?n(s.score):null;
+  const priorAdjustment=n(s.bookValueScoreAdjustment) ?? 0;
+  const baseScore=Number.isFinite(n(s.score))?(s.analysisSource==='AUTO-SA'?clamp(n(s.score)-priorAdjustment,0,100):n(s.score)):null;
   s.bookAdjustedScore=baseScore==null?null:clamp(baseScore+adj,0,100);
   s.bookAdjustedRating=s.bookAdjustedScore==null?(s.rating||'N/A'):ratingFromScore(s.bookAdjustedScore);
   const comparison=s.bookDiscountPct==null?'book value unavailable':s.bookDiscountPct>0?`${s.bookDiscountPct}% below book`:s.bookDiscountPct<0?`${Math.abs(s.bookDiscountPct)}% above book`:'at book value';
@@ -103,7 +114,7 @@ for(const s of data.stocks){
     s.rating=s.bookAdjustedRating;
     s.ratingClass=/Buy/i.test(s.rating)?'buy':s.rating==='Avoid'?'avoid':'hold';
     s.allocation=Math.max(s.score,1);
-    s.reason=`${s.reason||''} Book-value lens: ${s.bookValueAnalysis}`.trim();
+    s.reason=`${(s.reason||'').split(' Book-value lens:')[0]} Book-value lens: ${s.bookValueAnalysis}`.trim();
   }
 }
 // This is written by the final enrichment step, so the UI can show the age of the
