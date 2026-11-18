@@ -12,12 +12,15 @@ on:
       - 'package-lock.json'
       - '.github/jse-refresh-request.txt'
   schedule:
-    # One off-peak trigger. GitHub documents that scheduled events can be delayed
-    # or dropped under scheduler load; avoid :00/:30; 20:07 UTC equals 15:07 Jamaica time (UTC-5 year-round).
-    - cron: '7 20 * * 1-5'
+    # Jamaica UTC-5 year-round. Redundant off-peak opportunities.
+    # Only the first delivered run for a Jamaica trading day collects data.
+    - cron: '7 20 * * 1-5'   # 3:07 PM
+    - cron: '19 21 * * 1-5'  # 4:19 PM
+    - cron: '41 22 * * 1-5'  # 5:41 PM
 
 permissions:
   contents: write
+  actions: read
 
 concurrency:
   group: daily-jse-main-market-refresh
@@ -39,21 +42,47 @@ jobs:
           ref: main
           fetch-depth: 0
       - id: guard
-        env:
-          EVENT_NAME: ${{ github.event_name }}
-          EVENT_SCHEDULE: ${{ github.event.schedule }}
-        run: |
-          if [ "$EVENT_NAME" = "schedule" ]; then
-            DOW=$(TZ=America/Jamaica date +%u)
-            if [ "$DOW" -ge 6 ]; then
-              echo "Weekend in Jamaica; skipping scheduled refresh."
-              echo "run_refresh=false" >> "$GITHUB_OUTPUT"
-              exit 0
-            fi
-          fi
-          # There is now a single weekday schedule, so every delivered schedule event
-          # is authoritative. Duplicate protection is handled by workflow concurrency.
-          echo "run_refresh=true" >> "$GITHUB_OUTPUT"
+        name: Prevent duplicate daily scheduled collections
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            if (context.eventName !== 'schedule') {
+              core.setOutput('run_refresh', 'true');
+              return;
+            }
+            const now = new Date();
+            const fmt = new Intl.DateTimeFormat('en-CA', {
+              timeZone: 'America/Jamaica', year: 'numeric', month: '2-digit',
+              day: '2-digit', weekday: 'short'
+            });
+            const parts = fmt.formatToParts(now);
+            const p = type => parts.find(x => x.type === type)?.value;
+            const day = `${p('year')}-${p('month')}-${p('day')}`;
+            if (['Sat', 'Sun'].includes(p('weekday'))) {
+              core.info('Weekend in Jamaica; skipping.');
+              core.setOutput('run_refresh', 'false');
+              return;
+            }
+            const midnight = Date.parse(`${day}T05:00:00Z`);
+            const runs = await github.paginate(github.rest.actions.listWorkflowRuns, {
+              owner: context.repo.owner, repo: context.repo.repo,
+              workflow_id: 'refresh-sa-performance.yml',
+              created: `>=${day}`, per_page: 100
+            });
+            const previous = runs.filter(r =>
+              r.id !== context.runId &&
+              Date.parse(r.created_at) >= midnight &&
+              Date.parse(r.created_at) <= Date.now() &&
+              (r.event === 'schedule' || r.event === 'workflow_dispatch' || r.event === 'push')
+            );
+            if (previous.length) {
+              core.info(`Skipping duplicate for ${day}: ${previous.map(r=>`#${r.run_number} ${r.status}/${r.conclusion}`).join(', ')}`);
+              core.setOutput('run_refresh', 'false');
+            } else {
+              core.info(`First collector run for Jamaica trading day ${day}; proceeding.`);
+              core.setOutput('run_refresh', 'true');
+            }
       - id: head
         if: steps.guard.outputs.run_refresh == 'true'
         run: echo "start_head=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
