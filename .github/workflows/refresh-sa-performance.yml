@@ -225,6 +225,12 @@ jobs:
           }
           if (errors.length) throw Error(`Core 12-stock validation failed: ${errors.join(', ')}`);
 
+          const fiveYearCaptured=d.stocks.filter(s=>Number.isFinite(s.y5)).length;
+          console.log(`StockAnalysis 5Y captured: ${fiveYearCaptured}/${d.stocks.length}`);
+          if(fiveYearCaptured===0){
+            console.warn('::warning title=JSE 5Y extraction unavailable::No five-year chart returns were captured. Check collect job SA 5Y diagnostic logs; daily market data still publishes.');
+          }
+
           const g = d.stocks.find(x => x.ticker === 'GHL');
           if (g && g.primaryListing?.market !== 'TTSE') throw Error(`GHL primary listing not TTSE: ${g.primaryListing?.market}`);
           if (g && g.latestDividendCurrency !== 'TTD') throw Error(`GHL dividend currency not TTD: ${g.latestDividendCurrency}`);
