@@ -79,20 +79,22 @@ async function readHistoryRows(context,ticker){
     if(!await safeGoto(page,`https://stockanalysis.com/quote/jmse/${ticker}/history/`)) return [];
     await dismissOverlays(page);
     await page.waitForSelector('table tbody tr',{timeout:12000}).catch(()=>{});
-    if(await clickExactLabel(page,'1Y')){
+    // Request the longest available price-history range; the page may not offer 5Y.
+    // Missing history is reported as unavailable rather than extrapolated.
+    if(await clickExactLabel(page,'5Y') || await clickExactLabel(page,'Max') || await clickExactLabel(page,'All') || await clickExactLabel(page,'1Y')){
       await page.waitForTimeout(800);
       await page.waitForSelector('table tbody tr',{timeout:8000}).catch(()=>{});
     }
     const collected=[];
     const seen=new Set();
-    for(let pageNo=0; pageNo<12; pageNo++){
+    for(let pageNo=0; pageNo<48; pageNo++){
       const rows=await extractHistoryRows(page);
       for(const r of rows){
         const key=`${r.date.toISOString().slice(0,10)}|${r.close}`;
         if(!seen.has(key)){seen.add(key);collected.push(r);}
       }
-      const years=new Set(collected.map(r=>r.date.getFullYear()));
-      if(years.size>=2) break;
+      const dates=collected.map(r=>r.date.valueOf());
+      if(dates.length>1 && Math.max(...dates)-Math.min(...dates)>=366*5*86400000) break;
       let clicked=false;
       const buttons=page.locator('button');
       const n=await buttons.count().catch(()=>0);
@@ -122,6 +124,17 @@ function historicalReturn(rows,days){
   const target=new Date(latest.date); target.setDate(target.getDate()-days);
   const comparison=sorted.find(r=>r.date<=target);
   return comparison ? ((latest.close/comparison.close)-1)*100 : null;
+}
+// Require a genuinely comparable full-year baseline, not the earliest available row.
+function multiYearReturn(rows,years){
+  if(rows.length<2)return null;
+  const sorted=[...rows].filter(r=>Number.isFinite(r.close)&&r.close>0).sort((a,b)=>b.date-a.date);
+  if(sorted.length<2)return null;
+  const latest=sorted[0], target=new Date(latest.date);
+  target.setUTCFullYear(target.getUTCFullYear()-years);
+  const baseline=sorted.find(r=>r.date<=target);
+  if(!baseline || target.valueOf()-baseline.date.valueOf()>14*86400000)return null;
+  return Number(((latest.close/baseline.close-1)*100).toFixed(2));
 }
 function ytdReturn(rows){
   if(rows.length<2) return null;
@@ -230,6 +243,12 @@ for(const stock of data.stocks){
         stock.performanceFieldStatus.sinceListing='history-derived';
         console.log(`sinceListing: ${stock.sinceListing}% from ${stock.listingHistoryDate} (earliest SA trading history)`);
       }
+    }
+    for(const [field,years] of [['y3',3],['y5',5]]){
+      const value=multiYearReturn(rows,years);
+      stock[field]=value;
+      stock.performanceFieldStatus[field]=value==null?'insufficient-history':'history-derived';
+      if(value!=null)console.log(`${field}: ${value}% (SA historical close)`);
     }
     const fallbacks={w1:7,m1:30,m3:92,m6:183,y1:366};
     for(const [field,days] of Object.entries(fallbacks)){
