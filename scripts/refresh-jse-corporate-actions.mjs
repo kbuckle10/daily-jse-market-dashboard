@@ -35,7 +35,27 @@ async function worker(){while(true){const i=cursor++;if(i>=queue.length)return;c
       s.jseDividendCurrencyHint=declared.currency;
       s.jseDividendCurrenciesSeen=ticker==='SCIJMD'?[...new Set(['USD',...currencies])]:currencies;
       s.jseLatestCorporateActionDividend={amount:declared.amount,currency:declared.currency,exDate:row.exDate||null,recordDate:row.recordDate||null,payDate:row.payDate||null,url:s.jse};
-      s.latestDividend=declared.amount;s.latestDividendCurrency=declared.currency;s.exDate=row.exDate||s.exDate;s.recordDate=row.recordDate||s.recordDate;s.payDate=row.payDate||s.payDate;s.dividendUrl=s.jse;s.dividendStatus=`Official JSE corporate action dividend (${declared.currency})`;s.latestDividendDataStatus='official-jse';const ttm=ttmFromRows(rows);if(ttm){s.ttmDps=ttm.amount;s.ttmDpsCurrency=ttm.currency;s.ttmDpsStatus='official-jse-corporate-actions-trailing-12m';s.ttmDividendCount=ttm.count;s.ttmWindowStart=ttm.windowStart;s.ttmWindowEnd=ttm.windowEnd;s.ttmDateBasis=ttm.dateBasis;if(s.price>0&&ttm.currency==='JMD')s.trailingYield=Number((ttm.amount/s.price*100).toFixed(2));}s.jseCorporateActionStatus='ok';updated++;console.log(`${s.ticker}: latest ${row.currency} ${row.amount}; currencies=${currencies.join(',')||'N/A'}; TTM ${ttm?`${ttm.currency} ${ttm.amount} (${ttm.count} payments, ${ttm.windowStart}..${ttm.windowEnd}, ${ttm.dateBasis})`:'N/A'}; Ex ${row.exDate||'N/A'} Record ${row.recordDate||'N/A'} Pay ${row.payDate||'N/A'}`);}catch(e){errors++;s.jseCorporateActionStatus='scraper-error';console.warn(`${s.ticker}: ${e.message}`);}finally{await page.close();}}}
+      // Preserve the newer SA declaration when JSE corporate-action listings lag.
+      // Compare ex/record dates (event identity), not the payment date alone.
+      const sa=s.saLatestDividend;
+      const saEvent=dateValue(sa?.exDate||sa?.recordDate);
+      const jseEvent=dateValue(row.exDate||row.recordDate);
+      const saIsNewer=sa&&Number.isFinite(Number(sa.amount))&&Number(sa.amount)>0&&saEvent>0&&jseEvent>0&&saEvent>jseEvent;
+      const sameCurrency=String(sa?.currency||'').toUpperCase()===declared.currency;
+      const useSa=saIsNewer&&sameCurrency;
+      if(useSa){
+        s.latestDividend=Number(sa.amount);s.latestDividendCurrency=declared.currency;
+        s.exDate=sa.exDate||s.exDate;s.recordDate=sa.recordDate||s.recordDate;s.payDate=sa.payDate||s.payDate;
+        s.dividendUrl=sa.url||s.dividendUrl;
+        s.dividendStatus=`StockAnalysis newer dividend (awaiting JSE corporate-action update, ${declared.currency})`;
+        s.latestDividendDataStatus='sa-newer-than-jse';
+        s.latestDividendDeclaredAmountStatus='sa-newer-awaiting-jse';
+        if(declared.currency==='JMD'){s.latestDividendJmd=Number(sa.amount);s.latestDividendJmdEquivalent=Number(sa.amount);}
+        console.log(`${s.ticker}: SA newer dividend ${declared.currency} ${sa.amount} ex=${sa.exDate} pay=${sa.payDate}; JSE older ${declared.amount} ex=${row.exDate}`);
+      }else{
+        s.latestDividend=declared.amount;s.latestDividendCurrency=declared.currency;s.exDate=row.exDate||s.exDate;s.recordDate=row.recordDate||s.recordDate;s.payDate=row.payDate||s.payDate;s.dividendUrl=s.jse;s.dividendStatus=`Official JSE corporate action dividend (${declared.currency})`;s.latestDividendDataStatus='official-jse';
+        if(saIsNewer&&!sameCurrency)console.warn(`${s.ticker}: newer SA dividend currency ${sa.currency} differs from JSE ${declared.currency}; retaining JSE pending review`);
+      }const ttm=ttmFromRows(rows);if(ttm){s.ttmDps=ttm.amount;s.ttmDpsCurrency=ttm.currency;s.ttmDpsStatus='official-jse-corporate-actions-trailing-12m';s.ttmDividendCount=ttm.count;s.ttmWindowStart=ttm.windowStart;s.ttmWindowEnd=ttm.windowEnd;s.ttmDateBasis=ttm.dateBasis;if(s.price>0&&ttm.currency==='JMD')s.trailingYield=Number((ttm.amount/s.price*100).toFixed(2));}s.jseCorporateActionStatus='ok';updated++;console.log(`${s.ticker}: latest ${row.currency} ${row.amount}; currencies=${currencies.join(',')||'N/A'}; TTM ${ttm?`${ttm.currency} ${ttm.amount} (${ttm.count} payments, ${ttm.windowStart}..${ttm.windowEnd}, ${ttm.dateBasis})`:'N/A'}; Ex ${row.exDate||'N/A'} Record ${row.recordDate||'N/A'} Pay ${row.payDate||'N/A'}`);}catch(e){errors++;s.jseCorporateActionStatus='scraper-error';console.warn(`${s.ticker}: ${e.message}`);}finally{await page.close();}}}
 await Promise.all(Array.from({length:Math.min(6,queue.length||1)},()=>worker()));
 await browser.close();
 writeData(data);
