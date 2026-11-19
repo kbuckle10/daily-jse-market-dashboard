@@ -53,18 +53,35 @@ async function safeGoto(page,url){
 }
 async function capturePeriod(page,label){
   const target=returnRegex(label);
-  if(!await clickExactLabel(page,label)) return null;
+  const clicked=await clickExactLabel(page,label);
+  if(!clicked){
+    if(label==='5Y')console.warn('SA 5Y diagnostic: period selector was not clickable');
+    return null;
+  }
   for(let i=0;i<16;i++){
     await page.waitForTimeout(300);
     const body=await page.locator('body').innerText().catch(()=>'');
     const m=body.match(target);
     if(m) return Number(m[1]);
-    // SA overview chart renders the selected period's return as a standalone
-    // percentage badge below the 1M/YTD/3M/6M/1Y/5Y/Max selector.
     if(label==='5Y'){
-      const chart=body.match(/(?:1M\s+YTD\s+3M\s+6M\s+1Y\s+5Y\s+Max)([\s\S]{0,160}?)(?:Full Chart|Watchlist|Alerts)/i);
-      const badge=chart?.[1]?.match(/([+-]\d+(?:\.\d+)?)\s*%/);
-      if(badge)return Number(badge[1]);
+      // SA renders the chart return badge separately from the selected period.
+      // Search only between the chart's period-selector group and Full Chart.
+      const normalized=body.replace(/\u00a0/g,' ');
+      const chart=normalized.match(/1M\s+YTD\s+3M\s+6M\s+1Y\s+5Y\s+Max([\s\S]{0,400}?)(?:Full Chart|Watchlist|Alerts)/i);
+      const pct=chart?.[1]?.match(/([+-]?\d+(?:\.\d+)?)\s*%/);
+      if(pct)return Number(pct[1]);
+      // Some chart libraries expose labels in textContent, not innerText.
+      const textContent=await page.locator('body').textContent().catch(()=>'');
+      const compact=textContent?.replace(/\u00a0/g,' ')||'';
+      const chartText=compact.match(/1M\s*YTD\s*3M\s*6M\s*1Y\s*5Y\s*Max([\s\S]{0,400}?)(?:Full Chart|Watchlist|Alerts)/i);
+      const textPct=chartText?.[1]?.match(/([+-]?\d+(?:\.\d+)?)\s*%/);
+      if(textPct)return Number(textPct[1]);
+      if(i===15){
+        console.warn('SA 5Y diagnostic: no chart badge in text after 5Y selection; nearby visible text:',normalized.slice(Math.max(0,normalized.indexOf('1M\nYTD')-80),normalized.indexOf('1M\nYTD')+350).replace(/\n/g,' | ').slice(0,500));
+        console.warn('SA 5Y diagnostic: chart textContent:',String(chartText?.[0]||'not-found').slice(0,500));
+        const near=await page.getByText('5Y',{exact:true}).first().evaluate(el=>el.parentElement?.parentElement?.outerHTML.slice(0,1500)).catch(()=>null);
+        console.warn('SA 5Y diagnostic: selector surrounding HTML:',near||'not-found');
+      }
     }
   }
   return null;
