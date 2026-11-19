@@ -59,6 +59,13 @@ async function capturePeriod(page,label){
     const body=await page.locator('body').innerText().catch(()=>'');
     const m=body.match(target);
     if(m) return Number(m[1]);
+    // SA overview chart renders the selected period's return as a standalone
+    // percentage badge below the 1M/YTD/3M/6M/1Y/5Y/Max selector.
+    if(label==='5Y'){
+      const chart=body.match(/(?:1M\\s+YTD\\s+3M\\s+6M\\s+1Y\\s+5Y\\s+Max)([\\s\\S]{0,160}?)(?:Full Chart|Watchlist|Alerts)/i);
+      const badge=chart?.[1]?.match(/([+-]\\d+(?:\\.\\d+)?)\\s*%/);
+      if(badge)return Number(badge[1]);
+    }
   }
   return null;
 }
