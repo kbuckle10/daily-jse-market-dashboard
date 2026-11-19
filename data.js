@@ -55,7 +55,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 43.4,
       "dividendGrowth": -33.33,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:39.529Z",
+      "researchUpdated": "2026-11-19T05:11:15.647Z",
       "fairValue": 12.41,
       "dividendDataStatus": "validated",
       "researchFetchStatus": "ok",
@@ -68,7 +68,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "asset-heavy",
       "bookValueStatus": "HIGH PREMIUM",
@@ -93,7 +93,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/SEP/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:56.743Z",
+      "cashFlowUpdated": "2026-11-19T05:11:35.543Z",
       "fcfPayoutRatio": 14.34,
       "cashFlowDataStatus": "captured",
       "marketCap": 88810000000,
@@ -170,7 +170,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/SEP/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:52.043Z",
+      "statisticsUpdated": "2026-11-19T05:11:29.715Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "ttmWindowStart": "2025-11-19",
@@ -203,7 +203,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2026-12-04",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=137"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:04:35.413Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:12:01.290Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=137",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -212,7 +212,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/SEP/financials/",
-      "ffoUpdated": "2026-11-19T05:04:00.628Z",
+      "ffoUpdated": "2026-11-19T05:11:39.463Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "Semi-Annual",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -264,7 +264,7 @@ window.JSE_DASHBOARD_DATA = {
       "canonicalYieldBasis": "trailingYield",
       "latestDividendJmdEquivalent": 0.121,
       "latestDividendOriginalCurrencyBasis": "JSE dividend history / native JMD",
-      "y5": null
+      "y5": 50.9
     },
     {
       "rank": 2,
@@ -319,7 +319,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 35.22,
       "dividendGrowth": 2.94,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:47.481Z",
+      "researchUpdated": "2026-11-19T05:11:37.565Z",
       "fairValue": 24.93,
       "dividendDataStatus": "validated",
       "researchFetchStatus": "ok",
@@ -332,7 +332,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "asset-heavy",
       "bookValueStatus": "BELOW BOOK",
@@ -357,7 +357,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/KW/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:04:03.694Z",
+      "cashFlowUpdated": "2026-11-19T05:11:54.017Z",
       "fcfPayoutRatio": 76.09,
       "cashFlowDataStatus": "captured",
       "marketCap": 46320000000,
@@ -434,7 +434,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/KW/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:59.609Z",
+      "statisticsUpdated": "2026-11-19T05:11:49.863Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "ttmWindowStart": "2025-11-19",
@@ -467,7 +467,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2026-08-14",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=91"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:05:00.837Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:12:43.875Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=91",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -476,7 +476,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/KW/financials/",
-      "ffoUpdated": "2026-11-19T05:04:06.762Z",
+      "ffoUpdated": "2026-11-19T05:11:57.078Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "Semi-Annual",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -526,7 +526,7 @@ window.JSE_DASHBOARD_DATA = {
       "latestDividendDisplayCurrency": "JMD",
       "jseSector": "OTHER",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": -28.39
     },
     {
       "rank": 3,
@@ -581,7 +581,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 39.96,
       "dividendGrowth": 36.67,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:35.607Z",
+      "researchUpdated": "2026-11-19T05:11:26.585Z",
       "fairValue": 73.67,
       "dividendDataStatus": "validated",
       "researchFetchStatus": "ok",
@@ -594,7 +594,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "book-sensitive",
       "bookValueStatus": "BELOW BOOK",
@@ -619,7 +619,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "FY 2026",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/NCBFG/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:56.971Z",
+      "cashFlowUpdated": "2026-11-19T05:11:44.323Z",
       "fcfPayoutRatio": null,
       "cashFlowDataStatus": "captured",
       "marketCap": 183830000000,
@@ -696,7 +696,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/NCBFG/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:50.562Z",
+      "statisticsUpdated": "2026-11-19T05:11:39.424Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "ttmWindowStart": "2025-11-19",
@@ -729,7 +729,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2026-09-11",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=1600012"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:04:39.332Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:12:10.005Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=1600012",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -738,7 +738,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/NCBFG/financials/",
-      "ffoUpdated": "2026-11-19T05:04:01.794Z",
+      "ffoUpdated": "2026-11-19T05:11:48.724Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "Quarterly",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -790,7 +790,7 @@ window.JSE_DASHBOARD_DATA = {
       "canonicalYieldBasis": "trailingYield",
       "latestDividendJmdEquivalent": 0.55,
       "latestDividendOriginalCurrencyBasis": "JSE dividend history / native JMD",
-      "y5": null
+      "y5": -31.47
     },
     {
       "rank": 4,
@@ -845,7 +845,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 61.39,
       "dividendGrowth": -10.24,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:34.511Z",
+      "researchUpdated": "2026-11-19T05:11:26.740Z",
       "fairValue": 29.91,
       "dividendDataStatus": "validated",
       "researchFetchStatus": "ok",
@@ -858,7 +858,7 @@ window.JSE_DASHBOARD_DATA = {
         "w1": "history-derived",
         "y1": "captured",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "book-sensitive",
       "bookValueStatus": "PREMIUM",
@@ -883,7 +883,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/SJ/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:56.590Z",
+      "cashFlowUpdated": "2026-11-19T05:11:43.395Z",
       "fcfPayoutRatio": null,
       "cashFlowDataStatus": "captured",
       "marketCap": 169220000000,
@@ -960,7 +960,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/SJ/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:50.211Z",
+      "statisticsUpdated": "2026-11-19T05:11:39.096Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "ttmWindowStart": "2025-11-19",
@@ -993,7 +993,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2026-10-08",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=297"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:04:40.748Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:12:07.602Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=297",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -1002,7 +1002,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/SJ/financials/",
-      "ffoUpdated": "2026-11-19T05:04:01.682Z",
+      "ffoUpdated": "2026-11-19T05:11:46.918Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "Semi-Annual",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -1054,7 +1054,7 @@ window.JSE_DASHBOARD_DATA = {
       "latestDividendDisplayCurrency": "JMD",
       "jseSector": "CONGLOMERATES",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": -18.11
     },
     {
       "rank": 5,
@@ -1108,7 +1108,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 26.27,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:11.939Z",
+      "researchUpdated": "2026-11-19T05:11:01.045Z",
       "fairValue": 63.05,
       "dividendDataStatus": "validated",
       "researchFetchStatus": "ok",
@@ -1121,7 +1121,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "book-sensitive",
       "bookValueStatus": "NEAR BOOK",
@@ -1146,7 +1146,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/SGJ/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:31.294Z",
+      "cashFlowUpdated": "2026-11-19T05:11:15.189Z",
       "fcfPayoutRatio": null,
       "cashFlowDataStatus": "captured",
       "marketCap": 217810000000,
@@ -1223,7 +1223,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/SGJ/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:24.918Z",
+      "statisticsUpdated": "2026-11-19T05:11:11.223Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "ttmWindowStart": "2025-11-19",
@@ -1256,7 +1256,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2026-10-22",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=133"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:04:39.989Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:12:03.026Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=133",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -1265,7 +1265,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/SGJ/financials/",
-      "ffoUpdated": "2026-11-19T05:03:35.852Z",
+      "ffoUpdated": "2026-11-19T05:11:18.533Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "Quarterly",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -1314,7 +1314,7 @@ window.JSE_DASHBOARD_DATA = {
       "latestDividendDisplayCurrency": "JMD",
       "jseSector": "FINANCE",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": 97.18
     },
     {
       "rank": 6,
@@ -1369,7 +1369,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 49.18,
       "dividendGrowth": 29.49,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:13.264Z",
+      "researchUpdated": "2026-11-19T05:11:02.473Z",
       "fairValue": 8.27,
       "dividendDataStatus": "validated",
       "researchFetchStatus": "ok",
@@ -1382,7 +1382,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "asset-heavy",
       "bookValueStatus": "HIGH PREMIUM",
@@ -1407,7 +1407,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/TJH/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:35.359Z",
+      "cashFlowUpdated": "2026-11-19T05:11:17.079Z",
       "fcfPayoutRatio": 33.72,
       "cashFlowDataStatus": "captured",
       "marketCap": 130259999999.99998,
@@ -1484,7 +1484,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/TJH/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:28.924Z",
+      "statisticsUpdated": "2026-11-19T05:11:12.945Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "ttmWindowStart": "2025-11-19",
@@ -1517,7 +1517,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2026-10-23",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=1600100"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:04:10.689Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:11:39.246Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=1600100",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -1526,7 +1526,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/TJH/financials/",
-      "ffoUpdated": "2026-11-19T05:03:39.880Z",
+      "ffoUpdated": "2026-11-19T05:11:20.242Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "Semi-Annual",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -1578,7 +1578,7 @@ window.JSE_DASHBOARD_DATA = {
       "latestDividendDisplayCurrency": "JMD",
       "jseSector": "OTHER",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": 761.16
     },
     {
       "rank": 7,
@@ -1632,7 +1632,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:02:49.410Z",
+      "researchUpdated": "2026-11-19T05:11:06.826Z",
       "fairValue": 12.15,
       "dividendDataStatus": "not-found",
       "researchFetchStatus": "ok",
@@ -1645,7 +1645,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "low-weight",
       "bookValueStatus": "NEAR BOOK",
@@ -1666,7 +1666,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/CPJ/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:03.629Z",
+      "cashFlowUpdated": "2026-11-19T05:11:20.801Z",
       "cashFlowDataStatus": "captured",
       "marketCap": 7980000000,
       "enterpriseValue": 15450000000,
@@ -1742,7 +1742,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/CPJ/statistics/",
-      "statisticsUpdated": "2026-11-19T05:02:59.763Z",
+      "statisticsUpdated": "2026-11-19T05:11:17.086Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "currentAnnualDps": null,
@@ -1751,7 +1751,7 @@ window.JSE_DASHBOARD_DATA = {
       "currentAnnualDpsSource": "StockAnalysis Statistics",
       "currentDividendYield": 0,
       "saLatestDividendStatus": "not-found",
-      "jseQuoteVerifiedAt": "2026-11-19T05:03:30.380Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:11:45.079Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=256",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -1760,7 +1760,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/CPJ/financials/",
-      "ffoUpdated": "2026-11-19T05:03:06.467Z",
+      "ffoUpdated": "2026-11-19T05:11:24.188Z",
       "ffoDataStatus": "not-found",
       "dividendFrequencyStatus": "not-found",
       "relativeVolume20D": 0.01,
@@ -1806,7 +1806,7 @@ window.JSE_DASHBOARD_DATA = {
       "latestDividendDisplayCurrency": "JMD",
       "jseSector": "RETAIL",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": -23.68
     },
     {
       "rank": 8,
@@ -1861,7 +1861,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 32.46,
       "dividendGrowth": 9.7,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:12.199Z",
+      "researchUpdated": "2026-11-19T05:10:48.104Z",
       "fairValue": 86.9,
       "dividendDataStatus": "validated",
       "researchFetchStatus": "ok",
@@ -1874,7 +1874,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "asset-heavy",
       "bookValueStatus": "BELOW BOOK",
@@ -1899,7 +1899,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/GK/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:25.979Z",
+      "cashFlowUpdated": "2026-11-19T05:11:04.113Z",
       "fcfPayoutRatio": 19.44,
       "cashFlowDataStatus": "captured",
       "marketCap": 80850000000,
@@ -1976,7 +1976,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/GK/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:22.183Z",
+      "statisticsUpdated": "2026-11-19T05:10:59.607Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "ttmWindowStart": "2025-11-19",
@@ -2009,7 +2009,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2026-09-21",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=55"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:03:55.444Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:11:27.061Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=55",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -2018,7 +2018,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/GK/financials/",
-      "ffoUpdated": "2026-11-19T05:03:29.023Z",
+      "ffoUpdated": "2026-11-19T05:11:07.685Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "Quarterly",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -2070,7 +2070,7 @@ window.JSE_DASHBOARD_DATA = {
       "canonicalYieldBasis": "trailingYield",
       "latestDividendJmdEquivalent": 0.8,
       "latestDividendOriginalCurrencyBasis": "JSE dividend history / native JMD",
-      "y5": null
+      "y5": -17.12
     },
     {
       "rank": 9,
@@ -2123,7 +2123,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 14.64,
       "dividendGrowth": -64.44,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:04.902Z",
+      "researchUpdated": "2026-11-19T05:10:49.303Z",
       "fairValue": 4.26,
       "dividendDataStatus": "validated",
       "researchFetchStatus": "ok",
@@ -2136,7 +2136,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "book-sensitive",
       "bookValueStatus": "PREMIUM",
@@ -2162,7 +2162,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/GENAC/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:24.819Z",
+      "cashFlowUpdated": "2026-11-19T05:11:06.027Z",
       "fcfPayoutRatio": 23.64,
       "cashFlowDataStatus": "captured",
       "marketCap": 9450000000,
@@ -2239,7 +2239,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/GENAC/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:18.709Z",
+      "statisticsUpdated": "2026-11-19T05:11:01.137Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "ttmWindowStart": "2025-11-19",
@@ -2272,7 +2272,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2026-02-06",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=258"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:03:57.532Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:11:29.769Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=258",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -2281,7 +2281,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/GENAC/financials/",
-      "ffoUpdated": "2026-11-19T05:03:29.501Z",
+      "ffoUpdated": "2026-11-19T05:11:09.618Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "Annual",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -2331,7 +2331,7 @@ window.JSE_DASHBOARD_DATA = {
       "latestDividendDisplayCurrency": "JMD",
       "jseSector": "INSURANCE",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": 14.29
     },
     {
       "rank": 10,
@@ -2386,7 +2386,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 93.67,
       "dividendGrowth": 8,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:17.026Z",
+      "researchUpdated": "2026-11-19T05:10:50.159Z",
       "fairValue": 27.99,
       "dividendDataStatus": "validated",
       "researchFetchStatus": "ok",
@@ -2399,7 +2399,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "low-weight",
       "bookValueStatus": "HIGH PREMIUM",
@@ -2424,7 +2424,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/CAR/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:31.092Z",
+      "cashFlowUpdated": "2026-11-19T05:11:07.715Z",
       "fcfPayoutRatio": 73.77,
       "cashFlowDataStatus": "captured",
       "marketCap": 159710000000,
@@ -2501,7 +2501,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/CAR/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:27.213Z",
+      "statisticsUpdated": "2026-11-19T05:11:02.528Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "ttmWindowStart": "2025-11-19",
@@ -2534,7 +2534,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2026-09-17",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=39"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:04:00.264Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:11:32.240Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=39",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -2543,7 +2543,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/CAR/financials/",
-      "ffoUpdated": "2026-11-19T05:03:34.152Z",
+      "ffoUpdated": "2026-11-19T05:11:11.630Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "Quarterly",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -2593,7 +2593,7 @@ window.JSE_DASHBOARD_DATA = {
       "latestDividendDisplayCurrency": "JMD",
       "jseSector": "RETAIL",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": 301.22
     },
     {
       "rank": 11,
@@ -2647,7 +2647,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 81.42,
       "dividendGrowth": 0.79,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:41.612Z",
+      "researchUpdated": "2026-11-19T05:11:18.026Z",
       "fairValue": 3.12,
       "dividendDataStatus": "validated",
       "researchFetchStatus": "ok",
@@ -2660,7 +2660,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "low-weight",
       "bookValueStatus": "HIGH PREMIUM",
@@ -2685,7 +2685,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/SALF/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:56.548Z",
+      "cashFlowUpdated": "2026-11-19T05:11:35.389Z",
       "fcfPayoutRatio": 56.52,
       "cashFlowDataStatus": "captured",
       "marketCap": 4019999999.9999995,
@@ -2762,7 +2762,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/SALF/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:52.019Z",
+      "statisticsUpdated": "2026-11-19T05:11:29.714Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "ttmWindowStart": "2025-11-19",
@@ -2795,7 +2795,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2026-06-30",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=131"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:04:44.830Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:12:04.406Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=131",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -2804,7 +2804,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/SALF/financials/",
-      "ffoUpdated": "2026-11-19T05:04:00.542Z",
+      "ffoUpdated": "2026-11-19T05:11:39.430Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "Semi-Annual",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -2854,7 +2854,7 @@ window.JSE_DASHBOARD_DATA = {
       "latestDividendDisplayCurrency": "JMD",
       "jseSector": "MANUFACTURING",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": -44.71
     },
     {
       "rank": 12,
@@ -2908,7 +2908,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 64.4,
       "dividendGrowth": -27.01,
       "researchSource": "StockAnalysis TTSE primary listing",
-      "researchUpdated": "2026-11-19T05:04:37.616Z",
+      "researchUpdated": "2026-11-19T05:12:28.074Z",
       "fairValue": 90.47,
       "dividendDataStatus": "validated-jmse-yield-primary-listing-reference",
       "researchFetchStatus": "ok",
@@ -2921,7 +2921,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "primary-listing-history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "asset-heavy",
       "bookValueStatus": "SIGNIFICANT DISCOUNT",
@@ -2946,7 +2946,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": null,
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/MASSY/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:04:02.513Z",
+      "cashFlowUpdated": "2026-11-19T05:11:52.635Z",
       "cashFlowDataStatus": "not-found",
       "statisticsDataStatus": "not-found",
       "bookValueSource": "Existing direct BVPS",
@@ -2975,7 +2975,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2026-09-25",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=1600126"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:05:04.648Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:12:47.382Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=1600126",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -2984,7 +2984,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/MASSY/financials/",
-      "ffoUpdated": "2026-11-19T05:04:05.148Z",
+      "ffoUpdated": "2026-11-19T05:11:55.376Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "Quarterly",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -3057,7 +3057,7 @@ window.JSE_DASHBOARD_DATA = {
       "currentDividendYield": 5.47,
       "jseSector": "OTHER",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": -44.85
     },
     {
       "rank": 13,
@@ -3112,7 +3112,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 48.53,
       "dividendGrowth": 8.67,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:38.156Z",
+      "researchUpdated": "2026-11-19T05:11:28.671Z",
       "fairValue": 56.19,
       "dividendDataStatus": "validated",
       "researchFetchStatus": "ok",
@@ -3125,7 +3125,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "book-sensitive",
       "bookValueStatus": "HIGH PREMIUM",
@@ -3150,7 +3150,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "FY 2026",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/BIL/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:56.205Z",
+      "cashFlowUpdated": "2026-11-19T05:11:44.830Z",
       "fcfPayoutRatio": 23.84,
       "cashFlowDataStatus": "captured",
       "marketCap": 87610000000,
@@ -3227,7 +3227,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/BIL/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:50.526Z",
+      "statisticsUpdated": "2026-11-19T05:11:39.459Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "ttmWindowStart": "2025-10-30",
@@ -3260,7 +3260,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2026-11-30",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=21"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:04:48.993Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:12:13.032Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=21",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -3269,7 +3269,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/BIL/financials/",
-      "ffoUpdated": "2026-11-19T05:04:01.423Z",
+      "ffoUpdated": "2026-11-19T05:11:48.532Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "Annual",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -3321,7 +3321,7 @@ window.JSE_DASHBOARD_DATA = {
       "latestDividendJmdEquivalent": 2.606,
       "latestDividendOriginalCurrencyBasis": "JSE dividend history / native JMD",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": -21.89
     },
     {
       "rank": 14,
@@ -3376,7 +3376,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 7.19,
       "dividendGrowth": 19.38,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:37.197Z",
+      "researchUpdated": "2026-11-19T05:11:28.830Z",
       "fairValue": 4.44,
       "dividendDataStatus": "validated",
       "researchFetchStatus": "ok",
@@ -3389,7 +3389,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "book-sensitive",
       "bookValueStatus": "SIGNIFICANT DISCOUNT",
@@ -3414,7 +3414,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/JMMBGL/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:56.100Z",
+      "cashFlowUpdated": "2026-11-19T05:11:42.988Z",
       "fcfPayoutRatio": 3.01,
       "cashFlowDataStatus": "captured",
       "marketCap": 36800000000,
@@ -3491,7 +3491,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/JMMBGL/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:50.212Z",
+      "statisticsUpdated": "2026-11-19T05:11:39.077Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "ttmWindowStart": "2025-11-19",
@@ -3524,7 +3524,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2026-09-03",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=319"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:04:50.765Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:12:10.770Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=319",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -3533,7 +3533,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/JMMBGL/financials/",
-      "ffoUpdated": "2026-11-19T05:04:01.574Z",
+      "ffoUpdated": "2026-11-19T05:11:46.888Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "Semi-Annual",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -3585,7 +3585,7 @@ window.JSE_DASHBOARD_DATA = {
       "canonicalYieldBasis": "trailingYield",
       "latestDividendJmdEquivalent": 0.1275,
       "latestDividendOriginalCurrencyBasis": "JSE dividend history / native JMD",
-      "y5": null
+      "y5": -53.28
     },
     {
       "rank": 15,
@@ -3639,7 +3639,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 34.08,
       "dividendGrowth": 31.01,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:14.485Z",
+      "researchUpdated": "2026-11-19T05:11:03.135Z",
       "fairValue": 26.53,
       "dividendDataStatus": "validated-fx-normalized",
       "researchFetchStatus": "ok",
@@ -3652,7 +3652,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "book-sensitive",
       "bookValueStatus": "DEEP DISCOUNT",
@@ -3677,7 +3677,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/SCIJMD/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:31.276Z",
+      "cashFlowUpdated": "2026-11-19T05:11:15.407Z",
       "cashFlowDataStatus": "captured",
       "marketCap": 6950000000,
       "enterpriseValue": 33020000000.000004,
@@ -3753,7 +3753,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/SCIJMD/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:24.905Z",
+      "statisticsUpdated": "2026-11-19T05:11:11.284Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "SCI September 2026 issuer results (Mayberry, JMD/share)",
       "ttmWindowStart": "2025-11-19",
@@ -3787,7 +3787,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2026-10-23",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=1600069"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:04:49.859Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:12:05.783Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=1600069",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -3796,7 +3796,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/SCIJMD/financials/",
-      "ffoUpdated": "2026-11-19T05:03:35.441Z",
+      "ffoUpdated": "2026-11-19T05:11:18.132Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "Semi-Annual",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -3854,7 +3854,7 @@ window.JSE_DASHBOARD_DATA = {
       "currentFxSource": "Bank of Jamaica latest USD/JMD buy-sell midpoint",
       "jseSector": "FINANCE",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": -26.38
     },
     {
       "rank": 16,
@@ -3908,7 +3908,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:16.505Z",
+      "researchUpdated": "2026-11-19T05:11:04.587Z",
       "dividendDataStatus": "not-found",
       "researchFetchStatus": "ok",
       "latestDividendDataStatus": "official-jse",
@@ -3920,7 +3920,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "asset-heavy",
       "bookValueStatus": "SIGNIFICANT DISCOUNT",
@@ -3945,7 +3945,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/JBG/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:35.421Z",
+      "cashFlowUpdated": "2026-11-19T05:11:16.956Z",
       "fcfPayoutRatio": null,
       "cashFlowDataStatus": "captured",
       "marketCap": 14800000000,
@@ -4022,7 +4022,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/JBG/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:28.823Z",
+      "statisticsUpdated": "2026-11-19T05:11:12.945Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "currentAnnualDps": null,
@@ -4052,7 +4052,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2024-11-25",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=65"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:04:16.046Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:11:41.985Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=65",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -4061,7 +4061,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/JBG/financials/",
-      "ffoUpdated": "2026-11-19T05:03:40.119Z",
+      "ffoUpdated": "2026-11-19T05:11:20.410Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "n/a",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -4111,7 +4111,7 @@ window.JSE_DASHBOARD_DATA = {
       "latestDividendDisplayCurrency": "JMD",
       "jseSector": "MANUFACTURING",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": -48.5
     },
     {
       "rank": 17,
@@ -4151,7 +4151,7 @@ window.JSE_DASHBOARD_DATA = {
       "performanceSource": "SA",
       "score": 35,
       "volume": 1575661,
-      "pe": 67.58,
+      "pe": 70.86,
       "forwardPe": null,
       "pb": 2.04,
       "roe": 2.92,
@@ -4165,7 +4165,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 16.97,
       "dividendGrowth": 112.74,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:02:51.532Z",
+      "researchUpdated": "2026-11-19T05:11:08.926Z",
       "fairValue": 0.2,
       "dividendDataStatus": "validated",
       "researchFetchStatus": "ok",
@@ -4178,7 +4178,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "asset-heavy",
       "bookValueStatus": "PREMIUM",
@@ -4203,11 +4203,11 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/WIG/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:03.606Z",
+      "cashFlowUpdated": "2026-11-19T05:11:21.050Z",
       "fcfPayoutRatio": 5,
       "cashFlowDataStatus": "captured",
-      "marketCap": 11330000000,
-      "enterpriseValue": 10010000000,
+      "marketCap": 11880000000,
+      "enterpriseValue": 10560000000,
       "sharesOutstanding": 11000000000,
       "currentShareClass": 11000000000,
       "sharesChangeYoY": null,
@@ -4240,7 +4240,7 @@ window.JSE_DASHBOARD_DATA = {
       "incomeTax": 24030000,
       "effectiveTaxRate": 12.54,
       "beta5Y": -0.29,
-      "priceChange52W": -16.94,
+      "priceChange52W": -12.9,
       "movingAverage50D": 1.05,
       "movingAverage200D": 1.14,
       "rsi": 55.06,
@@ -4267,11 +4267,11 @@ window.JSE_DASHBOARD_DATA = {
       "ebitMargin": 3.02,
       "fcfMargin": 29.94,
       "statisticsDividendPerShare": 0,
-      "statisticsDividendYield": 0.25,
+      "statisticsDividendYield": 0.24,
       "yearsDividendGrowth": 1,
       "buybackYield": null,
       "shareholderYield": 0.24,
-      "earningsYield": 1.48,
+      "earningsYield": 1.41,
       "fcfYield": 5.4,
       "altmanZScore": null,
       "piotroskiFScore": 5,
@@ -4280,7 +4280,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/WIG/statistics/",
-      "statisticsUpdated": "2026-11-19T05:02:59.712Z",
+      "statisticsUpdated": "2026-11-19T05:11:17.082Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "ttmWindowStart": "2025-11-19",
@@ -4313,7 +4313,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2026-02-27",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=1600087"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:03:34.355Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:11:48.202Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=1600087",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -4322,7 +4322,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/WIG/financials/",
-      "ffoUpdated": "2026-11-19T05:03:06.500Z",
+      "ffoUpdated": "2026-11-19T05:11:24.209Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "Annual",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -4374,7 +4374,7 @@ window.JSE_DASHBOARD_DATA = {
       "canonicalYieldBasis": "trailingYield",
       "latestDividendJmdEquivalent": 0.00551,
       "latestDividendOriginalCurrencyBasis": "JSE dividend history / native JMD",
-      "y5": null
+      "y5": 98.08
     },
     {
       "rank": 18,
@@ -4428,7 +4428,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:14.228Z",
+      "researchUpdated": "2026-11-19T05:10:50.401Z",
       "fairValue": 5.07,
       "dividendDataStatus": "not-found",
       "researchFetchStatus": "ok",
@@ -4441,7 +4441,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "book-sensitive",
       "bookValueStatus": "DEEP DISCOUNT",
@@ -4466,7 +4466,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "FY 2026",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/138SL/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:25.907Z",
+      "cashFlowUpdated": "2026-11-19T05:11:03.935Z",
       "cashFlowDataStatus": "captured",
       "marketCap": 2300000000,
       "enterpriseValue": 5250000000,
@@ -4542,7 +4542,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/138SL/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:22.219Z",
+      "statisticsUpdated": "2026-11-19T05:10:59.599Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "currentAnnualDps": null,
@@ -4563,7 +4563,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2023-02-23",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=311"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:04:00.291Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:11:30.211Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=311",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -4572,7 +4572,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/138SL/financials/",
-      "ffoUpdated": "2026-11-19T05:03:28.515Z",
+      "ffoUpdated": "2026-11-19T05:11:07.133Z",
       "ffoDataStatus": "not-found",
       "dividendFrequencyStatus": "not-found",
       "relativeVolume20D": 0.97,
@@ -4618,7 +4618,7 @@ window.JSE_DASHBOARD_DATA = {
       "latestDividendDisplayCurrency": "JMD",
       "jseSector": "OTHER",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": -3.6
     },
     {
       "rank": 19,
@@ -4672,7 +4672,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 131.69,
       "dividendGrowth": -0.13,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:07.625Z",
+      "researchUpdated": "2026-11-19T05:10:51.623Z",
       "fairValue": 13.52,
       "dividendDataStatus": "validated",
       "researchFetchStatus": "ok",
@@ -4685,7 +4685,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "asset-heavy",
       "bookValueStatus": "PREMIUM",
@@ -4710,7 +4710,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/ASBH/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:24.715Z",
+      "cashFlowUpdated": "2026-11-19T05:11:06.081Z",
       "fcfPayoutRatio": 13.11,
       "cashFlowDataStatus": "captured",
       "marketCap": 22500000000,
@@ -4787,7 +4787,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/ASBH/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:18.764Z",
+      "statisticsUpdated": "2026-11-19T05:11:01.031Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "ttmWindowStart": "2025-11-19",
@@ -4820,7 +4820,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2026-08-20",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=1600148"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:04:01.813Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:11:32.753Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=1600148",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -4829,7 +4829,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/ASBH/financials/",
-      "ffoUpdated": "2026-11-19T05:03:29.391Z",
+      "ffoUpdated": "2026-11-19T05:11:09.540Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "Semi-Annual",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -4889,7 +4889,7 @@ window.JSE_DASHBOARD_DATA = {
       "ttmDpsJmd": 0.615041,
       "jseSector": "MANUFACTURING",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": -48.24
     },
     {
       "rank": 20,
@@ -4943,7 +4943,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 6.28,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:19.087Z",
+      "researchUpdated": "2026-11-19T05:10:52.597Z",
       "fairValue": 2.79,
       "dividendDataStatus": "validated",
       "researchFetchStatus": "ok",
@@ -4956,7 +4956,7 @@ window.JSE_DASHBOARD_DATA = {
         "w1": "history-derived",
         "m3": "captured",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "asset-heavy",
       "bookValueStatus": "BELOW BOOK",
@@ -4981,7 +4981,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/BRG/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:31.050Z",
+      "cashFlowUpdated": "2026-11-19T05:11:07.771Z",
       "fcfPayoutRatio": 86.67,
       "cashFlowDataStatus": "captured",
       "marketCap": 1150000000,
@@ -5058,7 +5058,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/BRG/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:27.121Z",
+      "statisticsUpdated": "2026-11-19T05:11:02.439Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "currentAnnualDps": 0.13,
@@ -5088,7 +5088,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2025-07-04",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=23"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:04:03.328Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:11:35.467Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=23",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -5097,7 +5097,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/BRG/financials/",
-      "ffoUpdated": "2026-11-19T05:03:34.263Z",
+      "ffoUpdated": "2026-11-19T05:11:11.790Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "n/a",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -5147,7 +5147,7 @@ window.JSE_DASHBOARD_DATA = {
       "latestDividendDisplayCurrency": "JMD",
       "jseSector": "MANUFACTURING",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": -62.61
     },
     {
       "rank": 21,
@@ -5201,7 +5201,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 0.34,
       "dividendGrowth": -0.6,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:43.718Z",
+      "researchUpdated": "2026-11-19T05:11:20.393Z",
       "fairValue": 100,
       "dividendDataStatus": "validated",
       "researchFetchStatus": "ok",
@@ -5214,7 +5214,7 @@ window.JSE_DASHBOARD_DATA = {
         "m6": "captured",
         "m1": "captured",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "low-weight",
       "bookValueStatus": "HIGH PREMIUM",
@@ -5239,7 +5239,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/CCC/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:56.534Z",
+      "cashFlowUpdated": "2026-11-19T05:11:35.495Z",
       "fcfPayoutRatio": 15.64,
       "cashFlowDataStatus": "captured",
       "marketCap": 93620000000,
@@ -5316,7 +5316,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/CCC/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:52.066Z",
+      "statisticsUpdated": "2026-11-19T05:11:29.774Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "ttmWindowStart": "2025-11-19",
@@ -5349,7 +5349,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2026-10-15",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=37"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:04:51.997Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:12:07.580Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=37",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -5358,7 +5358,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/CCC/financials/",
-      "ffoUpdated": "2026-11-19T05:04:00.594Z",
+      "ffoUpdated": "2026-11-19T05:11:39.549Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "Annual",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -5408,7 +5408,7 @@ window.JSE_DASHBOARD_DATA = {
       "latestDividendDisplayCurrency": "JMD",
       "jseSector": "MANUFACTURING",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": 6.79
     },
     {
       "rank": 22,
@@ -5462,7 +5462,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 24.39,
       "dividendGrowth": -38.4,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:51.581Z",
+      "researchUpdated": "2026-11-19T05:11:41.697Z",
       "fairValue": 39.5,
       "dividendDataStatus": "validated",
       "researchFetchStatus": "ok",
@@ -5475,7 +5475,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "book-sensitive",
       "bookValueStatus": "N/A",
@@ -5496,7 +5496,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": null,
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/CPFV/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:04:02.385Z",
+      "cashFlowUpdated": "2026-11-19T05:11:52.944Z",
       "cashFlowDataStatus": "not-found",
       "statisticsDataStatus": "not-found",
       "bookValueSource": "Unavailable",
@@ -5510,7 +5510,7 @@ window.JSE_DASHBOARD_DATA = {
         "url": "https://stockanalysis.com/quote/jmse/CPFV/dividend/",
         "listing": "JMSE primary listing"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:05:08.206Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:12:50.519Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=1600091",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -5519,7 +5519,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "BBD",
       "ffoSource": "Eppley Caribbean Property Fund Limited SCC Annual Report 2025",
       "ffoUrl": "https://bse.com.bb/wp-content/uploads/2025/12/Eppley-Caribbean-Property-Fund-Annual-Report-2025.pdf",
-      "ffoUpdated": "2026-11-19T05:04:07.064Z",
+      "ffoUpdated": "2026-11-19T05:11:57.410Z",
       "ffoDataStatus": "captured-verified",
       "ffo": 4000000,
       "ffoPrior": 4400000,
@@ -5573,7 +5573,7 @@ window.JSE_DASHBOARD_DATA = {
       "jseSector": "FINANCE",
       "currentDividendYield": 3.93,
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": 1.75
     },
     {
       "rank": 23,
@@ -5627,7 +5627,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 30.42,
       "dividendGrowth": -75.64,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:40.614Z",
+      "researchUpdated": "2026-11-19T05:11:30.880Z",
       "fairValue": 39.77,
       "dividendDataStatus": "validated",
       "researchFetchStatus": "ok",
@@ -5640,7 +5640,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "book-sensitive",
       "bookValueStatus": "HIGH PREMIUM",
@@ -5665,7 +5665,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/EPLY/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:56.817Z",
+      "cashFlowUpdated": "2026-11-19T05:11:44.962Z",
       "fcfPayoutRatio": 123.08,
       "cashFlowDataStatus": "captured",
       "marketCap": 6370000000,
@@ -5742,7 +5742,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/EPLY/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:50.436Z",
+      "statisticsUpdated": "2026-11-19T05:11:39.409Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "ttmWindowStart": "2025-11-19",
@@ -5775,7 +5775,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2026-09-23",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=279"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:04:53.763Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:12:16.197Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=279",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -5790,7 +5790,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/EPLY/financials/",
-      "ffoUpdated": "2026-11-19T05:04:01.643Z",
+      "ffoUpdated": "2026-11-19T05:11:48.574Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "Quarterly",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -5836,7 +5836,7 @@ window.JSE_DASHBOARD_DATA = {
       "latestDividendDisplayCurrency": "JMD",
       "jseSector": "FINANCE",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": -10.54
     },
     {
       "rank": 24,
@@ -5890,7 +5890,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:39.743Z",
+      "researchUpdated": "2026-11-19T05:11:30.894Z",
       "dividendDataStatus": "not-found",
       "researchFetchStatus": "ok",
       "latestDividendDataStatus": "official-jse",
@@ -5902,7 +5902,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "book-sensitive",
       "bookValueStatus": "SIGNIFICANT DISCOUNT",
@@ -5927,7 +5927,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/FIRSTROCKJMD/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:56.781Z",
+      "cashFlowUpdated": "2026-11-19T05:11:43.538Z",
       "fcfPayoutRatio": null,
       "cashFlowDataStatus": "captured",
       "marketCap": 2860000000,
@@ -6004,7 +6004,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/FIRSTROCKJMD/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:50.256Z",
+      "statisticsUpdated": "2026-11-19T05:11:39.054Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "currentAnnualDps": null,
@@ -6025,7 +6025,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2022-12-01",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=1600097"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:04:54.528Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:12:13.901Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=1600097",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -6034,7 +6034,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/FIRSTROCKJMD/financials/",
-      "ffoUpdated": "2026-11-19T05:04:00.961Z",
+      "ffoUpdated": "2026-11-19T05:11:46.279Z",
       "ffoDataStatus": "not-found",
       "dividendFrequencyStatus": "not-found",
       "relativeVolume20D": 0.01,
@@ -6088,7 +6088,7 @@ window.JSE_DASHBOARD_DATA = {
       "jseSector": "OTHER",
       "canonicalYieldBasis": "trailingYield",
       "fairValue": 5.07,
-      "y5": null
+      "y5": -3.85
     },
     {
       "rank": 25,
@@ -6142,7 +6142,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 27.22,
       "dividendGrowth": 9,
       "researchSource": "StockAnalysis TTSE primary listing",
-      "researchUpdated": "2026-11-19T05:04:08.727Z",
+      "researchUpdated": "2026-11-19T05:11:49.252Z",
       "fairValue": 831.6,
       "dividendDataStatus": "validated-jmse-yield-ttd-fx-normalized",
       "researchFetchStatus": "ok",
@@ -6155,7 +6155,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "primary-listing-captured",
         "w1": "primary-listing-history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValuePerShare": 645.16,
       "primaryListing": {
@@ -6192,7 +6192,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis TTSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/ttse/GHL/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:31.313Z",
+      "cashFlowUpdated": "2026-11-19T05:11:15.255Z",
       "fcfPayoutRatio": 22.46,
       "cashFlowDataStatus": "captured",
       "marketCap": 4179999999.9999995,
@@ -6269,7 +6269,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "TTSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/ttse/GHL/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:24.872Z",
+      "statisticsUpdated": "2026-11-19T05:11:11.290Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "ttmWindowStart": "2025-11-19",
@@ -6311,7 +6311,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2026-09-11",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=57"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:04:54.393Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:12:08.444Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=57",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -6320,7 +6320,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "TTD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/ttse/GHL/financials/",
-      "ffoUpdated": "2026-11-19T05:03:35.954Z",
+      "ffoUpdated": "2026-11-19T05:11:18.643Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "Quarterly",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -6373,7 +6373,7 @@ window.JSE_DASHBOARD_DATA = {
       "yieldDividendCurrency": "JMD",
       "yieldBasis": "jmse-price-official-ttd-ttm-current-fx",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": -24.53
     },
     {
       "rank": 26,
@@ -6427,7 +6427,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:19.601Z",
+      "researchUpdated": "2026-11-19T05:11:06.641Z",
       "fairValue": 1.04,
       "dividendDataStatus": "not-found",
       "researchFetchStatus": "ok",
@@ -6440,7 +6440,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "asset-heavy",
       "bookValueStatus": "NEAR BOOK",
@@ -6461,7 +6461,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/ENERGY/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:35.375Z",
+      "cashFlowUpdated": "2026-11-19T05:11:17.042Z",
       "cashFlowDataStatus": "captured",
       "marketCap": 1290000000,
       "enterpriseValue": 1550000000,
@@ -6537,7 +6537,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/ENERGY/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:28.908Z",
+      "statisticsUpdated": "2026-11-19T05:11:12.977Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "currentAnnualDps": null,
@@ -6546,7 +6546,7 @@ window.JSE_DASHBOARD_DATA = {
       "currentAnnualDpsSource": "StockAnalysis Statistics",
       "currentDividendYield": 0,
       "saLatestDividendStatus": "not-found",
-      "jseQuoteVerifiedAt": "2026-11-19T05:04:24.480Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:11:44.800Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=41",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -6555,7 +6555,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/ENERGY/financials/",
-      "ffoUpdated": "2026-11-19T05:03:39.588Z",
+      "ffoUpdated": "2026-11-19T05:11:19.984Z",
       "ffoDataStatus": "not-found",
       "dividendFrequencyStatus": "not-found",
       "relativeVolume20D": 0.41,
@@ -6602,7 +6602,7 @@ window.JSE_DASHBOARD_DATA = {
       "jseSector": "OTHER",
       "fcfPayoutRatio": null,
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": 27.27
     },
     {
       "rank": 27,
@@ -6656,7 +6656,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 20.07,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:02:53.641Z",
+      "researchUpdated": "2026-11-19T05:11:10.998Z",
       "fairValue": 14.46,
       "dividendDataStatus": "validated",
       "researchFetchStatus": "ok",
@@ -6669,7 +6669,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "asset-heavy",
       "bookValueStatus": "DEEP DISCOUNT",
@@ -6694,7 +6694,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/JP/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:03.665Z",
+      "cashFlowUpdated": "2026-11-19T05:11:21.031Z",
       "fcfPayoutRatio": null,
       "cashFlowDataStatus": "captured",
       "marketCap": 20680000000,
@@ -6771,7 +6771,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/JP/statistics/",
-      "statisticsUpdated": "2026-11-19T05:02:59.736Z",
+      "statisticsUpdated": "2026-11-19T05:11:17.050Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "ttmWindowStart": "2025-11-19",
@@ -6804,7 +6804,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2026-01-23",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=75"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:03:40.474Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:11:51.190Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=75",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -6813,7 +6813,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/JP/financials/",
-      "ffoUpdated": "2026-11-19T05:03:06.513Z",
+      "ffoUpdated": "2026-11-19T05:11:24.192Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "Annual",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -6863,7 +6863,7 @@ window.JSE_DASHBOARD_DATA = {
       "latestDividendDisplayCurrency": "JMD",
       "jseSector": "CONGLOMERATES",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": -10.81
     },
     {
       "rank": 28,
@@ -6917,7 +6917,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 9.22,
       "dividendGrowth": 5.48,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:16.297Z",
+      "researchUpdated": "2026-11-19T05:10:52.836Z",
       "fairValue": 9.69,
       "dividendDataStatus": "validated",
       "researchFetchStatus": "ok",
@@ -6930,7 +6930,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "book-sensitive",
       "bookValueStatus": "PREMIUM",
@@ -6955,7 +6955,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/KPREIT/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:25.945Z",
+      "cashFlowUpdated": "2026-11-19T05:11:04.186Z",
       "fcfPayoutRatio": 22.78,
       "cashFlowDataStatus": "captured",
       "marketCap": 10850000000,
@@ -7032,7 +7032,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/KPREIT/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:22.245Z",
+      "statisticsUpdated": "2026-11-19T05:10:59.635Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "ttmWindowStart": "2025-11-19",
@@ -7071,7 +7071,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2026-10-29",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=89"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:04:03.472Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:11:33.370Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=89",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -7080,7 +7080,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "USD",
       "ffoSource": "Kingston Properties Limited Annual Report 2025",
       "ffoUrl": "https://www.kpreit.com/wp-content/uploads/2026/05/Kingston-Properties-Annual-Report-2025.pdf",
-      "ffoUpdated": "2026-11-19T05:03:29.214Z",
+      "ffoUpdated": "2026-11-19T05:11:07.919Z",
       "ffoDataStatus": "captured-verified",
       "ffo": 1790000,
       "ffoPrior": 765987,
@@ -7140,7 +7140,7 @@ window.JSE_DASHBOARD_DATA = {
       "ttmDpsJmd": 0.285155,
       "jseSector": "OTHER",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": 43.68
     },
     {
       "rank": 29,
@@ -7195,7 +7195,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 22.21,
       "dividendGrowth": -25,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:10.266Z",
+      "researchUpdated": "2026-11-19T05:10:53.908Z",
       "fairValue": 4.99,
       "dividendDataStatus": "validated",
       "researchFetchStatus": "ok",
@@ -7208,7 +7208,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "low-weight",
       "bookValueStatus": "PREMIUM",
@@ -7233,7 +7233,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/LASD/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:24.953Z",
+      "cashFlowUpdated": "2026-11-19T05:11:05.892Z",
       "fcfPayoutRatio": 30,
       "cashFlowDataStatus": "captured",
       "marketCap": 18180000000,
@@ -7310,7 +7310,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/LASD/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:18.710Z",
+      "statisticsUpdated": "2026-11-19T05:11:01.053Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "currentAnnualDps": 0.12,
@@ -7343,7 +7343,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2026-08-28",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=99"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:04:04.981Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:11:35.669Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=99",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -7352,7 +7352,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/LASD/financials/",
-      "ffoUpdated": "2026-11-19T05:03:29.373Z",
+      "ffoUpdated": "2026-11-19T05:11:09.541Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "Annual",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -7402,7 +7402,7 @@ window.JSE_DASHBOARD_DATA = {
       "latestDividendDisplayCurrency": "JMD",
       "jseSector": "RETAIL",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": 50.6
     },
     {
       "rank": 30,
@@ -7457,7 +7457,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 28.46,
       "dividendGrowth": 5.26,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:21.140Z",
+      "researchUpdated": "2026-11-19T05:10:55.150Z",
       "fairValue": 8.58,
       "dividendDataStatus": "validated",
       "researchFetchStatus": "ok",
@@ -7470,7 +7470,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "asset-heavy",
       "bookValueStatus": "HIGH PREMIUM",
@@ -7495,7 +7495,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/LASM/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:31.204Z",
+      "cashFlowUpdated": "2026-11-19T05:11:07.824Z",
       "fcfPayoutRatio": 23.17,
       "cashFlowDataStatus": "captured",
       "marketCap": 41400000000,
@@ -7572,7 +7572,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/LASM/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:27.224Z",
+      "statisticsUpdated": "2026-11-19T05:11:02.506Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "currentAnnualDps": 0.19,
@@ -7605,7 +7605,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2026-08-28",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=103"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:04:07.722Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:11:38.697Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=103",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -7614,7 +7614,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/LASM/financials/",
-      "ffoUpdated": "2026-11-19T05:03:34.106Z",
+      "ffoUpdated": "2026-11-19T05:11:11.528Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "Annual",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -7664,7 +7664,7 @@ window.JSE_DASHBOARD_DATA = {
       "latestDividendDisplayCurrency": "JMD",
       "jseSector": "MANUFACTURING",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": 107.05
     },
     {
       "rank": 31,
@@ -7717,7 +7717,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:45.805Z",
+      "researchUpdated": "2026-11-19T05:11:22.705Z",
       "fairValue": 16.69,
       "dividendDataStatus": "validated",
       "researchFetchStatus": "ok",
@@ -7730,7 +7730,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "low-weight",
       "bookValueStatus": "SIGNIFICANT DISCOUNT",
@@ -7751,7 +7751,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/MTL/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:56.696Z",
+      "cashFlowUpdated": "2026-11-19T05:11:34.969Z",
       "fcfPayoutRatio": 1.28,
       "cashFlowDataStatus": "captured",
       "marketCap": 931710000,
@@ -7828,7 +7828,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/MTL/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:52.111Z",
+      "statisticsUpdated": "2026-11-19T05:11:29.773Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "currentAnnualDps": null,
@@ -7847,7 +7847,7 @@ window.JSE_DASHBOARD_DATA = {
         "url": "https://stockanalysis.com/quote/jmse/MTL/dividend/",
         "listing": "JMSE primary listing"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:04:54.787Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:12:10.749Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=1600081",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -7856,7 +7856,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/MTL/financials/",
-      "ffoUpdated": "2026-11-19T05:04:00.104Z",
+      "ffoUpdated": "2026-11-19T05:11:38.968Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "n/a",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -7906,7 +7906,7 @@ window.JSE_DASHBOARD_DATA = {
       "latestDividendDisplayCurrency": "JMD",
       "jseSector": "OTHER",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": -3.33
     },
     {
       "rank": 32,
@@ -7960,7 +7960,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:53.648Z",
+      "researchUpdated": "2026-11-19T05:11:43.835Z",
       "fairValue": 11.11,
       "dividendDataStatus": "validated",
       "researchFetchStatus": "ok",
@@ -7973,7 +7973,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "book-sensitive",
       "bookValueStatus": "DEEP DISCOUNT",
@@ -7998,7 +7998,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/MGL/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:04:03.649Z",
+      "cashFlowUpdated": "2026-11-19T05:11:53.941Z",
       "fcfPayoutRatio": 14.58,
       "cashFlowDataStatus": "captured",
       "marketCap": 6250000000,
@@ -8075,7 +8075,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/MGL/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:59.636Z",
+      "statisticsUpdated": "2026-11-19T05:11:49.854Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "currentAnnualDps": 0.5,
@@ -8105,7 +8105,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2025-05-30",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=1600150"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:05:11.508Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:12:53.544Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=1600150",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -8114,7 +8114,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/MGL/financials/",
-      "ffoUpdated": "2026-11-19T05:04:06.538Z",
+      "ffoUpdated": "2026-11-19T05:11:56.937Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "n/a",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -8164,7 +8164,7 @@ window.JSE_DASHBOARD_DATA = {
       "latestDividendDisplayCurrency": "JMD",
       "jseSector": "FINANCE",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": -33.16
     },
     {
       "rank": 33,
@@ -8218,7 +8218,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:42.967Z",
+      "researchUpdated": "2026-11-19T05:11:33.056Z",
       "dividendDataStatus": "validated",
       "researchFetchStatus": "ok",
       "latestDividendDataStatus": "official-jse",
@@ -8230,7 +8230,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "book-sensitive",
       "bookValueStatus": "SIGNIFICANT DISCOUNT",
@@ -8255,7 +8255,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/MJE/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:57.010Z",
+      "cashFlowUpdated": "2026-11-19T05:11:44.973Z",
       "cashFlowDataStatus": "captured",
       "marketCap": 9490000000,
       "enterpriseValue": 13920000000,
@@ -8331,7 +8331,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/MJE/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:50.452Z",
+      "statisticsUpdated": "2026-11-19T05:11:39.425Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "currentAnnualDps": 0.08,
@@ -8361,7 +8361,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2023-07-31",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=1600072"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:04:56.929Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:12:19.391Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=1600072",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -8371,7 +8371,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/MJE/financials/",
-      "ffoUpdated": "2026-11-19T05:04:01.007Z",
+      "ffoUpdated": "2026-11-19T05:11:48.204Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "n/a",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -8421,7 +8421,7 @@ window.JSE_DASHBOARD_DATA = {
       "latestDividendDisplayCurrency": "JMD",
       "jseSector": "FINANCE",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": -19.44
     },
     {
       "rank": 34,
@@ -8474,7 +8474,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:42.156Z",
+      "researchUpdated": "2026-11-19T05:11:32.920Z",
       "dividendDataStatus": "not-found",
       "researchFetchStatus": "ok",
       "latestDividendDataStatus": "not-found",
@@ -8486,7 +8486,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "asset-heavy",
       "bookValueStatus": "SIGNIFICANT DISCOUNT",
@@ -8507,7 +8507,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/MPCCEL/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:56.421Z",
+      "cashFlowUpdated": "2026-11-19T05:11:43.343Z",
       "cashFlowDataStatus": "captured",
       "marketCap": 2620000000,
       "enterpriseValue": -1280000000,
@@ -8583,7 +8583,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/MPCCEL/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:50.225Z",
+      "statisticsUpdated": "2026-11-19T05:11:39.114Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "currentAnnualDps": null,
@@ -8593,7 +8593,7 @@ window.JSE_DASHBOARD_DATA = {
       "currentDividendYield": 0,
       "saLatestDividendStatus": "not-found",
       "volume": 236,
-      "jseQuoteVerifiedAt": "2026-11-19T05:04:57.686Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:12:16.978Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=1600078",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -8602,7 +8602,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/MPCCEL/financials/",
-      "ffoUpdated": "2026-11-19T05:04:00.691Z",
+      "ffoUpdated": "2026-11-19T05:11:46.228Z",
       "ffoDataStatus": "not-found",
       "dividendFrequencyStatus": "not-found",
       "relativeVolume20D": 0.05,
@@ -8648,7 +8648,7 @@ window.JSE_DASHBOARD_DATA = {
       "latestDividendDisplayCurrency": "JMD",
       "jseSector": "OTHER",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": -29.71
     },
     {
       "rank": 35,
@@ -8702,7 +8702,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:19.395Z",
+      "researchUpdated": "2026-11-19T05:11:07.237Z",
       "dividendDataStatus": "not-found",
       "researchFetchStatus": "ok",
       "latestDividendDataStatus": "not-found",
@@ -8714,7 +8714,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "low-weight",
       "bookValueStatus": "DEEP DISCOUNT",
@@ -8735,7 +8735,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/PAL/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:30.979Z",
+      "cashFlowUpdated": "2026-11-19T05:11:15.288Z",
       "fcfPayoutRatio": null,
       "cashFlowDataStatus": "captured",
       "marketCap": 491460000,
@@ -8812,7 +8812,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/PAL/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:24.853Z",
+      "statisticsUpdated": "2026-11-19T05:11:11.238Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "currentAnnualDps": null,
@@ -8821,7 +8821,7 @@ window.JSE_DASHBOARD_DATA = {
       "currentAnnualDpsSource": "StockAnalysis Statistics",
       "currentDividendYield": 0,
       "saLatestDividendStatus": "not-found",
-      "jseQuoteVerifiedAt": "2026-11-19T05:04:57.437Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:12:11.231Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=113",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -8830,7 +8830,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/PAL/financials/",
-      "ffoUpdated": "2026-11-19T05:03:35.850Z",
+      "ffoUpdated": "2026-11-19T05:11:18.579Z",
       "ffoDataStatus": "not-found",
       "dividendFrequencyStatus": "not-found",
       "relativeVolume20D": 0.09,
@@ -8876,7 +8876,7 @@ window.JSE_DASHBOARD_DATA = {
       "latestDividendDisplayCurrency": "JMD",
       "jseSector": "OTHER",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": -66.61
     },
     {
       "rank": 36,
@@ -8930,7 +8930,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 31.03,
       "dividendGrowth": 12.68,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:22.735Z",
+      "researchUpdated": "2026-11-19T05:11:08.775Z",
       "fairValue": 28.63,
       "dividendDataStatus": "validated",
       "researchFetchStatus": "ok",
@@ -8943,7 +8943,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "asset-heavy",
       "bookValueStatus": "BELOW BOOK",
@@ -8968,7 +8968,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/PJAM/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:35.565Z",
+      "cashFlowUpdated": "2026-11-19T05:11:17.246Z",
       "fcfPayoutRatio": 22.03,
       "cashFlowDataStatus": "captured",
       "marketCap": 74480000000,
@@ -9045,7 +9045,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/PJAM/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:28.878Z",
+      "statisticsUpdated": "2026-11-19T05:11:12.978Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "ttmWindowStart": "2025-11-19",
@@ -9084,7 +9084,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2026-09-29",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=121"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:04:36.861Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:11:47.513Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=121",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -9093,7 +9093,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/PJAM/financials/",
-      "ffoUpdated": "2026-11-19T05:03:39.979Z",
+      "ffoUpdated": "2026-11-19T05:11:20.286Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "Quarterly",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -9139,7 +9139,7 @@ window.JSE_DASHBOARD_DATA = {
       "latestDividendDisplayCurrency": "JMD",
       "jseSector": "CONGLOMERATES",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": -34.63
     },
     {
       "rank": 37,
@@ -9192,7 +9192,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:02:55.734Z",
+      "researchUpdated": "2026-11-19T05:11:13.024Z",
       "dividendDataStatus": "not-found",
       "researchFetchStatus": "ok",
       "latestDividendDataStatus": "not-found",
@@ -9204,7 +9204,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "book-sensitive",
       "bookValueStatus": "PREMIUM",
@@ -9225,7 +9225,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "FY 2026",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/PJX/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:03.657Z",
+      "cashFlowUpdated": "2026-11-19T05:11:20.979Z",
       "cashFlowDataStatus": "captured",
       "marketCap": 2060000000,
       "enterpriseValue": 2089999999.9999998,
@@ -9301,7 +9301,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/PJX/statistics/",
-      "statisticsUpdated": "2026-11-19T05:02:59.744Z",
+      "statisticsUpdated": "2026-11-19T05:11:17.065Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "currentAnnualDps": null,
@@ -9311,7 +9311,7 @@ window.JSE_DASHBOARD_DATA = {
       "currentDividendYield": 0,
       "saLatestDividendStatus": "not-found",
       "volume": 24,
-      "jseQuoteVerifiedAt": "2026-11-19T05:03:43.588Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:11:54.567Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=337",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -9320,7 +9320,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/PJX/financials/",
-      "ffoUpdated": "2026-11-19T05:03:06.164Z",
+      "ffoUpdated": "2026-11-19T05:11:23.855Z",
       "ffoDataStatus": "not-found",
       "dividendFrequencyStatus": "not-found",
       "relativeVolume20D": 0,
@@ -9361,7 +9361,7 @@ window.JSE_DASHBOARD_DATA = {
       "latestDividendDisplayCurrency": "JMD",
       "jseSector": "FINANCE",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": -27.72
     },
     {
       "rank": 38,
@@ -9415,7 +9415,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 118.54,
       "dividendGrowth": -50.12,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:18.333Z",
+      "researchUpdated": "2026-11-19T05:10:55.101Z",
       "fairValue": 2.23,
       "dividendDataStatus": "validated",
       "researchFetchStatus": "ok",
@@ -9428,7 +9428,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "book-sensitive",
       "bookValueStatus": "N/A",
@@ -9453,7 +9453,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": null,
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/PROVEN/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:25.125Z",
+      "cashFlowUpdated": "2026-11-19T05:11:03.033Z",
       "cashFlowDataStatus": "not-found",
       "statisticsDataStatus": "not-found",
       "bookValueSource": "Unavailable",
@@ -9479,7 +9479,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2026-09-14",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=321"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:04:07.987Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:11:36.445Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=321",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -9488,7 +9488,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/PROVEN/financials/",
-      "ffoUpdated": "2026-11-19T05:03:27.191Z",
+      "ffoUpdated": "2026-11-19T05:11:05.698Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "Annual",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -9543,7 +9543,7 @@ window.JSE_DASHBOARD_DATA = {
       "jseSector": "FINANCE",
       "currentDividendYield": 2.88,
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": -63.06
     },
     {
       "rank": 39,
@@ -9597,7 +9597,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:12.994Z",
+      "researchUpdated": "2026-11-19T05:10:56.421Z",
       "fairValue": 0.44,
       "dividendDataStatus": "not-found",
       "researchFetchStatus": "ok",
@@ -9610,7 +9610,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "book-sensitive",
       "bookValueStatus": "SIGNIFICANT DISCOUNT",
@@ -9635,7 +9635,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/PULS/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:24.842Z",
+      "cashFlowUpdated": "2026-11-19T05:11:06.106Z",
       "fcfPayoutRatio": null,
       "cashFlowDataStatus": "captured",
       "marketCap": 6390000000,
@@ -9712,7 +9712,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/PULS/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:18.695Z",
+      "statisticsUpdated": "2026-11-19T05:11:01.084Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "currentAnnualDps": null,
@@ -9742,7 +9742,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2024-02-08",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=125"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:04:10.077Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:11:38.809Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=125",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -9751,7 +9751,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/PULS/financials/",
-      "ffoUpdated": "2026-11-19T05:03:29.133Z",
+      "ffoUpdated": "2026-11-19T05:11:09.367Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "n/a",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -9798,7 +9798,7 @@ window.JSE_DASHBOARD_DATA = {
       "latestDividendDisplayCurrency": "JMD",
       "jseSector": "OTHER",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": -75.8
     },
     {
       "rank": 40,
@@ -9852,7 +9852,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:23.202Z",
+      "researchUpdated": "2026-11-19T05:10:57.573Z",
       "fairValue": 1.27,
       "dividendDataStatus": "validated",
       "researchFetchStatus": "ok",
@@ -9865,7 +9865,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "book-sensitive",
       "bookValueStatus": "DEEP DISCOUNT",
@@ -9890,7 +9890,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "FY 2026",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/QWI/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:31.192Z",
+      "cashFlowUpdated": "2026-11-19T05:11:07.609Z",
       "cashFlowDataStatus": "captured",
       "marketCap": 1060000000,
       "enterpriseValue": -990970000,
@@ -9966,7 +9966,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/QWI/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:27.244Z",
+      "statisticsUpdated": "2026-11-19T05:11:02.508Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "currentAnnualDps": 0.03,
@@ -9996,7 +9996,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2024-12-12",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=1600092"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:04:12.976Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:11:41.688Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=1600092",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -10005,7 +10005,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/QWI/financials/",
-      "ffoUpdated": "2026-11-19T05:03:33.969Z",
+      "ffoUpdated": "2026-11-19T05:11:11.353Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "n/a",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -10055,7 +10055,7 @@ window.JSE_DASHBOARD_DATA = {
       "latestDividendDisplayCurrency": "JMD",
       "jseSector": "FINANCE",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": -12.36
     },
     {
       "rank": 41,
@@ -10109,7 +10109,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:47.908Z",
+      "researchUpdated": "2026-11-19T05:11:25.125Z",
       "dividendDataStatus": "not-found",
       "researchFetchStatus": "ok",
       "latestDividendDataStatus": "official-jse",
@@ -10121,7 +10121,7 @@ window.JSE_DASHBOARD_DATA = {
         "w1": "history-derived",
         "y1": "captured",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "low-weight",
       "bookValueStatus": "PREMIUM",
@@ -10146,7 +10146,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/RJR/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:57.028Z",
+      "cashFlowUpdated": "2026-11-19T05:11:35.367Z",
       "fcfPayoutRatio": null,
       "cashFlowDataStatus": "captured",
       "marketCap": 3780000000,
@@ -10223,7 +10223,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/RJR/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:51.989Z",
+      "statisticsUpdated": "2026-11-19T05:11:29.639Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "currentAnnualDps": null,
@@ -10253,7 +10253,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2023-09-11",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=127"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:04:57.584Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:12:13.746Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=127",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -10262,7 +10262,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/RJR/financials/",
-      "ffoUpdated": "2026-11-19T05:04:01.673Z",
+      "ffoUpdated": "2026-11-19T05:11:40.626Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "n/a",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -10312,7 +10312,7 @@ window.JSE_DASHBOARD_DATA = {
       "latestDividendDisplayCurrency": "JMD",
       "jseSector": "COMMUNICATIONS",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": -61.23
     },
     {
       "rank": 42,
@@ -10366,7 +10366,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:55.696Z",
+      "researchUpdated": "2026-11-19T05:11:45.880Z",
       "fairValue": 2.5,
       "dividendDataStatus": "validated",
       "researchFetchStatus": "ok",
@@ -10379,7 +10379,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "book-sensitive",
       "bookValueStatus": "N/A",
@@ -10404,7 +10404,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": null,
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/XFUND/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:04:02.721Z",
+      "cashFlowUpdated": "2026-11-19T05:11:52.980Z",
       "cashFlowDataStatus": "not-found",
       "statisticsDataStatus": "not-found",
       "bookValueSource": "Unavailable",
@@ -10433,7 +10433,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2026-07-14",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=290"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:05:14.772Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:12:56.522Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=290",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -10442,7 +10442,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/XFUND/financials/",
-      "ffoUpdated": "2026-11-19T05:04:05.736Z",
+      "ffoUpdated": "2026-11-19T05:11:56.033Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "n/a",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -10494,7 +10494,7 @@ window.JSE_DASHBOARD_DATA = {
       "jseSector": "OTHER",
       "currentDividendYield": 1.11,
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": 13.92
     },
     {
       "rank": 43,
@@ -10548,7 +10548,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:45.528Z",
+      "researchUpdated": "2026-11-19T05:11:35.249Z",
       "fairValue": 0.33,
       "dividendDataStatus": "not-found",
       "researchFetchStatus": "ok",
@@ -10561,7 +10561,7 @@ window.JSE_DASHBOARD_DATA = {
         "w1": "history-derived",
         "m1": "captured",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "book-sensitive",
       "bookValueStatus": "BELOW BOOK",
@@ -10586,7 +10586,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/SELECTF/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:56.839Z",
+      "cashFlowUpdated": "2026-11-19T05:11:45.069Z",
       "cashFlowDataStatus": "captured",
       "marketCap": 2860000000,
       "enterpriseValue": -215220000,
@@ -10662,7 +10662,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/SELECTF/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:50.518Z",
+      "statisticsUpdated": "2026-11-19T05:11:39.398Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "currentAnnualDps": null,
@@ -10692,7 +10692,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2023-12-14",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=1600090"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:04:59.865Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:12:22.517Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=1600090",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -10701,7 +10701,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/SELECTF/financials/",
-      "ffoUpdated": "2026-11-19T05:04:02.690Z",
+      "ffoUpdated": "2026-11-19T05:11:49.589Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "n/a",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -10748,7 +10748,7 @@ window.JSE_DASHBOARD_DATA = {
       "latestDividendDisplayCurrency": "JMD",
       "jseSector": "FINANCE",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": 1.82
     },
     {
       "rank": 44,
@@ -10802,7 +10802,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:44.617Z",
+      "researchUpdated": "2026-11-19T05:11:34.960Z",
       "fairValue": 0.33,
       "dividendDataStatus": "not-found",
       "researchFetchStatus": "ok",
@@ -10815,7 +10815,7 @@ window.JSE_DASHBOARD_DATA = {
         "w1": "history-derived",
         "m6": "captured",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "book-sensitive",
       "bookValueStatus": "N/A",
@@ -10840,7 +10840,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": null,
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/SELECTMD/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:54.742Z",
+      "cashFlowUpdated": "2026-11-19T05:11:42.109Z",
       "cashFlowDataStatus": "not-found",
       "statisticsDataStatus": "not-found",
       "bookValueSource": "Unavailable",
@@ -10866,7 +10866,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2023-12-14",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=1600096"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:05:00.819Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:12:20.126Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=1600096",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -10875,7 +10875,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/SELECTMD/financials/",
-      "ffoUpdated": "2026-11-19T05:04:01.419Z",
+      "ffoUpdated": "2026-11-19T05:11:46.772Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "n/a",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -10924,7 +10924,7 @@ window.JSE_DASHBOARD_DATA = {
       "jseSector": "OTHER",
       "currentDividendYield": 0,
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": 39.53
     },
     {
       "rank": 45,
@@ -10964,7 +10964,7 @@ window.JSE_DASHBOARD_DATA = {
       "performanceSource": "SA",
       "score": 60,
       "volume": 2766,
-      "pe": 8.28,
+      "pe": 8.53,
       "forwardPe": null,
       "pb": 1.4,
       "roe": 23.65,
@@ -10978,7 +10978,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:21.979Z",
+      "researchUpdated": "2026-11-19T05:11:09.320Z",
       "fairValue": 2.4,
       "dividendDataStatus": "not-found",
       "researchFetchStatus": "ok",
@@ -10991,7 +10991,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "asset-heavy",
       "bookValueStatus": "PREMIUM",
@@ -11016,11 +11016,11 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/TROPICAL/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:31.339Z",
+      "cashFlowUpdated": "2026-11-19T05:11:15.382Z",
       "fcfPayoutRatio": null,
       "cashFlowDataStatus": "captured",
-      "marketCap": 2290000000,
-      "enterpriseValue": 6960000000,
+      "marketCap": 2360000000,
+      "enterpriseValue": 7030000000,
       "sharesOutstanding": 1730000000,
       "currentShareClass": 1730000000,
       "sharesChangeYoY": 23.43,
@@ -11053,7 +11053,7 @@ window.JSE_DASHBOARD_DATA = {
       "incomeTax": 9780000,
       "effectiveTaxRate": 3.04,
       "beta5Y": -0.59,
-      "priceChange52W": 7.32,
+      "priceChange52W": 10.57,
       "movingAverage50D": 1.35,
       "movingAverage200D": 1.39,
       "rsi": 50.72,
@@ -11084,7 +11084,7 @@ window.JSE_DASHBOARD_DATA = {
       "yearsDividendGrowth": null,
       "buybackYield": -23.43,
       "shareholderYield": -23.43,
-      "earningsYield": 12.08,
+      "earningsYield": 11.72,
       "fcfYield": -2.77,
       "altmanZScore": 1.48,
       "piotroskiFScore": 5,
@@ -11093,7 +11093,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/TROPICAL/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:24.954Z",
+      "statisticsUpdated": "2026-11-19T05:11:11.251Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "currentAnnualDps": null,
@@ -11123,7 +11123,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2023-01-30",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=1600104"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:05:00.593Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:12:13.921Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=1600104",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -11132,7 +11132,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/TROPICAL/financials/",
-      "ffoUpdated": "2026-11-19T05:03:37.157Z",
+      "ffoUpdated": "2026-11-19T05:11:19.373Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "n/a",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -11182,7 +11182,7 @@ window.JSE_DASHBOARD_DATA = {
       "latestDividendDisplayCurrency": "JMD",
       "jseSector": "OTHER",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": 7.32
     },
     {
       "rank": 46,
@@ -11236,7 +11236,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 88.37,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:25.976Z",
+      "researchUpdated": "2026-11-19T05:11:10.989Z",
       "fairValue": 2.67,
       "dividendDataStatus": "validated",
       "researchFetchStatus": "ok",
@@ -11249,7 +11249,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "book-sensitive",
       "bookValueStatus": "HIGH PREMIUM",
@@ -11274,7 +11274,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/VMIL/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:35.222Z",
+      "cashFlowUpdated": "2026-11-19T05:11:17.023Z",
       "fcfPayoutRatio": 0.41,
       "cashFlowDataStatus": "captured",
       "marketCap": 5160000000,
@@ -11351,7 +11351,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/VMIL/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:28.957Z",
+      "statisticsUpdated": "2026-11-19T05:11:12.988Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "ttmWindowStart": "2025-11-19",
@@ -11384,7 +11384,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2026-06-04",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=1600034"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:04:47.231Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:11:50.273Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=1600034",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -11393,7 +11393,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/VMIL/financials/",
-      "ffoUpdated": "2026-11-19T05:03:41.168Z",
+      "ffoUpdated": "2026-11-19T05:11:21.118Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "Annual",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -11445,7 +11445,7 @@ window.JSE_DASHBOARD_DATA = {
       "canonicalYieldBasis": "trailingYield",
       "latestDividendJmdEquivalent": 0.06533,
       "latestDividendOriginalCurrencyBasis": "JSE dividend history / native JMD",
-      "y5": null
+      "y5": -44.07
     },
     {
       "rank": 47,
@@ -11485,7 +11485,7 @@ window.JSE_DASHBOARD_DATA = {
       "performanceSource": "SA",
       "score": 63,
       "volume": 598,
-      "pe": 199.06,
+      "pe": 198.84,
       "forwardPe": null,
       "pb": 20,
       "roe": 10.62,
@@ -11499,7 +11499,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:02:57.805Z",
+      "researchUpdated": "2026-11-19T05:11:15.095Z",
       "fairValue": 0.7,
       "dividendDataStatus": "not-found",
       "researchFetchStatus": "ok",
@@ -11512,7 +11512,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "asset-heavy",
       "bookValueStatus": "HIGH PREMIUM",
@@ -11533,10 +11533,10 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/WIPT/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:03.579Z",
+      "cashFlowUpdated": "2026-11-19T05:11:20.933Z",
       "cashFlowDataStatus": "captured",
-      "marketCap": 101740000000,
-      "enterpriseValue": 102220000000,
+      "marketCap": 101630000000,
+      "enterpriseValue": 102100000000,
       "sharesOutstanding": 11180000000,
       "currentShareClass": 11180000000,
       "sharesChangeYoY": 0.17,
@@ -11609,7 +11609,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/WIPT/statistics/",
-      "statisticsUpdated": "2026-11-19T05:02:59.735Z",
+      "statisticsUpdated": "2026-11-19T05:11:17.086Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "currentAnnualDps": null,
@@ -11618,7 +11618,7 @@ window.JSE_DASHBOARD_DATA = {
       "currentAnnualDpsSource": "StockAnalysis Statistics",
       "currentDividendYield": 0,
       "saLatestDividendStatus": "not-found",
-      "jseQuoteVerifiedAt": "2026-11-19T05:03:47.592Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:11:57.736Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=1600179",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -11627,7 +11627,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/WIPT/financials/",
-      "ffoUpdated": "2026-11-19T05:03:07.081Z",
+      "ffoUpdated": "2026-11-19T05:11:24.976Z",
       "ffoDataStatus": "not-found",
       "dividendFrequencyStatus": "not-found",
       "relativeVolume20D": 0.13,
@@ -11673,7 +11673,7 @@ window.JSE_DASHBOARD_DATA = {
       "latestDividendDisplayCurrency": "JMD",
       "jseSector": "MANUFACTURING",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": 251.35
     },
     {
       "rank": 48,
@@ -11727,7 +11727,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 19.04,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:20.415Z",
+      "researchUpdated": "2026-11-19T05:10:57.453Z",
       "fairValue": 15.59,
       "dividendDataStatus": "validated",
       "researchFetchStatus": "ok",
@@ -11740,7 +11740,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "low-weight",
       "bookValueStatus": "HIGH PREMIUM",
@@ -11765,7 +11765,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/WISYNCO/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:25.837Z",
+      "cashFlowUpdated": "2026-11-19T05:11:04.155Z",
       "fcfPayoutRatio": 40,
       "cashFlowDataStatus": "captured",
       "marketCap": 80960000000,
@@ -11842,7 +11842,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/WISYNCO/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:22.231Z",
+      "statisticsUpdated": "2026-11-19T05:10:59.592Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "ttmWindowStart": "2025-11-19",
@@ -11875,7 +11875,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2026-08-11",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=1600033"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:04:13.618Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:11:39.681Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=1600033",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -11884,7 +11884,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/WISYNCO/financials/",
-      "ffoUpdated": "2026-11-19T05:03:29.156Z",
+      "ffoUpdated": "2026-11-19T05:11:07.841Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "Semi-Annual",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -11934,7 +11934,7 @@ window.JSE_DASHBOARD_DATA = {
       "latestDividendDisplayCurrency": "JMD",
       "jseSector": "MANUFACTURING",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": 25.73
     },
     {
       "rank": 49,
@@ -11988,7 +11988,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 33.64,
       "dividendGrowth": -47.85,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:15.743Z",
+      "researchUpdated": "2026-11-19T05:10:58.733Z",
       "fairValue": 9.47,
       "dividendDataStatus": "validated",
       "researchFetchStatus": "ok",
@@ -12001,7 +12001,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "book-sensitive",
       "bookValueStatus": "HIGH PREMIUM",
@@ -12026,7 +12026,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/JSE/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:24.902Z",
+      "cashFlowUpdated": "2026-11-19T05:11:06.075Z",
       "fcfPayoutRatio": 54.95,
       "cashFlowDataStatus": "captured",
       "marketCap": 7330000000,
@@ -12103,7 +12103,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/JSE/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:18.698Z",
+      "statisticsUpdated": "2026-11-19T05:11:01.096Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "ttmWindowStart": "2025-11-19",
@@ -12136,7 +12136,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2026-08-31",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=276"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:04:15.738Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:11:41.890Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=276",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -12145,7 +12145,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/JSE/financials/",
-      "ffoUpdated": "2026-11-19T05:03:30.817Z",
+      "ffoUpdated": "2026-11-19T05:11:10.662Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "Semi-Annual",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -12195,7 +12195,7 @@ window.JSE_DASHBOARD_DATA = {
       "latestDividendDisplayCurrency": "JMD",
       "jseSector": "FINANCE",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": -38.53
     },
     {
       "rank": 50,
@@ -12248,7 +12248,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 4.82,
       "dividendGrowth": -50,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:25.245Z",
+      "researchUpdated": "2026-11-19T05:10:59.972Z",
       "fairValue": 25.43,
       "dividendDataStatus": "validated",
       "researchFetchStatus": "ok",
@@ -12261,7 +12261,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "book-sensitive",
       "bookValueStatus": "DEEP DISCOUNT",
@@ -12287,7 +12287,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/SML/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:31.214Z",
+      "cashFlowUpdated": "2026-11-19T05:11:07.858Z",
       "fcfPayoutRatio": 44.83,
       "cashFlowDataStatus": "captured",
       "marketCap": 5300000000,
@@ -12364,7 +12364,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/SML/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:27.186Z",
+      "statisticsUpdated": "2026-11-19T05:11:02.521Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "ttmWindowStart": "2025-11-19",
@@ -12397,7 +12397,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2026-09-24",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=1600074"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:04:19.826Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:11:45.130Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=1600074",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -12412,7 +12412,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis / S&P Global Market Intelligence",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/SML/financials/",
-      "ffoUpdated": "2026-11-19T05:03:35.038Z",
+      "ffoUpdated": "2026-11-19T05:11:12.668Z",
       "ffoDataStatus": "captured-verified",
       "ffo": 456000000,
       "ffoPrior": 401000000,
@@ -12473,7 +12473,7 @@ window.JSE_DASHBOARD_DATA = {
       "latestDividendDisplayCurrency": "JMD",
       "jseSector": "OTHER",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": 23.67
     },
     {
       "rank": 51,
@@ -12527,7 +12527,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 52.98,
       "dividendGrowth": -16.92,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:50.097Z",
+      "researchUpdated": "2026-11-19T05:11:27.433Z",
       "fairValue": 3.03,
       "dividendDataStatus": "validated-fx-normalized",
       "researchFetchStatus": "ok",
@@ -12540,7 +12540,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "book-sensitive",
       "bookValueStatus": "SIGNIFICANT DISCOUNT",
@@ -12565,7 +12565,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/SIL/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:57.447Z",
+      "cashFlowUpdated": "2026-11-19T05:11:35.980Z",
       "cashFlowDataStatus": "captured",
       "marketCap": 1350000000,
       "enterpriseValue": 1320000000,
@@ -12641,7 +12641,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/SIL/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:52.659Z",
+      "statisticsUpdated": "2026-11-19T05:11:30.376Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "ttmWindowStart": "2025-09-11",
@@ -12684,7 +12684,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2025-09-12",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=309"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:05:00.319Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:12:17.315Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=309",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred-stale-page-date",
@@ -12693,7 +12693,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/SIL/financials/",
-      "ffoUpdated": "2026-11-19T05:04:01.756Z",
+      "ffoUpdated": "2026-11-19T05:11:40.835Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "Semi-Annual",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -12744,7 +12744,7 @@ window.JSE_DASHBOARD_DATA = {
       "ttmDpsJmd": 0.15,
       "jseSector": "FINANCE",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": 8.77
     },
     {
       "rank": 52,
@@ -12799,7 +12799,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": 92.87,
       "dividendGrowth": 0.34,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:57.781Z",
+      "researchUpdated": "2026-11-19T05:11:47.956Z",
       "fairValue": 12.7,
       "dividendDataStatus": "validated",
       "researchFetchStatus": "ok",
@@ -12812,7 +12812,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "low-weight",
       "bookValueStatus": "HIGH PREMIUM",
@@ -12837,7 +12837,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/SVL/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:04:03.899Z",
+      "cashFlowUpdated": "2026-11-19T05:11:54.146Z",
       "fcfPayoutRatio": 54.9,
       "cashFlowDataStatus": "captured",
       "marketCap": 51210000000,
@@ -12914,7 +12914,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/SVL/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:59.829Z",
+      "statisticsUpdated": "2026-11-19T05:11:50.083Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "ttmWindowStart": "2025-11-19",
@@ -12947,7 +12947,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2027-01-07",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=139"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:05:18.015Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:12:59.576Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=139",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -12956,7 +12956,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/SVL/financials/",
-      "ffoUpdated": "2026-11-19T05:04:07.009Z",
+      "ffoUpdated": "2026-11-19T05:11:57.345Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "Quarterly",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -13008,7 +13008,7 @@ window.JSE_DASHBOARD_DATA = {
       "canonicalYieldBasis": "trailingYield",
       "latestDividendJmdEquivalent": 0.1587,
       "latestDividendOriginalCurrencyBasis": "JSE dividend history / native JMD",
-      "y5": null
+      "y5": 14.71
     },
     {
       "rank": 53,
@@ -13061,7 +13061,7 @@ window.JSE_DASHBOARD_DATA = {
       "payoutRatio": null,
       "dividendGrowth": null,
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:47.961Z",
+      "researchUpdated": "2026-11-19T05:11:37.426Z",
       "fairValue": 4.81,
       "dividendDataStatus": "not-found",
       "researchFetchStatus": "ok",
@@ -13074,7 +13074,7 @@ window.JSE_DASHBOARD_DATA = {
         "y1": "captured",
         "w1": "history-derived",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "bookValueSectorClass": "book-sensitive",
       "bookValueStatus": "DEEP DISCOUNT",
@@ -13100,7 +13100,7 @@ window.JSE_DASHBOARD_DATA = {
       "cashFlowPeriod": "FY 2026",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/SRFJMD/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:57.460Z",
+      "cashFlowUpdated": "2026-11-19T05:11:45.412Z",
       "cashFlowDataStatus": "captured",
       "marketCap": 2190000000,
       "enterpriseValue": null,
@@ -13176,7 +13176,7 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/SRFJMD/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:51.229Z",
+      "statisticsUpdated": "2026-11-19T05:11:40.059Z",
       "statisticsDataStatus": "captured",
       "bookValueSource": "StockAnalysis Statistics",
       "currentAnnualDps": 0.2,
@@ -13206,7 +13206,7 @@ window.JSE_DASHBOARD_DATA = {
         "payDate": "2024-12-30",
         "url": "https://www.jamstockex.com/trading/instruments/?instrument=1600118"
       },
-      "jseQuoteVerifiedAt": "2026-11-19T05:05:02.888Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:12:25.576Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=1600118",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -13215,7 +13215,7 @@ window.JSE_DASHBOARD_DATA = {
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/SRFJMD/financials/",
-      "ffoUpdated": "2026-11-19T05:04:02.880Z",
+      "ffoUpdated": "2026-11-19T05:11:49.726Z",
       "ffoDataStatus": "not-found",
       "dividendFrequency": "n/a",
       "dividendFrequencySource": "StockAnalysis Dividends",
@@ -13265,7 +13265,7 @@ window.JSE_DASHBOARD_DATA = {
       "latestDividendDisplayCurrency": "JMD",
       "jseSector": "OTHER",
       "canonicalYieldBasis": "trailingYield",
-      "y5": null
+      "y5": -47.1
     },
     {
       "rank": 54,
@@ -13312,7 +13312,7 @@ window.JSE_DASHBOARD_DATA = {
         "m6": "not-found",
         "y1": "not-found",
         "sinceListing": "history-derived",
-        "y5": "not-captured"
+        "y5": "captured"
       },
       "volume": 34300,
       "averageVolume20D": 19160,
@@ -13347,7 +13347,7 @@ window.JSE_DASHBOARD_DATA = {
       "dividendDataStatus": "validated-indicated-yield",
       "latestDividendDataStatus": "official-jse",
       "researchSource": "StockAnalysis",
-      "researchUpdated": "2026-11-19T05:03:47.097Z",
+      "researchUpdated": "2026-11-19T05:11:37.033Z",
       "researchFetchStatus": "ok",
       "fairValue": 25.47,
       "marketCap": 6500000000,
@@ -13435,22 +13435,22 @@ window.JSE_DASHBOARD_DATA = {
       "statisticsMarket": "JMSE",
       "statisticsSource": "StockAnalysis",
       "statisticsUrl": "https://stockanalysis.com/quote/jmse/QAINC/statistics/",
-      "statisticsUpdated": "2026-11-19T05:03:50.395Z",
+      "statisticsUpdated": "2026-11-19T05:11:39.262Z",
       "statisticsDataStatus": "captured",
       "cashFlowCurrency": "JMD",
       "cashFlowPeriod": "TTM",
       "cashFlowSource": "StockAnalysis JMSE",
       "cashFlowUrl": "https://stockanalysis.com/quote/jmse/QAINC/financials/cash-flow-statement/",
-      "cashFlowUpdated": "2026-11-19T05:03:56.925Z",
+      "cashFlowUpdated": "2026-11-19T05:11:43.679Z",
       "cashFlowDataStatus": "captured",
       "ffoCurrency": "JMD",
       "ffoSource": "StockAnalysis Financials",
       "ffoUrl": "https://stockanalysis.com/quote/jmse/QAINC/financials/",
-      "ffoUpdated": "2026-11-19T05:04:02.406Z",
+      "ffoUpdated": "2026-11-19T05:11:47.348Z",
       "ffoDataStatus": "not-found",
       "dividendFrequencyStatus": "captured",
       "saLatestDividendStatus": "captured",
-      "jseQuoteVerifiedAt": "2026-11-19T05:05:04.569Z",
+      "jseQuoteVerifiedAt": "2026-11-19T05:12:22.995Z",
       "jseQuoteUrl": "https://www.jamstockex.com/trading/instruments/?instrument=1600203",
       "jseQuoteSource": "hero",
       "jseQuoteDateStatus": "market-session-inferred",
@@ -13540,11 +13540,11 @@ window.JSE_DASHBOARD_DATA = {
       "ttmWindowStart": "2025-11-19",
       "ttmWindowEnd": "2026-11-19",
       "ttmDateBasis": "payment-date",
-      "y5": null
+      "y5": 13.05
     }
   ],
-  "refreshedAt": "2026-11-19T05:05:37.837Z",
+  "refreshedAt": "2026-11-19T05:13:29.615Z",
   "priceSourcePolicy": "JSE Trade Summary/Trade Quotes primary; StockAnalysis historical/fallback; direct JSE instrument pages retained for company links and corporate actions.",
   "universeSource": "https://www.jamstockex.com/listings/listed-companies/",
-  "instrumentLinksUpdated": "2026-11-19T04:59:50.346Z"
+  "instrumentLinksUpdated": "2026-11-19T05:07:59.711Z"
 };
