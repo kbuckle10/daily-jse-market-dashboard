@@ -70,17 +70,29 @@ jobs:
               workflow_id: 'refresh-sa-performance.yml',
               created: `>=${day}`, per_page: 100
             });
+            // A successful workflow run does not imply today's market data was published.
+            // Earlier push-triggered runs may still contain yesterday's data.
+            const fs = require('fs');
+            const raw = fs.readFileSync('data.js', 'utf8');
+            const match = raw.match(/"updated"\\s*:\\s*"([^"]+)"/);
+            const publishedDate = match?.[1] || '';
+            if (publishedDate === day) {
+              core.info(`Today's JSE dataset already published (${publishedDate}); skipping.`);
+              core.setOutput('run_refresh', 'false');
+              return;
+            }
             const previous = runs.filter(r =>
               r.id !== context.runId &&
               Date.parse(r.created_at) >= midnight &&
               Date.parse(r.created_at) <= Date.now() &&
               (r.event === 'schedule' || r.event === 'workflow_dispatch' || r.event === 'push')
             );
-            if (previous.length) {
-              core.info(`Skipping duplicate for ${day}: ${previous.map(r=>`#${r.run_number} ${r.status}/${r.conclusion}`).join(', ')}`);
+            const active = previous.filter(r => r.status !== 'completed');
+            if (active.length) {
+              core.info(`Another collector is active: ${active.map(r=>`#${r.run_number}`).join(', ')}; skipping overlap.`);
               core.setOutput('run_refresh', 'false');
             } else {
-              core.info(`First collector run for Jamaica trading day ${day}; proceeding.`);
+              core.info(`Published dataset ${publishedDate||'unknown'} is stale for ${day}; allowing scheduled recovery.`);
               core.setOutput('run_refresh', 'true');
             }
       - id: head
