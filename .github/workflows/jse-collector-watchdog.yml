@@ -77,7 +77,7 @@ jobs:
               owner: context.repo.owner, repo: context.repo.repo, path:'data.js', ref:'main'
             });
             const raw=Buffer.from(file.data.content,'base64').toString('utf8');
-            const match=raw.match(/"updated"\\s*:\\s*"([^"]+)"/);
+            const match=raw.match(/"updated"\s*:\s*"([^"]+)"/);
             const publishedDate=match?.[1]||'unknown';
             report(`Published dataset date: ${publishedDate}`);
             const active=todaysRuns.filter(r=>r.status!=='completed');
