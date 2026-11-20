@@ -72,9 +72,24 @@ jobs:
             );
             report(details.length ? details.join('\n') : 'No collector run found for today.');
 
-            // Any run, including failed/cancelled, requires manual review rather than a blind retry.
-            if (todaysRuns.length > 0) {
-              report('SKIP: Collector already has a run today; no duplicate dispatched.');
+            // Inspect the published data date, not merely whether a workflow started.
+            const file=await github.rest.repos.getContent({
+              owner: context.repo.owner, repo: context.repo.repo, path:'data.js', ref:'main'
+            });
+            const raw=Buffer.from(file.data.content,'base64').toString('utf8');
+            const match=raw.match(/"updated"\\s*:\\s*"([^"]+)"/);
+            const publishedDate=match?.[1]||'unknown';
+            report(`Published dataset date: ${publishedDate}`);
+            const active=todaysRuns.filter(r=>r.status!=='completed');
+            const recent=todaysRuns.some(r=>Date.now()-Date.parse(r.created_at)<45*60000);
+            if(publishedDate===jamaicaDate){
+              report('SKIP: Today\'s market dataset is published.');
+            } else if(active.length){
+              report('SKIP: Collector currently active; awaiting completion.');
+            } else if(recent){
+              report('SKIP: Recent collector attempt; waiting 45 minutes before recovery.');
+            } else if(todaysRuns.length>=4){
+              report('::warning::Four collector attempts today without a fresh dataset; manual review required.');
             } else if (dryRun) {
               report('DRY RUN: Collector is absent; dispatch would be requested in live mode.');
             } else {
@@ -83,7 +98,7 @@ jobs:
                 owner: context.repo.owner, repo: context.repo.repo,
                 workflow_id, per_page: 100, created: `>=${jamaicaDate}`
               });
-              if (latest.some(r => Date.parse(r.created_at) >= midnightUTC)) {
+              if (latest.some(r => Date.parse(r.created_at) >= midnightUTC && (r.status !== 'completed' || Date.now()-Date.parse(r.created_at)<45*60000))) {
                 report('SKIP: A collector run appeared on the second check.');
               } else {
                 await github.rest.actions.createWorkflowDispatch({
