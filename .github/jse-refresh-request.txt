@@ -1,5 +1,5 @@
 JSE daily refresh request
-Requested: 2026-10-20 Jamaica trading session
-Reason: User-requested end-to-end verification after Ubuntu runner, GHL FX, and all-ticker yield consistency fixes.
-Request ID: 20261020-2140-jamaica-yield-validation
+Requested: 2026-11-19 Jamaica trading session
+Reason: Recover stale November 18 dashboard data and verify freshness-aware schedule/watchdog fix.
+Request ID: 20261119-2351-jamaica-stale-data-recovery
 Workflow: .github/workflows/refresh-sa-performance.yml
