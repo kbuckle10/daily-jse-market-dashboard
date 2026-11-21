@@ -41,12 +41,12 @@ for(const s of data.stocks){
   const actualPriceDate=Number.isNaN(parsedPriceDate.valueOf())?'':parsedPriceDate.toISOString().slice(0,10);
   const validPrice=Number.isFinite(price)&&price>0&&actualPriceDate===date;
   const marketForSnapshot=String(s.primaryListing?.market||'JMSE').toUpperCase();
-  if(validPrice&&s.source==='JSE'&&marketForSnapshot==='JMSE'){
+  if(validPrice&&s.source==='JSE'){
     snapshots.prices[s.ticker] ||= {};
     snapshots.prices[s.ticker][actualPriceDate]=price;
   }
   s.jseRollingPerformance={};
-  if(validPrice&&s.source==='JSE'&&marketForSnapshot==='JMSE'){
+  if(validPrice&&s.source==='JSE'){
     for(const period of ['w1','m1','m3']){
       const result=rollingReturn(s.ticker,actualPriceDate,price,period);
       if(result)s.jseRollingPerformance[period]=result;
@@ -59,16 +59,16 @@ for(const s of data.stocks){
     baselineDate:base.date,baselineClose:base.close,priceReturnPct:Number(((price/base.close-1)*100).toFixed(2)),source:base.source,status:'verified-price-only'
   }:{baselineDate:history.baselineDate,status:base?'price-or-currency-not-comparable':'historical-close-unavailable'};
   const previous=history.recommendations.filter(x=>x.ticker===s.ticker&&x.status==='active').at(-1);
-  if(eligible&&validPrice&&s.source==='JSE'&&market==='JMSE'){
+  if(eligible&&validPrice&&s.source==='JSE'){
     if(isBuy(s)&&!previous){
-      history.recommendations.push({ticker:s.ticker,startDate:date,startPrice:price,currency:'JMD',rating:s.rating,score:s.score??null,status:'active',source:s.source||'unknown',startPriceDate:priceDate,baselineClassification:date===history.trackingStarts?'initial-observation':'new-buy'});
+      history.recommendations.push({ticker:s.ticker,startDate:date,startPrice:price,currency:'JMD',market:'JMSE',rating:s.rating,score:s.score??null,status:'active',source:s.source||'unknown',startPriceDate:priceDate,baselineClassification:'new-buy'});
     }else if(!isBuy(s)&&previous){
       previous.status='closed';previous.endDate=date;previous.endPrice=price;previous.endRating=s.rating;
       previous.priceReturnPct=Number(((price/previous.startPrice-1)*100).toFixed(2));
     }
   }
   const current=history.recommendations.filter(x=>x.ticker===s.ticker&&x.status==='active').at(-1);
-  if(current&&validPrice&&s.source==='JSE'&&current.currency==='JMD'&&market==='JMSE'){
+  if(current&&validPrice&&s.source==='JSE'&&current.currency==='JMD'&&(!current.market||current.market==='JMSE')){
     s.buySignalPerformance={startDate:current.startDate,startPrice:current.startPrice,priceReturnPct:Number(((price/current.startPrice-1)*100).toFixed(2)),status:'active',baselineClassification:current.baselineClassification};
   }else{
     s.buySignalPerformance={status:eligible?'no-active-comparable-buy':'tracking-starts-2026-11-23'};
