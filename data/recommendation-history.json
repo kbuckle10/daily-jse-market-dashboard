@@ -42,6 +42,14 @@
       "source": "StockAnalysis",
       "url": "https://stockanalysis.com/quote/jmse/TROPICAL/history/",
       "status": "verified-historical-close"
+    },
+    "CAR": {
+      "date": "2026-08-18",
+      "close": 34.05,
+      "currency": "JMD",
+      "source": "Investing.com historical daily close",
+      "url": "https://uk.investing.com/equities/carreras-ltd-historical-data",
+      "status": "verified-historical-close"
     }
   },
   "recommendations": [],
