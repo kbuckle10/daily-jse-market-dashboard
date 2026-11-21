@@ -1,0 +1,41 @@
+name: Backfill JSE Dashboard Inception Prices
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/backfill-recommendation-baseline.mjs'
+permissions:
+  contents: write
+concurrency:
+  group: jse-recommendation-baseline-backfill
+  cancel-in-progress: false
+jobs:
+  backfill:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+      - run: npm install
+      - run: npx playwright install chromium
+      - name: Capture August 18 2026 verified StockAnalysis closes
+        run: node scripts/backfill-recommendation-baseline.mjs
+      - name: Publish immutable verified baselines
+        run: |
+          set -e
+          cp data/recommendation-history.json /tmp/recommendation-history.json
+          git fetch origin main
+          git reset --hard origin/main
+          mkdir -p data
+          cp /tmp/recommendation-history.json data/recommendation-history.json
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          if git diff --quiet -- data/recommendation-history.json; then echo 'No baseline changes'; exit 0; fi
+          git add data/recommendation-history.json
+          git commit -m 'Backfill verified dashboard inception closing prices'
+          git push origin HEAD:main
