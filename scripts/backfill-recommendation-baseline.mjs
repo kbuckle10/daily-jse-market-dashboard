@@ -47,7 +47,7 @@ try {
           const btn=candidates.nth(j);
           if(!await btn.isVisible().catch(()=>false)||await btn.isDisabled().catch(()=>false))continue;
           const label=((await btn.getAttribute('aria-label'))||'')+' '+((await btn.getAttribute('title'))||'')+' '+((await btn.textContent())||'');
-          if(!/next|›|→|^\\s*>\\s*$/i.test(label))continue;
+          if(!/next|›|→/i.test(label))continue;
           await btn.click({timeout:3000}).catch(()=>{});
           await page.waitForTimeout(650);
           const after=(await page.locator('table tbody tr').first().locator('td').first().textContent().catch(()=>''))||'';
