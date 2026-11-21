@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "baselineDate": "2026-08-18",
+  "baselineSource": "StockAnalysis historical daily close",
+  "baseline": {},
+  "recommendations": [],
+  "trackingStarts": "2026-11-23"
+}
