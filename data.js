@@ -2331,7 +2331,17 @@ window.JSE_DASHBOARD_DATA = {
       "latestDividendDisplayCurrency": "JMD",
       "jseSector": "INSURANCE",
       "canonicalYieldBasis": "trailingYield",
-      "y5": 19.4
+      "y5": 19.4,
+      "inceptionPerformance": {
+        "baselineDate": "2026-08-18",
+        "baselineClose": 8.93,
+        "priceReturnPct": -11.65,
+        "source": "StockAnalysis",
+        "status": "verified-price-only"
+      },
+      "buySignalPerformance": {
+        "status": "tracking-starts-2026-11-23"
+      }
     },
     {
       "rank": 10,
@@ -6610,7 +6620,17 @@ window.JSE_DASHBOARD_DATA = {
       "jseSector": "OTHER",
       "fcfPayoutRatio": null,
       "canonicalYieldBasis": "trailingYield",
-      "y5": 27.63
+      "y5": 27.63,
+      "inceptionPerformance": {
+        "baselineDate": "2026-08-18",
+        "baselineClose": 1.05,
+        "priceReturnPct": -10.48,
+        "source": "StockAnalysis",
+        "status": "verified-price-only"
+      },
+      "buySignalPerformance": {
+        "status": "tracking-starts-2026-11-23"
+      }
     },
     {
       "rank": 27,
@@ -9809,7 +9829,17 @@ window.JSE_DASHBOARD_DATA = {
       "latestDividendDisplayCurrency": "JMD",
       "jseSector": "OTHER",
       "canonicalYieldBasis": "trailingYield",
-      "y5": -75.8
+      "y5": -75.8,
+      "inceptionPerformance": {
+        "baselineDate": "2026-08-18",
+        "baselineClose": 0.72,
+        "priceReturnPct": 37.5,
+        "source": "StockAnalysis",
+        "status": "verified-price-only"
+      },
+      "buySignalPerformance": {
+        "status": "tracking-starts-2026-11-23"
+      }
     },
     {
       "rank": 40,
@@ -10932,7 +10962,17 @@ window.JSE_DASHBOARD_DATA = {
       "jseSector": "OTHER",
       "currentDividendYield": 0,
       "canonicalYieldBasis": "trailingYield",
-      "y5": 39.53
+      "y5": 39.53,
+      "inceptionPerformance": {
+        "baselineDate": "2026-08-18",
+        "baselineClose": 0.98,
+        "priceReturnPct": 23.47,
+        "source": "StockAnalysis",
+        "status": "verified-price-only"
+      },
+      "buySignalPerformance": {
+        "status": "tracking-starts-2026-11-23"
+      }
     },
     {
       "rank": 45,
@@ -11190,7 +11230,17 @@ window.JSE_DASHBOARD_DATA = {
       "latestDividendDisplayCurrency": "JMD",
       "jseSector": "OTHER",
       "canonicalYieldBasis": "trailingYield",
-      "y5": -8.39
+      "y5": -8.39,
+      "inceptionPerformance": {
+        "baselineDate": "2026-08-18",
+        "baselineClose": 1.4,
+        "priceReturnPct": -5.71,
+        "source": "StockAnalysis",
+        "status": "verified-price-only"
+      },
+      "buySignalPerformance": {
+        "status": "tracking-starts-2026-11-23"
+      }
     },
     {
       "rank": 46,
