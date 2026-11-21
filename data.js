@@ -270,7 +270,11 @@ window.JSE_DASHBOARD_DATA = {
         "status": "historical-close-unavailable"
       },
       "buySignalPerformance": {
-        "status": "tracking-starts-2026-11-23"
+        "startDate": "2026-11-20",
+        "startPrice": 18.83,
+        "priceReturnPct": 0,
+        "status": "active",
+        "baselineClassification": "initial-observation"
       }
     },
     {
@@ -810,7 +814,11 @@ window.JSE_DASHBOARD_DATA = {
         "status": "historical-close-unavailable"
       },
       "buySignalPerformance": {
-        "status": "tracking-starts-2026-11-23"
+        "startDate": "2026-11-20",
+        "startPrice": 76.97,
+        "priceReturnPct": 0,
+        "status": "active",
+        "baselineClassification": "initial-observation"
       }
     },
     {
@@ -1081,7 +1089,11 @@ window.JSE_DASHBOARD_DATA = {
         "status": "historical-close-unavailable"
       },
       "buySignalPerformance": {
-        "status": "tracking-starts-2026-11-23"
+        "startDate": "2026-11-20",
+        "startPrice": 47.08,
+        "priceReturnPct": 0,
+        "status": "active",
+        "baselineClassification": "initial-observation"
       }
     },
     {
@@ -1854,7 +1866,11 @@ window.JSE_DASHBOARD_DATA = {
         "status": "historical-close-unavailable"
       },
       "buySignalPerformance": {
-        "status": "tracking-starts-2026-11-23"
+        "startDate": "2026-11-20",
+        "startPrice": 6.79,
+        "priceReturnPct": 0,
+        "status": "active",
+        "baselineClassification": "initial-observation"
       }
     },
     {
@@ -2125,7 +2141,11 @@ window.JSE_DASHBOARD_DATA = {
         "status": "historical-close-unavailable"
       },
       "buySignalPerformance": {
-        "status": "tracking-starts-2026-11-23"
+        "startDate": "2026-11-20",
+        "startPrice": 80.54,
+        "priceReturnPct": 0,
+        "status": "active",
+        "baselineClassification": "initial-observation"
       }
     },
     {
@@ -2670,7 +2690,11 @@ window.JSE_DASHBOARD_DATA = {
         "status": "verified-price-only"
       },
       "buySignalPerformance": {
-        "status": "tracking-starts-2026-11-23"
+        "startDate": "2026-11-20",
+        "startPrice": 31.33,
+        "priceReturnPct": 0,
+        "status": "active",
+        "baselineClassification": "initial-observation"
       }
     },
     {
@@ -5562,7 +5586,11 @@ window.JSE_DASHBOARD_DATA = {
         "status": "historical-close-unavailable"
       },
       "buySignalPerformance": {
-        "status": "tracking-starts-2026-11-23"
+        "startDate": "2026-11-20",
+        "startPrice": 109.97,
+        "priceReturnPct": 0,
+        "status": "active",
+        "baselineClassification": "initial-observation"
       }
     },
     {
@@ -6561,7 +6589,11 @@ window.JSE_DASHBOARD_DATA = {
         "status": "historical-close-unavailable"
       },
       "buySignalPerformance": {
-        "status": "tracking-starts-2026-11-23"
+        "startDate": "2026-11-20",
+        "startPrice": 400,
+        "priceReturnPct": 0,
+        "status": "active",
+        "baselineClassification": "initial-observation"
       }
     },
     {
@@ -10357,7 +10389,11 @@ window.JSE_DASHBOARD_DATA = {
         "status": "historical-close-unavailable"
       },
       "buySignalPerformance": {
-        "status": "tracking-starts-2026-11-23"
+        "startDate": "2026-11-20",
+        "startPrice": 0.79,
+        "priceReturnPct": 0,
+        "status": "active",
+        "baselineClassification": "initial-observation"
       }
     },
     {
@@ -12845,7 +12881,11 @@ window.JSE_DASHBOARD_DATA = {
         "status": "historical-close-unavailable"
       },
       "buySignalPerformance": {
-        "status": "tracking-starts-2026-11-23"
+        "startDate": "2026-11-20",
+        "startPrice": 7,
+        "priceReturnPct": 0,
+        "status": "active",
+        "baselineClassification": "initial-observation"
       }
     },
     {
