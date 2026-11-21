@@ -101,7 +101,7 @@ const recommendationPerformance=s=>{
   const b=s.buySignalPerformance;
   if(b?.status==='active'&&Number.isFinite(Number(b.priceReturnPct))){
     const initial=b.baselineClassification==='initial-observation'?' (initial observed BUY)':'';
-    return `<div class="recommendation-performance"><strong>${pct(b.priceReturnPct)}</strong><br><small>From JSE close on ${b.startDate}${initial}</small></div>`;
+    return `<div class="recommendation-performance"><strong class="buy-return ${b.priceReturnPct>0?'buy-return-up':b.priceReturnPct<0?'buy-return-down':'buy-return-flat'}"><span class="buy-return-arrow" aria-hidden="true">${b.priceReturnPct>0?'▲':b.priceReturnPct<0?'▼':'—'}</span> ${b.priceReturnPct>0?'+':''}${fmt(b.priceReturnPct,2)}%</strong><br><small>From JSE close on ${b.startDate}${initial}</small></div>`;
   }
   if(b?.status==='no-active-comparable-buy')return '<span class="neutral">No active BUY tracked</span>';
   return '<span class="neutral">—</span>';
