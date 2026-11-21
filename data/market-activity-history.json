@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-21T01:28:40.947Z",
+  "updatedAt": "2026-11-21T18:53:37.429Z",
   "tickers": {
     "SEP": [
       {
@@ -10389,7 +10389,7 @@
         "volume": 2053,
         "valueTraded": 0,
         "trades": 0,
-        "sharesOutstanding": 1040000000,
+        "sharesOutstanding": 1050000000,
         "floatShares": 469860000
       }
     ],
