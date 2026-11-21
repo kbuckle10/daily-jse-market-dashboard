@@ -98,18 +98,19 @@ function sourceLinks(s){
  },true);
 })();
 const recommendationPerformance=s=>{
-  const i=s.inceptionPerformance, b=s.buySignalPerformance;
-  const verified=i?.status==='verified-price-only'&&Number.isFinite(Number(i.priceReturnPct));
-  const since=verified?pct(i.priceReturnPct):'<span class="neutral">N/A (unverified)</span>';
-  const buy=b?.status==='active'?pct(b.priceReturnPct):'<span class="neutral">Not tracked</span>';
-  const baseline=i?.baselineDate||'2026-08-18';
-  // The SA 3M percentage is a rolling source-specific return, NOT an Aug 18 inception return.
-  // Display the published percentage directly; do not combine it with the newer JSE close.
-  const rolling=Number.isFinite(Number(s.m3))&&s.m3!=null;
-  const crossListed=String(s.primaryListing?.market||'JMSE').toUpperCase()!=='JMSE';
-  const source=crossListed?'SA 3M (primary listing; different market/currency)':'SA rolling 3M (indicative)';
-  const fallback=!verified&&rolling?`<br><small>${source}:</small> <strong>${pct(s.m3)}</strong>`:'';
-  return `<div class="recommendation-performance"><small>Since dashboard (${baseline}):</small> <strong>${since}</strong>${fallback}<br><small>Since BUY: </small><strong>${buy}</strong>${b?.status==='active'?`<br><small>BUY recorded ${b.startDate}${b.baselineClassification==='initial-observation'?' (initial observed rating)':''}</small>`:''}</div>`;
+  const b=s.buySignalPerformance;
+  const buy=b?.status==='active'?pct(b.priceReturnPct):'<span class="neutral">Tracking begins Nov 23</span>';
+  // Rolling performance uses JSE daily-close snapshots when enough history exists.
+  // Existing SA values remain explicitly labeled as fallback, never as JSE-derived returns.
+  const rolling=['w1','m1','m3'].map((field,i)=>{
+    const label=['1W','1M','3M'][i];
+    const jse=s.jseRollingPerformance?.[field];
+    const verified=jse?.source==='JSE daily closes'&&Number.isFinite(jse.returnPct);
+    const value=verified?jse.returnPct:s[field];
+    const source=verified?'JSE closes':'SA indicative';
+    return `<small>${label} (${source}):</small> <strong>${pct(value)}</strong>`;
+  }).join('<br>');
+  return `<div class="recommendation-performance">${rolling}<br><small>Since BUY:</small> <strong>${buy}</strong>${b?.status==='active'?`<br><small>BUY recorded ${b.startDate}${b.baselineClassification==='initial-observation'?' (initial observed rating)':''}</small>`:''}</div>`;
 };
 function stockRow(s){return `<tr><td><div class="ticker-wrap"><div style="display:flex;gap:4px">${sourceLinks(s)}</div><div><div class="ticker">${s.ticker}</div><div class="company">${s.company}</div></div></div></td><td><strong>${money(s.price)}</strong><br><small>${s.priceDate}</small></td><td>${day(s)}</td><td>${pct(s.w1)}</td><td>${pct(s.m1)}</td><td>${periodPct(s,'ytd')}</td><td>${periodPct(s,'m3')}</td><td>${periodPct(s,'m6')}</td><td>${periodPct(s,'y1')}</td><td>${money(s.ttmDps)}</td><td>${grossYieldDisplay(s)}</td><td>${taxDisplay(s)}</td><td>${netYieldDisplay(s)}</td><td class="coverage-table-cell" data-coverage-cell>${coverageCell(s)}</td><td><strong>${latestDividendLink(s)}</strong><br><small>${s.dividendStatus||''}</small></td><td>${dividendDates(s)}</td><td><span class="rating ${s.ratingClass}">${s.rating}</span><br><small>${s.reason}</small></td><td>${recommendationPerformance(s)}</td><td>${buyZoneText(s)}</td></tr>`;}
 function stockCard(s){return `<article class="stock-card"><div class="card-top"><div><h3>${s.ticker}</h3><div class="company">${s.company}</div></div><span class="rating ${s.ratingClass}">${s.rating}</span></div><div class="price">${money(s.price)}</div><div>${day(s)} <span class="neutral">• ${s.priceDate}</span></div>${[['1 Week','w1'],['1 Month','m1'],['YTD','ytd'],['3 Months','m3'],['6 Months','m6'],['12 Months','y1'],['5 Years','y5']].map(([l,k])=>`<div class="metric-row"><span>${l}</span><strong>${periodPct(s,k)}</strong></div>`).join('')}<div class="metric-row"><span>Gross yield</span><strong>${grossYieldDisplay(s)}</strong></div><div class="metric-row"><span>Dividend tax</span><strong>${taxDisplay(s)}</strong></div><div class="metric-row"><span>Net yield</span><strong>${netYieldDisplay(s)}</strong></div><div class="metric-row"><span>Latest dividend</span><strong>${latestDividendLink(s)}</strong></div><div class="metric-row"><span>Recommendation performance</span><div>${recommendationPerformance(s)}</div></div><div class="metric-row"><span>Target buy zone</span><div>${buyZoneText(s)}</div></div><p class="rank-reason">${s.reason}</p><div class="card-links">${sourceLinks(s)}</div></article>`;}
