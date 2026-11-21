@@ -19,7 +19,9 @@ for(const s of data.stocks){
   const base=history.baseline[s.ticker];
   const price=Number(s.price);
   const priceDate=String(s.priceDate||'');
-  const validPrice=Number.isFinite(price)&&price>0&&priceDate.includes(date);
+  const parsedPriceDate=new Date(priceDate.split(' • ')[0]);
+  const actualPriceDate=Number.isNaN(parsedPriceDate.valueOf())?'':parsedPriceDate.toISOString().slice(0,10);
+  const validPrice=Number.isFinite(price)&&price>0&&actualPriceDate===date;
   // Prevent misleading cross-currency returns.
   const market=String(s.primaryListing?.market||'JMSE').toUpperCase();
   const baselineComparable=base&&base.close>0&&base.currency==='JMD'&&market==='JMSE'&&validPrice;
