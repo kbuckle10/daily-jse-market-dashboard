@@ -13,6 +13,24 @@ if(history.baselineDate!=='2026-08-18')throw Error('Unexpected baseline date');
 history.baseline ||= {};
 history.recommendations ||= [];
 history.trackingStarts ||= '2026-11-23';
+// Persist official JSE closing-price snapshots by their actual trading date.
+const snapshotPath='data/jse-close-history.json';
+const snapshots=fs.existsSync(snapshotPath)?JSON.parse(fs.readFileSync(snapshotPath,'utf8')):{version:1,prices:{}};
+snapshots.prices ||= {};
+const shiftMonths=(iso,months)=>{
+  const [y,m,d]=iso.split('-').map(Number);
+  const first=new Date(Date.UTC(y,m-1-months,1));
+  const lastDay=new Date(Date.UTC(first.getUTCFullYear(),first.getUTCMonth()+1,0)).getUTCDate();
+  return new Date(Date.UTC(first.getUTCFullYear(),first.getUTCMonth(),Math.min(d,lastDay))).toISOString().slice(0,10);
+};
+const rollingReturn=(ticker,latestDate,latestPrice,period)=>{
+  const entries=Object.entries(snapshots.prices[ticker]||{}).filter(([day,p])=>day<=latestDate&&Number.isFinite(Number(p))&&Number(p)>0).sort((a,b)=>a[0].localeCompare(b[0]));
+  const target=period==='w1'?new Date(Date.parse(latestDate+'T00:00:00Z')-7*86400000).toISOString().slice(0,10):shiftMonths(latestDate,period==='m1'?1:3);
+  // Reference must be a recorded session at or before the target date, within 4 calendar days.
+  const prior=entries.filter(([day])=>day<=target).at(-1);
+  if(!prior||(Date.parse(target+'T00:00:00Z')-Date.parse(prior[0]+'T00:00:00Z'))>4*86400000)return null;
+  return {returnPct:Number(((latestPrice/Number(prior[1])-1)*100).toFixed(2)),source:'JSE daily closes',startDate:prior[0],endDate:latestDate};
+};
 const isBuy=s=>String(s.ratingClass||'').toLowerCase()==='buy';
 const eligible=date>=history.trackingStarts;
 for(const s of data.stocks){
@@ -22,6 +40,18 @@ for(const s of data.stocks){
   const parsedPriceDate=new Date(priceDate.split(' • ')[0]);
   const actualPriceDate=Number.isNaN(parsedPriceDate.valueOf())?'':parsedPriceDate.toISOString().slice(0,10);
   const validPrice=Number.isFinite(price)&&price>0&&actualPriceDate===date;
+  const marketForSnapshot=String(s.primaryListing?.market||'JMSE').toUpperCase();
+  if(validPrice&&s.source==='JSE'&&marketForSnapshot==='JMSE'){
+    snapshots.prices[s.ticker] ||= {};
+    snapshots.prices[s.ticker][actualPriceDate]=price;
+  }
+  s.jseRollingPerformance={};
+  if(validPrice&&s.source==='JSE'&&marketForSnapshot==='JMSE'){
+    for(const period of ['w1','m1','m3']){
+      const result=rollingReturn(s.ticker,actualPriceDate,price,period);
+      if(result)s.jseRollingPerformance[period]=result;
+    }
+  }
   // Prevent misleading cross-currency returns.
   const market=String(s.primaryListing?.market||'JMSE').toUpperCase();
   const baselineComparable=base&&base.close>0&&base.currency==='JMD'&&market==='JMSE'&&validPrice;
@@ -47,6 +77,6 @@ for(const s of data.stocks){
 // Never remove past records when tickers disappear from the current universe.
 history.lastProcessedDate=date;
 fs.mkdirSync('data',{recursive:true});
-fs.writeFileSync(path,JSON.stringify(history,null,2)+'\n');
+fs.writeFileSync(path,JSON.stringify(history,null,2)+'\n');\nfs.writeFileSync(snapshotPath,JSON.stringify(snapshots,null,2)+'\n');
 fs.writeFileSync('data.js','window.JSE_DASHBOARD_DATA = '+JSON.stringify(data,null,2)+';\n');
 console.log('Recommendation tracking: '+date+', baseline closes '+Object.keys(history.baseline).length+', total events '+history.recommendations.length);
