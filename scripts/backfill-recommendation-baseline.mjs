@@ -21,14 +21,7 @@ try {
       if(!response?.ok())throw Error('HTTP '+response?.status());
       const year=page.getByRole('button',{name:'1Y',exact:true}).first();
       if(await year.isVisible({timeout:3000}).catch(()=>false)){await year.click({timeout:3000});await page.waitForTimeout(700);}
-      const seen=new Map();
       for(let n=0;n<15;n++){
-        const rows=await page.locator('table tbody tr').allTextContents();
-        for(const row of rows){
-          const date=row.match(/(?:Aug(?:ust)?\s+18,\s+2026|2026-08-18)/i);
-          if(!date)continue;
-          // Read structured cells; never guess a historical close from free-form text.
-        }
         const tr=page.locator('table tbody tr');
         const count=await tr.count();
         for(let i=0;i<count;i++){
@@ -47,10 +40,20 @@ try {
           break;
         }
         if(existing.baseline[ticker])break;
-        const next=page.getByRole('button',{name:/next/i}).first();
-        if(!await next.isVisible().catch(()=>false)||await next.isDisabled().catch(()=>true))break;
-        await next.click().catch(()=>{});
-        await page.waitForTimeout(450);
+        const before=(await tr.first().locator('td').first().textContent().catch(()=>''))||'';
+        const candidates=page.locator('button, a[aria-label], a[rel="next"]');
+        let advanced=false;
+        for(let j=0;j<await candidates.count();j++){
+          const btn=candidates.nth(j);
+          if(!await btn.isVisible().catch(()=>false)||await btn.isDisabled().catch(()=>false))continue;
+          const label=((await btn.getAttribute('aria-label'))||'')+' '+((await btn.getAttribute('title'))||'')+' '+((await btn.textContent())||'');
+          if(!/next|›|→|^\\s*>\\s*$/i.test(label))continue;
+          await btn.click({timeout:3000}).catch(()=>{});
+          await page.waitForTimeout(650);
+          const after=(await page.locator('table tbody tr').first().locator('td').first().textContent().catch(()=>''))||'';
+          if(after&&after!==before){advanced=true;break;}
+        }
+        if(!advanced)break;
       }
       if(!existing.baseline[ticker])console.warn(ticker+': August 18 close not located; leaving unavailable');
     }catch(err){console.warn(ticker+': '+err.message);}
