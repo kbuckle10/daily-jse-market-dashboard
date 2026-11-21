@@ -1,3 +1,4 @@
+// Verified dashboard inception: 2026-08-18, initial GitHub commit 73f46aa83e12cb75ba661f8b0228fbb76b86b247.
 import fs from 'node:fs';
 import vm from 'node:vm';
 import { chromium } from 'playwright';
