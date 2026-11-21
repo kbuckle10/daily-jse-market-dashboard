@@ -2,7 +2,48 @@
   "version": 1,
   "baselineDate": "2026-08-18",
   "baselineSource": "StockAnalysis historical daily close",
-  "baseline": {},
+  "baseline": {
+    "GENAC": {
+      "date": "2026-08-18",
+      "close": 8.93,
+      "currency": "JMD",
+      "source": "StockAnalysis",
+      "url": "https://stockanalysis.com/quote/jmse/GENAC/history/",
+      "status": "verified-historical-close"
+    },
+    "ENERGY": {
+      "date": "2026-08-18",
+      "close": 1.05,
+      "currency": "JMD",
+      "source": "StockAnalysis",
+      "url": "https://stockanalysis.com/quote/jmse/ENERGY/history/",
+      "status": "verified-historical-close"
+    },
+    "PULS": {
+      "date": "2026-08-18",
+      "close": 0.72,
+      "currency": "JMD",
+      "source": "StockAnalysis",
+      "url": "https://stockanalysis.com/quote/jmse/PULS/history/",
+      "status": "verified-historical-close"
+    },
+    "SELECTMD": {
+      "date": "2026-08-18",
+      "close": 0.98,
+      "currency": "JMD",
+      "source": "StockAnalysis",
+      "url": "https://stockanalysis.com/quote/jmse/SELECTMD/history/",
+      "status": "verified-historical-close"
+    },
+    "TROPICAL": {
+      "date": "2026-08-18",
+      "close": 1.4,
+      "currency": "JMD",
+      "source": "StockAnalysis",
+      "url": "https://stockanalysis.com/quote/jmse/TROPICAL/history/",
+      "status": "verified-historical-close"
+    }
+  },
   "recommendations": [],
   "trackingStarts": "2026-11-23"
 }
