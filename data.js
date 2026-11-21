@@ -2664,7 +2664,10 @@ window.JSE_DASHBOARD_DATA = {
       "latestDividendOriginalCurrencyBasis": "JSE dividend history / native JMD",
       "inceptionPerformance": {
         "baselineDate": "2026-08-18",
-        "status": "historical-close-unavailable"
+        "baselineClose": 34.05,
+        "priceReturnPct": -7.99,
+        "source": "Investing.com historical daily close",
+        "status": "verified-price-only"
       },
       "buySignalPerformance": {
         "status": "tracking-starts-2026-11-23"
