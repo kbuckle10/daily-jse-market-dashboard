@@ -105,7 +105,7 @@ const recommendationPerformance=s=>{
     const baseDate=Number.isNaN(date.valueOf())?b.startDate:date.toLocaleDateString('en-US',{month:'short',day:'numeric',timeZone:'UTC'});
     const baseline=Number.isFinite(Number(b.startPrice))&&Number(b.startPrice)>0?' · '+money(b.startPrice):'';
     const note=b.baselineClassification==='initial-observation'?'Initial observed BUY rating; not an earlier recommendation':'BUY rating first recorded';
-    return `<div class="recommendation-performance" title="${note}; JSE close ${b.startDate}"><strong class="buy-return ${b.priceReturnPct>0?'buy-return-up':b.priceReturnPct<0?'buy-return-down':'buy-return-flat'}"><span class="buy-return-arrow" aria-hidden="true">${b.priceReturnPct>0?'▲':b.priceReturnPct<0?'▼':'—'}</span> ${b.priceReturnPct>0?'+':''}${fmt(b.priceReturnPct,2)}%</strong><br><small>Base ${baseDate}${baseline}</small></div>`;
+    return `<div class="recommendation-performance" style="text-align:right" title="${note}; JSE close ${b.startDate}"><strong class="buy-return ${b.priceReturnPct>0?'buy-return-up':b.priceReturnPct<0?'buy-return-down':'buy-return-flat'}">${b.priceReturnPct>0?'+':''}${fmt(b.priceReturnPct,2)}% <span class="buy-return-arrow" aria-hidden="true" style="color:inherit">${b.priceReturnPct>0?'▲':b.priceReturnPct<0?'▼':'—'}</span></strong><br><small>Base ${baseDate}${baseline}</small></div>`;
   }
   return '<span class="neutral">—</span>';
 };
