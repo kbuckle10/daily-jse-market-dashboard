@@ -77,6 +77,7 @@ for(const s of data.stocks){
 // Never remove past records when tickers disappear from the current universe.
 history.lastProcessedDate=date;
 fs.mkdirSync('data',{recursive:true});
-fs.writeFileSync(path,JSON.stringify(history,null,2)+'\n');\nfs.writeFileSync(snapshotPath,JSON.stringify(snapshots,null,2)+'\n');
+fs.writeFileSync(path,JSON.stringify(history,null,2)+'\n');
+fs.writeFileSync(snapshotPath,JSON.stringify(snapshots,null,2)+'\n');
 fs.writeFileSync('data.js','window.JSE_DASHBOARD_DATA = '+JSON.stringify(data,null,2)+';\n');
 console.log('Recommendation tracking: '+date+', baseline closes '+Object.keys(history.baseline).length+', total events '+history.recommendations.length);
