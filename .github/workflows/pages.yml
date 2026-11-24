@@ -45,6 +45,48 @@ jobs:
           test -s _site/data.js
           echo "Staged dashboard and market data:"
           ls -lh _site/index.html _site/data.js
+      - name: Install browser test dependencies
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+      - name: Verify actual dashboard rating and filters before publishing
+        run: |
+          python3 -m http.server 8765 --directory _site >/tmp/pages-server.log 2>&1 &
+          node --input-type=module <<'JS'
+          import { chromium } from 'playwright';
+          import assert from 'node:assert/strict';
+          import fs from 'node:fs';
+          import vm from 'node:vm';
+          const ctx={window:{}};
+          vm.runInNewContext(fs.readFileSync('_site/data.js','utf8'),ctx);
+          const stocks=ctx.window.JSE_DASHBOARD_DATA.stocks;
+          const browser=await chromium.launch({headless:true});
+          try {
+            for(const viewport of [{width:390,height:844},{width:1440,height:900}]){
+              const page=await browser.newPage({viewport,serviceWorkers:'block'});
+              await page.addInitScript(tickers=>localStorage.setItem('dailyJseTrackedTickersV2',JSON.stringify(tickers)),stocks.map(s=>s.ticker));
+              await page.goto('http://localhost:8765/',{waitUntil:'load'});
+              for(const filter of ['all','buy','zone','income','movement','dividend']){
+                await page.locator('.filter-tile[data-filter="'+filter+'"]').evaluate(el=>el.click());
+                await page.waitForTimeout(900);
+                const cards=await page.locator('#cardView .stock-card').evaluateAll(els=>els.map(e=>({ticker:e.querySelector('h3').textContent.trim(),rating:e.querySelector('.rating').textContent.trim(),cls:e.querySelector('.rating').className})));
+                const rows=await page.locator('#stockTableBody tr:has(.ticker)').evaluateAll(els=>els.map(e=>({ticker:e.querySelector('.ticker').textContent.trim(),rating:e.querySelector('.rating').textContent.trim(),cls:e.querySelector('.rating').className})));
+                const expected=await page.evaluate(f=>trackedStocks().filter(s=>matchesTile(s,f)).map(s=>s.ticker),filter);
+                for(const items of [cards,rows]){
+                  assert.deepEqual(items.map(x=>x.ticker).sort(),expected.sort(),filter+' membership');
+                  for(const item of items){
+                    const s=stocks.find(x=>x.ticker===item.ticker);
+                    assert.ok(item.cls.split(/\s+/).includes(s.ratingClass),item.ticker+' rating class');
+                    assert.equal(/^(strong buy|buy)/i.test(item.rating),s.ratingClass==='buy',item.ticker+' badge '+item.rating);
+                  }
+                }
+                if(filter==='all')assert.equal(cards.length,stocks.length);
+                if(filter==='buy')assert.equal(cards.length,stocks.filter(s=>s.ratingClass==='buy').length);
+              }
+              await page.close();
+            }
+          }finally{await browser.close();}
+          JS
       - name: Upload static site
         id: upload
         uses: actions/upload-pages-artifact@v3
