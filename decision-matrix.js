@@ -76,7 +76,6 @@ function decisionContext(s){
  }else lines.push('No complete buy-zone range available; entry pricing cannot be verified.');
  if(p!=null&&fv!=null&&p>0)lines.push('Model fair value '+fmt(fv)+'; estimated upside '+((fv/p-1)*100).toFixed(1)+'%, before an additional margin of safety.');
  if(score!=null)lines.push('Research score '+score.toFixed(0)+'/100 measures model attractiveness; it is NOT itself an immediate-buy trigger.');
- if(s.bookAdjustedRating&&String(s.bookAdjustedRating).toLowerCase()!==String(s.rating||'').toLowerCase())lines.push('Secondary valuation signal: '+s.bookAdjustedRating+'; does not override primary '+s.rating+'.');
  if(s.reason&&/one.month rally/i.test(s.reason)&&number(s.m1)!=null)lines.push('STALE COMMENTARY CHECK: stored explanation refers to an earlier one-month rally; the collected current 1M return is '+pct(s.m1)+'.');
  if(s.primaryListing?.market&&s.primaryListing.market!=='JMSE')lines.push('CROSS-LISTED: confirm price and valuation currency basis.');
  return lines;
