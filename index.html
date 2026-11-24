@@ -92,8 +92,17 @@ window.addEventListener('beforeinstallprompt',function(e){window.__JSE_PWA_INSTA
   function reconcile(){
     for(const row of document.querySelectorAll('#cardView .stock-card,#stockTableBody tr')){
       const ticker=(row.querySelector('h3,.ticker')?.textContent||'').trim();
-      const s=primary.get(ticker), badge=row.querySelector('.rating');
-      if(!s||!badge)continue;
+      const s=primary.get(ticker);
+      if(!s)continue;
+      let badge=row.querySelector('.rating');
+      if(!badge){
+        const headers=[...document.querySelectorAll('#tableView thead tr th')];
+        const target=row.matches('tr')?row.cells[headers.findIndex(h=>h.textContent.trim()==='Rating')]:row.querySelector('.card-top');
+        if(!target)continue;
+        badge=document.createElement('span');
+        badge.className='rating';
+        target.prepend(badge);
+      }
       const label=s.cls==='buy'?( /^strong buy/i.test(s.rating)?'STRONG BUY':'BUY / ACCUMULATE'):s.cls==='avoid'?'AVOID':/^watch/i.test(s.rating)?'WATCH':'HOLD / WAIT';
       if(badge.textContent!==label)badge.textContent=label;
       if(badge.className!=='rating '+s.cls)badge.className='rating '+s.cls;
