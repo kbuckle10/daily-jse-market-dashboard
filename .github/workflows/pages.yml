@@ -82,7 +82,12 @@ jobs:
                   }
                 }
                 if(filter==='all')assert.equal(cards.length,stocks.length);
-                if(filter==='buy')assert.equal(cards.length,stocks.filter(s=>s.ratingClass==='buy').length);
+                if(filter==='buy'){
+                  const canonical=stocks.filter(s=>s.ratingClass==='buy').map(s=>s.ticker).sort();
+                  assert.deepEqual(cards.map(x=>x.ticker).sort(),canonical,`${viewport.width}px BUY cards must match data.js exactly`);
+                  assert.deepEqual(rows.map(x=>x.ticker).sort(),canonical,`${viewport.width}px BUY rows must match data.js exactly`);
+                  assert.equal(Number(await page.locator('#buyCount').textContent()),canonical.length,'BUY tile count');
+                }
               }
               await page.close();
             }
