@@ -59,7 +59,7 @@ jobs:
           import vm from 'node:vm';
           const ctx={window:{}};
           vm.runInNewContext(fs.readFileSync('_site/data.js','utf8'),ctx);
-          const stocks=ctx.window.JSE_DASHBOARD_DATA.stocks;
+          const stocks=JSON.parse(JSON.stringify(ctx.window.JSE_DASHBOARD_DATA.stocks));
           const browser=await chromium.launch({headless:true});
           try {
             for(const viewport of [{width:390,height:844},{width:1440,height:900}]){
