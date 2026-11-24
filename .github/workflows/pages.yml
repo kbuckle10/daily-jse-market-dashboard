@@ -72,12 +72,12 @@ jobs:
                 const cards=await page.locator('#cardView .stock-card').evaluateAll(els=>els.map(e=>({ticker:e.dataset.stockTicker || e.querySelector('h3,.ticker')?.textContent.trim() || '',rating:e.querySelector('.rating')?.textContent.trim() || '[missing rating]',cls:e.querySelector('.rating')?.className || ''})));
                 const rows=await page.locator('#stockTableBody tr:has(.ticker)').evaluateAll(els=>els.map(e=>({ticker:e.dataset.stockTicker || e.querySelector('.ticker')?.textContent.trim() || '',rating:e.querySelector('.rating')?.textContent.trim() || '[missing rating]',cls:e.querySelector('.rating')?.className || ''})));
                 const expected=await page.evaluate(f=>trackedStocks().filter(s=>matchesTile(s,f)).map(s=>s.ticker),filter);
-                for(const items of [cards,rows]){
+                for(const [view,items] of [['cards',cards],['rows',rows]]){
                   assert.deepEqual(items.map(x=>x.ticker).sort(),expected.sort(),filter+' membership');
                   for(const item of items){
                     const s=stocks.find(x=>x.ticker===item.ticker);
                     assert.ok(s, 'Unknown rendered ticker: '+JSON.stringify(item));
-                    assert.ok(item.cls.split(/\s+/).includes(s.ratingClass),item.ticker+' rating class: '+JSON.stringify(item));
+                    assert.ok(item.cls.split(/\s+/).includes(s.ratingClass),`${viewport.width}px ${filter} ${view}: ${item.ticker} rating class: ${JSON.stringify(item)}`);
                     assert.equal(/^(strong buy|buy)/i.test(item.rating),s.ratingClass==='buy',item.ticker+' badge '+item.rating);
                   }
                 }
