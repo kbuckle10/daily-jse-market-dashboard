@@ -13,7 +13,7 @@ on:
       - '.github/jse-refresh-request.txt'
   schedule:
     # Jamaica UTC-5 year-round. Redundant off-peak opportunities.
-    # Only the first delivered run for a Jamaica trading day collects data.
+    # Recovery runs skip only after today's dataset has been published.
     - cron: '7 20 * * 1-5'   # 3:07 PM
     - cron: '19 21 * * 1-5'  # 4:19 PM
     - cron: '41 22 * * 1-5'  # 5:41 PM
@@ -42,7 +42,7 @@ jobs:
           ref: main
           fetch-depth: 0
       - id: guard
-        name: Prevent duplicate daily scheduled collections
+        name: Skip only if today's dataset is already published
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -64,12 +64,6 @@ jobs:
               core.setOutput('run_refresh', 'false');
               return;
             }
-            const midnight = Date.parse(`${day}T05:00:00Z`);
-            const runs = await github.paginate(github.rest.actions.listWorkflowRuns, {
-              owner: context.repo.owner, repo: context.repo.repo,
-              workflow_id: 'refresh-sa-performance.yml',
-              created: `>=${day}`, per_page: 100
-            });
             // A successful workflow run does not imply today's market data was published.
             // Earlier push-triggered runs may still contain yesterday's data.
             const fs = require('fs');
@@ -81,20 +75,8 @@ jobs:
               core.setOutput('run_refresh', 'false');
               return;
             }
-            const previous = runs.filter(r =>
-              r.id !== context.runId &&
-              Date.parse(r.created_at) >= midnight &&
-              Date.parse(r.created_at) <= Date.now() &&
-              (r.event === 'schedule' || r.event === 'workflow_dispatch' || r.event === 'push')
-            );
-            const active = previous.filter(r => r.status !== 'completed');
-            if (active.length) {
-              core.info(`Another collector is active: ${active.map(r=>`#${r.run_number}`).join(', ')}; skipping overlap.`);
-              core.setOutput('run_refresh', 'false');
-            } else {
-              core.info(`Published dataset ${publishedDate||'unknown'} is stale for ${day}; allowing scheduled recovery.`);
-              core.setOutput('run_refresh', 'true');
-            }
+            core.info(`Published dataset ${publishedDate||'unknown'} is stale for ${day}; collecting.`);
+            core.setOutput('run_refresh', 'true');
       - id: head
         if: steps.guard.outputs.run_refresh == 'true'
         run: echo "start_head=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
