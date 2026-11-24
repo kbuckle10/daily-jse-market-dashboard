@@ -47,7 +47,7 @@ jobs:
           ls -lh _site/index.html _site/data.js
       - name: Install browser test dependencies
         run: |
-          npm ci
+          npm install --no-package-lock --no-audit --no-fund
           npx playwright install --with-deps chromium
       - name: Verify actual dashboard rating and filters before publishing
         run: |
