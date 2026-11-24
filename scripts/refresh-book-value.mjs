@@ -49,13 +49,6 @@ function adjustment(pb,cls){
   }
   return 0;
 }
-function ratingFromScore(score){
-  if(score>=78) return 'Strong Buy';
-  if(score>=65) return 'Buy/Accumulate';
-  if(score>=52) return 'Hold';
-  if(score>=40) return 'Watch/Wait';
-  return 'Avoid';
-}
 
 const data=readData();
 for(const s of data.stocks){
@@ -102,20 +95,13 @@ for(const s of data.stocks){
   const valuationPb=n(s.calculatedPbFromJsePrice) ?? reportedPb;
   const adj=adjustment(valuationPb,cls);
   s.bookValueScoreAdjustment=adj;
-  const priorAdjustment=n(s.bookValueScoreAdjustment) ?? 0;
-  const baseScore=Number.isFinite(n(s.score))?(s.analysisSource==='AUTO-SA'?clamp(n(s.score)-priorAdjustment,0,100):n(s.score)):null;
+  const baseScore=s.score!=null&&Number.isFinite(Number(s.score))?Number(s.score):null;
   s.bookAdjustedScore=baseScore==null?null:clamp(baseScore+adj,0,100);
-  s.bookAdjustedRating=s.bookAdjustedScore==null?(s.rating||'N/A'):ratingFromScore(s.bookAdjustedScore);
+  delete s.bookAdjustedRating;
   const comparison=s.bookDiscountPct==null?'book value unavailable':s.bookDiscountPct>0?`${s.bookDiscountPct}% below book`:s.bookDiscountPct<0?`${Math.abs(s.bookDiscountPct)}% above book`:'at book value';
   const weighting=cls==='book-sensitive'?'high relevance for this sector':cls==='asset-heavy'?'moderate relevance for this sector':'low weighting for this sector';
   s.bookValueAnalysis=`P/B ${valuationPb!=null?valuationPb.toFixed(2)+'x':'N/A'}; ${comparison}; ${sig.label}; ${weighting}.`;
-  if(s.analysisSource==='AUTO-SA' && s.bookAdjustedScore!=null){
-    s.score=s.bookAdjustedScore;
-    s.rating=s.bookAdjustedRating;
-    s.ratingClass=/Buy/i.test(s.rating)?'buy':s.rating==='Avoid'?'avoid':'hold';
-    s.allocation=Math.max(s.score,1);
-    s.reason=`${(s.reason||'').split(' Book-value lens:')[0]} Book-value lens: ${s.bookValueAnalysis}`.trim();
-  }
+
 }
 // This is written by the final enrichment step, so the UI can show the age of the
 // last completed dataset rather than repeating the source-policy text.
