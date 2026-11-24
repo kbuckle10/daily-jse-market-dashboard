@@ -1,4 +1,4 @@
-const CACHE='jse-dashboard-shell-v7';
+const CACHE='jse-dashboard-shell-v8';
 const BASE='/daily-jse-market-dashboard/';
 const SHELL=[
   BASE,
