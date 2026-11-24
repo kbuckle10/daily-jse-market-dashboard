@@ -84,6 +84,16 @@ jobs:
         if: steps.guard.outputs.run_refresh == 'true'
         with:
           node-version: '22'
+      - name: Validate collector JavaScript syntax
+        if: steps.guard.outputs.run_refresh == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          find scripts -type f \( -name '*.mjs' -o -name '*.js' -o -name '*.cjs' \) -print0 | while IFS= read -r -d '' file; do
+            echo "Checking $file"
+            node --check "$file"
+          done
+          node --check app.js
       - if: steps.guard.outputs.run_refresh == 'true'
         run: npm run sync:main-market
       - name: Reconcile against official JSE Main Market ordinary-share universe
