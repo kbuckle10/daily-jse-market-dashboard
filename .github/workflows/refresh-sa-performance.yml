@@ -17,6 +17,8 @@ on:
     - cron: '7 20 * * 1-5'   # 3:07 PM
     - cron: '19 21 * * 1-5'  # 4:19 PM
     - cron: '41 22 * * 1-5'  # 5:41 PM
+    - cron: '17 23 * * 1-5'  # 6:17 PM recovery
+    - cron: '37 0 * * 2-6'   # 7:37 PM Jamaica recovery
 
 permissions:
   contents: write
@@ -31,7 +33,6 @@ env:
 
 jobs:
   prepare:
-    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-24.04
     outputs:
       run_refresh: ${{ steps.guard.outputs.run_refresh }}
