@@ -1,5 +1,1 @@
-JSE daily refresh request
-Requested: 2026-11-19 Jamaica trading session
-Reason: Recover stale November 18 dashboard data and verify freshness-aware schedule/watchdog fix.
-Request ID: 20261119-2351-jamaica-stale-data-recovery
-Workflow: .github/workflows/refresh-sa-performance.yml
+Recovery request: 2026-11-26 21:46 Jamaica; dataset remains 2026-11-25.
